@@ -98,12 +98,12 @@ export function sleeveBush() {
 }
 
 export const PART_META = [
-  { id: 'rotor', en: 'Brake Disc Hat', ko: '제동장치', proc: '압출 / CNC / T6', make: brakeRotor },
-  { id: 'ujoint', en: 'U-Joint Yoke', ko: '조향장치', proc: '단조재 CNC', make: ujointYoke },
-  { id: 'profile', en: 'Multi-hollow Profile', ko: '압출 프로파일', proc: '압출 / T6 / 절단', make: profileChunk },
-  { id: 'collar', en: 'Grooved Collar', ko: '조향장치', proc: '압출 / CNC 선반', make: groovedCollar },
-  { id: 'inner-pipe', en: 'Inner Pipe', ko: '방진장치', proc: '압출 / 절단 / 디버링', make: innerPipe },
-  { id: 'sleeve-bush', en: 'Sleeve Bush', ko: '조향장치', proc: '압출 / CNC 선반', make: sleeveBush }
+  { id: 'rotor', en: 'Brake Disc Hat', ko: '제동장치', koEn: 'Brake', proc: '압출 / CNC / T6', procEn: 'Extrusion / CNC / T6', make: brakeRotor },
+  { id: 'ujoint', en: 'U-Joint Yoke', ko: '조향장치', koEn: 'Steering', proc: '단조재 CNC', procEn: 'Forged stock, CNC', make: ujointYoke },
+  { id: 'profile', en: 'Multi-hollow Profile', ko: '압출 프로파일', koEn: 'Extruded profile', proc: '압출 / T6 / 절단', procEn: 'Extrusion / T6 / cutting', make: profileChunk },
+  { id: 'collar', en: 'Grooved Collar', ko: '조향장치', koEn: 'Steering', proc: '압출 / CNC 선반', procEn: 'Extrusion / CNC lathe', make: groovedCollar },
+  { id: 'inner-pipe', en: 'Inner Pipe', ko: '방진장치', koEn: 'Anti-vibration', proc: '압출 / 절단 / 디버링', procEn: 'Extrusion / cutting / deburring', make: innerPipe },
+  { id: 'sleeve-bush', en: 'Sleeve Bush', ko: '조향장치', koEn: 'Steering', proc: '압출 / CNC 선반', procEn: 'Extrusion / CNC lathe', make: sleeveBush }
 ];
 
 export function makeParts() { return PART_META.map(m => ({ ...m, geo: m.make() })); }
