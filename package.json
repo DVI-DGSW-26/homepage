@@ -5,9 +5,9 @@
   "type": "module",
   "description": "DVISION (dvi-ind.com) homepage remake - Three.js / GSAP / Lenis",
   "scripts": {
-    "dev": "esbuild src/main.js --bundle --outdir=dist --servedir=. --serve=127.0.0.1:5173 --watch --sourcemap --log-level=info",
+    "dev": "esbuild src/main.js --bundle --outfile=dist/app.js --servedir=. --serve=127.0.0.1:5173 --watch --sourcemap --log-level=info",
     "build": "node scripts/build.mjs",
-    "preview": "esbuild src/main.js --bundle --outdir=dist --servedir=. --serve=127.0.0.1:5173"
+    "preview": "esbuild src/main.js --bundle --outfile=dist/app.js --servedir=. --serve=127.0.0.1:5173"
   },
   "dependencies": {
     "gsap": "^3.13.0",

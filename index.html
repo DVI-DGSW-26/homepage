@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>DVISION Remake</title>
+<link rel="icon" href="assets/img/favicon.ico" sizes="16x16 32x32 48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicon-192.png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 <meta name="description" content="디비전(DVISION)은 알루미늄 압출과 정밀 가공으로 자동차, 산업용, 건축, 항공우주방산 부품을 공급하는 대구의 소재부품 전문기업입니다.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,22 +30,23 @@
 
 <header class="nav" id="nav">
   <div class="wrap">
-    <a class="logo" href="#top" aria-label="DVISION 홈" data-hover>
+    <a class="logo" href="#top" aria-label="DVISION 홈" data-en-aria="DVISION home" data-hover>
       <img decoding="async" class="lg-white" src="assets/img/logo-white.png" alt="DVISION" width="800" height="216">
       <img decoding="async" class="lg-dark" src="assets/img/logo.png" alt="" width="800" height="216">
     </a>
-    <nav aria-label="주요 메뉴">
+    <nav aria-label="주요 메뉴" data-en-aria="Main menu">
       <ul class="nav-links mono">
         <li><a href="#about" data-hover>About</a></li>
         <li><a href="#rnd" data-hover>R&amp;D</a></li>
         <li><a href="#product" data-hover>Product</a></li>
         <li><a href="#config" data-hover>Technology</a></li>
+        <li><a href="#events" data-hover>Events</a></li>
         <li><a href="#community" data-hover>Community</a></li>
       </ul>
     </nav>
     <div class="nav-right">
-      <span class="lang mono"><b>KOR</b> / <a href="https://dvi-ind.com/en/" target="_blank" rel="noopener" data-hover>ENG</a></span>
-      <a class="btn sm" href="#contact" data-hover>제품 문의
+      <span class="lang mono"><button type="button" data-lang="ko" data-hover>KOR</button><i aria-hidden="true">/</i><button type="button" data-lang="en" data-hover>ENG</button></span>
+      <a class="btn sm" href="#contact" data-hover><span data-en="Contact us">제품 문의</span>
         <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 13L13 3M5 3h8v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
     </div>
@@ -49,7 +55,7 @@
 
 <main id="top">
   <!-- ================= HERO ================= -->
-  <section class="hero" id="hero" data-theme="dark" aria-label="소개">
+  <section class="hero" id="hero" data-theme="dark" aria-label="소개" data-en-aria="Introduction">
     <div class="hero-sticky">
       <div class="hero-bg" aria-hidden="true">
         <img decoding="async" class="is-on" src="assets/img/hero/banner-01.jpg" alt="">
@@ -63,29 +69,29 @@
           <div class="beats" id="beats">
             <article class="beat is-active">
               <h1 class="disp">Driving Innovation with Precision Aluminum</h1>
-              <p>정밀한 가공기술로 완성한 자동차 부품과 기술력으로 모빌리티 산업의 미래를 이끌어갑니다.</p>
+              <p data-en="Automotive components finished with precision machining, and the engineering behind them, leading the future of the mobility industry.">정밀한 가공기술로 완성한 자동차 부품과 기술력으로 모빌리티 산업의 미래를 이끌어갑니다.</p>
             </article>
             <article class="beat">
               <h1 class="disp">Built Locally, Delivered Globally</h1>
-              <p>설계부터 생산, 수출까지 신뢰를 바탕으로 완성한 알루미늄 솔루션을 전 세계에 전달합니다.</p>
+              <p data-en="From design through production to export, aluminum solutions built on trust and delivered worldwide.">설계부터 생산, 수출까지 신뢰를 바탕으로 완성한 알루미늄 솔루션을 전 세계에 전달합니다.</p>
             </article>
             <article class="beat">
               <h1 class="disp">Lighter Structure, Greater Possibilities</h1>
-              <p>불필요한 무게는 줄이고, 성능은 그대로. 경량화를 통해 더 넓은 가능성을 제시합니다.</p>
+              <p data-en="Less weight, the same performance. Lightweighting opens up wider possibilities.">불필요한 무게는 줄이고, 성능은 그대로. 경량화를 통해 더 넓은 가능성을 제시합니다.</p>
             </article>
             <article class="beat">
               <h1 class="disp">Greener Materials, Smarter Choices</h1>
-              <p>알루미늄은 재활용률이 높은 친환경 소재입니다. 지속 가능한 미래를 위한 현명한 선택이 됩니다.</p>
+              <p data-en="Aluminum is a highly recyclable, low-impact material — a smart choice for a sustainable future.">알루미늄은 재활용률이 높은 친환경 소재입니다. 지속 가능한 미래를 위한 현명한 선택이 됩니다.</p>
             </article>
           </div>
         </div>
         <aside class="hud mono" id="hud">
           <div class="hud-row"><span>Sequence</span><b class="num" id="hudBeat">01 / 04</b></div>
           <div class="hud-row"><span>Part</span><b id="hudPart">Brake Disc Hat</b></div>
-          <div class="hud-row"><span>System</span><b id="hudCat">제동장치</b></div>
-          <div class="hud-row"><span>Process</span><b id="hudProc">압출 / CNC / T6</b></div>
+          <div class="hud-row"><span>System</span><b id="hudCat" data-en="Brake">제동장치</b></div>
+          <div class="hud-row"><span>Process</span><b id="hudProc" data-en="Extrusion / CNC / T6">압출 / CNC / T6</b></div>
           <div class="hud-ticks" id="ticks"><i class="is-on"></i><i></i><i></i><i></i></div>
-          <span class="hud-hint">마우스를 움직이면 알루미늄 칩이 흩어집니다</span>
+          <span class="hud-hint" data-en="Move the mouse and the aluminum chips scatter">마우스를 움직이면 알루미늄 칩이 흩어집니다</span>
         </aside>
         <div class="scroll-cue mono"><span></span>Scroll</div>
       </div>
@@ -104,134 +110,134 @@
   </div>
 
   <!-- ================= ABOUT ================= -->
-  <section class="sec about" id="about" data-theme="light">
+  <section class="sec about" id="about" data-theme="dark">
     <div class="wrap">
       <div class="about-head"><div class="eyebrow mono rv">About — Company</div><span class="mono rv">Manifesto / Daegu, since 2020</span></div>
-      <p class="manifesto" id="manifesto" data-snap>알루미늄을 압출하고 가공해 자동차, 산업용, 건축 부품을 만듭니다. <em class="k">연구개발</em>, <em class="k">전문 인력</em>, <em class="k">공급망</em>으로 더 가볍고 더 강하게.</p>
+      <p class="manifesto" id="manifesto" data-snap data-en-html='We extrude and machine aluminum into automotive, industrial and architectural components. Lighter and stronger, through <em class="k">R&amp;D</em>, <em class="k">skilled people</em> and <em class="k">our supply chain</em>.'>알루미늄을 압출하고 가공해 자동차, 산업용, 건축 부품을 만듭니다. <em class="k">연구개발</em>, <em class="k">전문 인력</em>, <em class="k">공급망</em>으로 더 가볍고 더 강하게.</p>
     </div>
 
     <div class="cine" id="cine" data-snap-range>
       <div class="cine-sticky">
-        <div class="cine-side" id="cineSide"><span class="mono">Frame 01 / Greener materials</span><b class="disp">Greener, Lighter, Global</b><p>재활용률이 높은 알루미늄으로 더 가볍게 만들어 대구에서 북미까지 보냅니다. 사람, 기술, 환경을 생각하는 사회적 기업의 방식입니다.</p><span class="mono cue">Scroll to open the frame</span></div>
+        <div class="cine-side" id="cineSide"><span class="mono">Frame 01 / Greener materials</span><b class="disp">Greener, Lighter, Global</b><p data-en="We build lighter parts from highly recyclable aluminum and send them from Daegu to North America — the way a social enterprise thinks about people, technology and the environment.">재활용률이 높은 알루미늄으로 더 가볍게 만들어 대구에서 북미까지 보냅니다. 사람, 기술, 환경을 생각하는 사회적 기업의 방식입니다.</p><span class="mono cue">Scroll to open the frame</span></div>
         <div class="cine-frame is-full" id="cineFrame">
-          <img decoding="async" src="assets/img/company/company.jpg" alt="숲 위로 드러난 세계지도 모양의 호수" width="1600" height="550" loading="lazy">
+          <img decoding="async" src="assets/img/company/company.jpg" alt="숲 위로 드러난 세계지도 모양의 호수" data-en-alt="A lake shaped like a world map set among forest" width="1600" height="550" loading="lazy">
           <span class="cine-cap mono">Frame 01 / Greener materials</span>
-          <div class="tag"><span class="mono">Greener Materials, Smarter Choices</span><b>사람, 기술, 환경을 생각하는 사회적 기업</b><small>알루미늄은 재활용률이 높은 친환경 소재입니다. 지속 가능한 미래를 위한 현명한 선택이 됩니다.</small></div>
-          <ul class="ledger mono"><li><b class="num" data-v="30%">30%</b>에너지 효율 향상, 2단 인버터 압축기</li><li><b class="num" data-v="20%">20%</b>추가 절감</li><li><b class="num" data-v="14001">14001</b>ISO 환경경영, 2021</li><li><b class="num" data-v="5곳">5곳</b>미국, 멕시코 거점</li></ul>
+          <div class="tag"><span class="mono">Greener Materials, Smarter Choices</span><b data-en="A social enterprise built around people, technology and the environment">사람, 기술, 환경을 생각하는 사회적 기업</b><small data-en="Aluminum is a highly recyclable, low-impact material — a smart choice for a sustainable future.">알루미늄은 재활용률이 높은 친환경 소재입니다. 지속 가능한 미래를 위한 현명한 선택이 됩니다.</small></div>
+          <ul class="ledger mono"><li data-en-html='<b class="num" data-v="30%">30%</b>Energy efficiency gain, two-stage inverter compressor'><b class="num" data-v="30%">30%</b>에너지 효율 향상, 2단 인버터 압축기</li><li data-en-html='<b class="num" data-v="20%">20%</b>Further reduction'><b class="num" data-v="20%">20%</b>추가 절감</li><li data-en-html='<b class="num" data-v="14001">14001</b>ISO environmental management, 2021'><b class="num" data-v="14001">14001</b>ISO 환경경영, 2021</li><li data-en-html='<b class="num" data-v="5 sites">5 sites</b>across the US and Mexico'><b class="num" data-v="5곳">5곳</b>미국, 멕시코 거점</li></ul>
         </div>
       </div>
     </div>
 
     <div class="wrap">
       <div class="years-wrap" data-snap>
-        <div class="index-head"><h3>여섯 해</h3><span class="mono">2020 — 2025</span></div>
+        <div class="index-head"><h3 data-en="Six years">여섯 해</h3><span class="mono">2020 — 2025</span></div>
         <div class="years" id="years"><i class="rail" id="yrail"></i><i class="dot" id="ydot"></i></div>
-        <a class="more mono" href="#history" data-hover>월 단위 전체 연혁 보기 →</a>
+        <a class="more mono" href="#history" data-hover data-en="See the full month-by-month history →">월 단위 전체 연혁 보기 →</a>
       </div>
 
       <div class="promise" data-batch data-snap>
-        <div class="index-head rv"><h3>약속</h3><span class="mono">Customer, Supplier</span></div>
+        <div class="index-head rv"><h3 data-en="Our promise">약속</h3><span class="mono">Customer, Supplier</span></div>
         <div class="promise-grid">
-          <div><h3 class="rv">Customer <span>고객에게</span></h3><ul><li class="rv">고객의 요구에 맞춘 연구개발</li><li class="rv">신뢰 기반의 파트너십</li><li class="rv">자동차 부품 분야에서 다년간 경력을 가진 전문 인력</li><li class="rv">정밀 가공 및 차별화된 기술력</li></ul></div>
-          <div><h3 class="rv">Supplier <span>협력사와</span></h3><ul><li class="rv">고품질 소재 제공</li><li class="rv">지속 가능한 공급망 관리</li></ul><p class="rv">사람과 환경을 생각하는 지속 가능한 솔루션으로 글로벌 시장에서 함께 성장해 나가겠습니다.</p></div>
+          <div><h3 class="rv">Customer <span data-en="To our customers">고객에게</span></h3><ul><li class="rv" data-en="R&amp;D shaped around customer requirements">고객의 요구에 맞춘 연구개발</li><li class="rv" data-en="Partnership built on trust">신뢰 기반의 파트너십</li><li class="rv" data-en="Specialists with years of experience in automotive components">자동차 부품 분야에서 다년간 경력을 가진 전문 인력</li><li class="rv" data-en="Precision machining and distinctive engineering">정밀 가공 및 차별화된 기술력</li></ul></div>
+          <div><h3 class="rv">Supplier <span data-en="With our suppliers">협력사와</span></h3><ul><li class="rv" data-en="High-quality material supply">고품질 소재 제공</li><li class="rv" data-en="Sustainable supply chain management">지속 가능한 공급망 관리</li></ul><p class="rv" data-en="We intend to grow together in global markets with sustainable solutions that account for both people and the environment.">사람과 환경을 생각하는 지속 가능한 솔루션으로 글로벌 시장에서 함께 성장해 나가겠습니다.</p></div>
         </div>
       </div>
 
       <div class="partners rv" data-snap>
-        <div class="index-head"><h3>주요 고객사</h3><span class="mono">End users</span></div>
+        <div class="index-head"><h3 data-en="Key customers">주요 고객사</h3><span class="mono">End users</span></div>
         <div class="pmq"><div class="marquee-in"><div class="pmq-track" id="pmq">
-          <div><img decoding="async" src="assets/img/partners/partner-01.png" alt="고객사 로고 1" loading="lazy" style="--h:28px"></div>
-          <div><img decoding="async" src="assets/img/partners/partner-02.png" alt="고객사 로고 2" loading="lazy" style="--h:20px"></div>
-          <div><img decoding="async" src="assets/img/partners/partner-03.png" alt="고객사 로고 3" loading="lazy" style="--h:40px"></div>
-          <div><img decoding="async" src="assets/img/partners/partner-04.png" alt="고객사 로고 4" loading="lazy" style="--h:26px"></div>
-          <div><img decoding="async" src="assets/img/partners/partner-05.png" alt="고객사 로고 5" loading="lazy" style="--h:26px"></div>
-          <div><img decoding="async" src="assets/img/partners/partner-06.png" alt="고객사 로고 6" loading="lazy" style="--h:26px"></div>
-          <div><img decoding="async" src="assets/img/partners/partner-07.png" alt="고객사 로고 7" loading="lazy" style="--h:40px"></div>
-          <div><img decoding="async" src="assets/img/partners/partner-08.png" alt="고객사 로고 8" loading="lazy" style="--h:36px"></div>
+          <div><img decoding="async" src="assets/img/partners/partner-01.png" alt="고객사 로고 1" data-en-alt="Customer logo 1" loading="lazy" style="--h:28px"></div>
+          <div><img decoding="async" src="assets/img/partners/partner-02.png" alt="고객사 로고 2" data-en-alt="Customer logo 2" loading="lazy" style="--h:20px"></div>
+          <div><img decoding="async" src="assets/img/partners/partner-03.png" alt="고객사 로고 3" data-en-alt="Customer logo 3" loading="lazy" style="--h:40px"></div>
+          <div><img decoding="async" src="assets/img/partners/partner-04.png" alt="고객사 로고 4" data-en-alt="Customer logo 4" loading="lazy" style="--h:26px"></div>
+          <div><img decoding="async" src="assets/img/partners/partner-05.png" alt="고객사 로고 5" data-en-alt="Customer logo 5" loading="lazy" style="--h:26px"></div>
+          <div><img decoding="async" src="assets/img/partners/partner-06.png" alt="고객사 로고 6" data-en-alt="Customer logo 6" loading="lazy" style="--h:26px"></div>
+          <div><img decoding="async" src="assets/img/partners/partner-07.png" alt="고객사 로고 7" data-en-alt="Customer logo 7" loading="lazy" style="--h:40px"></div>
+          <div><img decoding="async" src="assets/img/partners/partner-08.png" alt="고객사 로고 8" data-en-alt="Customer logo 8" loading="lazy" style="--h:36px"></div>
         </div></div></div>
       </div>
 
       <details class="org rv" id="org" data-snap open>
-        <summary data-hover><div class="index-head"><h3>조직도</h3><span class="mono">Organization chart</span></div><span class="btn sm org-tg"><span class="on">접기</span><span class="off">펼치기</span></span></summary>
+        <summary data-hover><div class="index-head"><h3 data-en="Organization chart">조직도</h3><span class="mono">Organization chart</span></div><span class="btn sm org-tg"><span class="on" data-en="Collapse">접기</span><span class="off" data-en="Expand">펼치기</span></span></summary>
         <div class="org-body"><div><div class="org-tree" id="orgTree"></div></div></div>
       </details>
     </div>
   </section>
 
   <!-- ================= PRODUCTS ================= -->
-  <section class="sec product" id="product" data-theme="light">
+  <section class="sec product" id="product" data-theme="dark">
     <div class="wrap">
       <div class="sec-head">
         <div>
           <div class="eyebrow mono rv">Product</div>
-          <h2 class="kr rv-lines">디비전의 제품을 만나보세요</h2>
+          <h2 class="kr rv-lines" data-en="Meet the DVISION product range">디비전의 제품을 만나보세요</h2>
         </div>
-        <p class="lead rv-lines">네 개의 산업군, 26장의 실제 부품 사진. 카테고리를 고르면 부품 목록과 사진이 바뀝니다.</p>
+        <p class="lead rv-lines" data-en="Four industries, 26 photographs of real parts. Pick a category and the part list and photos change with it.">네 개의 산업군, 26장의 실제 부품 사진. 카테고리를 고르면 부품 목록과 사진이 바뀝니다.</p>
       </div>
 
       <div class="cats" id="cats" data-batch>
         <button class="cat rv is-on" data-cat="automotive" type="button" data-hover>
           <img decoding="async" src="assets/img/products/cat-automotive.jpg" alt="" loading="lazy">
-          <div class="in"><img decoding="async" class="ico" src="assets/img/products/icon-automotive-white.png" alt=""><div><h3><small>Automotive</small>자동차 부품</h3><p>차세대 모빌리티에 최적화된 알루미늄 부품</p></div></div><i class="bar"></i>
+          <div class="in"><img decoding="async" class="ico" src="assets/img/products/icon-automotive-white.png" alt=""><div><h3 data-en-html='<small>Automotive</small>Automotive Components'><small>Automotive</small>자동차 부품</h3><p data-en="Aluminum parts optimised for next-generation mobility">차세대 모빌리티에 최적화된 알루미늄 부품</p></div></div><i class="bar"></i>
         </button>
         <button class="cat rv" data-cat="industrial" type="button" data-hover>
           <img decoding="async" src="assets/img/products/cat-industrial.jpg" alt="" loading="lazy">
-          <div class="in"><img decoding="async" class="ico" src="assets/img/products/icon-industrial-white.png" alt=""><div><h3><small>Industrial</small>산업용 부품</h3><p>다양한 산업 현장을 위한 맞춤형 솔루션</p></div></div><i class="bar"></i>
+          <div class="in"><img decoding="async" class="ico" src="assets/img/products/icon-industrial-white.png" alt=""><div><h3 data-en-html='<small>Industrial</small>Industrial Components'><small>Industrial</small>산업용 부품</h3><p data-en="Tailored solutions for a wide range of industrial sites">다양한 산업 현장을 위한 맞춤형 솔루션</p></div></div><i class="bar"></i>
         </button>
         <button class="cat rv" data-cat="architecture" type="button" data-hover>
           <img decoding="async" src="assets/img/products/cat-architecture.jpg" alt="" loading="lazy">
-          <div class="in"><img decoding="async" class="ico" src="assets/img/products/icon-architecture-white.png" alt=""><div><h3><small>Architecture</small>건축 및 내외장재 부품</h3><p>도시를 더욱 가볍고 아름답게</p></div></div><i class="bar"></i>
+          <div class="in"><img decoding="async" class="ico" src="assets/img/products/icon-architecture-white.png" alt=""><div><h3 data-en-html='<small>Architecture</small>Architectural Interior &amp; Exterior'><small>Architecture</small>건축 및 내외장재 부품</h3><p data-en="Making cities lighter and more beautiful">도시를 더욱 가볍고 아름답게</p></div></div><i class="bar"></i>
         </button>
         <button class="cat rv" data-cat="aerospace" type="button" data-hover>
           <img decoding="async" src="assets/img/products/cat-aerospace.jpg" alt="" loading="lazy">
-          <div class="in"><img decoding="async" class="ico" src="assets/img/products/icon-aerospace-white.png" alt=""><div><h3><small>Aerospace &amp; Defense</small>항공 우주 방산 부품</h3><p>극한 환경에서도 빛나는 정밀 경량화</p></div></div><i class="bar"></i>
+          <div class="in"><img decoding="async" class="ico" src="assets/img/products/icon-aerospace-white.png" alt=""><div><h3 data-en-html='<small>Aerospace &amp; Defense</small>Aerospace &amp; Defense'><small>Aerospace &amp; Defense</small>항공 우주 방산 부품</h3><p data-en="Precision lightweighting that holds up in extreme environments">극한 환경에서도 빛나는 정밀 경량화</p></div></div><i class="bar"></i>
         </button>
       </div>
 
       <div class="index" data-snap>
         <div class="index-head"><h3 id="indexTitle">자동차 부품</h3><span class="mono" id="indexCount"></span></div>
         <ul class="rows" id="rows"></ul>
-        <div class="gallery" id="gallery" aria-label="제품 사진" data-snap data-lenis-prevent-horizontal></div>
+        <div class="gallery" id="gallery" aria-label="제품 사진" data-en-aria="Product photos" data-snap data-lenis-prevent-horizontal></div>
       </div>
     </div>
   </section>
 
   <!-- ================= STATEMENT ================= -->
-  <section class="statement" id="statement" data-theme="dark" aria-label="슬로건">
+  <section class="statement" id="statement" data-theme="dark" aria-label="슬로건" data-en-aria="Slogan">
     <div class="photo"><img decoding="async" src="assets/img/company/company-bg.jpg" alt="" loading="lazy"></div>
     <div class="lines" aria-hidden="true">
       <div class="line o">Lighter Structure</div>
       <div class="line h">Greater</div>
       <div class="line">Possibilities</div>
     </div>
-    <p class="sub">불필요한 무게는 줄이고, 성능은 그대로. 알루미늄은 재활용률이 높은 친환경 소재이고, 경량화는 모빌리티의 다음 가능성입니다.</p>
+    <p class="sub" data-en="Less weight, the same performance. Aluminum is a highly recyclable material, and lightweighting is mobility's next possibility.">불필요한 무게는 줄이고, 성능은 그대로. 알루미늄은 재활용률이 높은 친환경 소재이고, 경량화는 모빌리티의 다음 가능성입니다.</p>
   </section>
 
   <!-- ================= CONFIGURATOR ================= -->
-  <section class="config" id="config" data-theme="dark" aria-label="단면 설계 체험">
+  <section class="config" id="config" data-theme="dark" aria-label="단면 설계 체험" data-en-aria="Profile design demo">
     <div class="config-sticky">
       <canvas id="glx" aria-hidden="true"></canvas>
       <div class="config-copy">
         <div class="eyebrow mono">Technology — Profile lab</div>
-        <h2 class="kr">단면 하나로 무게가 정해집니다</h2>
-        <p class="lead">멀티홀로 단면의 폭, 높이, 셀 수, 살두께를 바꿔 보세요. 미터당 중량과 외접원 지름으로 어느 프레스에서 뽑아야 하는지 가늠할 수 있습니다. 스크롤하면 프레스가 빌렛을 밀어 프로파일이 금형 밖으로 뽑혀 나옵니다.</p>
+        <h2 class="kr" data-en="One cross-section decides the weight">단면 하나로 무게가 정해집니다</h2>
+        <p class="lead" data-en="Change the width, height, cell count and wall thickness of a multi-hollow section. Weight per metre and circumscribed circle diameter tell you which press it has to run on. Scroll and the press drives the billet, drawing the profile out through the die.">멀티홀로 단면의 폭, 높이, 셀 수, 살두께를 바꿔 보세요. 미터당 중량과 외접원 지름으로 어느 프레스에서 뽑아야 하는지 가늠할 수 있습니다. 스크롤하면 프레스가 빌렛을 밀어 프로파일이 금형 밖으로 뽑혀 나옵니다.</p>
         <div class="ctrls">
-          <div class="ctrl"><label for="cfgW">폭 W</label><output id="oW">90 mm</output><input id="cfgW" type="range" min="60" max="160" step="2" value="90"></div>
-          <div class="ctrl"><label for="cfgH">높이 H</label><output id="oH">40 mm</output><input id="cfgH" type="range" min="24" max="80" step="2" value="40"></div>
-          <div class="ctrl"><label for="cfgCells">셀 수</label><output id="oCells">3</output><input id="cfgCells" type="range" min="1" max="4" step="1" value="3"></div>
-          <div class="ctrl"><label for="cfgWall">살두께 t</label><output id="oWall">4.5 mm</output><input id="cfgWall" type="range" min="1.5" max="6" step="0.5" value="4.5"></div>
+          <div class="ctrl"><label for="cfgW" data-en="Width W">폭 W</label><output id="oW">90 mm</output><input id="cfgW" type="range" min="60" max="160" step="2" value="90"></div>
+          <div class="ctrl"><label for="cfgH" data-en="Height H">높이 H</label><output id="oH">40 mm</output><input id="cfgH" type="range" min="24" max="80" step="2" value="40"></div>
+          <div class="ctrl"><label for="cfgCells" data-en="Cells">셀 수</label><output id="oCells">3</output><input id="cfgCells" type="range" min="1" max="4" step="1" value="3"></div>
+          <div class="ctrl"><label for="cfgWall" data-en="Wall t">살두께 t</label><output id="oWall">4.5 mm</output><input id="cfgWall" type="range" min="1.5" max="6" step="0.5" value="4.5"></div>
         </div>
         <div class="out">
-          <div><span>단면적</span><b class="num" id="mArea">0<small>cm²</small></b></div>
-          <div><span>중량</span><b class="num" id="mKg">0<small>kg/m</small></b></div>
-          <div><span>외접원 지름</span><b class="num" id="mCcd">0<small>mm</small></b></div>
-          <div><span>권장 프레스</span><b class="num acc" id="mPress">3,500<small>t</small></b></div>
+          <div><span data-en="Section area">단면적</span><b class="num" id="mArea">0<small>cm²</small></b></div>
+          <div><span data-en="Weight">중량</span><b class="num" id="mKg">0<small>kg/m</small></b></div>
+          <div><span data-en="Circumscribed circle">외접원 지름</span><b class="num" id="mCcd">0<small>mm</small></b></div>
+          <div><span data-en="Suggested press">권장 프레스</span><b class="num acc" id="mPress">3,500<small>t</small></b></div>
         </div>
-        <p class="config-note">중량은 알루미늄 밀도 2.7 g/cm³ 기준 단순 계산이며, 프레스 선정은 외접원 지름 120 mm를 경계로 한 참고값입니다. 실제 사양은 문의해 주세요.</p>
+        <p class="config-note" data-en="Weight is a plain calculation at an aluminum density of 2.7 g/cm³, and the press suggestion is a reference value using a 120 mm circumscribed circle as the boundary. Please contact us for actual specifications.">중량은 알루미늄 밀도 2.7 g/cm³ 기준 단순 계산이며, 프레스 선정은 외접원 지름 120 mm를 경계로 한 참고값입니다. 실제 사양은 문의해 주세요.</p>
       </div>
       <div class="config-stage">
         <div class="config-hud mono">
-          <div class="hud-row"><span>Run-out</span><b class="num" id="cfgLen">0.0 m</b></div>
+          <div class="hud-row"><span>Run-out</span><b class="num" id="cfgLen">6.2 m</b></div>
           <div class="hud-row"><span>Die</span><b>Multi-hollow</b></div>
         </div>
       </div>
@@ -239,17 +245,17 @@
   </section>
 
   <!-- ================= PROCESS ================= -->
-  <section class="proc" id="process" data-theme="dark" aria-label="제조 공정">
+  <section class="proc" id="process" data-theme="dark" aria-label="제조 공정" data-en-aria="Manufacturing process">
     <div class="proc-sticky">
       <div class="wrap proc-head">
         <div>
           <div class="eyebrow mono">Technology — Manufacturing process</div>
-          <h2 class="kr" id="procTitle">빌렛 하나가 부품이 되기까지, 11단계</h2>
+          <h2 class="kr" id="procTitle" data-en="From one billet to a finished part, in 11 steps">빌렛 하나가 부품이 되기까지, 11단계</h2>
         </div>
         <div class="tabs" id="tabs" role="tablist">
-          <button class="tab is-on" type="button" role="tab" data-proc="ext" data-hover>알루미늄 압출</button>
-          <button class="tab" type="button" role="tab" data-proc="mach" data-hover>알루미늄 가공</button>
-          <button class="tab" type="button" role="tab" data-proc="steel" data-hover>스틸 가공</button>
+          <button class="tab is-on" type="button" role="tab" data-proc="ext" data-hover data-en="Aluminum extrusion">알루미늄 압출</button>
+          <button class="tab" type="button" role="tab" data-proc="mach" data-hover data-en="Aluminum machining">알루미늄 가공</button>
+          <button class="tab" type="button" role="tab" data-proc="steel" data-hover data-en="Steel machining">스틸 가공</button>
         </div>
       </div>
       <div class="tracks" id="tracks"></div>
@@ -261,37 +267,37 @@
   </section>
 
   <!-- ================= EQUIPMENT ================= -->
-  <section class="sec equip" id="equip" data-theme="light">
+  <section class="sec equip" id="equip" data-theme="dark">
     <div class="wrap">
       <div class="sec-head">
         <div>
           <div class="eyebrow mono rv">Technology — Facilities</div>
-          <h2 class="kr rv-lines">압출과 가공, 측정까지 한 지붕 아래에</h2>
+          <h2 class="kr rv-lines" data-en="Extrusion, machining and measurement under one roof">압출과 가공, 측정까지 한 지붕 아래에</h2>
         </div>
-        <p class="lead rv-lines">대구 국가산단 본사 공장의 설비 현황과 시험장비 현황입니다. 막대 길이는 보유 대수에 비례합니다.</p>
+        <p class="lead rv-lines" data-en="Equipment and test instruments at the head-office plant in the Daegu National Industrial Complex. Bar length is proportional to the number of units.">대구 국가산단 본사 공장의 설비 현황과 시험장비 현황입니다. 막대 길이는 보유 대수에 비례합니다.</p>
       </div>
       <div class="egroups" data-snap>
         <div class="egroup rv">
-          <h3>Machining <span>가공 설비</span></h3>
-          <div class="erow" style="--n:.15"><span class="name">머시닝센터</span><span class="spec">WIA i-CUT380T 외</span><span class="qty num">3<small>대</small></span><i class="bar"></i></div>
-          <div class="erow" style="--n:1"><span class="name">태핑센터</span><span class="spec">WIA VX380T 외</span><span class="qty num">20<small>대</small></span><i class="bar"></i></div>
-          <div class="erow" style="--n:.2"><span class="name">CNC 선반</span><span class="spec">WIA E-200A, PL 1600G</span><span class="qty num">4<small>대</small></span><i class="bar"></i></div>
-          <div class="erow" style="--n:.05"><span class="name">CNC 파이프 벤딩</span><span class="spec">최대 Ø50</span><span class="qty num">1<small>대</small></span><i class="bar"></i></div>
-          <div class="erow" style="--n:.6"><span class="name">파이프 절단 및 디버링</span><span class="spec">최대 Ø120</span><span class="qty num">12<small>대</small></span><i class="bar"></i></div>
+          <h3>Machining <span data-en="Machining equipment">가공 설비</span></h3>
+          <div class="erow" style="--n:.15"><span class="name" data-en="Machining center">머시닝센터</span><span class="spec" data-en="WIA i-CUT380T and others">WIA i-CUT380T 외</span><span class="qty num">3<small data-en="units">대</small></span><i class="bar"></i></div>
+          <div class="erow" style="--n:1"><span class="name" data-en="Tapping center">태핑센터</span><span class="spec" data-en="WIA VX380T and others">WIA VX380T 외</span><span class="qty num">20<small data-en="units">대</small></span><i class="bar"></i></div>
+          <div class="erow" style="--n:.2"><span class="name" data-en="CNC lathe">CNC 선반</span><span class="spec">WIA E-200A, PL 1600G</span><span class="qty num">4<small data-en="units">대</small></span><i class="bar"></i></div>
+          <div class="erow" style="--n:.05"><span class="name" data-en="CNC pipe bending">CNC 파이프 벤딩</span><span class="spec" data-en="Max Ø50">최대 Ø50</span><span class="qty num">1<small data-en="unit">대</small></span><i class="bar"></i></div>
+          <div class="erow" style="--n:.6"><span class="name" data-en="Pipe cutting &amp; deburring">파이프 절단 및 디버링</span><span class="spec" data-en="Max Ø120">최대 Ø120</span><span class="qty num">12<small data-en="units">대</small></span><i class="bar"></i></div>
         </div>
         <div class="egroup rv">
-          <h3>Extrusion <span>압출 설비</span></h3>
+          <h3>Extrusion <span data-en="Extrusion equipment">압출 설비</span></h3>
           <div class="press">
             <span class="mono">Press capacity</span>
-            <div class="press-row" style="--n:.414"><b class="num">1,450<small>t</small></b><div><div class="lbl mono"><span>6 inch billet</span><span>1대</span></div><div class="pb"><i></i></div></div></div>
-            <div class="press-row" style="--n:1"><b class="num">3,500<small>t</small></b><div><div class="lbl mono"><span>10 inch billet</span><span>1대</span></div><div class="pb"><i></i></div></div></div>
-            <div class="erow acc" style="--n:.1"><span class="name">열처리기</span><span class="spec">T6 heat treatment, 1 + 1</span><span class="qty num">2<small>대</small></span><i class="bar"></i></div>
+            <div class="press-row" style="--n:.414"><b class="num">1,450<small>t</small></b><div><div class="lbl mono"><span>6 inch billet</span><span data-en="1 unit">1대</span></div><div class="pb"><i></i></div></div></div>
+            <div class="press-row" style="--n:1"><b class="num">3,500<small>t</small></b><div><div class="lbl mono"><span>10 inch billet</span><span data-en="1 unit">1대</span></div><div class="pb"><i></i></div></div></div>
+            <div class="erow acc" style="--n:.1"><span class="name" data-en="Aging furnace">열처리기</span><span class="spec">T6 heat treatment, 1 + 1</span><span class="qty num">2<small data-en="units">대</small></span><i class="bar"></i></div>
           </div>
         </div>
       </div>
 
       <div class="test rv" data-snap>
-        <div class="index-head"><h3>시험장비 현황</h3><span class="mono">Inspection & testing</span></div>
+        <div class="index-head"><h3 data-en="Inspection &amp; testing equipment">시험장비 현황</h3><span class="mono">Inspection & testing</span></div>
         <div class="tw" data-lenis-prevent-horizontal><table>
           <thead><tr><th>Equipment</th><th>Brand</th><th>Purpose</th><th style="text-align:right">Qty</th></tr></thead>
           <tbody id="testBody"></tbody>
@@ -299,20 +305,20 @@
       </div>
 
       <div class="facs" data-batch data-snap>
-        <div class="photo rv"><img decoding="async" src="assets/img/facility/fac-01.jpg" alt="설비 사진 1" loading="lazy"><span class="cap">Machining hall</span></div>
-        <div class="photo rv"><img decoding="async" src="assets/img/facility/fac-02.jpg" alt="설비 사진 2" loading="lazy"><span class="cap">Extrusion line</span></div>
-        <div class="photo rv"><img decoding="async" src="assets/img/facility/fac-03.jpg" alt="설비 사진 3" loading="lazy"><span class="cap">Heat treatment</span></div>
-        <div class="photo rv"><img decoding="async" src="assets/img/facility/fac-04.jpg" alt="설비 사진 4" loading="lazy"><span class="cap">Pipe line</span></div>
-        <div class="photo rv"><img decoding="async" src="assets/img/facility/test-01.jpg" alt="시험장비 사진 1" loading="lazy"><span class="cap">CMM</span></div>
-        <div class="photo rv"><img decoding="async" src="assets/img/facility/test-02.jpg" alt="시험장비 사진 2" loading="lazy"><span class="cap">UTM</span></div>
-        <div class="photo rv"><img decoding="async" src="assets/img/facility/test-03.jpg" alt="시험장비 사진 3" loading="lazy"><span class="cap">Video measuring</span></div>
-        <div class="photo rv"><img decoding="async" src="assets/img/facility/test-04.jpg" alt="시험장비 사진 4" loading="lazy"><span class="cap">Hardness</span></div>
+        <div class="photo rv"><img decoding="async" src="assets/img/facility/fac-01.jpg" alt="설비 사진 1" data-en-alt="Facility photo 1" loading="lazy"><span class="cap">Machining hall</span></div>
+        <div class="photo rv"><img decoding="async" src="assets/img/facility/fac-02.jpg" alt="설비 사진 2" data-en-alt="Facility photo 2" loading="lazy"><span class="cap">Extrusion line</span></div>
+        <div class="photo rv"><img decoding="async" src="assets/img/facility/fac-03.jpg" alt="설비 사진 3" data-en-alt="Facility photo 3" loading="lazy"><span class="cap">Heat treatment</span></div>
+        <div class="photo rv"><img decoding="async" src="assets/img/facility/fac-04.jpg" alt="설비 사진 4" data-en-alt="Facility photo 4" loading="lazy"><span class="cap">Pipe line</span></div>
+        <div class="photo rv"><img decoding="async" src="assets/img/facility/test-01.jpg" alt="시험장비 사진 1" data-en-alt="Test equipment photo 1" loading="lazy"><span class="cap">CMM</span></div>
+        <div class="photo rv"><img decoding="async" src="assets/img/facility/test-02.jpg" alt="시험장비 사진 2" data-en-alt="Test equipment photo 2" loading="lazy"><span class="cap">UTM</span></div>
+        <div class="photo rv"><img decoding="async" src="assets/img/facility/test-03.jpg" alt="시험장비 사진 3" data-en-alt="Test equipment photo 3" loading="lazy"><span class="cap">Video measuring</span></div>
+        <div class="photo rv"><img decoding="async" src="assets/img/facility/test-04.jpg" alt="시험장비 사진 4" data-en-alt="Test equipment photo 4" loading="lazy"><span class="cap">Hardness</span></div>
       </div>
     </div>
   </section>
 
   <!-- ================= R&D + ESG + CERTS ================= -->
-  <section class="sec rnd" id="rnd" data-theme="light">
+  <section class="sec rnd" id="rnd" data-theme="dark">
     <div class="wrap">
       <div class="photo rnd-hero rv" id="rndHero">
         <img decoding="async" src="assets/img/banners/rnd-bg.jpg" alt="" loading="lazy">
@@ -321,35 +327,35 @@
       <div class="sec-head">
         <div>
           <div class="eyebrow mono rv">R&amp;D — Research field</div>
-          <h2 class="kr rv-lines">데이터로 제어하는 압출 공정</h2>
+          <h2 class="kr rv-lines" data-en="An extrusion process controlled by data">데이터로 제어하는 압출 공정</h2>
         </div>
-        <p class="lead rv-lines">기업부설연구소의 연구 목표는 지속가능한 친환경 경량 부품 개발입니다. 그 출발점은 공정의 온도와 속도를 숫자로 보는 일입니다.</p>
+        <p class="lead rv-lines" data-en="The corporate research institute works toward sustainable, low-impact lightweight components. It starts with reading process temperature and speed as numbers.">기업부설연구소의 연구 목표는 지속가능한 친환경 경량 부품 개발입니다. 그 출발점은 공정의 온도와 속도를 숫자로 보는 일입니다.</p>
       </div>
       <div class="rnd-grid" data-snap>
         <div class="signal rv">
           <div class="mono"><span>Extrusion line telemetry</span><span>Demo signal</span></div>
-          <canvas id="sig" aria-label="압출 공정 온도와 속도의 데모 파형"></canvas>
-          <div class="legend mono"><span><i class="h"></i>Billet temp</span><span><i></i>Ram speed</span><span style="color:var(--mute)">예시 파형이며 실제 계측값이 아닙니다</span></div>
+          <canvas id="sig" aria-label="압출 공정 온도와 속도의 데모 파형" data-en-aria="Demo waveform of extrusion process temperature and speed"></canvas>
+          <div class="legend mono"><span><i class="h"></i>Billet temp</span><span><i></i>Ram speed</span><span style="color:var(--mute)" data-en="Illustrative waveform, not actual measurements">예시 파형이며 실제 계측값이 아닙니다</span></div>
         </div>
         <div>
           <div class="rlist">
-            <article class="rv"><span class="mono">Process</span><div><h3>공정 구축</h3><p>알루미늄 압출 공정 데이터 수집 시스템(Data Acquisition System) 개선</p>
-              <ul><li>공정별 온도, 속도 등 데이터 자동 수집 장치 구축</li><li>기존 아날로그 센서들을 디지털로 전환</li><li>공정별 비접촉식 온도센서 추가 설치</li></ul></div></article>
-            <article class="rv"><span class="mono">Analysis</span><div><h3>연관 통계 분석 시스템 개발</h3><p>AL 압출 공정의 가공조건과 수율, 불량율 간의 연관통계 시각화 분석</p>
-              <ul><li>품목별, 투입건별 변동이력 분석</li><li>시간 단위 합산 변동이력 분석</li></ul></div></article>
-            <article class="rv"><span class="mono">Status</span><div><h3>연구현황</h3><p>진행 중인 과제는 연구현황 게시판에 순차적으로 공개됩니다.</p></div></article>
+            <article class="rv"><span class="mono">Process</span><div><h3 data-en="Process build-out">공정 구축</h3><p data-en="Improving the data acquisition system for the aluminum extrusion process">알루미늄 압출 공정 데이터 수집 시스템(Data Acquisition System) 개선</p>
+              <ul><li data-en="Automatic collection of temperature, speed and other data at each process step">공정별 온도, 속도 등 데이터 자동 수집 장치 구축</li><li data-en="Converting the existing analog sensors to digital">기존 아날로그 센서들을 디지털로 전환</li><li data-en="Adding non-contact temperature sensors at each step">공정별 비접촉식 온도센서 추가 설치</li></ul></div></article>
+            <article class="rv"><span class="mono">Analysis</span><div><h3 data-en="Correlation analysis system">연관 통계 분석 시스템 개발</h3><p data-en="Visual correlation analysis between process conditions, yield and defect rate in AL extrusion">AL 압출 공정의 가공조건과 수율, 불량율 간의 연관통계 시각화 분석</p>
+              <ul><li data-en="Variation history by item and by production run">품목별, 투입건별 변동이력 분석</li><li data-en="Hourly aggregated variation history">시간 단위 합산 변동이력 분석</li></ul></div></article>
+            <article class="rv"><span class="mono">Status</span><div><h3 data-en="Research status">연구현황</h3><p data-en="Projects under way are published in turn on the research status board.">진행 중인 과제는 연구현황 게시판에 순차적으로 공개됩니다.</p></div></article>
           </div>
         </div>
       </div>
 
       <div class="esg" data-batch data-snap>
-        <article class="rv"><img decoding="async" src="assets/img/esg/esg-01.jpg" alt="" loading="lazy"><span class="letter" aria-hidden="true">E</span><h3><small>Environment</small>환경보호</h3><p>2단 인버터 공기압축기를 도입해 기존 대비 에너지 효율을 높이고 추가 절감을 실현하여 온실가스 저감에 기여합니다.</p><div class="kpi"><div><b class="num"><span data-count="30">0</span><small>%</small></b><span>에너지 효율 향상</span></div><div><b class="num"><span data-count="20">0</span><small>%</small></b><span>추가 절감</span></div></div></article>
-        <article class="rv"><img decoding="async" src="assets/img/esg/esg-02.jpg" alt="" loading="lazy"><span class="letter" aria-hidden="true">S</span><h3><small>Social</small>사회적 책임</h3><p>AI 기반 SAFETY 시스템이 작업자의 위험 구역 접근을 감지하여 경고 알림을 제공함으로써 재해를 예방하고 안전한 작업환경을 조성합니다.</p><div class="kpi"><div><b>AI</b><span>위험 구역 접근 감지</span></div></div></article>
-        <article class="rv"><img decoding="async" src="assets/img/esg/esg-03.jpg" alt="" loading="lazy"><span class="letter" aria-hidden="true">G</span><h3><small>Governance</small>윤리적 경영</h3><p>고효율 설비와 스마트 안전 시스템에 대한 투자로 에너지, 안전 중심의 지속 가능한 경영체계를 구축하고 있습니다.</p><div class="kpi"><div><b>ISO</b><span>14001 / 45001 / IATF 16949</span></div></div></article>
+        <article class="rv"><img decoding="async" src="assets/img/esg/esg-01.jpg" alt="" loading="lazy"><span class="letter" aria-hidden="true">E</span><h3 data-en-html='<small>Environment</small>Protecting the environment'><small>Environment</small>환경보호</h3><p data-en="A two-stage inverter air compressor raises energy efficiency over the previous setup and delivers further savings, cutting greenhouse gas emissions.">2단 인버터 공기압축기를 도입해 기존 대비 에너지 효율을 높이고 추가 절감을 실현하여 온실가스 저감에 기여합니다.</p><div class="kpi"><div><b class="num"><span data-count="30">0</span><small>%</small></b><span data-en="Energy efficiency gain">에너지 효율 향상</span></div><div><b class="num"><span data-count="20">0</span><small>%</small></b><span data-en="Further reduction">추가 절감</span></div></div></article>
+        <article class="rv"><img decoding="async" src="assets/img/esg/esg-02.jpg" alt="" loading="lazy"><span class="letter" aria-hidden="true">S</span><h3 data-en-html='<small>Social</small>Social responsibility'><small>Social</small>사회적 책임</h3><p data-en="An AI-based safety system detects workers approaching hazardous zones and issues a warning, preventing accidents and keeping the workplace safe.">AI 기반 SAFETY 시스템이 작업자의 위험 구역 접근을 감지하여 경고 알림을 제공함으로써 재해를 예방하고 안전한 작업환경을 조성합니다.</p><div class="kpi"><div><b>AI</b><span data-en="Hazard zone approach detection">위험 구역 접근 감지</span></div></div></article>
+        <article class="rv"><img decoding="async" src="assets/img/esg/esg-03.jpg" alt="" loading="lazy"><span class="letter" aria-hidden="true">G</span><h3 data-en-html='<small>Governance</small>Ethical management'><small>Governance</small>윤리적 경영</h3><p data-en="Investment in high-efficiency equipment and smart safety systems is building a sustainable management system centred on energy and safety.">고효율 설비와 스마트 안전 시스템에 대한 투자로 에너지, 안전 중심의 지속 가능한 경영체계를 구축하고 있습니다.</p><div class="kpi"><div><b>ISO</b><span>14001 / 45001 / IATF 16949</span></div></div></article>
       </div>
 
       <div class="certs rv" data-snap>
-        <div class="certs-head"><h3>인증서, 수상, 특허</h3><span class="mono">16 documents</span></div>
+        <div class="certs-head"><h3 data-en="Certificates, awards, patents">인증서, 수상, 특허</h3><span class="mono">16 documents</span></div>
         <div class="cert-strip"><div class="cert-track" id="certTrack"></div></div>
       </div>
     </div>
@@ -361,11 +367,11 @@
       <div class="sec-head">
         <div>
           <div class="eyebrow mono rv">About — Global network</div>
-          <h2 class="kr rv-lines">대구에서 만들고, 북미에서 건넵니다</h2>
+          <h2 class="kr rv-lines" data-en="Made in Daegu, handed over in North America">대구에서 만들고, 북미에서 건넵니다</h2>
         </div>
-        <p class="lead rv-lines">본사 공장은 대구 국가산단에, 영업사무소와 네 곳의 물류센터는 미국과 멕시코 자동차 벨트에 있습니다. 태평양을 건너는 선이 곧 납품 경로입니다.</p>
+        <p class="lead rv-lines" data-en="The head-office plant sits in the Daegu National Industrial Complex; the sales office and four logistics centers sit in the US and Mexico auto belt. The line across the Pacific is the delivery route.">본사 공장은 대구 국가산단에, 영업사무소와 네 곳의 물류센터는 미국과 멕시코 자동차 벨트에 있습니다. 태평양을 건너는 선이 곧 납품 경로입니다.</p>
       </div>
-      <div class="map-wrap rv" data-snap><canvas id="map" aria-label="대구 본사와 미국, 멕시코 거점을 잇는 경로 지도"></canvas></div>
+      <div class="map-wrap rv" data-snap><canvas id="map" aria-label="대구 본사와 미국, 멕시코 거점을 잇는 경로 지도" data-en-aria="Route map linking the Daegu head office with sites in the US and Mexico"></canvas></div>
       <ul class="sites" id="sites" data-batch></ul>
     </div>
   </section>
@@ -376,21 +382,41 @@
       <div class="sec-head">
         <div>
           <div class="eyebrow mono rv">About — History</div>
-          <h2 class="kr rv-lines">2020년 개인사업자에서 수출 기업까지</h2>
+          <h2 class="kr rv-lines" data-en="From a sole proprietorship in 2020 to an exporter">2020년 개인사업자에서 수출 기업까지</h2>
         </div>
-        <p class="lead rv-lines">여섯 해 동안 프레스를 들이고, 인증을 쌓고, 바다 건너 물류센터를 열었습니다. 월 단위 전체 연혁입니다.</p>
+        <p class="lead rv-lines" data-en="Over six years we brought in presses, stacked up certifications and opened logistics centers overseas. Here is the full month-by-month history.">여섯 해 동안 프레스를 들이고, 인증을 쌓고, 바다 건너 물류센터를 열었습니다. 월 단위 전체 연혁입니다.</p>
       </div>
       <div class="tl" id="tl" data-snap><i class="rail" id="rail"></i></div>
     </div>
   </section>
 
+  <!-- ================= EVENTS ================= -->
+  <section class="sec events" id="events" data-theme="dark">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow mono rv">About — Events</div>
+          <h2 class="kr rv-lines" data-en="Where DVISION has shown up">디비전이 참여한 행사</h2>
+        </div>
+      </div>
+      <div class="ev-bar">
+        <div class="ev-filters mono" id="evFilters" role="group" aria-label="행사 필터" data-en-aria="Event filters"></div>
+        <span class="mono ev-count" id="evCount"></span>
+      </div>
+      <div class="ev-grid" data-snap>
+        <ul class="ev-list" id="evList"></ul>
+        <aside class="ev-detail" id="evDetail" aria-live="polite"></aside>
+      </div>
+    </div>
+  </section>
+
   <!-- ================= COMMUNITY ================= -->
-  <section class="sec community" id="community" data-theme="light">
+  <section class="sec community" id="community" data-theme="dark">
     <div class="wrap">
       <div class="sec-head">
         <div>
           <div class="eyebrow mono rv">Community</div>
-          <h2 class="kr rv-lines">디비전의 소식을 전합니다</h2>
+          <h2 class="kr rv-lines" data-en="News from DVISION">디비전의 소식을 전합니다</h2>
         </div>
       </div>
       <div class="cgrid" data-batch data-snap>
@@ -398,29 +424,29 @@
           <div class="photo"><img decoding="async" src="assets/img/community/news-2025-11-12.jpg" alt="" loading="lazy"></div>
           <div class="in">
             <div class="mono"><span>News</span><span class="num">2025.11.12</span></div>
-            <h3>홈페이지 리뉴얼 안내</h3>
-            <p>더 나은 사용자 경험을 제공하기 위해 공식 홈페이지를 새롭게 개편하였습니다. 이번 리뉴얼은 저희의 혁신과 접근성 향상을 위한 노력을 반영하며, 보다 직관적인 내비게이션과 최신 정보를 제공합니다.</p>
+            <h3 data-en="Website renewal">홈페이지 리뉴얼 안내</h3>
+            <p data-en="We have redesigned the official website to give a better user experience. The renewal reflects our work on innovation and accessibility, with more intuitive navigation and up-to-date information.">더 나은 사용자 경험을 제공하기 위해 공식 홈페이지를 새롭게 개편하였습니다. 이번 리뉴얼은 저희의 혁신과 접근성 향상을 위한 노력을 반영하며, 보다 직관적인 내비게이션과 최신 정보를 제공합니다.</p>
           </div>
-          <div class="go mono"><span>뉴스 더 보기</span><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 13L13 3M5 3h8v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="go mono"><span data-en="More news">뉴스 더 보기</span><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 13L13 3M5 3h8v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         </a>
         <div class="ctile rv">
-          <div class="video" id="video" data-yt="9NsSwkFx0PM" role="button" tabindex="0" aria-label="홍보영상 재생" data-hover>
+          <div class="video" id="video" data-yt="9NsSwkFx0PM" role="button" tabindex="0" aria-label="홍보영상 재생" data-en-aria="Play the PR video" data-hover>
             <img decoding="async" src="assets/img/hero/banner-02.jpg" alt="" loading="lazy">
             <div class="play"><i><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></i></div>
           </div>
           <div class="in">
             <div class="mono"><span>PR video</span><span>YouTube</span></div>
-            <h3>홍보영상</h3>
-            <p>압출부터 가공, 출하까지 디비전의 공정을 영상으로 만나보세요.</p>
+            <h3 data-en="PR video">홍보영상</h3>
+            <p data-en="See the DVISION process on video, from extrusion through machining to shipping.">압출부터 가공, 출하까지 디비전의 공정을 영상으로 만나보세요.</p>
           </div>
-          <a class="go mono" href="https://www.youtube.com/@DVI-IND" target="_blank" rel="noopener" data-hover><span>채널 바로가기</span><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 13L13 3M5 3h8v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <a class="go mono" href="https://www.youtube.com/@DVI-IND" target="_blank" rel="noopener" data-hover><span data-en="Go to the channel">채널 바로가기</span><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 13L13 3M5 3h8v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
         </div>
         <div class="ctile rv">
           <div class="in">
             <div class="mono"><span>Catalog</span><span>PDF 5.6 MB</span></div>
             <div class="catalog">
-              <div class="photo"><img decoding="async" src="assets/img/community/catalog-cover.jpg" alt="디비전 카탈로그 표지" loading="lazy"></div>
-              <div><h3>디비전 카탈로그</h3><p style="margin-top:8px">제품군, 설비, 공정, 인증 현황을 담은 공식 카탈로그입니다.</p></div>
+              <div class="photo"><img decoding="async" src="assets/img/community/catalog-cover.jpg" alt="디비전 카탈로그 표지" data-en-alt="DVISION catalog cover" loading="lazy"></div>
+              <div><h3 data-en="DVISION catalog">디비전 카탈로그</h3><p style="margin-top:8px" data-en="The official catalog covering product lines, equipment, processes and certifications.">제품군, 설비, 공정, 인증 현황을 담은 공식 카탈로그입니다.</p></div>
             </div>
             <div class="social" style="margin-top:8px">
               <a class="btn sm" href="https://www.youtube.com/@DVI-IND" target="_blank" rel="noopener" data-hover>YouTube</a>
@@ -428,45 +454,45 @@
               <a class="btn sm" href="https://www.linkedin.com/" target="_blank" rel="noopener" data-hover>LinkedIn</a>
             </div>
           </div>
-          <a class="go mono" href="assets/docs/DVISION-catalog.pdf" download data-hover><span>카탈로그 다운로드</span><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2v9m0 0l4-4M8 11L4 7M3 14h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <a class="go mono" href="assets/docs/DVISION-catalog.pdf" download data-hover><span data-en="Download the catalog">카탈로그 다운로드</span><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2v9m0 0l4-4M8 11L4 7M3 14h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ================= CONTACT ================= -->
-  <section class="sec contact" id="contact" data-theme="light">
+  <section class="sec contact" id="contact" data-theme="dark">
     <img decoding="async" class="symbol" src="assets/img/company/symbol-bg.png" alt="" aria-hidden="true" loading="lazy">
     <div class="wrap">
       <div class="contact-grid" data-snap>
         <div>
           <div class="eyebrow mono rv">Support — Contact us</div>
-          <h2 class="kr rv-lines" style="margin-top:22px">품질과 기술, 그리고 진심으로 답하겠습니다</h2>
+          <h2 class="kr rv-lines" style="margin-top:22px" data-en="We answer with quality, engineering and genuine care">품질과 기술, 그리고 진심으로 답하겠습니다</h2>
           <div class="ctas">
-            <a class="btn lg acc mag" href="mailto:info@dvi-ind.com" data-hover>이메일로 문의 <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 13L13 3M5 3h8v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-            <a class="btn lg mag" href="assets/docs/DVISION-catalog.pdf" download data-hover>카탈로그 다운로드 <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2v9m0 0l4-4M8 11L4 7M3 14h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            <a class="btn lg acc mag" href="mailto:info@dvi-ind.com" data-hover><span data-en="Email us">이메일로 문의</span> <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 13L13 3M5 3h8v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            <a class="btn lg mag" href="assets/docs/DVISION-catalog.pdf" download data-hover><span data-en="Download the catalog">카탈로그 다운로드</span> <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2v9m0 0l4-4M8 11L4 7M3 14h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
           </div>
           <div class="info rv">
             <div><span class="mono">Tel</span><b class="num"><a href="tel:+82537101022" data-hover>053-710-1022</a></b></div>
             <div><span class="mono">Fax</span><b class="num">053-715-2096</b></div>
             <div><span class="mono">E-mail</span><b><a href="mailto:info@dvi-ind.com" data-hover>info@dvi-ind.com</a></b></div>
-            <div><span class="mono">Address</span><b>(43011) 대구광역시 달성군 구지면 국가산단대로 33길 237 <a class="mono" style="color:var(--mute);margin-left:8px" href="https://map.kakao.com/?q=대구광역시 달성군 구지면 국가산단대로 33길 237" target="_blank" rel="noopener" data-hover>오시는 길 ↗</a></b></div>
-            <div><span class="mono">Overseas</span><b>미시간 영업사무소, 캔턴 / 케레타로 / 라레도 / 몬테레이 물류센터</b></div>
+            <div><span class="mono">Address</span><b data-en-html='237, Gukgasandan-daero 33-gil, Guji-myeon, Dalseong-gun, Daegu 43011, Korea <a class="mono" style="color:var(--mute);margin-left:8px" href="https://map.kakao.com/?q=대구광역시 달성군 구지면 국가산단대로 33길 237" target="_blank" rel="noopener" data-hover>Directions ↗</a>'>(43011) 대구광역시 달성군 구지면 국가산단대로 33길 237 <a class="mono" style="color:var(--mute);margin-left:8px" href="https://map.kakao.com/?q=대구광역시 달성군 구지면 국가산단대로 33길 237" target="_blank" rel="noopener" data-hover>오시는 길 ↗</a></b></div>
+            <div><span class="mono">Overseas</span><b data-en="Michigan sales office; Canton / Querétaro / Laredo / Monterrey logistics centers">미시간 영업사무소, 캔턴 / 케레타로 / 라레도 / 몬테레이 물류센터</b></div>
           </div>
         </div>
         <form class="form rv" id="form" novalidate>
-          <h3>문의하기</h3>
+          <h3 data-en="Send an inquiry">문의하기</h3>
           <div class="g2">
-            <div class="field"><label for="fCompany">회사명</label><input id="fCompany" name="company" type="text" autocomplete="organization" required></div>
-            <div class="field"><label for="fName">담당자명</label><input id="fName" name="name" type="text" autocomplete="name" required></div>
+            <div class="field"><label for="fCompany" data-en="Company">회사명</label><input id="fCompany" name="company" type="text" autocomplete="organization" required></div>
+            <div class="field"><label for="fName" data-en="Contact name">담당자명</label><input id="fName" name="name" type="text" autocomplete="name" required></div>
           </div>
           <div class="g2">
-            <div class="field"><label for="fTel">연락처</label><input id="fTel" name="tel" type="tel" autocomplete="tel" required></div>
-            <div class="field"><label for="fMail">이메일</label><input id="fMail" name="email" type="email" autocomplete="email" required></div>
+            <div class="field"><label for="fTel" data-en="Phone">연락처</label><input id="fTel" name="tel" type="tel" autocomplete="tel" required></div>
+            <div class="field"><label for="fMail" data-en="Email">이메일</label><input id="fMail" name="email" type="email" autocomplete="email" required></div>
           </div>
-          <div class="field"><label for="fMsg">문의 내용</label><textarea id="fMsg" name="message" required></textarea></div>
-          <button class="btn acc" type="submit" data-hover>문의 보내기 <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 13L13 3M5 3h8v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-          <p class="note" id="formNote">전송 서버 연동 전까지는 작성한 내용이 담긴 메일 창이 열립니다.</p>
+          <div class="field"><label for="fMsg" data-en="Message">문의 내용</label><textarea id="fMsg" name="message" required></textarea></div>
+          <button class="btn acc" type="submit" data-hover><span data-en="Send inquiry">문의 보내기</span> <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 13L13 3M5 3h8v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <p class="note" id="formNote" data-en="Until the send server is wired up, your mail app opens with the message pre-filled.">전송 서버 연동 전까지는 작성한 내용이 담긴 메일 창이 열립니다.</p>
         </form>
       </div>
       <footer class="foot" data-snap>

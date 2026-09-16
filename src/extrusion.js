@@ -5,6 +5,9 @@ import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 const S = 1 / 25;
+// Run-out readout in metres. REST is what the bar measures before the section is scrolled —
+// 6.2 m, a standard aluminium stock length — and it runs out to MAX as the press pushes.
+const REST_LEN = 6.2, MAX_LEN = 42;
 const rr = (p, x, y, w, h, r) => {
   r = Math.min(r, w / 2, h / 2);
   p.moveTo(x + r, y); p.lineTo(x + w - r, y); p.quadraticCurveTo(x + w, y, x + w, y + r);
@@ -25,7 +28,7 @@ export function metricsFor({ w, h, cells, wall }) {
 const ACC = 0x8a5bc2, ACC_GLOW = 'rgba(158,110,220,';
 
 export function createExtrusion(canvas, { reduced = false, fine = true } = {}) {
-  const api = { setParams() {}, setProgress() {}, setActive() {}, length: 0 };
+  const api = { setParams() {}, setProgress() {}, setActive() {}, length: REST_LEN, _len: REST_LEN };
   let renderer;
   try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' }); }
   catch (e) { canvas.remove(); return api; }
@@ -42,13 +45,27 @@ export function createExtrusion(canvas, { reduced = false, fine = true } = {}) {
 
   // brushed die-line texture; repeat along the length is tied to the length so the pattern
   // travels WITH the metal instead of stretching (reads as "pushed out", not "pulled")
+  // Grey-scale streaks centred near mid, so the same texture drives both the bump and the
+  // roughness: the die lines catch and break the reflection the way drawn aluminium does.
   const brush = (() => {
     const c = document.createElement('canvas'); c.width = 512; c.height = 64; const g = c.getContext('2d');
-    g.fillStyle = '#808080'; g.fillRect(0, 0, 512, 64);
-    for (let i = 0; i < 2600; i++) { g.fillStyle = `rgba(${Math.random() > .5 ? 255 : 0},${Math.random() > .5 ? 255 : 0},${Math.random() > .5 ? 255 : 0},${Math.random() * .35})`; g.fillRect(Math.random() * 512, 0, Math.random() < .8 ? 1 : 2, 64); }
+    g.fillStyle = '#8c8c8c'; g.fillRect(0, 0, 512, 64);
+    for (let i = 0; i < 3200; i++) {
+      const v = Math.random() < .5 ? 0 : 255;
+      g.fillStyle = `rgba(${v},${v},${v},${Math.random() * .3})`;
+      g.fillRect(Math.random() * 512, 0, Math.random() < .8 ? 1 : 2, 64);
+    }
     const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(3, 1); t.anisotropy = renderer.capabilities.getMaxAnisotropy(); return t;
   })();
-  const alu = new THREE.MeshStandardMaterial({ color: 0xd9dee5, metalness: 1, roughness: 0.3, bumpMap: brush, bumpScale: 0.006, envMapIntensity: 1.2 });
+  // Mill-finish aluminium: on a metal the base colour IS the specular reflectance, so a neutral
+  // mid grey (rather than the near-white it used to be) is what stops it reading as white plastic.
+  // Satin, not mirror — roughness is the base multiplied by the streak map, landing near 0.45.
+  const alu = new THREE.MeshStandardMaterial({
+    color: 0x7c828a, metalness: 1,
+    roughness: 0.9, roughnessMap: brush,
+    bumpMap: brush, bumpScale: 0.012,
+    envMapIntensity: 0.45
+  });
   const steel = new THREE.MeshStandardMaterial({ color: 0x1e232b, metalness: 0.92, roughness: 0.6, envMapIntensity: 0.55 });
   const steelLight = new THREE.MeshStandardMaterial({ color: 0x3a414c, metalness: 0.9, roughness: 0.5, envMapIntensity: 0.6 });
 
@@ -116,7 +133,7 @@ export function createExtrusion(canvas, { reduced = false, fine = true } = {}) {
     running = true;
     const dt = Math.min(0.05, (t - last) / 1000 || 0.016); last = t;
     tx += (mx - tx) * 0.05; ty += (my - ty) * 0.05;
-    const len = 0.35 + prog * 42; api._len = len; api.length = len; // a very long run-out; the camera backs away to keep it in frame
+    const len = REST_LEN + prog * (MAX_LEN - REST_LEN); api._len = len; api.length = len; // the camera backs away to keep the run-out in frame
     if (profile) profile.scale.z = len;
     brush.repeat.set(3, Math.max(1, len * 1.6));
     // die on the left, metal runs out to the right and toward the viewer

@@ -54,7 +54,9 @@ for (const file of all) {
 const swapper = `<script>window.__ASSETS__=${JSON.stringify(map)};(function(){var M=window.__ASSETS__;function fix(el){if(!el||!el.getAttribute)return;var s=el.getAttribute('src');if(s&&M[s])el.src=M[s];}function scan(r){if(r.querySelectorAll)r.querySelectorAll('img[src^="assets/"]').forEach(fix);}var o=new MutationObserver(function(ms){ms.forEach(function(m){if(m.type==='attributes')fix(m.target);m.addedNodes&&m.addedNodes.forEach(function(n){if(n.nodeType===1){fix(n);scan(n);}});});});o.observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['src']});document.addEventListener('DOMContentLoaded',function(){scan(document);});scan(document);})();</script>`;
 const title = (html.match(/<title>(.*?)<\/title>/) || [, 'DVISION'])[1];
 const fonts = (html.match(/<link[^>]+fonts\.googleapis[^>]*>/g) || []).join('\n');
-const single = `<title>${title}</title>\n${fonts}\n<style>\n${css}\n</style>\n${swapper}\n${body}\n<script>\n${js}\n</script>\n`;
+// the head isn't carried over wholesale, so the tab icon is inlined explicitly
+const icon = `<link rel="icon" type="image/png" href="${await dataUri('assets/img/favicon-32.png')}">`;
+const single = `<title>${title}</title>\n${icon}\n${fonts}\n<style>\n${css}\n</style>\n${swapper}\n${body}\n<script>\n${js}\n</script>\n`;
 console.log(`inlined ${Object.keys(map).length} assets into the single file`);
 await fs.writeFile(path.join(dist, 'dvision-single.html'), single);
 const kb = (Buffer.byteLength(single) / 1024 / 1024).toFixed(2);

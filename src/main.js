@@ -6,7 +6,11 @@ import { createHero } from './hero.js';
 import { createExtrusion, metricsFor } from './extrusion.js';
 import { initMap } from './map.js';
 import { initTelemetry } from './telemetry.js';
-import { PRODUCTS, PROCESSES, PROCESS_IMG, CERTS, HISTORY, SITES, TEST_EQUIPMENT, ABOUT_YEARS, ORG } from './data.js';
+import { PRODUCTS, PROCESSES, PROCESS_IMG, CERTS, CERT_KINDS, HISTORY, SITES, TEST_EQUIPMENT, ABOUT_YEARS, ORG, EVENTS, EVENT_IMG } from './data.js';
+import { EN, t, applyStatic } from './i18n.js';
+
+// English copy has to land before SplitText measures a headline or any list is built.
+applyStatic();
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -32,7 +36,9 @@ const roll = (text) => {
   const chars = (cls) => `<span class="${cls}">${[...text].map((c, i) => `<span class="ch" style="--i:${i}">${c === ' ' ? '&nbsp;' : esc(c)}</span>`).join('')}</span>`;
   return `<span class="roll">${chars('a')}${chars('b')}</span>`;
 };
-const TAGS = { automotive: ['압출', 'CNC', 'T6'], industrial: ['압출', '절단', '가공'], architecture: ['압출', '절단', '마감'], aerospace: ['벤딩', '절단', '디버링'] };
+const TAGS = EN
+  ? { automotive: ['Extrusion', 'CNC', 'T6'], industrial: ['Extrusion', 'Cutting', 'Machining'], architecture: ['Extrusion', 'Cutting', 'Finishing'], aerospace: ['Bending', 'Cutting', 'Deburring'] }
+  : { automotive: ['압출', 'CNC', 'T6'], industrial: ['압출', '절단', '가공'], architecture: ['압출', '절단', '마감'], aerospace: ['벤딩', '절단', '디버링'] };
 const rowsEl = $('#rows'), galleryEl = $('#gallery'), indexTitle = $('#indexTitle'), indexCount = $('#indexCount');
 let currentRows = [];
 function buildIndex(catId, animate = true) {
@@ -40,10 +46,10 @@ function buildIndex(catId, animate = true) {
   const map = new Map();
   cat.groups.forEach(g => g.parts.forEach(p => { if (!map.has(p.name)) map.set(p.name, { name: p.name, sys: g.ko, sysEn: g.en, imgs: [] }); map.get(p.name).imgs.push('assets/img/products/' + p.img); }));
   currentRows = [...map.values()];
-  indexTitle.textContent = cat.ko;
+  indexTitle.textContent = t(cat.ko, cat.en);
   indexCount.textContent = `${currentRows.length} parts / ${cat.groups.reduce((n, g) => n + g.parts.length, 0)} photos`;
-  rowsEl.innerHTML = currentRows.map((r, i) => `<li class="row" data-i="${i}" data-hover><span class="name">${roll(r.name)}</span><span class="sys">${esc(r.sys)} <span class="mono" style="color:var(--mute);margin-left:6px">${esc(r.sysEn)}</span></span><span class="tags">${TAGS[catId].map(t => `<span>${t}</span>`).join('')}</span><span class="cnt num">${pad2(r.imgs.length)} photo${r.imgs.length > 1 ? 's' : ''}</span></li>`).join('');
-  galleryEl.innerHTML = cat.groups.flatMap(g => g.parts.map(p => `<figure data-name="${esc(p.name)}"><div class="photo"><img loading="lazy" decoding="async" src="assets/img/products/${p.img}" alt="${esc(p.name)}" width="335" height="300"></div><figcaption><b>${esc(p.name)}</b><span>${esc(g.ko)}</span></figcaption></figure>`)).join('');
+  rowsEl.innerHTML = currentRows.map((r, i) => `<li class="row" data-i="${i}" data-hover><span class="name">${roll(r.name)}</span><span class="sys">${EN ? esc(r.sysEn) : `${esc(r.sys)} <span class="mono" style="color:var(--mute);margin-left:6px">${esc(r.sysEn)}</span>`}</span><span class="tags">${TAGS[catId].map(t => `<span>${t}</span>`).join('')}</span><span class="cnt num">${pad2(r.imgs.length)} photo${r.imgs.length > 1 ? 's' : ''}</span></li>`).join('');
+  galleryEl.innerHTML = cat.groups.flatMap(g => g.parts.map(p => `<figure data-name="${esc(p.name)}"><div class="photo"><img loading="lazy" decoding="async" src="assets/img/products/${p.img}" alt="${esc(p.name)}" width="335" height="300"></div><figcaption><b>${esc(p.name)}</b><span>${esc(t(g.ko, g.en))}</span></figcaption></figure>`)).join('');
   if (animate && !REDUCED) {
     gsap.from($$('.row', rowsEl), { y: 24, opacity: 0, duration: .7, ease: 'power3.out', stagger: .05, clearProps: 'all' });
     gsap.from($$('.photo', galleryEl), { clipPath: 'inset(0 100% 0 0)', duration: .9, ease: 'power4.out', stagger: .04, clearProps: 'clipPath' });
@@ -70,22 +76,149 @@ buildIndex('automotive', false);
 const tracksEl = $('#tracks');
 tracksEl.innerHTML = PROCESSES.map(pr => `<div class="track${pr.id === 'ext' ? ' is-on' : ''}" data-proc="${pr.id}">` + pr.steps.map((s, i) => `
   <article class="step"${s.heat ? ` data-heat="${s.heat}"` : ''}>
-    <div class="pics">${s.imgs.map((im, k) => `<img src="${PROCESS_IMG + im}" alt="${esc(s.ko)} ${k + 1}" loading="lazy" decoding="async" width="505" height="350">`).join('')}${s.imgs.length > 1 ? '<span class="sw">Hover: photo</span>' : ''}</div>
-    <div class="body"><div class="tag mono"><span>Step ${pad2(i + 1)}</span><em>${esc(s.en)}</em></div><h3>${esc(s.ko)}</h3><div class="idx num">${pad2(i + 1)}</div><p>${esc(s.d)}</p></div>
+    <div class="pics">${s.imgs.map((im, k) => `<img src="${PROCESS_IMG + im}" alt="${esc(t(s.ko, s.koEn))} ${k + 1}" loading="lazy" decoding="async" width="505" height="350">`).join('')}${s.imgs.length > 1 ? '<span class="sw">Hover: photo</span>' : ''}</div>
+    <div class="body"><div class="tag mono"><span>Step ${pad2(i + 1)}</span><em>${esc(s.en)}</em></div><h3>${esc(t(s.ko, s.koEn))}</h3><div class="idx num">${pad2(i + 1)}</div><p>${esc(t(s.d, s.dEn))}</p></div>
   </article>`).join('') + '</div>').join('');
 
 // certificates marquee (doubled for the loop)
-const certHTML = CERTS.map(c => `<figure class="cert"><div class="photo"><img src="${c.src}" alt="${esc(c.t)}" loading="lazy" decoding="async" width="248" height="354"></div><b>${esc(c.t)}</b><span class="${c.k === '수상' ? 'aw' : ''}">${esc(c.k)}</span></figure>`).join('');
+const certHTML = CERTS.map(c => `<figure class="cert"><div class="photo"><img src="${c.src}" alt="${esc(t(c.t, c.tEn))}" loading="lazy" decoding="async" width="248" height="354"></div><b>${esc(t(c.t, c.tEn))}</b><span class="${c.k === '수상' ? 'aw' : ''}">${esc(t(c.k, CERT_KINDS[c.k]))}</span></figure>`).join('');
 $('#certTrack').innerHTML = `<div class="cert-g">${certHTML}</div><div class="cert-g">${certHTML}</div>`;
 
 // sites
-$('#sites').innerHTML = SITES.map(s => `<li class="rv${s.hq ? ' hq' : ''}" data-hover><div class="photo"><img src="${s.img}" alt="${esc(s.ko)}" loading="lazy" decoding="async" width="250" height="230"></div><div class="in"><span class="mono">${esc(s.k)} / ${Math.abs(s.lat).toFixed(1)}°${s.lat >= 0 ? 'N' : 'S'} ${Math.abs(s.lon).toFixed(1)}°${s.lon >= 0 ? 'E' : 'W'}</span><b>${esc(s.ko)}</b><span>${esc(s.where)}</span></div></li>`).join('');
+$('#sites').innerHTML = SITES.map(s => `<li class="rv${s.hq ? ' hq' : ''}" data-hover><div class="photo"><img src="${s.img}" alt="${esc(t(s.ko, s.en))}" loading="lazy" decoding="async" width="250" height="230"></div><div class="in"><span class="mono">${esc(s.k)} / ${Math.abs(s.lat).toFixed(1)}°${s.lat >= 0 ? 'N' : 'S'} ${Math.abs(s.lon).toFixed(1)}°${s.lon >= 0 ? 'E' : 'W'}</span><b>${esc(t(s.ko, s.en))}</b><span>${esc(t(s.where, s.whereEn))}</span></div></li>`).join('');
 
 // history
-$('#tl').insertAdjacentHTML('beforeend', HISTORY.map(y => `<article class="rv"><div class="year num">${y.y}</div><div class="body">${y.ev.map(e => `<div class="ev"><span class="m">${e.m}</span><ul>${e.l.map((l, i) => `<li${e.h && i === 0 ? ' class="h"' : ''}>${esc(l)}</li>`).join('')}</ul></div>`).join('')}</div></article>`).join(''));
+$('#tl').insertAdjacentHTML('beforeend', HISTORY.map(y => `<article class="rv"><div class="year num">${y.y}</div><div class="body">${y.ev.map(e => `<div class="ev"><span class="m">${e.m}</span><ul>${(EN && e.lEn ? e.lEn : e.l).map((l, i) => `<li${e.h && i === 0 ? ' class="h"' : ''}>${esc(l)}</li>`).join('')}</ul></div>`).join('')}</div></article>`).join(''));
 
 // test equipment
 $('#testBody').innerHTML = TEST_EQUIPMENT.map(t => `<tr><td>${esc(t.name)}</td><td class="dim">${esc(t.brand || '—')}</td><td class="dim">${esc(t.spec)}</td><td class="q num">${t.q}</td></tr>`).join('');
+
+// events: a filterable list on the left, the selected event's photos and coverage on the right
+const evList = $('#evList'), evDetail = $('#evDetail'), evFilters = $('#evFilters'), evCount = $('#evCount');
+if (evList) {
+  const KIND = { out: t('사외', 'External'), in: t('사내', 'In-house') };
+  const L = {
+    all: t('전체', 'All'), host: t('주최', 'Host'), place: t('장소', 'Venue'),
+    press: t('기사', 'Press'), video: t('영상', 'Video'), coverage: t('보도', 'Coverage'), award: t('수상', 'Award'),
+    none: t('등록된 링크가 없습니다.', 'No links on file.'),
+    count: n => t(`${n}건의 행사`, `${n} event${n === 1 ? '' : 's'}`)
+  };
+  const name = e => t(e.ko, e.en);
+  // A ribboned medal pinned to the photo corner, instead of shouting the prize in text.
+  // Korean splits by character, Latin by word, and the face type shrinks to fit the disc.
+  const medalLines = (s) => {
+    const txt = String(s).trim();
+    if (/[가-힣]/.test(txt)) {
+      const k = txt.replace(/\s+/g, '');
+      return k.length <= 3 ? [k] : [k.slice(0, Math.ceil(k.length / 2)), k.slice(Math.ceil(k.length / 2))];
+    }
+    const w = txt.split(/\s+/);
+    if (w.length < 2) return w;
+    const mid = Math.ceil(w.length / 2);
+    return [w.slice(0, mid).join(' '), w.slice(mid).join(' ')];
+  };
+  const medal = (e, compact = false) => {
+    const face = t(e.medal, e.medalEn) || t(e.award, e.awardEn);
+    if (!face) return '';
+    const lines = compact ? [] : medalLines(face);
+    const wide = lines.some(l => /[가-힣]/.test(l)) ? 1 : 0.58;
+    const fs = lines.length ? Math.max(11, Math.min(30, 56 / (Math.max(...lines.map(l => l.length)) * wide))) : 0;
+    const y0 = 96 - (lines.length - 1) * fs * 0.56;
+    const beads = Array.from({ length: 28 }, (_, i) => {
+      const a = (i / 28) * Math.PI * 2;
+      return `<circle cx="${(60 + Math.cos(a) * 43).toFixed(1)}" cy="${(96 + Math.sin(a) * 43).toFixed(1)}" r="2.6"/>`;
+    }).join('');
+    return `<svg class="ev-medal${compact ? ' is-compact' : ''}" viewBox="0 0 120 150" role="img" aria-label="${esc(t(e.award, e.awardEn))}">
+      <defs>
+        <linearGradient id="mdG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F6E6B6"/><stop offset=".45" stop-color="#D9AF4E"/><stop offset="1" stop-color="#A8792A"/></linearGradient>
+        <linearGradient id="mdF" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FBF1CF"/><stop offset=".5" stop-color="#E4C065"/><stop offset="1" stop-color="#C39A3C"/></linearGradient>
+        <linearGradient id="mdR" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8E1D28"/><stop offset="1" stop-color="#5E1019"/></linearGradient>
+        <linearGradient id="mdR2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B42B36"/><stop offset="1" stop-color="#7C1520"/></linearGradient>
+      </defs>
+      <path d="M34 2 L56 2 L68 60 L44 64 Z" fill="url(#mdR)"/>
+      <path d="M64 2 L86 2 L76 64 L52 60 Z" fill="url(#mdR2)"/>
+      <g fill="url(#mdG)">${beads}</g>
+      <circle cx="60" cy="96" r="42" fill="url(#mdG)"/>
+      <circle cx="60" cy="96" r="34" fill="url(#mdF)" stroke="#9C7227" stroke-width="1.2"/>
+      <circle cx="60" cy="96" r="29" fill="none" stroke="#A8792A" stroke-width="1" opacity=".55"/>
+      ${lines.map((l, i) => `<text x="60" y="${(y0 + i * fs * 1.12).toFixed(1)}" font-size="${fs.toFixed(1)}" text-anchor="middle" dominant-baseline="central">${esc(l)}</text>`).join('')}
+    </svg>`;
+  };
+  const date = d => d.replace(/-/g, '.');
+  const photosOf = e => Array.from({ length: e.photos }, (_, i) => `${EVENT_IMG}${e.id}-${pad2(i + 1)}.jpg`);
+  const years = [...new Set(EVENTS.map(e => e.date.slice(0, 4)))].sort().reverse();
+  // open on the event flagged as featured, otherwise the most recent external one
+  let year = 'all', currentId = (EVENTS.find(e => e.featured) || EVENTS.find(e => e.kind === 'out') || EVENTS[0]).id;
+
+  evFilters.innerHTML = [['all', L.all], ...years.map(y => [y, y])]
+    .map(([v, l]) => `<button type="button" class="ev-chip${v === 'all' ? ' is-on' : ''}" data-y="${v}" data-hover>${esc(l)}</button>`).join('');
+
+  // awarded events lead the list, the flagship one at the very top, then the rest newest first
+  const order = (a, b) => (!!b.award - !!a.award) || (!!b.featured - !!a.featured) || b.date.localeCompare(a.date);
+  const shown = () => EVENTS.filter(e => year === 'all' || e.date.startsWith(year)).sort(order);
+
+  function renderDetail() {
+    const e = EVENTS.find(x => x.id === currentId); if (!e) return;
+    const photos = photosOf(e);
+    const links = [...e.press.map(x => ({ ...x, k: L.press })), ...e.video.map(x => ({ ...x, k: L.video }))];
+    evDetail.innerHTML = `
+      <div class="ev-stage">
+        <img id="evStage" src="${photos[0]}" alt="${esc(name(e))}" loading="lazy" decoding="async">
+        ${t(e.award, e.awardEn) ? medal(e) : ''}
+      </div>
+      ${photos.length > 1 ? `<div class="ev-thumbs">${photos.map((p, i) => `<button type="button" class="ev-th${i ? '' : ' is-on'}" data-src="${p}" aria-label="${i + 1}" data-hover><img src="${p.replace(/\.jpg$/, '-t.jpg')}" alt="" loading="lazy" decoding="async"></button>`).join('')}</div>` : ''}
+      <div class="ev-meta">
+        <span class="mono">${date(e.date)} · ${esc(KIND[e.kind])}${t(e.award, e.awardEn) ? ` · <em class="ev-won">${esc(t(e.award, e.awardEn))}</em>` : ''}</span>
+        <h3>${esc(name(e))}</h3>
+        ${t(e.note, e.noteEn) ? `<p>${esc(t(e.note, e.noteEn))}</p>` : ''}
+        ${t(e.org, e.orgEn) ? `<div class="ev-row"><span class="mono">${esc(L.host)}</span><b>${esc(t(e.org, e.orgEn))}</b></div>` : ''}
+      </div>
+      <div class="ev-links">
+        <div class="index-head"><h4>${esc(L.coverage)}</h4><span class="mono">${links.length}</span></div>
+        ${links.length ? `<ul>${links.map(x => `<li><span class="mono tag">${esc(x.k)}</span><a href="${x.u}" target="_blank" rel="noopener" data-hover>${esc(t(x.n, x.nEn))}<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 13L13 3M5 3h8v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>`).join('')}</ul>` : `<p class="ev-empty">${esc(L.none)}</p>`}
+      </div>`;
+    const stage = $('#evStage', evDetail);
+    $$('.ev-th', evDetail).forEach(b => b.addEventListener('click', () => {
+      $$('.ev-th', evDetail).forEach(o => o.classList.toggle('is-on', o === b));
+      stage.src = b.dataset.src;
+      if (!REDUCED) gsap.fromTo(stage, { opacity: 0 }, { opacity: 1, duration: .45, ease: 'power2.out' });
+    }));
+    if (!REDUCED) gsap.fromTo(evDetail, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: .5, ease: 'power3.out' });
+  }
+
+  function renderList(animate = true) {
+    const rows = shown();
+    // filtered the current pick away: fall back the same way the section opens, external first
+    if (!rows.some(e => e.id === currentId)) currentId = (rows.find(e => e.kind === 'out') || rows[0])?.id;
+    evCount.textContent = L.count(rows.length);
+    evList.innerHTML = rows.map(e => `
+      <li><button type="button" class="ev-item${e.id === currentId ? ' is-on' : ''}${t(e.award, e.awardEn) ? ' has-award' : ''}" data-id="${e.id}" data-hover>
+        <span class="ev-thumb"><img src="${EVENT_IMG}${e.id}-01-t.jpg" alt="" loading="lazy" decoding="async">${t(e.award, e.awardEn) ? medal(e, true) : ''}</span>
+        <span class="ev-body">
+          <span class="mono ev-top"><em>${date(e.date)}</em><i class="ev-kind ev-${e.kind}">${esc(KIND[e.kind])}</i>${t(e.award, e.awardEn) ? `<i class="ev-won">${esc(t(e.award, e.awardEn))}</i>` : ''}</span>
+          <b>${esc(name(e))}</b>
+          <span class="ev-sub">${esc(t(e.org, e.orgEn) || t(e.note, e.noteEn) || '')}</span>
+        </span>
+        <span class="mono ev-n">${e.press.length + e.video.length ? `${e.press.length + e.video.length} ${esc(L.coverage)}` : ''}</span>
+      </button></li>`).join('');
+    $$('.ev-item', evList).forEach(btn => btn.addEventListener('click', () => {
+      currentId = btn.dataset.id;
+      $$('.ev-item', evList).forEach(o => o.classList.toggle('is-on', o === btn));
+      renderDetail();
+    }));
+    if (animate && !REDUCED) gsap.from($$('.ev-item', evList), { y: 18, opacity: 0, duration: .55, ease: 'power3.out', stagger: .05, clearProps: 'all' });
+    renderDetail();
+  }
+
+  $$('.ev-chip', evFilters).forEach(chip => chip.addEventListener('click', () => {
+    year = chip.dataset.y;
+    $$('.ev-chip', evFilters).forEach(o => o.classList.toggle('is-on', o === chip));
+    renderList();
+    ScrollTrigger.refresh();
+  }));
+  renderList(false);
+}
+
 
 /* ---------------- WebGL scenes ---------------- */
 const HERO = createHero($('#gl'), { reduced: REDUCED, fine: FINE });
@@ -100,7 +233,7 @@ function showBeat(i) {
   if (i === cur) return;
   const dir = i > cur ? 1 : -1, from = beats[cur], to = beats[i]; cur = i;
   hudBeat.textContent = `${pad2(i + 1)} / 04`;
-  const meta = HERO.parts[i]; if (meta) { hudPart.textContent = meta.en; hudCat.textContent = meta.ko; hudProc.textContent = meta.proc; }
+  const meta = HERO.parts[i]; if (meta) { hudPart.textContent = meta.en; hudCat.textContent = t(meta.ko, meta.koEn); hudProc.textContent = t(meta.proc, meta.procEn); }
   ticks.forEach((t, k) => t.classList.toggle('is-on', k <= i));
   bgs.forEach((b, k) => { gsap.to(b, { opacity: k === i ? .34 : 0, scale: k === i ? 1 : 1.08, duration: 1.4, ease: 'power2.out', overwrite: true }); });
   HERO.setBeat(i);
@@ -165,7 +298,7 @@ $$('section[data-theme]').forEach(sec => ScrollTrigger.create({ trigger: sec, st
 const nav = $('#nav');
 ScrollTrigger.create({ start: 0, end: 'max', onUpdate: self => { const y = self.scroll(); nav.classList.toggle('is-hidden', self.direction === 1 && y > 240); nav.classList.toggle('is-solid', y > 80); } });
 const links = $$('.nav-links a');
-const linkFor = { about: 'about', statement: 'about', product: 'product', config: 'config', process: 'config', equip: 'config', rnd: 'rnd', global: 'about', history: 'about', community: 'community', contact: 'community' };
+const linkFor = { about: 'about', statement: 'about', product: 'product', config: 'config', process: 'config', equip: 'config', rnd: 'rnd', global: 'about', history: 'about', events: 'events', community: 'community', contact: 'community' };
 Object.keys(linkFor).forEach(id => { const el = document.getElementById(id); if (!el) return; ScrollTrigger.create({ trigger: el, start: 'top 45%', end: 'bottom 45%', onToggle: s => { if (s.isActive) links.forEach(a => a.classList.toggle('is-active', a.getAttribute('href') === '#' + linkFor[id])); } }); });
 
 /* ---------------- marquee skew ---------------- */
@@ -189,14 +322,36 @@ fontsReady.then(() => {
   ScrollTrigger.refresh();
 });
 $$('.rv').filter(el => !el.closest('[data-batch]')).forEach(el => gsap.from(el, { y: 36, opacity: 0, duration: .75, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 90%', toggleActions: 'play reverse play reverse' } }));
+// `overwrite: 'auto'`, never `true`: `true` kills every other tween on the same target, so
+// these fades used to destroy the clip-path wipe below mid-animation and leave the photo
+// frozen at a partial inset. 'auto' only resolves conflicts on the properties it animates.
 $$('[data-batch]').forEach(group => {
   const items = $$('.rv', group), cards = items.filter(el => el.matches('.esg article, .ctile, .cat, .sites li')), plain = items.filter(el => !cards.includes(el));
-  if (plain.length) { gsap.set(plain, { y: 40, opacity: 0 }); ScrollTrigger.batch(plain, { start: 'top 90%', onEnter: b => gsap.to(b, { y: 0, opacity: 1, duration: .7, ease: 'power3.out', stagger: .06, overwrite: true }), onLeaveBack: b => gsap.to(b, { y: 40, opacity: 0, duration: .5, ease: 'power2.in', overwrite: true }) }); }
-  if (cards.length) { gsap.set(cards, { rotateX: 16, y: 54, opacity: 0, transformOrigin: 'top center' }); ScrollTrigger.batch(cards, { start: 'top 90%', onEnter: b => gsap.to(b, { rotateX: 0, y: 0, opacity: 1, duration: .85, ease: 'power4.out', stagger: .07, overwrite: true }), onLeaveBack: b => gsap.to(b, { rotateX: 16, y: 54, opacity: 0, duration: .5, ease: 'power2.in', overwrite: true }) }); }
+  if (plain.length) { gsap.set(plain, { y: 40, opacity: 0 }); ScrollTrigger.batch(plain, { start: 'top 90%', onEnter: b => gsap.to(b, { y: 0, opacity: 1, duration: .7, ease: 'power3.out', stagger: .06, overwrite: 'auto' }), onLeaveBack: b => gsap.to(b, { y: 40, opacity: 0, duration: .5, ease: 'power2.in', overwrite: 'auto' }) }); }
+  if (cards.length) { gsap.set(cards, { rotateX: 16, y: 54, opacity: 0, transformOrigin: 'top center' }); ScrollTrigger.batch(cards, { start: 'top 90%', onEnter: b => gsap.to(b, { rotateX: 0, y: 0, opacity: 1, duration: .85, ease: 'power4.out', stagger: .07, overwrite: 'auto' }), onLeaveBack: b => gsap.to(b, { rotateX: 16, y: 54, opacity: 0, duration: .5, ease: 'power2.in', overwrite: 'auto' }) }); }
 });
-// photos wipe open from the bottom as they arrive
+// Photos wipe open from the bottom as they arrive.
+// Each photo owns one paused tween that the batch plays or reverses, instead of the batch
+// spawning a fresh tween per enter/leave. Around the trigger point the directional snap
+// nudges the page back and forth, and those throwaway tweens cancelled each other mid-wipe
+// and left a photo parked at a partial inset — a permanently sliced photo. A playhead can
+// only ever come to rest at one end. Dropping `overwrite: true` matters too: it used to
+// kill #rndHero's own fade-in and strand that photo at opacity 0.09.
 const wipes = $$('.facs .photo, .sites .photo, .cert .photo, .step .pics, .ctile .photo, #rndHero, .catalog .photo');
-if (!REDUCED && wipes.length) { gsap.set(wipes, { clipPath: 'inset(100% 0 0 0)' }); ScrollTrigger.batch(wipes, { start: 'top 94%', onEnter: b => gsap.to(b, { clipPath: 'inset(0% 0 0 0)', duration: .8, ease: 'power4.out', stagger: .04, overwrite: true }), onLeaveBack: b => gsap.to(b, { clipPath: 'inset(100% 0 0 0)', duration: .5, ease: 'power2.in', overwrite: true }) }); }
+if (!REDUCED && wipes.length) {
+  const wipeOf = new Map(wipes.map(el => {
+    const peers = wipes.filter(w => w.parentElement === el.parentElement);
+    return [el, gsap.fromTo(el,
+      { clipPath: 'inset(100% 0 0 0)' },
+      { clipPath: 'inset(0% 0 0 0)', duration: .8, ease: 'power4.out', paused: true,
+        delay: Math.min(peers.indexOf(el), 7) * .04 })];
+  }));
+  ScrollTrigger.batch(wipes, {
+    start: 'top 94%',
+    onEnter: b => b.forEach(el => wipeOf.get(el).play()),
+    onLeaveBack: b => b.forEach(el => wipeOf.get(el).reverse())
+  });
+}
 $$('[data-count]').forEach(el => { const target = +el.dataset.count, o = { v: 0 }; const show = () => { el.textContent = Math.round(o.v).toLocaleString('en-US'); }; ScrollTrigger.create({ trigger: el, start: 'top 90%', onEnter: () => gsap.to(o, { v: target, duration: 1.8, ease: 'power3.out', overwrite: true, onUpdate: show }), onLeaveBack: () => gsap.to(o, { v: 0, duration: .5, overwrite: true, onUpdate: show }) }); });
 
 // R&D header photo parallax
@@ -231,15 +386,17 @@ Object.values(cfg).forEach(i => i.addEventListener('input', updateCfg));
 updateCfg();
 if (!REDUCED) gsap.from('.config-copy > *', { x: -30, opacity: 0, duration: .9, stagger: .07, ease: 'power3.out', scrollTrigger: { trigger: '#config', start: 'top 70%', toggleActions: 'play reverse play reverse' } });
 const cfgLen = $('#cfgLen');
+const showLen = () => { cfgLen.textContent = EXT.length.toFixed(1) + ' m'; };
+showLen();   // the bar already measures its resting length before the section is scrolled
 ScrollTrigger.create({ trigger: '#config', start: 'top bottom', end: 'bottom top', onToggle: s => EXT.setActive(s.isActive) });
 const mm = gsap.matchMedia();
-mm.add('(min-width: 901px)', () => { const st = ScrollTrigger.create({ trigger: '#config', start: 'top top', end: 'bottom bottom', scrub: true, onUpdate: s => { EXT.setProgress(s.progress); cfgLen.textContent = EXT.length.toFixed(1) + ' m'; } }); return () => st.kill(); });
-mm.add('(max-width: 900px)', () => { const st = ScrollTrigger.create({ trigger: '#config', start: 'top 70%', end: 'bottom 30%', scrub: true, onUpdate: s => { EXT.setProgress(s.progress); cfgLen.textContent = EXT.length.toFixed(1) + ' m'; } }); return () => st.kill(); });
+mm.add('(min-width: 901px)', () => { const st = ScrollTrigger.create({ trigger: '#config', start: 'top top', end: 'bottom bottom', scrub: true, onUpdate: s => { EXT.setProgress(s.progress); showLen(); } }); return () => st.kill(); });
+mm.add('(max-width: 900px)', () => { const st = ScrollTrigger.create({ trigger: '#config', start: 'top 70%', end: 'bottom 30%', scrub: true, onUpdate: s => { EXT.setProgress(s.progress); showLen(); } }); return () => st.kill(); });
 
 /* ---------------- process: tabs + horizontal scroll ---------------- */
 const procSec = $('#process'), procBar = $('#procBar'), procTitle = $('#procTitle'), procFoot = $$('#procFoot span');
 let procTween = null, procDesktop = false, procStepTweens = [];
-const TITLES = { ext: '빌렛 하나가 부품이 되기까지, 11단계', mach: '압출재를 정밀 부품으로, 7단계', steel: '스틸 원소재를 부품으로, 8단계' };
+const TITLES = Object.fromEntries(PROCESSES.map(p => [p.id, t(p.title, p.titleEn)]));
 function setupProc() {
   if (procTween) { procTween.scrollTrigger?.kill(); procTween.kill(); procTween = null; }
   procStepTweens.forEach(t => { t.scrollTrigger?.kill(); t.kill(); }); procStepTweens = [];
@@ -315,7 +472,7 @@ mm.add('(min-width: 901px)', () => {
 // six years on one rail
 const years = $('#years');
 if (years) {
-  years.insertAdjacentHTML('beforeend', ABOUT_YEARS.map(y => `<div class="y${y.h ? ' h' : ''}"><div class="mask"><div class="yr num">${y.y}</div></div><p>${esc(y.t)}</p></div>`).join(''));
+  years.insertAdjacentHTML('beforeend', ABOUT_YEARS.map(y => `<div class="y${y.h ? ' h' : ''}"><div class="mask"><div class="yr num">${y.y}</div></div><p>${esc(t(y.t, y.tEn))}</p></div>`).join(''));
   const ycols = $$('.y', years);
   if (REDUCED) { gsap.set('#yrail', { scaleX: 1 }); ycols.forEach(c => c.classList.add('is-on')); }
   else {
@@ -330,7 +487,7 @@ const pmq = $('#pmq'); if (pmq) { const inner = pmq.innerHTML; pmq.innerHTML = `
 
 // organisation chart
 const ot = $('#orgTree');
-if (ot) ot.innerHTML = `<div class="o-root">${esc(ORG.root)}<i class="o-stem"></i></div><div class="o-staff"><i class="o-branch"></i>${esc(ORG.staff)}</div><i class="o-bus"></i>` + ORG.teams.map((t, i) => `<article class="o-team"><i class="o-stem"></i><span class="mono">${pad2(i + 1)}</span><h4>${esc(t.n)}</h4><ul>${t.s.map(x => `<li>${esc(x)}</li>`).join('')}</ul></article>`).join('');
+if (ot) ot.innerHTML = `<div class="o-root">${esc(t(ORG.root, ORG.rootEn))}<i class="o-stem"></i></div><div class="o-staff"><i class="o-branch"></i>${esc(t(ORG.staff, ORG.staffEn))}</div><i class="o-bus"></i>` + ORG.teams.map((team, i) => `<article class="o-team"><i class="o-stem"></i><span class="mono">${pad2(i + 1)}</span><h4>${esc(t(team.n, team.nEn))}</h4><ul>${(EN && team.sEn ? team.sEn : team.s).map(x => `<li>${esc(x)}</li>`).join('')}</ul></article>`).join('');
 const org = $('#org'); let orgTl = null;
 const orgTimeline = () => {
   const teams = $$('#orgTree .o-team');
@@ -355,15 +512,18 @@ initMap($('#map'), SITES, { reduced: REDUCED });
 
 /* ---------------- video, form ---------------- */
 const video = $('#video');
-const playVideo = () => { if (video.querySelector('iframe')) return; const f = document.createElement('iframe'); f.src = `https://www.youtube.com/embed/${video.dataset.yt}?autoplay=1&rel=0`; f.allow = 'autoplay; encrypted-media; picture-in-picture'; f.allowFullscreen = true; f.title = 'DVISION 홍보영상'; video.appendChild(f); };
+const playVideo = () => { if (video.querySelector('iframe')) return; const f = document.createElement('iframe'); f.src = `https://www.youtube.com/embed/${video.dataset.yt}?autoplay=1&rel=0`; f.allow = 'autoplay; encrypted-media; picture-in-picture'; f.allowFullscreen = true; f.title = t('DVISION 홍보영상', 'DVISION PR video'); video.appendChild(f); };
 video.addEventListener('click', playVideo); video.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); playVideo(); } });
 $('#form').addEventListener('submit', e => {
   e.preventDefault(); const f = e.target;
   if (!f.reportValidity()) return;
   const d = Object.fromEntries(new FormData(f).entries());
-  const body = `회사명: ${d.company}\n담당자명: ${d.name}\n연락처: ${d.tel}\n이메일: ${d.email}\n\n문의 내용:\n${d.message}`;
-  location.href = `mailto:info@dvi-ind.com?subject=${encodeURIComponent('[홈페이지 문의] ' + d.company)}&body=${encodeURIComponent(body)}`;
-  $('#formNote').textContent = '메일 앱이 열렸습니다. 전송 후 영업일 기준 2일 내 회신드립니다.';
+  const L = EN
+    ? { company: 'Company', name: 'Contact', tel: 'Phone', email: 'Email', msg: 'Message', subject: '[Website inquiry] ', sent: 'Your mail app is open. We reply within two business days of receiving it.' }
+    : { company: '회사명', name: '담당자명', tel: '연락처', email: '이메일', msg: '문의 내용', subject: '[홈페이지 문의] ', sent: '메일 앱이 열렸습니다. 전송 후 영업일 기준 2일 내 회신드립니다.' };
+  const body = `${L.company}: ${d.company}\n${L.name}: ${d.name}\n${L.tel}: ${d.tel}\n${L.email}: ${d.email}\n\n${L.msg}:\n${d.message}`;
+  location.href = `mailto:info@dvi-ind.com?subject=${encodeURIComponent(L.subject + d.company)}&body=${encodeURIComponent(body)}`;
+  $('#formNote').textContent = L.sent;
 });
 
 /* ---------------- cursor + magnetic ---------------- */
