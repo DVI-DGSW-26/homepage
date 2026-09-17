@@ -98,6 +98,8 @@ export function createHero(canvas, { reduced = false, fine = true } = {}) {
 
   const alu = () => new THREE.MeshPhysicalMaterial({ color: 0xd9dee5, metalness: 1, roughness: 0.3, envMapIntensity: 1.15, transparent: true, opacity: 0, clearcoat: 0.15, clearcoatRoughness: 0.4 });
   const meshes = parts.map(p => { const m = new THREE.Mesh(p.geo, alu()); m.visible = false; group.add(m); return m; });
+  // the solid material's program would otherwise link synchronously at the end of the intro (a visible hitch)
+  try { api.ready = renderer.compileAsync(scene, camera).catch(() => {}); } catch (e) { api.ready = Promise.resolve(); }
 
   let cur = 0, active = true, running = false, last = 0, prog = 0;
   const mouse = new THREE.Vector2(9, 9), ray = new THREE.Raycaster(), plane = new THREE.Plane(), hit = new THREE.Vector3(), target = new THREE.Vector3(99, 99, 99);

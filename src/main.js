@@ -22,6 +22,11 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;',
 const SCROLL = createScroll({ reduced: REDUCED });
 const lenis = SCROLL.lenis;
 const scrollTo = (target, opts) => SCROLL.scrollTo(target, opts);
+// scroll gates: a section registers a function returning [{ y, dir, run }]; crossing y pins the page while run() plays
+const GATED = FINE && !REDUCED && !matchMedia('(pointer: coarse)').matches;
+document.documentElement.classList.toggle('is-gated', GATED);   // layout that only makes sense with gates (the forest frame's lead-in)
+const gateSources = new Set();
+const refreshGates = () => { if (SCROLL.setGates) SCROLL.setGates(GATED ? [...gateSources].flatMap(f => f()) : []); };
 document.addEventListener('click', e => {
   const a = e.target.closest('a[href^="#"]'); if (!a) return;
   const id = a.getAttribute('href'); if (id.length > 1 && $(id)) { e.preventDefault(); scrollTo(id); }
@@ -90,6 +95,8 @@ $('#testBody').innerHTML = TEST_EQUIPMENT.map(t => `<tr><td>${esc(t.name)}</td><
 /* ---------------- WebGL scenes ---------------- */
 const HERO = createHero($('#gl'), { reduced: REDUCED, fine: FINE });
 const EXT = createExtrusion($('#glx'), { reduced: REDUCED, fine: FINE });
+const idle = (f, timeout) => window.requestIdleCallback ? requestIdleCallback(f, { timeout }) : setTimeout(f, Math.min(1500, timeout));
+const warmExtrusion = () => idle(() => EXT.warm(), 4000);
 
 /* ---------------- hero beats ---------------- */
 const beats = $$('.beat').map(el => ({ el, h1: $('h1', el), p: $('p', el), chars: null }));
@@ -106,10 +113,10 @@ function showBeat(i) {
   HERO.setBeat(i);
   gsap.killTweensOf([from.chars, to.chars, from.p, to.p]);
   to.el.classList.add('is-active'); to.el.style.zIndex = 2; from.el.style.zIndex = 1;
-  gsap.to(from.chars, { yPercent: -70 * dir, opacity: 0, filter: 'blur(6px)', duration: .26, ease: 'power3.in', stagger: { each: .006, from: dir > 0 ? 'start' : 'end' }, onComplete: () => { if (cur !== beats.indexOf(from)) from.el.classList.remove('is-active'); } });
-  gsap.to(from.p, { opacity: 0, y: -12 * dir, duration: .22, ease: 'power2.in' });
-  gsap.fromTo(to.chars, { yPercent: 70 * dir, opacity: 0, filter: 'blur(8px)' }, { yPercent: 0, opacity: 1, filter: 'blur(0px)', duration: .55, ease: 'power3.out', delay: .1, stagger: { each: .008, from: dir > 0 ? 'start' : 'end' } });
-  gsap.fromTo(to.p, { opacity: 0, y: 14 * dir }, { opacity: 1, y: 0, duration: .45, ease: 'power3.out', delay: .28 });
+  gsap.to(from.chars, { yPercent: -70 * dir, opacity: 0, force3D: true, duration: .26, ease: 'power3.in', stagger: { each: .006, from: dir > 0 ? 'start' : 'end' }, onComplete: () => { if (cur !== beats.indexOf(from)) from.el.classList.remove('is-active'); } });
+  gsap.to(from.p, { opacity: 0, y: -12 * dir, force3D: true, duration: .22, ease: 'power2.in' });
+  gsap.fromTo(to.chars, { yPercent: 70 * dir, opacity: 0 }, { yPercent: 0, opacity: 1, force3D: true, duration: .55, ease: 'power3.out', delay: .1, stagger: { each: .008, from: dir > 0 ? 'start' : 'end' } });
+  gsap.fromTo(to.p, { opacity: 0, y: 14 * dir }, { opacity: 1, y: 0, force3D: true, duration: .45, ease: 'power3.out', delay: .28 });
 }
 gsap.set(bgs[0], { scale: 1 });
 
@@ -119,33 +126,46 @@ const heroIntro = () => {
   const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
   const o = { v: 0 };
   tl.to(o, { v: 1, duration: 1.3, ease: 'expo.out', onUpdate: () => HERO.setIntro(o.v) }, 0)
-    .from(beats[0].chars, { yPercent: 110, opacity: 0, filter: 'blur(10px)', duration: 1.1, stagger: .018 }, .1)
+    .from(beats[0].chars, { yPercent: 110, opacity: 0, force3D: true, duration: 1.1, stagger: .018 }, .1)
     .from(beats[0].p, { opacity: 0, y: 18, duration: .9 }, .7)
     .from('#hud .hud-row, #ticks, .hud-hint', { opacity: 0, x: 24, duration: .8, stagger: .08 }, .6)
     .from('.scroll-cue', { opacity: 0, duration: .8 }, 1.2)
     .from('#nav', { y: -24, opacity: 0, duration: .9 }, .4);
 };
+const counter = { v: 0 }, labels = ['Loading press', 'Heating billet', 'Die at temperature', 'Ready to extrude'];
+const showCount = () => { const v = Math.round(counter.v); preNum.textContent = String(v).padStart(3, '0'); preLbl.textContent = labels[Math.min(3, Math.floor(v / 26))]; };
+// the bar moves while fonts and images really load and parks at 92 until they are in
+if (pre && !REDUCED) { gsap.to(counter, { v: 92, duration: 1.6, ease: 'power2.out', onUpdate: showCount }); gsap.to(preBar, { scaleX: .92, duration: 1.6, ease: 'power2.out' }); }
 const boot = () => {
   beats.forEach(b => { const s = new SplitText(b.h1, { type: 'words,chars', charsClass: 'char', wordsClass: 'word' }); b.chars = s.chars; });
-  if (REDUCED) { pre.remove(); HERO.setIntro(1); return; }
-  const counter = { v: 0 }, labels = ['Loading press', 'Heating billet', 'Die at temperature', 'Ready to extrude'];
+  if (REDUCED) { pre.remove(); HERO.setIntro(1); warmExtrusion(); return; }
+  gsap.killTweensOf([counter, preBar]);
   gsap.timeline()
-    .to(counter, { v: 100, duration: 1.25, ease: 'power2.inOut', onUpdate: () => { const v = Math.round(counter.v); preNum.textContent = String(v).padStart(3, '0'); preLbl.textContent = labels[Math.min(3, Math.floor(v / 26))]; } }, 0)
-    .to(preBar, { scaleX: 1, duration: 1.25, ease: 'power2.inOut' }, 0)
-    .to(pre, { yPercent: -100, duration: .95, ease: 'power4.inOut', onComplete: () => pre.remove() }, '+=0.12')
-    .add(heroIntro, '-=0.55');
+    .to(counter, { v: 100, duration: .25, ease: 'power2.out', onUpdate: showCount }, 0)
+    .to(preBar, { scaleX: 1, duration: .25, ease: 'power2.out' }, 0)
+    .to(pre, { yPercent: -100, duration: .7, ease: 'power4.inOut', onComplete: () => { pre.remove(); warmExtrusion(); } }, '+=0.05')
+    .add(heroIntro, '-=0.45');
 };
 Promise.race([
   Promise.all([document.fonts ? document.fonts.ready : Promise.resolve(), new Promise(r => document.readyState === 'complete' ? r() : addEventListener('load', r, { once: true }))]),
-  new Promise(r => setTimeout(r, 4000))
+  new Promise(r => setTimeout(r, 2500))
 ]).then(boot);
 
 /* ---------------- hero scroll ---------------- */
-ScrollTrigger.create({
+const BEAT_MS = 1050;   // showBeat: 3D morph .6s + solid .4s, text .73s
+const heroSt = ScrollTrigger.create({
   trigger: '#hero', start: 'top top', end: 'bottom bottom', scrub: true,
-  onUpdate: self => { HERO.setProgress(self.progress); showBeat(Math.min(3, Math.floor(self.progress * 4.02))); }
+  onUpdate: self => {
+    HERO.setProgress(self.progress);
+    if (SCROLL.isLocked && SCROLL.isLocked()) return;            // the gate owns the beat while the page is pinned
+    if (!GATED) { showBeat(Math.min(3, Math.floor(self.progress * 4.02))); return; }
+    const y = self.scroll(), range = self.end - self.start; let b = 0;
+    for (let i = 1; i <= 3; i++) { const gy = Math.round(self.start + (range * i) / 4); if (Math.abs(y - gy) < .5) return; if (gy < y) b = i; }
+    showBeat(b);
+  }
 });
 ScrollTrigger.create({ trigger: '#hero', start: 'top bottom', end: 'bottom top', onToggle: s => HERO.setActive(s.isActive) });
+gateSources.add(() => { const range = heroSt.end - heroSt.start; return [1, 2, 3].map(i => ({ y: Math.round(heroSt.start + (range * i) / 4), dir: 0, run: (dir) => { showBeat(dir > 0 ? i : i - 1); return BEAT_MS; } })); });
 
 /* ---------------- section themes ---------------- */
 // Compositor-only switch: html[data-bg] crossfades two fixed background layers (CSS opacity transition),
@@ -163,7 +183,7 @@ $$('section[data-theme]').forEach(sec => ScrollTrigger.create({ trigger: sec, st
 
 /* ---------------- nav ---------------- */
 const nav = $('#nav');
-ScrollTrigger.create({ start: 0, end: 'max', onUpdate: self => { const y = self.scroll(); nav.classList.toggle('is-hidden', self.direction === 1 && y > 240); nav.classList.toggle('is-solid', y > 80); } });
+ScrollTrigger.create({ start: 0, end: 'max', onUpdate: self => { if (SCROLL.isLocked && SCROLL.isLocked()) return; const y = self.scroll(); nav.classList.toggle('is-hidden', self.direction === 1 && y > 240); nav.classList.toggle('is-solid', y > 80); } });
 const links = $$('.nav-links a');
 const linkFor = { about: 'about', statement: 'about', product: 'product', config: 'config', process: 'config', equip: 'config', rnd: 'rnd', global: 'about', history: 'about', community: 'community', contact: 'community' };
 Object.keys(linkFor).forEach(id => { const el = document.getElementById(id); if (!el) return; ScrollTrigger.create({ trigger: el, start: 'top 45%', end: 'bottom 45%', onToggle: s => { if (s.isActive) links.forEach(a => a.classList.toggle('is-active', a.getAttribute('href') === '#' + linkFor[id])); } }); });
@@ -231,10 +251,27 @@ Object.values(cfg).forEach(i => i.addEventListener('input', updateCfg));
 updateCfg();
 if (!REDUCED) gsap.from('.config-copy > *', { x: -30, opacity: 0, duration: .9, stagger: .07, ease: 'power3.out', scrollTrigger: { trigger: '#config', start: 'top 70%', toggleActions: 'play reverse play reverse' } });
 const cfgLen = $('#cfgLen');
-ScrollTrigger.create({ trigger: '#config', start: 'top bottom', end: 'bottom top', onToggle: s => EXT.setActive(s.isActive) });
+const extToggle = ScrollTrigger.create({ trigger: '#config', start: 'top bottom', end: 'bottom top', onToggle: s => EXT.setActive(s.isActive) });
+EXT.setActive(extToggle.isActive);   // onToggle only fires on a change, so the initial state is applied by hand
+ScrollTrigger.create({ trigger: '#about', start: 'top bottom', once: true, onEnter: () => EXT.warm() });
 const mm = gsap.matchMedia();
-mm.add('(min-width: 901px)', () => { const st = ScrollTrigger.create({ trigger: '#config', start: 'top top', end: 'bottom bottom', scrub: true, onUpdate: s => { EXT.setProgress(s.progress); cfgLen.textContent = EXT.length.toFixed(1) + ' m'; } }); return () => st.kill(); });
-mm.add('(max-width: 900px)', () => { const st = ScrollTrigger.create({ trigger: '#config', start: 'top 70%', end: 'bottom 30%', scrub: true, onUpdate: s => { EXT.setProgress(s.progress); cfgLen.textContent = EXT.length.toFixed(1) + ' m'; } }); return () => st.kill(); });
+// the run-out plays as a timed animation when the section is entered (the gate below pins the page while it plays)
+const extState = { v: 0 }; let extTween = null, extDir = 0;
+const applyExt = () => { EXT.setProgress(extState.v); cfgLen.textContent = (0.35 + extState.v * 42).toFixed(1) + ' m'; };
+const playExtrusion = () => {
+  if (extTween && extTween.isActive() && extDir === 1) return Math.max(100, (extTween.duration() - extTween.time()) * 1000 + 50);
+  if (extState.v >= 1) return 0;
+  if (extTween) extTween.kill();
+  extDir = 1; extTween = gsap.to(extState, { v: 1, duration: 2.4, ease: 'power2.inOut', onUpdate: applyExt });
+  return 2450;
+};
+const resetExtrusion = () => { if (extTween) extTween.kill(); extDir = -1; extTween = gsap.to(extState, { v: 0, duration: .6, ease: 'power2.out', onUpdate: applyExt }); };
+// entering plays it (a jump via the nav lands here without crossing the gate); leaving upward retracts it
+const cfgSt = REDUCED ? null : ScrollTrigger.create({ trigger: '#config', start: GATED ? 'top top' : 'top 70%', onEnter: () => playExtrusion(), onLeaveBack: resetExtrusion });
+if (REDUCED) { extState.v = 1; applyExt(); }
+
+// the pinned position sits one pixel inside the trigger so onEnter/onLeaveBack agree with the gate
+gateSources.add(() => [{ y: Math.ceil(cfgSt.start) + 1, dir: 1, run: () => playExtrusion() || 300 }]);
 
 /* ---------------- process: tabs + horizontal scroll ---------------- */
 const procSec = $('#process'), procBar = $('#procBar'), procTitle = $('#procTitle'), procFoot = $$('#procFoot span');
@@ -286,30 +323,58 @@ if (mf && !REDUCED) {
 } else if (mf) $$('.k', mf).forEach(k => k.classList.add('is-on'));
 
 // ledger numbers count up the first time the frame goes full bleed
-let ledgerPlayed = false;
+let ledgerPlayed = false, ledgerResetCall = null;
 const ledgerTweens = [];
 const playLedger = () => {
+  if (ledgerResetCall) { ledgerResetCall.kill(); ledgerResetCall = null; }
   ledgerPlayed = true; ledgerTweens.forEach(t => t.kill()); ledgerTweens.length = 0;
-  $$('#cineFrame .ledger b').forEach(b => { const m = (b.dataset.v || b.textContent).match(/^([\d,]+)(.*)$/); if (!m) return; const target = +m[1].replace(/,/g, ''), suffix = m[2], o = { v: 0 }; ledgerTweens.push(gsap.to(o, { v: target, duration: 1.6, ease: 'power3.out', onUpdate: () => { b.textContent = Math.round(o.v).toLocaleString('en-US') + suffix; } })); });
+  $$('#cineFrame .ledger b').forEach(b => { const m = (b.dataset.v || b.textContent).match(/^([\d,]+)(.*)$/); if (!m) return; const target = +m[1].replace(/,/g, ''), suffix = m[2], grouped = m[1].includes(','), o = { v: 0 }; ledgerTweens.push(gsap.to(o, { v: target, duration: 1.6, ease: 'power3.out', onUpdate: () => { b.textContent = (grouped ? Math.round(o.v).toLocaleString('en-US') : String(Math.round(o.v))) + suffix; } })); });
 };
 const resetLedger = () => { ledgerPlayed = false; ledgerTweens.forEach(t => t.kill()); ledgerTweens.length = 0; $$('#cineFrame .ledger b').forEach(b => { const m = (b.dataset.v || '').match(/^([\d,]+)(.*)$/); if (m) b.textContent = '0' + m[2]; }); };
 // cinematic frame: uniform-scale FLIP from a small frame in the lower right to full bleed
 mm.add('(min-width: 901px)', () => {
   const cine = $('#cine'), frame = $('#cineFrame'), fimg = frame && $('img', frame), side = $('#cineSide');
   if (!cine || !frame || REDUCED) return;
-  let s0 = .42; const st = { p: 0 }; const ease = gsap.parseEase('power2.inOut');
+  let s0 = .42; const st = { p: 0, a: 0 }; const ease = gsap.parseEase('power2.inOut');
   const measure = () => { s0 = Math.min(680, innerWidth * .44) / innerWidth; };
+  const lead = () => Math.round(innerHeight * .25);   // how far the pinned small frame scrolls before the gate opens it
   const apply = () => {
     const e = ease(clamp((st.p - .15) / .6, 0, 1));
-    gsap.set(frame, { scale: s0 + (1 - s0) * e, y: -innerHeight * .04 * (1 - clamp(st.p / .15, 0, 1)) });
-    gsap.set(fimg, { scale: 1.18 - .18 * e });
+    const base = s0 + .05 * st.a;                       // the approach scroll lets the small frame breathe a little, hinting at the opening
+    gsap.set(frame, { scale: base + (1 - base) * e, y: innerHeight * .03 * (1 - st.a) * (1 - e) });
+    gsap.set(fimg, { scale: 1.18 - .04 * st.a - .14 * e });
     if (side) gsap.set(side, { opacity: 1 - Math.min(1, e * 1.6), x: -40 * e });
     frame.classList.toggle('is-mid', st.p > .3); frame.classList.toggle('is-full', st.p > .78);
-    if (st.p > .78 && !ledgerPlayed) playLedger(); else if (st.p <= .78 && ledgerPlayed) resetLedger();
+    if (st.p > .78 && !ledgerPlayed) playLedger(); else if (st.p <= .78 && ledgerPlayed) { ledgerPlayed = false; ledgerResetCall = gsap.delayedCall(.6, resetLedger); }
   };
   frame.classList.remove('is-full'); measure(); apply();
-  const trig = ScrollTrigger.create({ trigger: cine, start: 'top top', end: 'bottom bottom', invalidateOnRefresh: true, onRefreshInit: measure, onUpdate: self => { st.p = self.progress; apply(); } });
-  return () => { trig.kill(); gsap.set([frame, fimg], { clearProps: 'transform' }); if (side) gsap.set(side, { clearProps: 'all' }); frame.classList.add('is-full'); frame.classList.remove('is-mid'); };
+  // The gate sits a quarter screen into the pinned section. Going down it pins the page and opens the frame; coming back
+  // up it pins the page and plays the opening in reverse before the page moves on. Both are timed (apply() has the easing).
+  let tween = null, dir = 0;
+  const run = (to, full) => {
+    const d = to ? 1 : -1;
+    if (tween && tween.isActive() && dir === d) return Math.max(100, (tween.duration() - tween.time()) * 1000 + 50);
+    if (st.p === to) return 0;
+    if (tween) tween.kill();
+    const dur = Math.max(.3, full * Math.abs(to - st.p));
+    dir = d; tween = gsap.to(st, { p: to, duration: dur, ease: 'none', onUpdate: apply });
+    return dur * 1000 + 50;
+  };
+  const play = () => run(1, 1.8), close = () => run(0, 1.2);
+  let pinning = false;
+  // approach: the pinned small frame reacts to the scroll until the gate
+  const approach = GATED ? ScrollTrigger.create({ trigger: cine, start: 'top top', end: () => '+=' + lead(), scrub: true, invalidateOnRefresh: true, onUpdate: s => { st.a = s.progress; apply(); } }) : null;
+  if (!GATED) st.a = 1;
+  // the trigger covers the paths that do not cross the gate by wheel (nav flights, keyboard, scrollbar, touch)
+  const trig = ScrollTrigger.create({ trigger: cine, start: GATED ? () => 'top+=' + lead() + ' top' : 'top 60%', invalidateOnRefresh: true, onRefreshInit: measure, onRefresh: apply, onEnter: () => { if (!pinning) play(); }, onLeaveBack: () => { if (!pinning) close(); } });
+  const source = () => [{
+    y: Math.ceil(trig.start) + 1, dir: 0,
+    when: (d) => (d > 0 ? st.p < 1 : st.p > 0),
+    run: (d) => { pinning = true; queueMicrotask(() => { pinning = false; }); return (d > 0 ? play() : close()) || 300; },   // the pin-back follows synchronously
+    settle: (y) => { if (y > Math.ceil(trig.start) + 1) play(); else if (y < trig.start) close(); }
+  }];
+  gateSources.add(source); refreshGates();
+  return () => { gateSources.delete(source); refreshGates(); if (tween) tween.kill(); if (approach) approach.kill(); trig.kill(); gsap.set([frame, fimg], { clearProps: 'transform' }); if (side) gsap.set(side, { clearProps: 'all' }); frame.classList.add('is-full'); frame.classList.remove('is-mid'); ledgerTweens.forEach(t => t.kill()); ledgerTweens.length = 0; ledgerPlayed = false; $$('#cineFrame .ledger b').forEach(b => { if (b.dataset.v) b.textContent = b.dataset.v; }); };
 });
 
 // six years on one rail
@@ -383,4 +448,5 @@ if (FINE && !REDUCED) {
 addEventListener('load', () => ScrollTrigger.refresh());
 
 // debug handle (harmless in production)
+refreshGates(); ScrollTrigger.addEventListener('refresh', refreshGates);
 window.__dv = { gsap, ScrollTrigger, HERO, EXT, SCROLL };
