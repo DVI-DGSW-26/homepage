@@ -188,34 +188,6 @@ export const ORG = { root: '대표이사', rootEn: 'CEO', staff: '기술고문',
 export const EVENT_IMG = 'assets/img/events/';
 export const EVENTS = [
   {
-    id: '2026-trip-debrief', date: '2026-06-29', kind: 'in', photos: 3,
-    ko: '해외 출장 내용 공유회', en: 'Overseas trip debrief',
-    org: '디비전', orgEn: 'DVISION',
-    note: '출장자가 현지에서 보고 온 것을 사내에 공유', noteEn: 'Travellers share what they saw on site with the rest of the company',
-    press: [], video: []
-  },
-  {
-    id: '2026-newcomer-review', date: '2026-06-29', kind: 'in', photos: 3,
-    ko: '신입사원 문제점 공유행사', en: 'New-hire issue review',
-    org: '디비전', orgEn: 'DVISION',
-    note: '신입사원이 현장에서 찾은 문제를 발표', noteEn: 'New hires present the problems they found on the floor',
-    press: [], video: []
-  },
-  {
-    id: '2026-promotion', date: '2026-06-22', kind: 'in', photos: 4,
-    ko: '사내 진급행사', en: 'In-house promotion ceremony',
-    org: '디비전', orgEn: 'DVISION',
-    note: '대표이사 사령장 수여', noteEn: 'Letters of appointment presented by the CEO',
-    press: [], video: []
-  },
-  {
-    id: '2026-hitech-school', date: '2026-06-09', kind: 'in', photos: 4,
-    ko: '대구하이텍고등학교 방문', en: 'Daegu Hi-Tech High School visit',
-    org: '디비전, 대구하이텍고등학교', orgEn: 'DVISION, Daegu Hi-Tech High School',
-    note: '산학협력 현장견학 — 회사 소개와 압출·가공 라인 견학', noteEn: 'Industry-academia plant tour: company briefing, then the extrusion and machining lines',
-    press: [], video: []
-  },
-  {
     id: '2026-workplace-forum', date: '2026-05-21', kind: 'out', photos: 4,
     ko: '2026년 제2차 일터혁신 상생컨설팅 사례공유 포럼', en: '2026 2nd Workplace Innovation Consulting Case-Sharing Forum',
     org: '고용노동부, 노사발전재단', orgEn: 'Ministry of Employment and Labor, Labor and Management Development Foundation',
@@ -236,13 +208,6 @@ export const EVENTS = [
       { n: '문화저널21', nEn: 'Munhwa Journal 21', u: 'https://www.mhj21.com/news/articleView.html?idxno=251101' }
     ],
     video: [{ n: '한국산업기술진흥원', nEn: 'KIAT', u: 'https://www.youtube.com/watch?v=D30EcovDgis' }]
-  },
-  {
-    id: '2026-safety-training', date: '2026-01-21', kind: 'in', photos: 3,
-    ko: '산업안전보건 교육', en: 'Occupational safety and health training',
-    org: '디비전', orgEn: 'DVISION',
-    note: '전 직원 대상 정기 교육', noteEn: 'Regular training for all staff',
-    press: [], video: []
   },
   {
     id: '2025-workplace-innovation', date: '2025-12-09', kind: 'out', photos: 4,
