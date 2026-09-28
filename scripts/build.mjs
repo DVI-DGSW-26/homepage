@@ -48,7 +48,10 @@ const map = {};
 for (const file of all) {
   const rel = path.relative(root, file).split(path.sep).join('/');
   if (!mime[path.extname(rel).toLowerCase()]) continue;
-  if (!mentioned.includes(path.basename(rel))) continue;
+  // The file name itself, or — for names built at runtime like the event photos
+  // (EVENT_IMG + id + '-01.jpg') — the folder the code joins them onto.
+  const folder = path.posix.dirname(rel) + '/';
+  if (!mentioned.includes(path.basename(rel)) && !mentioned.includes(folder)) continue;
   map[rel] = await dataUri(rel);
 }
 const swapper = `<script>window.__ASSETS__=${JSON.stringify(map)};(function(){var M=window.__ASSETS__;function fix(el){if(!el||!el.getAttribute)return;var s=el.getAttribute('src');if(s&&M[s])el.src=M[s];}function scan(r){if(r.querySelectorAll)r.querySelectorAll('img[src^="assets/"]').forEach(fix);}var o=new MutationObserver(function(ms){ms.forEach(function(m){if(m.type==='attributes')fix(m.target);m.addedNodes&&m.addedNodes.forEach(function(n){if(n.nodeType===1){fix(n);scan(n);}});});});o.observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['src']});document.addEventListener('DOMContentLoaded',function(){scan(document);});scan(document);})();</script>`;
