@@ -208,7 +208,7 @@ export const en: Messages = {
     },
     video: {
       tag: 'PR video', source: 'YouTube',
-      play: 'Play the PR video', frameTitle: 'DVISION PR video',
+      play: 'Play the PR video', frameTitle: 'DVISION PR video', close: 'Close',
       title: 'PR video',
       body: 'See the DVISION process on video, from extrusion through machining to shipping.',
       channel: 'Go to the channel'

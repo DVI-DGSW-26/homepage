@@ -14,6 +14,8 @@
   --animate-cue: cue var(--duration-cue) var(--ease-out) infinite;
   @keyframes cue { 0% { top: -100% } 60% { top: 100% } 100% { top: 100% } }
   @keyframes marquee { to { transform: translateX(-100%) } }
+  @keyframes dialog-in { from { opacity: 0; transform: translateY(16px) scale(.98) } }
+  @keyframes fade-in { from { opacity: 0 } }
 }
 
 @layer components {
@@ -41,8 +43,13 @@
   }
   html[data-bg="light"] body::after { opacity: 1 }
 
+  /* the video modal rises in over a fading backdrop (closing is instant) */
+  .video-dialog[open] { animation: dialog-in var(--duration-morph) var(--ease-out) }
+  .video-dialog[open]::backdrop { animation: fade-in var(--duration-fade) ease-out }
+
   @media (prefers-reduced-motion: reduce) {
     body::after { transition: none }
+    .video-dialog[open], .video-dialog[open]::backdrop { animation: none }
     .marquee { animation: none }
     .nav-morph { transition: none }
   }

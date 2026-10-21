@@ -33,6 +33,8 @@
   :lang(ko) :where(h1, h2, h3, h4, p, b, li, small, label, figcaption, dd, td) { word-break: keep-all; overflow-wrap: break-word }
   ::selection { background: var(--acc); color: var(--color-on-acc) }
   :focus-visible { outline: 2px solid var(--acc-2); outline-offset: 4px }
+  /* the page stays put behind an open modal */
+  html:has(dialog[open]) { overflow: hidden }
 }
 
 /* ---- shared type and layout ---------------------------------------------- */

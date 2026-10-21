@@ -15,7 +15,11 @@ const GO_ICON = 'size-4.5 transition-transform duration-450 ease-out group-hover
 
 export function Community() {
   const m = useT().community;
+  // the PR video opens in a modal: the page dims, the player takes most of the screen, and closing
+  // it (the button, Esc, or a click outside) removes the player, so the video stops
+  const dialog = useRef<HTMLDialogElement>(null);
   const [playing, setPlaying] = useState(false);
+  const play = () => { setPlaying(true); dialog.current?.showModal(); };
   return (
     <Section id="community" className={SEC}>
       <div className="wrap">
@@ -32,7 +36,7 @@ export function Community() {
           </a>
           <div className={TILE}>
             <div role="button" tabIndex={0} aria-label={m.video.play}
-              onClick={() => setPlaying(true)} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setPlaying(true); } }}
+              onClick={play} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); play(); } }}
               className="group/video relative aspect-video cursor-pointer overflow-hidden bg-ink">
               <Img src="assets/img/hero/banner-02.jpg" sizes="(max-width: 760px) 100vw, (max-width: 1100px) 50vw, 40vw" alt="" className="size-full object-cover opacity-70 transition-transform duration-1000 ease-out group-hover/video:scale-104" />
               <div className="absolute inset-0 grid place-items-center text-on-photo">
@@ -40,7 +44,6 @@ export function Community() {
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
                 </i>
               </div>
-              {playing && <iframe className="absolute inset-0 size-full border-0" src={`https://www.youtube.com/embed/${COMPANY.videoId}?autoplay=1&rel=0`} allow="autoplay; encrypted-media; picture-in-picture" allowFullScreen title={m.video.frameTitle} />}
             </div>
             <div className={TILE_IN}>
               <div className={TILE_META}><span>{m.video.tag}</span><span>{m.video.source}</span></div>
@@ -64,6 +67,21 @@ export function Community() {
           </div>
         </div>
       </div>
+      <dialog ref={dialog} aria-label={m.video.frameTitle} onClose={() => setPlaying(false)}
+        onClick={e => { if (e.target === e.currentTarget) e.currentTarget.close(); }}
+        className="video-dialog m-auto w-[min(1200px,100%-var(--spacing-gutter)*2,(100svh-120px)*16/9)] max-w-none overflow-visible border-0 bg-transparent p-0 text-on-photo backdrop:bg-ink/85">
+        <div className="mb-3 flex items-center justify-between gap-4">
+          <span className="mono text-on-photo/70">{m.video.frameTitle}</span>
+          <button type="button" onClick={() => dialog.current?.close()}
+            className="mono flex cursor-pointer items-center gap-2 rounded-full border border-on-photo/40 px-4 py-2 text-on-photo transition-colors duration-300 hover:border-on-photo hover:bg-on-photo hover:text-ink">
+            {m.video.close}
+            <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
+          </button>
+        </div>
+        <div className="aspect-video w-full overflow-hidden rounded-card bg-ink">
+          {playing && <iframe className="size-full border-0" src={`https://www.youtube.com/embed/${COMPANY.videoId}?autoplay=1&rel=0`} allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen title={m.video.frameTitle} />}
+        </div>
+      </dialog>
     </Section>
   );
 }

@@ -213,7 +213,7 @@ export const ko = {
     },
     video: {
       tag: 'PR video', source: 'YouTube',
-      play: '홍보영상 재생', frameTitle: 'DVISION 홍보영상',
+      play: '홍보영상 재생', frameTitle: 'DVISION 홍보영상', close: '닫기',
       title: '홍보영상',
       body: '압출부터 가공, 출하까지 디비전의 공정을 영상으로 만나보세요.',
       channel: '채널 바로가기'
