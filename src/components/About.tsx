@@ -2,7 +2,7 @@ import { useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { gsap, ScrollTrigger, SplitText, fontsReady, useGSAP } from '../lib/gsap';
 import { REDUCED, pad2 } from '../lib/env';
 import { pick, rich, useLang, useT } from '../i18n';
-import { ABOUT_YEARS, ORG } from '../data';
+import { ABOUT_YEARS, ORG, PROJECTS } from '../data';
 import { Eyebrow, IndexHead, SEC, Section, btn, cn } from './ui';
 import { Img } from './Img';
 
@@ -47,6 +47,7 @@ export function About() {
         <Years />
         <Pledge />
         <Partners />
+        <Projects />
         <OrgChart />
       </div>
     </Section>
@@ -189,7 +190,32 @@ function Partners() {
   );
 }
 
-const STEM = 'block h-[22px] w-px origin-top bg-line-2 [transform:scaleY(0)] max-lg:hidden';
+/** the support programmes under way: the programme above, what is being built under it below */
+function Projects() {
+  const m = useT().about.projects;
+  return (
+    <div data-batch className="mt-stack grid gap-4.5">
+      <IndexHead className="rv" title={m.title} aside={m.count(PROJECTS.length)} />
+      {/* one full-width row each: number and status on the left, the programme and the work on the right */}
+      <div className="grid gap-3">
+        {PROJECTS.map((p, i) => (
+          <article key={p.program} className="rv grid grid-cols-[12rem_minmax(0,1fr)] items-start gap-x-col-gap gap-y-3 rounded-card border border-line bg-card px-7 py-6.5 transition-[border-color] duration-400 hover:border-line-2 max-md:grid-cols-1 max-xs:p-5">
+            <div className="mono flex flex-col gap-2 text-mute max-md:flex-row max-md:items-center max-md:justify-between">
+              <span>{m.item(i + 1)}</span>
+              <span className="flex items-center gap-2 font-sans text-caption font-medium tracking-normal text-acc-ink normal-case"><i aria-hidden="true" className="size-1.5 rounded-full bg-acc" />{m.status}</span>
+            </div>
+            <div className="grid gap-1.5">
+              <p className="m-0 text-small font-medium text-fg-2">{pick(p.program, p.programEn)}</p>
+              <h4 className="m-0 text-title leading-title font-semibold tracking-heading-sm text-pretty">{pick(p.title, p.titleEn)}</h4>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+const STEM = 'block h-5.5 w-px origin-top bg-line-2 [transform:scaleY(0)] max-lg:hidden';
 
 /** organisation chart: an HTML tree that draws its connectors when it scrolls in */
 function OrgChart() {

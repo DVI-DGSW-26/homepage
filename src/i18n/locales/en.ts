@@ -67,6 +67,7 @@ export const en: Messages = {
       closing: 'We intend to grow together in global markets with sustainable solutions that account for both people and the environment.'
     },
     partners: { title: 'Key customers', aside: 'End users', logoAlt: (n: number) => `Customer logo ${n}` },
+    projects: { title: 'Projects in progress', count: (n: number) => `${n} projects`, item: (n: number) => `Project ${String(n).padStart(2, '0')}`, status: 'In progress' },
     org: { title: 'Organization chart', aside: 'Organization chart', collapse: 'Collapse', expand: 'Expand' }
   },
 
@@ -157,7 +158,7 @@ export const en: Messages = {
     research: [
       { tag: 'Process', title: 'Process build-out', body: 'Improving the data acquisition system for the aluminum extrusion process', items: ['Automatic collection of temperature, speed and other data at each process step', 'Converting the existing analog sensors to digital', 'Adding non-contact temperature sensors at each step'] },
       { tag: 'Analysis', title: 'Correlation analysis system', body: 'Visual correlation analysis between process conditions, yield and defect rate in AL extrusion', items: ['Variation history by item and by production run', 'Hourly aggregated variation history'] },
-      { tag: 'Status', title: 'Research status', body: 'Projects under way are published in turn on the research status board.', items: [] }
+      { tag: 'Status', title: 'Research status', body: 'The research project under way.', items: [], projects: true }
     ],
     esg: {
       e: { eyebrow: 'Environment', title: 'Protecting the environment', body: 'A two-stage inverter air compressor raises energy efficiency over the previous setup and delivers further savings, cutting greenhouse gas emissions.', kpis: ['Energy efficiency gain', 'Further reduction'] },

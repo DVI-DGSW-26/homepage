@@ -71,6 +71,7 @@ export const ko = {
       closing: '사람과 환경을 생각하는 지속 가능한 솔루션으로 글로벌 시장에서 함께 성장해 나가겠습니다.'
     },
     partners: { title: '주요 고객사', aside: 'End users', logoAlt: (n: number) => `고객사 로고 ${n}` },
+    projects: { title: '진행 중인 사업', count: (n: number) => `${n}건`, item: (n: number) => `Project ${String(n).padStart(2, '0')}`, status: '진행 중' },
     org: { title: '조직도', aside: 'Organization chart', collapse: '접기', expand: '펼치기' }
   },
 
@@ -162,7 +163,7 @@ export const ko = {
     research: [
       { tag: 'Process', title: '공정 구축', body: '알루미늄 압출 공정 데이터 수집 시스템(Data Acquisition System) 개선', items: ['공정별 온도, 속도 등 데이터 자동 수집 장치 구축', '기존 아날로그 센서들을 디지털로 전환', '공정별 비접촉식 온도센서 추가 설치'] },
       { tag: 'Analysis', title: '연관 통계 분석 시스템 개발', body: 'AL 압출 공정의 가공조건과 수율, 불량율 간의 연관통계 시각화 분석', items: ['품목별, 투입건별 변동이력 분석', '시간 단위 합산 변동이력 분석'] },
-      { tag: 'Status', title: '연구현황', body: '진행 중인 과제는 연구현황 게시판에 순차적으로 공개됩니다.', items: [] as string[] }
+      { tag: 'Status', title: '연구현황', body: '현재 진행 중인 연구 과제입니다.', items: [] as string[], projects: true }
     ],
     esg: {
       e: { eyebrow: 'Environment', title: '환경보호', body: '2단 인버터 공기압축기를 도입해 기존 대비 에너지 효율을 높이고 추가 절감을 실현하여 온실가스 저감에 기여합니다.', kpis: ['에너지 효율 향상', '추가 절감'] },

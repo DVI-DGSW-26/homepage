@@ -20,6 +20,7 @@ export interface Cert { t: string; tEn?: string; k: CertKind; f: string; src: st
 export interface HistoryEntry { m: string; l: string[]; lEn?: string[]; h?: boolean }
 export interface HistoryYear { y: number; ev: HistoryEntry[] }
 export interface Site { k: string; ko: string; en: string; where: string; whereEn: string; lat: number; lon: number; img: string; hq?: boolean; map: string; dy?: number }
+export interface Project { program: string; programEn: string; title: string; titleEn: string; /** also listed under the R&D research status */ rnd?: boolean }
 export interface TestEquipment { name: string; brand: string; spec: string; q: number }
 export interface AboutYear { y: number; t: string; tEn: string; h?: boolean }
 export interface OrgTeam { n: string; nEn: string; s: string[]; sEn?: string[] }
@@ -192,6 +193,21 @@ export const SITES: Site[] = [
   { k: 'Logistics 02', ko: '제2 물류센터', en: 'Logistics center 02', where: '멕시코 케레타로', whereEn: 'Querétaro, Mexico', lat: 20.59, lon: -100.39, img: G + 'site-04.jpg', map: 'QUERETARO / LC 02', dy: 8 },
   { k: 'Logistics 03', ko: '제3 물류센터', en: 'Logistics center 03', where: '미국 텍사스 라레도', whereEn: 'Laredo, Texas, USA', lat: 27.51, lon: -99.51, img: G + 'site-05.jpg', map: 'LAREDO, TX / LC 03', dy: -6 },
   { k: 'Logistics 04', ko: '제4 물류센터', en: 'Logistics center 04', where: '멕시코 몬테레이', whereEn: 'Monterrey, Mexico', lat: 25.69, lon: -100.32, img: G + 'site-06.jpg', map: 'MONTERREY / LC 04', dy: 8 }
+];
+
+/** support programmes in progress (R&D section): the programme, and what DVISION is building under it */
+export const PROJECTS: Project[] = [
+  {
+    program: 'IT융합 공정 고도화 지원사업', programEn: 'IT Convergence Process Advancement Program',
+    title: '알루미늄 가공 설비 MES 표준 연동 및 통합 생산·안전 관제 시스템 구축',
+    titleEn: 'Standard MES integration for the aluminum machining equipment, with an integrated production and safety monitoring system',
+    rnd: true
+  },
+  {
+    program: '2026년 대구 지역기업 성장사다리 지원사업', programEn: '2026 Daegu Regional Business Growth Ladder Program',
+    title: '자동차 부품 제조 현장의 검사 누락 방지를 위한 웹 기반 공정 동기화 품질 가이드 시스템 구축',
+    titleEn: 'A web-based, process-synchronized quality guide that keeps inspections from being missed on the auto-parts floor'
+  }
 ];
 
 export const TEST_EQUIPMENT: TestEquipment[] = [

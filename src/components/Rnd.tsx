@@ -3,7 +3,7 @@ import { useGSAP } from '../lib/gsap';
 import { REDUCED } from '../lib/env';
 import { pick, useT, type Messages } from '../i18n';
 import { initTelemetry } from '../canvas/telemetry';
-import { CERTS, CERT_KINDS } from '../data';
+import { CERTS, CERT_KINDS, PROJECTS } from '../data';
 import { Photo, SEC, SecHead, Section, cn } from './ui';
 import { Img } from './Img';
 
@@ -48,9 +48,19 @@ export function Rnd() {
                 <article key={r.tag} className="rv grid grid-cols-[auto_1fr] gap-5.5 border-t border-line py-6.5 last:border-b">
                   <span className="mono min-w-[5ch] pt-1.5 text-mute">{r.tag}</span>
                   <div>
-                    <h3 className="m-0 mb-2 text-[1.2rem] font-semibold">{r.title}</h3>
-                    <p className="m-0 text-[.98rem] text-fg-2">{r.body}</p>
-                    {r.items.length > 0 && <ul className="mt-2 mb-0 list-disc pl-[18px] text-[.95rem] text-fg-2">{r.items.map(x => <li key={x}>{x}</li>)}</ul>}
+                    <h3 className="m-0 mb-2 text-title-sm font-semibold">{r.title}</h3>
+                    <p className="m-0 text-body text-fg-2">{r.body}</p>
+                    {r.items.length > 0 && <ul className="mt-2 mb-0 list-disc pl-4.5 text-body-sm text-fg-2">{r.items.map(x => <li key={x}>{x}</li>)}</ul>}
+                    {r.projects && (
+                      <ul className="mt-3 mb-0 grid list-none gap-3 p-0">
+                        {PROJECTS.filter(p => p.rnd).map(p => (
+                          <li key={p.program} className="grid gap-1 border-l-2 border-acc pl-3.5">
+                            <b className="text-body-sm font-semibold text-fg">{pick(p.program, p.programEn)}</b>
+                            <span className="text-body-sm text-fg-2">{pick(p.title, p.titleEn)}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                 </article>
               ))}
