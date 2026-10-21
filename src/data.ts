@@ -187,7 +187,7 @@ export const HISTORY: HistoryYear[] = [
 
 const G = 'assets/img/global/';
 export const SITES: Site[] = [
-  { k: 'HQ', ko: '디비전 본사', en: 'DVISION head office', where: '대구광역시 달성군 구지면 국가산단대로 33길 237', whereEn: 'Guji-myeon, Dalseong-gun, Daegu, Korea', lat: 35.87, lon: 128.60, img: G + 'site-01.jpg', hq: true, map: 'DAEGU HQ' },
+  { k: 'HQ', ko: '디비전 본사', en: 'DVISION head office', where: '대구광역시 달성군 구지면 국가산단대로 33길 237', whereEn: 'Guji-myeon, Dalseong-gun, Daegu, Korea', lat: 35.65, lon: 128.42, img: G + 'site-01.jpg', hq: true, map: 'DAEGU HQ' },
   { k: 'Sales office', ko: '영업 사무소', en: 'Sales office', where: '미국 미시간', whereEn: 'Michigan, USA', lat: 42.33, lon: -83.05, img: G + 'site-02.jpg', map: 'MICHIGAN SALES', dy: -14 },
   { k: 'Logistics 01', ko: '제1 물류센터', en: 'Logistics center 01', where: '미국 미시간 캔턴', whereEn: 'Canton, Michigan, USA', lat: 42.31, lon: -83.48, img: G + 'site-03.jpg', map: 'CANTON, MI / LC 01', dy: 8 },
   { k: 'Logistics 02', ko: '제2 물류센터', en: 'Logistics center 02', where: '멕시코 케레타로', whereEn: 'Querétaro, Mexico', lat: 20.59, lon: -100.39, img: G + 'site-04.jpg', map: 'QUERETARO / LC 02', dy: 8 },

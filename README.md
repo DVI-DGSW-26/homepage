@@ -18,6 +18,7 @@ pnpm build      # 이미지 변환 → 타입 검사 → vite build → 단일 �
 pnpm preview    # dist/ 를 http://127.0.0.1:4173 에서 확인
 pnpm typecheck  # 타입 검사만
 pnpm images     # 이미지 변환만 (dev / build 가 자동으로 먼저 실행)
+pnpm coast      # 지도 해안선 데이터 다시 만들기 (결과는 커밋돼 있어 평소엔 필요 없음)
 ```
 
 - `dist/` 에 배포용 정적 파일(index.html, 해시가 붙은 JS/CSS, `public/` 의 에셋)이 생성됩니다. Vercel 은 `vercel.json` 대로 `pnpm build` 후 `dist/` 를 배포합니다.
@@ -56,7 +57,8 @@ pnpm images     # 이미지 변환만 (dev / build 가 자동으로 먼저 실�
 | `src/three/hero.ts` | 히어로 파티클(자동차 부품으로 모이는 알루미늄 칩) Three.js 장면 |
 | `src/three/parts.ts` | 부품 형상(Brake Hat, Yoke, Inner Pipe 등) 절차적 지오메트리와 HUD 라벨 |
 | `src/three/extrusion.ts` | 프로파일 랩: 프레스 컨테이너, 금형, 프로파일 Three.js 장면과 중량 계산 |
-| `src/canvas/map.ts`, `telemetry.ts` | 글로벌 거점 지도, R&D 데모 파형 (Canvas 2D) |
+| `src/canvas/map.ts`, `telemetry.ts` | 글로벌 거점 지도(태평양 중심 메르카토르, 실제 해안선), R&D 데모 파형 (Canvas 2D) |
+| `src/canvas/coast.json`, `scripts/coast.mjs` | 지도 해안선. Natural Earth 1:50m 육지(world-atlas, 공개 데이터)를 지도 범위로 잘라 단순화한 것. 범위를 바꾸면 `pnpm coast` 로 다시 만듭니다(map.ts 와 같은 LON0/LON1/LAT0) |
 | `src/data.ts` | 제품, 공정, 인증서, 연혁, 거점, 조직도, 행사 데이터와 타입. 사이트 내용 수정은 여기서 |
 | `public/assets/img/` | dvi-ind.com 에서 가져온 이미지(정리, 최적화본). 코드에서는 `assets/img/...` 로 참조 |
 | `public/assets/img/events/` | 행사 사진. `<행사 id>-NN.jpg` 본판과 `-NN-t.jpg` 썸네일 한 쌍 |
