@@ -84,7 +84,11 @@ export function createExtrusion(canvas, { reduced = false, fine = true } = {}) {
   const N = 360, pos = new Float32Array(N * 3), spd = new Float32Array(N);
   for (let i = 0; i < N; i++) { pos[i * 3] = (Math.random() - .5) * 30; pos[i * 3 + 1] = (Math.random() - .5) * 14; pos[i * 3 + 2] = (Math.random() - .5) * 16 - 2; spd[i] = 0.002 + Math.random() * 0.006; }
   const pGeo = new THREE.BufferGeometry(); pGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-  scene.add(new THREE.Points(pGeo, new THREE.PointsMaterial({ color: 0xd5dae1, size: 0.035, transparent: true, opacity: 0.5, depthWrite: false })));
+  const dust = new THREE.PointsMaterial({ color: 0xd5dae1, size: 0.035, transparent: true, opacity: 0.5, depthWrite: false });
+  scene.add(new THREE.Points(pGeo, dust));
+  // pale dust vanishes on the light ground, so it follows the colour mode
+  const tintDust = () => dust.color.setHex(document.documentElement.dataset.mode === 'light' ? 0x6b7480 : 0xd5dae1);
+  new MutationObserver(tintDust).observe(document.documentElement, { attributes: true, attributeFilter: ['data-mode'] });
 
   let params = { w: 90, h: 40, cells: 3, wall: 4.5 };
   const build = () => {

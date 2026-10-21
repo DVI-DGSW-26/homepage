@@ -107,6 +107,7 @@ html[data-mode="light"] .logo .lg-dark{opacity:1}
 .lang button.is-on{color:var(--fg);font-weight:500}
 .lang button:not(.is-on):hover{color:var(--fg-2)}
 .lang i{font-style:normal;opacity:.5;margin:0 2px}
+.tgl-theme{padding-left:14px;border-left:1px solid var(--line)}
 @media (max-width:900px){.nav-links,.lang{display:none}}
 
 .btn{display:inline-flex;align-items:center;gap:12px;padding:16px 26px;border:1px solid var(--line-2);border-radius:999px;font-family:var(--font-body);font-size:.95rem;letter-spacing:.01em;font-weight:600;line-height:1;position:relative;overflow:hidden;isolation:isolate;transition:color .45s var(--ease-out),border-color .45s;color:var(--fg);background:transparent;cursor:pointer}
@@ -496,6 +497,9 @@ html[data-mode="light"] .logo .lg-dark{opacity:1}
 .ev-meta h3{margin:0;font-size:1.25rem;font-weight:600;line-height:1.3}
 .ev-meta p{margin:0;color:var(--fg-2);font-size:.95rem}
 .ev-meta>.mono .ev-won{color:#E7C87A}
+html[data-mode="light"] .ev-won,html[data-mode="light"] .ev-meta>.mono .ev-won{color:#8A6514}
+html[data-mode="light"] .ev-item.has-award{border-color:rgba(168,121,42,.4)}
+html[data-mode="light"] .ev-item.has-award.is-on{border-color:#A8792A;background:linear-gradient(90deg,rgba(217,175,78,.2),transparent 62%)}
 .ev-row{display:grid;grid-template-columns:5.5rem minmax(0,1fr);gap:12px;align-items:baseline;padding-top:10px;border-top:1px solid var(--line)}
 .ev-row .mono{color:var(--mute)}
 .ev-row b{font-weight:500;font-size:.95rem;color:var(--fg-2)}
