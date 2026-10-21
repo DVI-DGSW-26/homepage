@@ -1,0 +1,49 @@
+/* ============================================================
+   DVISION homepage — animation
+   Everything that moves in CSS is defined here: keyframes, the endless loops,
+   the theme crossfade, the header's bar ↔ pill change, and what each of them
+   does under prefers-reduced-motion.
+
+   Scripted entrances (GSAP: the hero intro and swipe, once-per-view reveals,
+   the year rail, the org chart) live with their components and in
+   src/lib/reveals.ts. Hover transitions are utilities on the element itself.
+   ============================================================ */
+
+@theme {
+  /* the "Scroll" cue: a light running down a hairline */
+  --animate-cue: cue 1.8s var(--ease-out) infinite;
+  @keyframes cue { 0% { top: -100% } 60% { top: 100% } 100% { top: 100% } }
+  @keyframes marquee { to { transform: translateX(-100%) } }
+}
+
+@layer components {
+  /* Marquee: the strip's content is written twice in a row and each copy slides one width left,
+     so the loop is seamless. --marquee-duration sets the pace per strip. */
+  .marquee { animation: marquee var(--marquee-duration, 42s) linear infinite; will-change: transform }
+  /* a strip stops while the pointer is on it, or while something inside it has focus */
+  .marquee-host:hover .marquee, .marquee-host:focus-within .marquee { animation-play-state: paused }
+
+  /* Header: a full-width bar over the hero that draws in to the floating pill once the hero is
+     behind (header[data-pill], set by src/components/Nav.tsx) */
+  .nav-morph {
+    transition: width .7s var(--ease-out), margin-top .7s var(--ease-out), padding .7s var(--ease-out),
+      border-radius .7s var(--ease-out), background-color .4s, border-color .4s;
+  }
+}
+
+@layer base {
+  /* Theme switch: the page background is two fixed layers and only the light one's opacity
+     animates (no paint, no style recalculation); html[data-mode] flips the colour tokens once at
+     the midpoint (src/lib/theme.ts) */
+  body::after {
+    content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; will-change: opacity;
+    background: #D8DBDF; opacity: 0; transition: opacity .62s cubic-bezier(.45, 0, .2, 1);
+  }
+  html[data-bg="light"] body::after { opacity: 1 }
+
+  @media (prefers-reduced-motion: reduce) {
+    body::after { transition: none }
+    .marquee { animation: none }
+    .nav-morph { transition: none }
+  }
+}

@@ -1,0 +1,112 @@
+import { useEffect, useRef, useState } from 'react';
+import { gsap, useGSAP } from '../lib/gsap';
+import { DESKTOP, REDUCED, clamp, pad2 } from '../lib/env';
+import { pick, useT } from '../i18n';
+import { PROCESSES, type Process as Proc } from '../data';
+import { Eyebrow, H2, SEC, Section, cn } from './ui';
+import { Img } from './Img';
+
+const PROCESS_IMG = 'assets/img/process/';
+const HEAT = { hot: 'text-acc', warm: 'text-acc-2', cool: 'text-fg' } as const;
+
+/**
+ * Three process tracks behind tabs. On desktop the active track is a sideways strip: scrolling the
+ * wheel with the pointer over it moves it along, and once it reaches an end the page scrolls on.
+ * Trackpad swipes, the keyboard and touch use the strip's own native scrolling.
+ */
+export function Process() {
+  const m = useT().process;
+  const root = useRef<HTMLElement>(null), bar = useRef<HTMLElement>(null);
+  const tracks = useRef<Partial<Record<Proc['id'], HTMLDivElement | null>>>({});
+  const [procId, setProcId] = useState<Proc['id']>('ext');
+  const proc = PROCESSES.find(p => p.id === procId)!;
+
+  // vertical wheel over the strip -> horizontal travel, eased; the progress bar follows the strip
+  useEffect(() => {
+    const el = tracks.current[procId]; if (!el) return;
+    const desktop = matchMedia(DESKTOP);
+    let target = el.scrollLeft, raf = 0;
+    const max = () => el.scrollWidth - el.clientWidth;
+    const paint = () => { const m = max(); bar.current!.style.transform = `scaleX(${m > 0 ? el.scrollLeft / m : 0})`; };
+    const glide = () => {
+      const d = target - el.scrollLeft;
+      if (Math.abs(d) < .5) { el.scrollLeft = target; raf = 0; return; }
+      el.scrollLeft += d * .2; raf = requestAnimationFrame(glide);
+    };
+    const onWheel = (e: WheelEvent) => {
+      if (!desktop.matches || e.ctrlKey || Math.abs(e.deltaX) >= Math.abs(e.deltaY)) return;
+      const dy = e.deltaY * (e.deltaMode === 1 ? 40 : e.deltaMode === 2 ? el.clientWidth : 1), m = max();
+      if (!raf) target = el.scrollLeft;
+      if ((dy > 0 && target >= m - 1) || (dy < 0 && target <= 1)) return;   // at an end: the page scrolls on
+      e.preventDefault();
+      target = clamp(target + dy, 0, m);
+      if (REDUCED) el.scrollLeft = target;
+      else if (!raf) raf = requestAnimationFrame(glide);
+    };
+    el.addEventListener('wheel', onWheel, { passive: false });
+    el.addEventListener('scroll', paint, { passive: true });
+    paint();
+    return () => { cancelAnimationFrame(raf); el.removeEventListener('wheel', onWheel); el.removeEventListener('scroll', paint); };
+  }, [procId]);
+
+  // a new tab deals its cards in; the first render just sits there
+  const shown = useRef(procId);
+  useGSAP(() => {
+    if (shown.current === procId) return;
+    shown.current = procId;
+    if (!REDUCED) gsap.from('[data-track][data-on] [data-step]', { y: 24, opacity: 0, duration: .5, stagger: .04, ease: 'power3.out', clearProps: 'all' });
+  }, { scope: root, dependencies: [procId] });
+
+  return (
+    <Section ref={root} id="process" aria-label={m.label} className={SEC}>
+      <div className="flex flex-col gap-[clamp(20px,3vh,40px)]">
+        <div className="wrap flex flex-wrap items-end justify-between gap-8">
+          <div>
+            <Eyebrow>{m.eyebrow}</Eyebrow>
+            <H2>{pick(proc.title, proc.titleEn)}</H2>
+          </div>
+          <div className="grid justify-items-end gap-3">
+            <div className="flex flex-wrap gap-1.5" role="tablist">
+              {PROCESSES.map(p => (
+                <button key={p.id} type="button" role="tab" aria-selected={p.id === procId} onClick={() => setProcId(p.id)}
+                  className={cn('cursor-pointer rounded-full border border-line-2 px-5 py-3 font-sans text-[.95rem] font-semibold tracking-[.01em] text-fg-2 transition-[background-color,color,border-color] duration-400', p.id === procId && 'border-fg bg-fg text-bg')}>
+                  {pick(p.tab, p.tabEn)}
+                </button>
+              ))}
+            </div>
+            <span className="mono text-mute max-lg:hidden">{m.hint}</span>
+          </div>
+        </div>
+        <div>
+          {PROCESSES.map(p => (
+            <div key={p.id} ref={el => { tracks.current[p.id] = el; }} data-track data-on={p.id === procId || undefined}
+              tabIndex={p.id === procId ? 0 : -1} aria-label={pick(p.ko, p.en)}
+              className="hidden gap-[18px] pr-(--gutter) pl-[max(var(--gutter),calc((100vw_-_1480px)/2))] [scrollbar-width:none] focus-visible:outline-offset-[-2px] data-on:flex lg:overflow-x-auto lg:overscroll-x-contain [&::-webkit-scrollbar]:hidden max-lg:flex-col max-lg:px-(--gutter)">
+              {p.steps.map((s, i) => (
+                <article key={s.ko} data-step className="group/step relative grid w-[clamp(280px,26vw,380px)] flex-none grid-rows-[auto_1fr] overflow-hidden rounded-md border border-line bg-card transition-[border-color] duration-400 hover:border-line-2 max-lg:w-full">
+                  <div data-wipe className="relative aspect-[505/350] overflow-hidden bg-bg-2">
+                    {s.imgs.map((im, k) => (
+                      <Img key={im} src={PROCESS_IMG + im} sizes="(max-width: 900px) 85vw, 400px" alt={`${pick(s.ko, s.koEn)} ${k + 1}`}
+                        className={cn('absolute inset-0 size-full object-cover transition-opacity duration-600', k > 0 && 'opacity-0 group-hover/step:opacity-100')} />
+                    ))}
+                    {s.imgs.length > 1 && <span className="absolute right-2.5 bottom-2 font-mono text-[.7rem] tracking-[.1em] text-white uppercase opacity-80 [text-shadow:0_1px_4px_rgba(0,0,0,.6)]">{m.photoHint}</span>}
+                  </div>
+                  <div className="grid grid-cols-[1fr_auto] content-start gap-x-3.5 gap-y-2 px-5 pt-[18px] pb-5">
+                    <div className="mono col-span-full flex justify-between text-mute"><span>{m.step(i + 1)}</span><em className={cn('not-italic', (s.heat === 'hot' || s.heat === 'warm') && HEAT[s.heat])}>{s.en}</em></div>
+                    <h3 className="m-0 text-[1.25rem] font-semibold">{pick(s.ko, s.koEn)}</h3>
+                    <div className={cn('num self-start font-display text-[3.2rem] leading-[.8] font-extrabold tracking-[-.02em]', s.heat && HEAT[s.heat])}>{pad2(i + 1)}</div>
+                    <p className="col-span-full m-0 text-[.92rem] leading-[1.6] text-fg-2">{pick(s.d, s.dEn)}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          ))}
+        </div>
+        <div className="wrap">
+          <div className="relative h-0.5 bg-line max-lg:hidden"><i ref={bar} className="absolute inset-0 origin-left bg-[linear-gradient(90deg,var(--fg-2),var(--acc))] [transform:scaleX(0)]" /></div>
+          <div className="mono flex justify-between gap-5 text-mute max-lg:hidden"><span>{proc.foot[0]}</span><span>{m.middle}</span><span>{proc.foot[1]}</span></div>
+        </div>
+      </div>
+    </Section>
+  );
+}

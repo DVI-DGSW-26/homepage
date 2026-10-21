@@ -1,0 +1,119 @@
+/* ============================================================
+   DVISION homepage — Tailwind entry
+   Two tonal worlds are defined: graphite (dark) and anodized aluminum
+   (light), switched with the header's theme button (src/lib/theme.ts sets
+   html[data-mode]). Brand purple #5F298C is the accent.
+
+   Layout and type live in the components as utilities. What stays here is
+   what utilities can't say: the tokens, range-slider thumbs, and the nodes GSAP
+   SplitText creates at runtime. Animation has its own file, animation.css.
+   ============================================================ */
+/* classes are collected from src/ only — the repo also holds docs and agent skills full of example markup */
+@import "tailwindcss" source(".");
+@import "./animation.css";
+
+/* html[data-mode="light"] — the light token set is active */
+@custom-variant light (&:where([data-mode="light"] *));
+/* until the hero entrance starts (html[data-ready] is set by src/components/Hero.tsx) */
+@custom-variant booting (&:where(html:not([data-ready]) *));
+
+@theme {
+  /* The original stylesheet is desktop-first (max-width queries). Each breakpoint is
+     the original boundary + 1px, so `max-lg:` is exactly `max-width: 900px` and `lg:` is
+     `min-width: 901px` — the same split src uses in matchMedia. */
+  --breakpoint-*: initial;
+  --breakpoint-xs: 641px;
+  --breakpoint-sm: 761px;
+  --breakpoint-md: 861px;
+  --breakpoint-lg: 901px;
+  --breakpoint-xl: 981px;
+  --breakpoint-2xl: 1001px;
+  --breakpoint-3xl: 1101px;
+
+  --font-display: 'Big Shoulders Display', 'Archivo Narrow', 'Arial Narrow', Impact, sans-serif;
+  --font-sans: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Consolas, monospace;
+
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+  --radius-card: 8px;
+
+  /* surfaces that stay graphite whatever the mode (the statement band, copy set on photographs) */
+  --color-ink: #0C1016;
+  --color-ink-fg: #D5DAE1;
+  --color-ink-fg-2: #A3ACB8;
+  --color-ink-mute: #6F7A88;
+  --color-ink-line: rgba(213, 218, 225, .13);
+  --color-ink-line-2: rgba(213, 218, 225, .3);
+  --color-paper: #D8DBDF;
+
+}
+
+/* mode-dependent colours resolve through the tokens, so `bg-bg`, `text-fg-2`, `border-line`
+   follow html[data-mode] without any extra variant */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-2: var(--bg-2);
+  --color-card: var(--card);
+  --color-fg: var(--fg);
+  --color-fg-2: var(--fg-2);
+  --color-mute: var(--mute);
+  --color-line: var(--line);
+  --color-line-2: var(--line-2);
+  --color-acc: var(--acc);
+  --color-acc-2: var(--acc-2);
+  --color-acc-ink: var(--acc-ink);
+  --color-acc-glow: var(--acc-glow);
+  --color-nav: var(--nav-bg);
+  /* award gold: pale on graphite, burnished on aluminum so it still reads as text */
+  --color-gold: var(--gold);
+}
+
+@layer base {
+  :root {
+    /* tokens (dark defaults; light set below on html[data-mode="light"]) */
+    --bg: #0C1016; --bg-2: #121821; --card: #10151C;
+    --fg: #D5DAE1; --fg-2: #A3ACB8; --mute: #6F7A88;
+    --line: rgba(213, 218, 225, .13); --line-2: rgba(213, 218, 225, .3);
+    --acc: #8A5BC2; --acc-2: #B79BE3; --acc-ink: #B79BE3; --acc-glow: rgba(138, 91, 194, .35); --nav-bg: rgba(12, 16, 22, .94); --gold: #E7C87A;
+    --gutter: clamp(20px, 5vw, 88px);
+    color-scheme: dark;
+  }
+  html[data-mode="light"] {
+    color-scheme: light;
+    --bg: #D8DBDF; --bg-2: #E4E6E9; --card: #E9EBEE;
+    --fg: #0C1016; --fg-2: #3A424C; --mute: #6B7480;
+    --line: rgba(12, 16, 22, .14); --line-2: rgba(12, 16, 22, .32);
+    --acc: #5F298C; --acc-2: #8A5BC2; --acc-ink: #5F298C; --acc-glow: rgba(95, 41, 140, .28); --nav-bg: rgba(216, 219, 223, .95); --gold: #8C6414;
+  }
+  /* the dark half of the page background; the light half crossfades over it (animation.css) */
+  html { background: #0C1016; -webkit-text-size-adjust: 100% }
+  body {
+    background: transparent; color: var(--fg); font-family: var(--font-sans);
+    font-size: 1.0625rem; line-height: 1.75; overflow-x: clip;
+  }
+  h3 { letter-spacing: -.01em }
+  /* Korean wraps between words, never inside one ("디비전의 제품을", not "제품 / 을"); a word longer
+     than the line may still break, so nothing overflows */
+  :lang(ko) :where(h1, h2, h3, h4, p, b, li, small, label, figcaption, dd, td) { word-break: keep-all; overflow-wrap: break-word }
+  ::selection { background: var(--acc); color: #fff }
+  :focus-visible { outline: 2px solid var(--acc-2); outline-offset: 4px }
+}
+
+/* ---- shared type and layout ---------------------------------------------- */
+@utility wrap { width: min(1480px, 100% - var(--gutter) * 2); margin-inline: auto }
+/* for full-bleed blocks: padding that lines the content up with the wrap column */
+@utility pad-wrap { padding-inline: calc((100% - min(1480px, 100% - var(--gutter) * 2)) / 2) }
+@utility mono { font-family: var(--font-mono); font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 500 }
+@utility disp { font-family: var(--font-display); font-weight: 800; text-transform: uppercase; line-height: .9; letter-spacing: -.005em; text-wrap: balance }
+@utility num { font-variant-numeric: tabular-nums }
+@utility text-stroke { color: transparent; -webkit-text-stroke: 1px var(--fg-2) }
+
+@layer components {
+  /* configurator sliders: the thumb only exists as a vendor pseudo-element */
+  .range { appearance: none; width: 100%; height: 24px; background: linear-gradient(var(--line-2), var(--line-2)) center / 100% 2px no-repeat; outline: 0; margin: -4px 0 -6px; cursor: pointer }
+  .range::-webkit-slider-thumb { appearance: none; width: 16px; height: 16px; border-radius: 50%; background: var(--fg); border: 3px solid var(--bg); box-shadow: 0 0 0 1px var(--fg); cursor: pointer }
+  .range::-moz-range-thumb { width: 12px; height: 12px; border-radius: 50%; background: var(--fg); border: 2px solid var(--bg); cursor: pointer }
+
+  /* characters GSAP SplitText cuts the hero headlines into (charsClass in src/components/Hero.tsx) */
+  .split-char { display: inline-block }
+}
