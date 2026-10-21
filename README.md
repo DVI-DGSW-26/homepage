@@ -49,8 +49,8 @@ pnpm coast      # 지도 해안선 데이터 다시 만들기 (결과는 커밋�
 | `src/components/Events.tsx` | 행사 목록과 상세 |
 | `src/components/Contact.tsx` | 커뮤니티, 문의, 푸터 |
 | `src/i18n/` | KOR / ENG. `locales/ko.ts`·`locales/en.ts` 화면 문구 사전, `store.ts` 언어 상태·`useT`·`pick`·`useLang`·`setLang`, `rich.tsx` 태그가 섞인 문구 렌더, `meta.ts` `<html lang>`·`<title>`·meta description, `index.ts` 진입점 |
-| `src/lib/theme.ts` | 다크 / 라이트 모드 상태(`useTheme`, `setTheme`), 저장, 크로스페이드 |
 | `src/lib/tokens.ts` | 스크립트에서 토큰 읽기: `token('--scene-alu')`, `withAlpha()`, 모드 전환 때 다시 읽는 `modeTokens()` (캔버스, WebGL 장면) |
+| `src/lib/theme.ts` | 다크 / 라이트 모드 상태(`useTheme`, `setTheme`), 저장, 크로스페이드 |
 | `src/lib/scroll.ts` | 네이티브 스크롤 이동(`scroll.scrollTo`)과 앵커 링크 처리 |
 | `src/lib/reveals.ts` | 마커 클래스 기반 페이지 전역 리빌(한 번만 재생), 사진 와이프, 숫자 카운트업 |
 | `src/lib/gsap.ts`, `boot.ts`, `env.ts` | GSAP 플러그인 등록, 부팅 시점(웹폰트, 최대 1.5초), 환경 상수 |
@@ -117,9 +117,9 @@ pnpm coast      # 지도 해안선 데이터 다시 만들기 (결과는 커밋�
 - CSS 로 움직이는 것(keyframes, 무한 반복, 상태 전환 트랜지션)은 `src/animation.css` 에 모읍니다. 한 번 재생되는 스크립트 연출(히어로 인트로·박자 전환, 리빌, 여섯 해 레일, 조직도)은 GSAP 으로 각 컴포넌트와 `src/lib/reveals.ts` 에 있고, 호버 트랜지션은 요소의 유틸리티로 둡니다.
 - 마키는 내용을 두 번 이어 쓴 트랙에 `.marquee` 를 주고, 감싸는 요소에 `.marquee-host` 를 줍니다. 속도는 `[--marquee-duration:48s]` 처럼 트랙마다 정합니다(기본 42s). 포인터를 올리거나 안에 포커스가 있으면 멈춥니다(히어로 아래 라벨, 고객사 로고, 인증서).
 - GSAP 은 컴포넌트마다 `useGSAP(fn, { scope })` 안에서 만듭니다. 정리될 때 트윈, ScrollTrigger, SplitText, matchMedia 가 함께 되돌려집니다. Three.js / Canvas 장면은 같은 effect 에서 만들고 반환한 정리 함수에서 `destroy()` 합니다.
+- three.js 와 두 WebGL 장면(`src/three/hero.ts`, `extrusion.ts`)은 `import()` 로 따로 받는 청크입니다. 페이지가 쓰는 부품 이름·프로파일 계산은 three.js 없는 `src/three/meta.ts` 에 있으니, 컴포넌트에서 `src/three/*` 의 장면 모듈을 정적으로 import 하지 마세요(타입은 `import type`). 단일 파일은 `scripts/single.mjs` 가 동적 import 를 한 스크립트로 합친 별도 빌드로 만듭니다.
 - 무거운 초기화는 첫 화면 뒤로 미룹니다. 히어로 장면은 첫 페인트 직후에 만들고 부품 샘플링은 첫 부품만 즉시, 나머지는 유휴 시간에 합니다. 프로파일 랩 장면은 로드 후 유휴 시간이나 섹션 한 화면 앞에서 만듭니다. 두 장면 모두 셰이더를 `compileAsync` 로 미리 컴파일한 뒤 그리기 시작합니다.
 - 스크롤 트리거를 만들기 전에 숨김 상태(스타일 쓰기)를 한꺼번에 먼저 적용합니다. 트리거는 만들어지는 순간 페이지를 측정하므로, 쓰기와 생성을 번갈아 하면 트리거 수만큼 레이아웃이 다시 계산됩니다.
-- three.js 와 두 WebGL 장면(`src/three/hero.ts`, `extrusion.ts`)은 `import()` 로 따로 받는 청크입니다. 페이지가 쓰는 부품 이름·프로파일 계산은 three.js 없는 `src/three/meta.ts` 에 있으니, 컴포넌트에서 `src/three/*` 의 장면 모듈을 정적으로 import 하지 마세요(타입은 `import type`). 단일 파일은 `scripts/single.mjs` 가 동적 import 를 한 스크립트로 합친 별도 빌드로 만듭니다.
 - 페이지 전역 리빌은 마커로 붙입니다 (`src/components/ui.tsx` 상단 주석): `.rv`, `[data-batch]`, `[data-wipe]`, `[data-count]`. 모두 처음 한 번만 재생되고 위로 되돌아갈 때 되감기지 않으며, 재생한 트리거는 스스로 사라집니다.
 - 스크롤에 따라 프레임마다 바뀌는 상태(박자 전환 중인 카피, 시네마틱 프레임, 연혁 칸)는 React state 가 아니라 `data-*` 속성을 직접 토글하고 `data-on:` / `group-data-*:` 변형으로 스타일을 겁니다. 탭, 필터, 카테고리, 설정기 값처럼 사용자가 바꾸는 상태만 React state 입니다.
 - 다른 컴포넌트의 `contextSafe` 함수를 GSAP 콜백 안에서 부르지 마세요. GSAP 은 콜백을 그 애니메이션의 컨텍스트 안에서 실행하므로, 호출된 쪽 컨텍스트 전체가 호출한 쪽 아래로 들어가 함께 정리됩니다.

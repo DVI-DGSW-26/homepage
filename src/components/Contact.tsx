@@ -154,10 +154,9 @@ export function Contact() {
           </div>
           <InquiryForm />
         </div>
-        <footer className="mt-[clamp(80px,10vw,150px)] overflow-hidden border-t border-line pt-10 pb-[30px]">
-          <div data-biglogo className="relative mb-7 aspect-[800/216] w-[min(100%,340px)] opacity-95">
-            <Img className="absolute inset-0 size-full origin-bottom-left object-contain object-left transition-opacity duration-500 light:opacity-0" src="assets/img/logo-white.png" sizes="340px" alt={t.brand} />
-            <Img className="absolute inset-0 size-full origin-bottom-left object-contain object-left opacity-0 transition-opacity duration-500 light:opacity-100" src="assets/img/logo.png" sizes="340px" alt="" />
+        <footer className="mt-footer-top overflow-hidden border-t border-line pt-10 pb-7.5">
+          <div data-biglogo className="relative mb-7 aspect-800/216 w-[min(100%,340px)]">
+            <Img className="absolute inset-0 size-full origin-bottom-left object-contain object-left" src="assets/img/logo.png" sizes="340px" alt={t.brand} />
           </div>
           <div className="mono flex flex-wrap justify-between gap-5 text-caption text-mute max-xs:flex-col max-xs:gap-2">
             <span>{m.footer.copyright}</span>

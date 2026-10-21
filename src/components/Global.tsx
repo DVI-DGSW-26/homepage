@@ -45,8 +45,8 @@ export function Global() {
 
 const TL_COL = 'clamp(72px,10vw,150px)';
 
-// oldest first: the story reads from the 2020 founding forward, month by month
-const CHRONO = [...HISTORY].sort((a, b) => a.y - b.y).map(y => ({ ...y, ev: [...y.ev].sort((a, b) => +a.m - +b.m) }));
+// newest first: the latest year at the top, and within each year the latest month first
+const CHRONO = [...HISTORY].sort((a, b) => b.y - a.y).map(y => ({ ...y, ev: [...y.ev].sort((a, b) => +b.m - +a.m) }));
 
 export function History() {
   const m = useT().history;
