@@ -1,0 +1,291 @@
+/* ============================================================
+   DVISION homepage — design tokens
+   Every design value lives here; components use the utilities these generate
+   (`bg-ink`, `text-on-photo/70`, `text-shadow-photo`, `bg-(image:--scrim-card)`)
+   and scripts read the plain custom properties (`--scene-*`, `--fg`).
+
+   - @theme          Tailwind tokens: breakpoints, fonts, type scale, tracking,
+                     leading, fluid spacing, containers, radii, easing, shadows
+   - @theme static   fixed colours (the same in both modes), always emitted so
+                     var() references from CSS and scripts resolve
+   - @theme inline   mode colours: utilities that resolve through the mode set
+   - :root           the mode set (dark default, light on html[data-mode="light"]),
+                     motion timings, photo scrims, and the colours of the WebGL
+                     scenes, the canvases and the award medal
+
+   Fixed pixel spacing uses Tailwind's own 4px scale (gap-4.5 = 18px, size-18 = 72px);
+   the tokens below are for what that scale can't say: fluid clamp() steps and names.
+   Remember to list a new text/tracking/leading/spacing/radius name in `cn`
+   (src/components/ui.tsx) too, or tailwind-merge will mistake it for a colour.
+   ============================================================ */
+
+@theme {
+  /* The original stylesheet is desktop-first (max-width queries). Each breakpoint is
+     the original boundary + 1px, so `max-lg:` is exactly `max-width: 900px` and `lg:` is
+     `min-width: 901px` — the same split src/lib/env.ts uses in matchMedia. */
+  --breakpoint-*: initial;
+  --breakpoint-2xs: 361px;
+  --breakpoint-xs: 641px;
+  --breakpoint-sm: 761px;
+  --breakpoint-md: 861px;
+  --breakpoint-lg: 901px;
+  --breakpoint-xl: 981px;
+  --breakpoint-2xl: 1001px;
+  --breakpoint-3xl: 1101px;
+  --breakpoint-4xl: 1281px;
+
+  --font-display: 'Big Shoulders Display', 'Archivo Narrow', 'Arial Narrow', Impact, sans-serif;
+  --font-sans: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Consolas, monospace;
+
+  /* ---- type scale ----
+     No size carries a paired line-height (--text-*--line-height): text-* sets the size only,
+     and leading comes from leading-* or the inherited body leading. */
+  --text-tag: .66rem;          /* badges, tiny counters */
+  --text-micro: .7rem;         /* mono labels on photos and cards */
+  --text-label: .74rem;        /* mono labels and values */
+  --text-mono-sm: .78rem;      /* photo counts in the product list */
+  --text-mono: .8rem;          /* the mono utility */
+  --text-caption: .84rem;
+  --text-small: .9rem;
+  --text-body-sm: .95rem;
+  --text-body: 1rem;
+  --text-body-lg: 1.05rem;
+  --text-page: 1.0625rem;      /* the body copy */
+  --text-title-xs: 1.15rem;
+  --text-title-sm: 1.2rem;
+  --text-title: 1.25rem;
+  --text-title-lg: 1.35rem;
+  --text-index: 1.4rem;        /* IndexHead titles */
+  --text-figure-xs: 1.5rem;
+  --text-figure-sm: 1.6rem;
+  --text-figure: 2rem;
+  --text-step: 3.2rem;         /* process step numbers */
+  --text-letter: 7rem;         /* the outlined E / S / G */
+  /* units and figures sized against the type they sit in */
+  --text-unit-sm: .32em;
+  --text-unit: .42em;
+  --text-unit-lg: .5em;
+  --text-ledger: 1.5em;
+  /* fluid display sizes */
+  --text-hero: clamp(2.7rem, 7vw, 7.6rem);
+  --text-hero-body: clamp(.98rem, 1.25vw, 1.2rem);
+  --text-statement: clamp(2.6rem, 14vw, 15rem);
+  --text-manifesto: clamp(2rem, 3.8vw, 3.8rem);
+  --text-h2: clamp(1.85rem, 3.9vw, 3.5rem);
+  --text-h2-sm: clamp(1.6rem, 2.6vw, 2.4rem);   /* profile lab, where the copy shares the screen */
+  --text-h2-lg: clamp(2.2rem, 4.6vw, 4.2rem);   /* contact */
+  --text-frame: clamp(2.6rem, 6vw, 6rem);       /* Frame 01 title */
+  --text-year: clamp(2.6rem, 5vw, 5.4rem);      /* six years */
+  --text-year-sm: clamp(2.4rem, 4.4vw, 4rem);   /* history */
+  --text-kpi: clamp(3.2rem, 5vw, 5.2rem);       /* press capacity */
+  --text-kpi-tight: clamp(3.2rem, 4.6vw, 5.2rem); /* R&D figures */
+  --text-kpi-narrow: clamp(3.2rem, 9vw, 5rem);  /* R&D figures up to 900px */
+  --text-subhead: clamp(1.6rem, 3vw, 2.6rem);
+  --text-subhead-lg: clamp(1.6rem, 3vw, 2.8rem);
+  --text-marquee: clamp(1.6rem, 3.4vw, 3rem);
+  --text-card-title: clamp(1.1rem, 1.5vw, 1.45rem);
+
+  /* ---- letter-spacing (.1em is Tailwind's tracking-widest, -.025em its tracking-tight) ---- */
+  --tracking-display: -.005em;
+  --tracking-heading: -.02em;
+  --tracking-heading-sm: -.01em;
+  --tracking-button: .01em;
+  --tracking-name: .005em;     /* part names in the product list */
+  --tracking-spec: .04em;
+  --tracking-mono-sm: .06em;
+  --tracking-tag: .08em;
+  --tracking-label: .14em;
+
+  /* ---- line-height (1.25 is leading-tight, 1.5 leading-normal) ---- */
+  --leading-letter: .75;
+  --leading-step: .8;
+  --leading-figure: .85;
+  --leading-statement: .86;
+  --leading-hero: .88;
+  --leading-display: .9;
+  --leading-h2: 1.22;
+  --leading-title: 1.3;
+  --leading-caption: 1.35;
+  --leading-note: 1.4;
+  --leading-manifesto: 1.42;
+  --leading-copy: 1.6;
+  --leading-hero-body: 1.7;
+  --leading-page: 1.75;
+
+  /* ---- fluid spacing (p-*, m-*, gap-*, inset, w-*, h-*) ---- */
+  --spacing-gutter: clamp(20px, 5vw, 88px);     /* page side margin */
+  --spacing-wrap: min(var(--container-page), 100% - var(--spacing-gutter) * 2); /* the content column */
+  --spacing-section: clamp(96px, 12vw, 180px);  /* vertical rhythm of a section */
+  --spacing-sec-head: clamp(48px, 6vw, 88px);   /* under a section heading */
+  --spacing-stack: clamp(64px, 9vw, 120px);     /* between blocks in a section */
+  --spacing-stack-md: clamp(56px, 7vw, 100px);
+  --spacing-stack-sm: clamp(40px, 5vw, 72px);
+  --spacing-col-gap: clamp(24px, 4vw, 64px);    /* between a heading and its lead, side by side */
+  --spacing-nav-clear: 104px;                   /* below the floating header */
+  --spacing-about-top: clamp(120px, 18vh, 220px);
+  --spacing-manifesto-top: clamp(40px, 6vw, 80px);
+  --spacing-frame-top: clamp(48px, 8vh, 110px);
+  --spacing-frame-pad: clamp(28px, 6vh, 64px);
+  --spacing-hero-bottom: clamp(40px, 8vh, 96px);
+  --spacing-hero-gap: clamp(16px, 2.5vh, 28px);
+  --spacing-config-top: clamp(72px, 9vh, 104px);
+  --spacing-config-top-narrow: clamp(80px, 12vw, 140px);
+  --spacing-config-bottom: clamp(20px, 4vh, 48px);
+  --spacing-config-gap: clamp(20px, 4vw, 64px);
+  --spacing-config-stage: 62vh;
+  --spacing-statement-bottom: clamp(32px, 6vh, 64px);
+  --spacing-timeline: clamp(28px, 4vw, 64px);
+  --spacing-footer-top: clamp(80px, 10vw, 150px);
+  --spacing-form-pad: clamp(20px, 3vw, 36px);
+  --spacing-panel-pad: clamp(16px, 2vw, 24px);
+  --spacing-events-gap: clamp(20px, 3vw, 44px);
+  --spacing-contact-gap: clamp(32px, 5vw, 90px);
+  --spacing-nav-gap: clamp(18px, 3vw, 40px);
+  --spacing-nav-gap-tight: clamp(12px, 1.6vw, 24px);
+  --spacing-process-gap: clamp(20px, 3vh, 40px);
+  --spacing-kpi-gap: clamp(18px, 2vw, 32px);
+  /* fluid widths */
+  --spacing-logo: clamp(110px, 9vw, 136px);
+  --spacing-process-card: clamp(280px, 26vw, 380px);
+  --spacing-product-thumb: clamp(180px, 20vw, 260px);
+  --spacing-medal: clamp(58px, 13%, 104px);
+
+  /* ---- measures (max-w-*) ---- */
+  --container-page: 1480px;    /* widest content column */
+  --container-measure: 26em;   /* a comfortable paragraph */
+  --container-lead: 34em;
+  --container-hero-copy: 30em;
+  --container-manifesto: 20em;
+  --container-hero-title: 15ch;
+
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+  --ease-theme: cubic-bezier(.45, 0, .2, 1);   /* the colour-mode crossfade */
+  --radius-tag: 3px;
+  --radius-thumb: 5px;
+  --radius-card: 8px;
+  --radius-pill: 40px;   /* a length, not 9999px, so the header's bar-to-pill change can animate */
+
+  /* legibility on photographs */
+  --text-shadow-photo: 0 1px 6px rgb(0 0 0 / .6);
+  --text-shadow-photo-sm: 0 1px 4px rgb(0 0 0 / .6);
+  --drop-shadow-medal: 0 4px 10px rgb(0 0 0 / .55);
+  --drop-shadow-medal-sm: 0 2px 5px rgb(0 0 0 / .6);
+}
+
+@theme static {
+  /* graphite: surfaces that stay dark whatever the mode (the statement band, copy set on photographs) */
+  --color-ink: #0C1016;
+  --color-ink-fg: #D5DAE1;
+  --color-ink-fg-2: #A3ACB8;
+  --color-ink-mute: #6F7A88;
+  --color-ink-line: rgb(213 218 225 / .13);
+  --color-ink-line-2: rgb(213 218 225 / .3);
+  /* the accent as it reads on graphite */
+  --color-ink-acc: #B79BE3;
+  /* anodized aluminum, the light page */
+  --color-paper: #D8DBDF;
+  /* brand purple (dvi-ind.com --brand-color) */
+  --color-brand: #5F298C;
+  /* type set on photographs and on the accent fill */
+  --color-on-photo: #fff;
+  --color-on-acc: #fff;
+  /* the white backing behind logos, scans and product shots */
+  --color-plate: #fff;
+}
+
+/* mode-dependent colours resolve through the mode set, so `bg-bg`, `text-fg-2`, `border-line`
+   follow html[data-mode] without any extra variant */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-2: var(--bg-2);
+  --color-card: var(--card);
+  --color-fg: var(--fg);
+  --color-fg-2: var(--fg-2);
+  --color-mute: var(--mute);
+  --color-line: var(--line);
+  --color-line-2: var(--line-2);
+  --color-acc: var(--acc);
+  --color-acc-2: var(--acc-2);
+  --color-acc-ink: var(--acc-ink);
+  --color-acc-glow: var(--acc-glow);
+  --color-nav: var(--nav-bg);
+  /* award gold: pale on graphite, burnished on aluminum so it still reads as text */
+  --color-gold: var(--gold);
+}
+
+@layer base {
+  :root {
+    /* ---- mode set: graphite (default) ---- */
+    color-scheme: dark;
+    --bg: var(--color-ink); --bg-2: #121821; --card: #10151C;
+    --fg: var(--color-ink-fg); --fg-2: var(--color-ink-fg-2); --mute: var(--color-ink-mute);
+    --line: var(--color-ink-line); --line-2: var(--color-ink-line-2);
+    --acc: #8A5BC2; --acc-2: var(--color-ink-acc); --acc-ink: var(--color-ink-acc); --acc-glow: rgb(138 91 194 / .35);
+    --nav-bg: color-mix(in srgb, var(--color-ink) 94%, transparent);
+    --gold: #E7C87A;
+
+    /* ---- motion (src/animation.css) ---- */
+    --duration-theme: .62s;      /* colour-mode crossfade; src/lib/theme.ts flips the tokens at its midpoint */
+    --duration-morph: .7s;       /* header bar ↔ pill */
+    --duration-fade: .4s;
+    --duration-cue: 1.8s;
+    --duration-marquee: 42s;     /* text strip; the logo and certificate strips run slower */
+    --duration-marquee-logos: 48s;
+    --duration-marquee-certs: 70s;
+
+    /* ---- scrims: graphite laid over photographs so copy on them reads (used as bg-(image:--scrim-*)) ---- */
+    /* Frame 01: dark where the heading and the figures sit, clear through the middle */
+    --scrim-frame: linear-gradient(180deg, color-mix(in srgb, var(--color-ink) 78%, transparent), color-mix(in srgb, var(--color-ink) 20%, transparent) 42%, color-mix(in srgb, var(--color-ink) 20%, transparent) 52%, color-mix(in srgb, var(--color-ink) 82%, transparent));
+    --scrim-frame-narrow: linear-gradient(180deg, color-mix(in srgb, var(--color-ink) 82%, transparent), color-mix(in srgb, var(--color-ink) 45%, transparent) 45%, color-mix(in srgb, var(--color-ink) 85%, transparent));
+    /* product categories and ESG cards: copy at the bottom */
+    --scrim-card: linear-gradient(180deg, color-mix(in srgb, var(--color-ink) 10%, transparent), color-mix(in srgb, var(--color-ink) 85%, transparent));
+    --scrim-card-deep: linear-gradient(180deg, color-mix(in srgb, var(--color-ink) 15%, transparent), color-mix(in srgb, var(--color-ink) 90%, transparent));
+    /* the statement photo fades into its graphite band at the top and the bottom */
+    --scrim-band: linear-gradient(180deg, var(--color-ink), transparent 25%, transparent 75%, var(--color-ink));
+
+    /* outlined display type */
+    --stroke-on-ink: color-mix(in srgb, var(--color-ink-fg) 70%, transparent);
+    --stroke-on-photo: color-mix(in srgb, var(--color-on-photo) 50%, transparent);
+
+    /* ---- WebGL scenes (src/three) — read once at start-up through src/lib/tokens.ts ---- */
+    --scene-key: #FFFFFF;           /* key light */
+    --scene-rim: var(--color-ink-acc); /* hero rim light */
+    /* hero: aluminum solids and chips, and the purple sparks where the pointer stirs them;
+       the -light values are what they turn to on the light page */
+    --scene-alu: #D9DEE5;
+    --scene-alu-light: #8D96A2;
+    --scene-chip: #D6DEE8;
+    --scene-chip-light: #454D59;
+    --scene-spark: #A870E6;
+    --scene-spark-light: #6B339E;
+    /* profile lab: press, die and the extruded profile */
+    --scene-mill: #7C828A;          /* mill-finish profile */
+    --scene-steel: #1E232B;         /* die, ribs, stem, platen */
+    --scene-steel-light: #3A414C;   /* container */
+    --scene-bolt: #9AA3AF;
+    --scene-rim-cool: #C9B8FF;
+    --scene-die-hot: #8A5BC2;       /* the hot light at the die */
+    --scene-die-glow: #9E6EDC;      /* its glow sprite */
+    --scene-dust: var(--color-ink-fg);
+
+    /* ---- award medal (Events) ---- */
+    --medal-gold-hi: #F6E6B6; --medal-gold-mid: #D9AF4E; --medal-gold-lo: #A8792A;
+    --medal-face-hi: #FBF1CF; --medal-face-mid: #E4C065; --medal-face-lo: #C39A3C;
+    --medal-ribbon-l-top: #8E1D28; --medal-ribbon-l-bot: #5E1019;
+    --medal-ribbon-r-top: #B42B36; --medal-ribbon-r-bot: #7C1520;
+    --medal-rim: #9C7227;
+    --medal-ink: #5A3F12;
+  }
+
+  /* ---- mode set: aluminum ---- */
+  html[data-mode="light"] {
+    color-scheme: light;
+    --bg: var(--color-paper); --bg-2: #E4E6E9; --card: #E9EBEE;
+    --fg: var(--color-ink); --fg-2: #3A424C; --mute: #6B7480;
+    --line: color-mix(in srgb, var(--color-ink) 14%, transparent); --line-2: color-mix(in srgb, var(--color-ink) 32%, transparent);
+    --acc: var(--color-brand); --acc-2: #8A5BC2; --acc-ink: var(--color-brand); --acc-glow: color-mix(in srgb, var(--color-brand) 28%, transparent);
+    --nav-bg: color-mix(in srgb, var(--color-paper) 95%, transparent);
+    --gold: #8C6414;
+  }
+}

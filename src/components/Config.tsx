@@ -18,7 +18,7 @@ const fitWall = (p: ProfileParams): ProfileParams => {
   const maxWall = Math.min((p.w - 8 * p.cells) / (p.cells + 1), (p.h - 6) / 2);
   return p.wall > maxWall ? { ...p, wall: Math.max(1.5, Math.floor(maxWall * 2) / 2) } : p;
 };
-const HIDE_SHORT = '[@media(max-height:780px)]:hidden';
+const HIDE_SHORT = 'short:hidden';
 
 /** Profile lab: tune a multi-hollow section and read its weight. */
 export function Config() {
@@ -59,18 +59,18 @@ export function Config() {
   ];
   return (
     <Section ref={root} id="config" aria-label={t.label}>
-      <div className="grid min-h-svh grid-cols-[minmax(320px,.9fr)_1.4fr] items-center gap-[clamp(20px,4vw,64px)] overflow-hidden pt-[clamp(72px,9vh,104px)] pb-[clamp(20px,4vh,48px)] max-3xl:min-h-0 max-3xl:grid-cols-1 max-3xl:overflow-visible max-3xl:pt-[clamp(80px,12vw,140px)] max-3xl:pb-10">
+      <div className="grid min-h-svh grid-cols-[minmax(320px,.9fr)_1.4fr] items-center gap-config-gap overflow-hidden pt-config-top pb-config-bottom max-3xl:min-h-0 max-3xl:grid-cols-1 max-3xl:overflow-visible max-3xl:pt-config-top-narrow max-3xl:pb-10">
         {/* up to 1100px the stage stacks above the copy, and the scene keeps to it instead of sitting under the copy */}
-        <canvas ref={canvas} aria-hidden="true" className="absolute inset-0 z-0 size-full max-3xl:bottom-auto max-3xl:h-[calc(62vh+clamp(80px,12vw,140px))]" />
-        <div data-copy className="relative z-2 grid max-w-[600px] content-center gap-3.5 bg-[linear-gradient(90deg,var(--bg)_0%,var(--bg)_78%,transparent_100%)] pr-6 pl-(--gutter) max-3xl:max-w-none max-3xl:bg-none max-3xl:px-(--gutter)">
+        <canvas ref={canvas} aria-hidden="true" className="absolute inset-0 z-0 size-full max-3xl:bottom-auto max-3xl:h-[calc(var(--spacing-config-stage)+var(--spacing-config-top-narrow))]" />
+        <div data-copy className="relative z-2 grid max-w-150 content-center gap-3.5 bg-linear-to-r/srgb from-bg via-bg via-78% to-transparent pr-6 pl-gutter max-3xl:max-w-none max-3xl:bg-none max-3xl:px-gutter">
           <Eyebrow>{t.eyebrow}</Eyebrow>
-          <H2 className="text-[clamp(1.6rem,2.6vw,2.4rem)]">{t.title}</H2>
-          <Lead className={cn('text-[.95rem] leading-[1.6]', HIDE_SHORT)}>{t.lead}</Lead>
+          <H2 className="text-h2-sm">{t.title}</H2>
+          <Lead className={cn('text-body-sm leading-copy', HIDE_SHORT)}>{t.lead}</Lead>
           <div className="grid gap-2 border-t border-line-2 pt-3">
             {CTRLS.map(c => (
               <div key={c.k} className="grid grid-cols-[1fr_auto] items-center gap-x-3.5 gap-y-0.5">
-                <label htmlFor={'cfg-' + c.k} className="text-[.88rem] text-fg-2">{t.controls[c.k]}</label>
-                <output htmlFor={'cfg-' + c.k} className="font-mono text-[.74rem] tracking-[.06em] text-fg">{c.show(params[c.k])}</output>
+                <label htmlFor={'cfg-' + c.k} className="text-small text-fg-2">{t.controls[c.k]}</label>
+                <output htmlFor={'cfg-' + c.k} className="font-mono text-label tracking-mono-sm text-fg">{c.show(params[c.k])}</output>
                 <input id={'cfg-' + c.k} className="range col-span-full" type="range" min={c.min} max={c.max} step={c.step} value={params[c.k]}
                   onChange={e => { const v = +e.target.value; setParams(p => fitWall({ ...p, [c.k]: v })); }} />
               </div>
@@ -79,15 +79,15 @@ export function Config() {
           <div className="grid grid-cols-2 overflow-hidden rounded-card border border-line bg-card">
             {out.map((o, i) => (
               <div key={o.label} className={cn('grid gap-0.5 border-line px-3.5 py-2.5', i % 2 === 0 && 'border-r', i < 2 && 'border-b')}>
-                <span className="font-mono text-[.7rem] tracking-[.1em] text-mute uppercase">{o.label}</span>
-                <b className={cn('num flex items-baseline gap-[5px] font-display text-[1.6rem] leading-none font-extrabold', o.acc && 'text-acc-2')}>{o.v}<small className="text-[.5em] font-bold text-fg-2">{o.u}</small></b>
+                <span className="font-mono text-micro tracking-widest text-mute uppercase">{o.label}</span>
+                <b className={cn('num flex items-baseline gap-1.25 font-display text-figure-sm leading-none font-extrabold', o.acc && 'text-acc-2')}>{o.v}<small className="text-unit-lg font-bold text-fg-2">{o.u}</small></b>
               </div>
             ))}
           </div>
-          <p className={cn('m-0 text-[.74rem] leading-[1.5] text-mute', HIDE_SHORT)}>{t.note}</p>
+          <p className={cn('m-0 text-label leading-normal text-mute', HIDE_SHORT)}>{t.note}</p>
         </div>
-        <div className="pointer-events-none relative h-full min-h-[420px] max-3xl:-order-1 max-3xl:h-[62vh] max-3xl:min-h-[360px]">
-          <div className="mono pointer-events-auto absolute right-(--gutter) bottom-0 z-2 grid min-w-[200px] gap-2 text-fg-2 max-3xl:bottom-3">
+        <div className="pointer-events-none relative h-full min-h-105 max-3xl:-order-1 max-3xl:h-config-stage max-3xl:min-h-90">
+          <div className="mono pointer-events-auto absolute right-gutter bottom-0 z-2 grid min-w-50 gap-2 text-fg-2 max-3xl:bottom-3">
             <HudRow label={t.hud.runOut}><span className="num">{REST_LEN.toFixed(1)} m</span></HudRow>
             <HudRow label={t.hud.die}>{t.hud.dieValue}</HudRow>
           </div>

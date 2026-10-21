@@ -80,16 +80,16 @@ function Catalogue() {
             <div className="absolute inset-0 z-2 flex flex-col justify-between p-[22px]">
               <Img className="size-[38px] object-contain" src={c.icon} sizes="38px" />
               <div>
-                <h3 className="m-0 text-[clamp(1.1rem,1.5vw,1.45rem)] leading-[1.25] font-semibold"><small className="mb-2 block font-mono text-[.74rem] font-medium tracking-[.1em] text-white/70 uppercase">{m.labels[c.id]}</small>{pick(c.ko, c.en)}</h3>
-                <p className="mt-1.5 text-[.88rem] text-white/75">{pick(c.desc, c.descEn)}</p>
+                <h3 className="m-0 text-card-title leading-tight font-semibold"><small className="mb-2 block font-mono text-label font-medium tracking-widest text-on-photo/70 uppercase">{m.labels[c.id]}</small>{pick(c.ko, c.en)}</h3>
+                <p className="mt-1.5 text-small text-on-photo/75">{pick(c.desc, c.descEn)}</p>
               </div>
             </div>
-            <i className="absolute inset-x-0 bottom-0 z-3 h-[3px] origin-left scale-x-0 bg-acc transition-transform duration-500 ease-out group-data-on/cat:scale-x-100" />
+            <i className="absolute inset-x-0 bottom-0 z-3 h-0.75 origin-left scale-x-0 bg-acc transition-transform duration-500 ease-out group-data-on/cat:scale-x-100" />
           </button>
         ))}
       </div>
 
-      <div className="mt-[clamp(40px,5vw,72px)]">
+      <div className="mt-stack-sm">
         <IndexHead title={pick(cat.ko, cat.en)} aside={m.counts(rows.length, photos)} />
         <ul className="m-0 list-none p-0">
           {rows.map(r => (
@@ -99,9 +99,9 @@ function Catalogue() {
               <span className="font-display text-[clamp(1.6rem,3vw,2.8rem)] leading-none font-extrabold tracking-[.005em] uppercase">
                 <Roll text={r.name} />
               </span>
-              <span className="text-[.95rem] text-fg-2 max-sm:hidden">{m.showSystemEn ? <>{r.sys} <span className="mono ml-1.5 text-mute">{r.sysEn}</span></> : r.sysEn}</span>
-              <span className="flex flex-wrap gap-1.5 max-lg:hidden">{m.tags[catId].map(tag => <span key={tag} className="rounded-full border border-line px-[9px] py-1 font-sans text-[.82rem] font-medium tracking-normal text-mute">{tag}</span>)}</span>
-              <span className="num text-right font-mono text-[.78rem] tracking-[.08em] text-mute">{m.photoCount(r.imgs.length)}</span>
+              <span className="text-body-sm text-fg-2 max-sm:hidden">{m.showSystemEn ? <>{r.sys} <span className="mono ml-1.5 text-mute">{r.sysEn}</span></> : r.sysEn}</span>
+              <span className="flex flex-wrap gap-1.5 max-lg:hidden">{m.tags[catId].map(tag => <span key={tag} className="rounded-full border border-line px-2.25 py-1 font-sans text-caption font-medium tracking-normal text-mute">{tag}</span>)}</span>
+              <span className="num text-right font-mono text-mono-sm tracking-tag text-mute">{m.photoCount(r.imgs.length)}</span>
             </li>
           ))}
         </ul>
@@ -112,7 +112,7 @@ function Catalogue() {
               <div data-ph className="relative aspect-[335/300] overflow-hidden rounded-card border border-line bg-white group-data-on/fig:border-acc">
                 <Img src={'assets/img/products/' + p.img} sizes="(max-width: 640px) 50vw, 240px" alt={p.name} className="size-full object-cover transition-transform duration-800 ease-out group-hover/fig:scale-[1.06] group-data-on/fig:scale-[1.06]" />
               </div>
-              <figcaption className="flex justify-between gap-2.5 text-[.84rem]"><b>{p.name}</b><span className="font-mono text-[.64rem] tracking-[.1em] text-mute uppercase">{pick(g.ko, g.en)}</span></figcaption>
+              <figcaption className="flex justify-between gap-2.5 text-caption"><b>{p.name}</b><span className="font-mono text-tag tracking-widest text-mute uppercase">{pick(g.ko, g.en)}</span></figcaption>
             </figure>
           )))}
         </div>
@@ -131,20 +131,20 @@ export function Statement() {
     gsap.set(lines, { xPercent: i => [-14, 12, -6][i], opacity: 0 });
     ScrollTrigger.create({ trigger: root.current, start: 'top 70%', once: true, onEnter: () => gsap.to(lines, { xPercent: 0, opacity: 1, duration: 1.4, ease: 'power3.out', stagger: .08 }) });
   }, { scope: root });
-  const LINE = 'font-display text-[clamp(2.6rem,14vw,15rem)] leading-[.86] font-black whitespace-nowrap uppercase max-sm:whitespace-normal';
+  const LINE = 'font-display text-statement leading-statement font-black whitespace-nowrap uppercase max-sm:whitespace-normal';
   return (
-    <Section ref={root} id="statement" aria-label={m.label} className="h-[110vh] min-h-[640px] overflow-hidden bg-ink text-ink-fg">
+    <Section ref={root} id="statement" aria-label={m.label} className="h-[110vh] min-h-160 overflow-hidden bg-ink text-ink-fg">
       <div data-photo className="absolute inset-0 overflow-hidden bg-ink">
-        <Img src="assets/img/company/company-bg.jpg" sizes="100vw" className="size-full object-cover opacity-[.42]" />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,#0C1016,transparent_25%,transparent_75%,#0C1016)]" />
+        <Img src="assets/img/company/company-bg.jpg" sizes="100vw" className="size-full object-cover opacity-42" />
+        <div className="absolute inset-0 bg-(image:--scrim-band)" />
       </div>
-      <div className="absolute inset-0 grid content-center px-(--gutter)" aria-hidden="true">
+      <div className="absolute inset-0 grid content-center px-gutter" aria-hidden="true">
         {/* outline, accent and plain, the middle line set to the right */}
-        <div data-line className={cn(LINE, 'text-transparent [-webkit-text-stroke:1.5px_rgba(213,218,225,.7)]')}>{m.lines[0]}</div>
-        <div data-line className={cn(LINE, 'text-right text-acc-2')}>{m.lines[1]}</div>
+        <div data-line className={cn(LINE, 'text-transparent [-webkit-text-stroke:1.5px_var(--stroke-on-ink)]')}>{m.lines[0]}</div>
+        <div data-line className={cn(LINE, 'text-right text-ink-acc')}>{m.lines[1]}</div>
         <div data-line className={LINE}>{m.lines[2]}</div>
       </div>
-      <p className="absolute bottom-[clamp(32px,6vh,64px)] left-(--gutter) m-0 max-w-[26em] text-ink-fg-2">{m.body}</p>
+      <p className="absolute bottom-statement-bottom left-gutter m-0 max-w-measure text-ink-fg-2">{m.body}</p>
     </Section>
   );
 }

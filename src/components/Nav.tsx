@@ -34,7 +34,7 @@ export function Nav() {
         // bar: edge to edge, the content inset to the page's wrap column
         'nav-morph relative mx-auto flex w-full items-center justify-between gap-6 border border-transparent border-b-line bg-nav pad-wrap py-3.5 max-xs:gap-3',
         // pill: the wrap column's width, floating 16px down
-        'group-data-pill/nav:mt-4 group-data-pill/nav:w-[min(1480px,100%-var(--gutter)*2)] group-data-pill/nav:rounded-[40px] group-data-pill/nav:border-line group-data-pill/nav:py-2.5 group-data-pill/nav:pr-3 group-data-pill/nav:pl-5 max-xs:group-data-pill/nav:pl-3.5 max-xs:group-data-pill/nav:pr-2'
+        'group-data-pill/nav:mt-4 group-data-pill/nav:w-wrap group-data-pill/nav:rounded-pill group-data-pill/nav:border-line group-data-pill/nav:py-2.5 group-data-pill/nav:pr-3 group-data-pill/nav:pl-5 max-xs:group-data-pill/nav:pl-3.5 max-xs:group-data-pill/nav:pr-2'
       )}>
         <a className="relative block aspect-[800/216] w-[clamp(110px,9vw,136px)] flex-none max-xs:w-24 max-[360px]:w-[88px]" href="#top" aria-label={m.home}>
           <Img className="absolute inset-0 size-full object-contain transition-opacity duration-500 light:opacity-0" src="assets/img/logo-white.png" sizes="136px" priority alt={t.brand} />
@@ -42,12 +42,12 @@ export function Nav() {
         </a>
         {/* no menu up to 900px: the sections follow one another, and the pill keeps contact in reach */}
         <nav aria-label={m.menu} className="max-lg:hidden">
-          <ul className="mono m-0 flex list-none gap-[clamp(18px,3vw,40px)] p-0 max-3xl:gap-[clamp(12px,1.6vw,24px)]">
+          <ul className="mono m-0 flex list-none gap-nav-gap p-0 max-3xl:gap-nav-gap-tight">
             {LINKS.map(id => (
               <li key={id}>
                 <a href={'#' + id} data-active={active === id || undefined} className={cn(
                   'relative py-1.5 text-fg-2 transition-colors duration-300 hover:text-fg data-active:text-fg',
-                  "after:absolute after:inset-x-0 after:bottom-0 after:h-px after:origin-right after:scale-x-0 after:bg-fg after:transition-transform after:duration-500 after:ease-out after:content-['']",
+                  "after:absolute after:inset-x-0 after:bottom-0 after:h-px after:origin-right after:scale-x-0 after:bg-fg after:transition-transform after:duration-500 after:ease-out",
                   'hover:after:origin-left hover:after:scale-x-100 data-active:after:origin-left data-active:after:scale-x-100'
                 )}>{m.links[id]}</a>
               </li>
@@ -55,12 +55,12 @@ export function Nav() {
           </ul>
         </nav>
         <div className="flex items-center gap-3.5 max-xs:gap-2">
-          <span className="mono flex gap-0.5 text-mute max-xs:text-[.72rem]">
+          <span className="mono flex gap-0.5 text-mute max-xs:text-micro">
             {LANGS.map((l, i) => (
               <span key={l} className="contents">
                 {i > 0 && <i aria-hidden="true" className="mx-0.5 not-italic opacity-50">/</i>}
                 <button type="button" aria-pressed={l === lang} onClick={() => { if (l === lang) return; holdPosition(); setLang(l); }}
-                  className={cn('-my-2 cursor-pointer px-1 py-2 transition-colors duration-300 max-[360px]:px-0.5', l === lang ? 'font-medium text-fg' : 'hover:text-fg-2')}>{m.langs[l]}</button>
+                  className={cn('-my-2 cursor-pointer px-1 py-2 transition-colors duration-300 max-2xs:px-0.5', l === lang ? 'font-medium text-fg' : 'hover:text-fg-2')}>{m.langs[l]}</button>
               </span>
             ))}
           </span>

@@ -3,6 +3,7 @@
 // profile runs out to the right, toward the camera, while the camera dollies back so it always fits.
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { token, withAlpha } from '../lib/tokens';
 
 const S = 1 / 25;
 // Run-out readout in metres. REST is what the bar measures before the section is scrolled —
@@ -29,8 +30,6 @@ export function metricsFor({ w, h, cells, wall }: ProfileParams): ProfileMetrics
   return { area, kgPerM, ccd, press, cw, ch };
 }
 
-const ACC = 0x8a5bc2, ACC_GLOW = 'rgba(158,110,220,';
-
 export interface ExtrusionApi { setParams(p: Partial<ProfileParams>): void; setProgress(p: number): void; setActive(v: boolean): void; readonly length: number; destroy(): void }
 
 export function createExtrusion(canvas: HTMLCanvasElement, { reduced = false, fine = true }: { reduced?: boolean; fine?: boolean } = {}): ExtrusionApi {
@@ -41,6 +40,7 @@ export function createExtrusion(canvas: HTMLCanvasElement, { reduced = false, fi
   catch { canvas.style.display = 'none'; return api; }
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, (navigator.hardwareConcurrency || 8) <= 4 ? 1.25 : 1.5));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
+    // a height / roughness map, not a colour: mid grey with black and white streaks
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.0;
 
@@ -79,21 +79,21 @@ export function createExtrusion(canvas: HTMLCanvasElement, { reduced = false, fi
 
   const group = new THREE.Group(); scene.add(group);
   let profile: THREE.Mesh | null = null, die: THREE.Mesh | null = null, container: THREE.Group | null = null;
-  const hot = new THREE.PointLight(ACC, 0, 6.5, 2); hot.position.set(0, 0, 0.35); group.add(hot);
-  const glowTex = (() => { const c = document.createElement('canvas'); c.width = c.height = 128; const g = c.getContext('2d')!; const gr = g.createRadialGradient(64, 64, 0, 64, 64, 64); gr.addColorStop(0, ACC_GLOW + '0.9)'); gr.addColorStop(.35, ACC_GLOW + '0.35)'); gr.addColorStop(1, ACC_GLOW + '0)'); g.fillStyle = gr; g.fillRect(0, 0, 128, 128); return new THREE.CanvasTexture(c); })();
+  const hot = new THREE.PointLight(token('--scene-die-hot'), 0, 6.5, 2); hot.position.set(0, 0, 0.35); group.add(hot);
+  const glowTex = (() => { const c = document.createElement('canvas'); c.width = c.height = 128; const g = c.getContext('2d')!; const gr = g.createRadialGradient(64, 64, 0, 64, 64, 64); const glowC = token('--scene-die-glow'); gr.addColorStop(0, withAlpha(glowC, .9)); gr.addColorStop(.35, withAlpha(glowC, .35)); gr.addColorStop(1, withAlpha(glowC, 0)); g.fillStyle = gr; g.fillRect(0, 0, 128, 128); return new THREE.CanvasTexture(c); })();
   const glowMat = new THREE.SpriteMaterial({ map: glowTex, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0 });
   const glow = new THREE.Sprite(glowMat); glow.position.z = 0.05; group.add(glow);
   const boltGeo = new THREE.CylinderGeometry(0.07, 0.07, 0.06, 12);
   const boltMat = new THREE.MeshStandardMaterial({ color: 0x9aa3af, metalness: 1, roughness: 0.35 });
 
-  const key = new THREE.DirectionalLight(0xffffff, 0.9); key.position.set(-4, 6, 6); scene.add(key);
-  const rim = new THREE.DirectionalLight(0xc9b8ff, 0.6); rim.position.set(6, 2, -6); scene.add(rim);
+  const key = new THREE.DirectionalLight(token('--scene-key'), 0.9); key.position.set(-4, 6, 6); scene.add(key);
+  const rim = new THREE.DirectionalLight(token('--scene-rim-cool'), 0.6); rim.position.set(6, 2, -6); scene.add(rim);
 
   // dust
   const N = 360, pos = new Float32Array(N * 3), spd = new Float32Array(N);
   for (let i = 0; i < N; i++) { pos[i * 3] = (Math.random() - .5) * 30; pos[i * 3 + 1] = (Math.random() - .5) * 14; pos[i * 3 + 2] = (Math.random() - .5) * 16 - 2; spd[i] = 0.002 + Math.random() * 0.006; }
   const pGeo = new THREE.BufferGeometry(); pGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-  const pMat = new THREE.PointsMaterial({ color: 0xd5dae1, size: 0.035, transparent: true, opacity: 0.5, depthWrite: false });
+  const pMat = new THREE.PointsMaterial({ color: token('--scene-dust'), size: 0.035, transparent: true, opacity: 0.5, depthWrite: false });
   scene.add(new THREE.Points(pGeo, pMat));
 
   let params: ProfileParams = { w: 90, h: 40, cells: 3, wall: 4.5 };

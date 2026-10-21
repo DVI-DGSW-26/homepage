@@ -1,11 +1,12 @@
 // Pacific-centred graticule map: Daegu HQ to the North American bases, drawn on canvas.
+import { modeTokens, token } from '../lib/tokens';
 import { gsap } from 'gsap';
 
 export interface MapSite { lat: number; lon: number; hq?: boolean; map: string; dy?: number }
-interface Tok { fg: string; mute: string; acc: string; acc2: string }
 interface Arc { x0: number; y0: number; x1: number; y1: number; cx: number; cy: number }
 
 export function initMap(c: HTMLCanvasElement, sites: MapSite[], { reduced = false }: { reduced?: boolean } = {}): { redraw(): void; destroy(): void } {
+  const MONO = token('--font-mono'), DISPLAY = token('--font-display'); // the site's faces, for the labels
   const ctx = c.getContext('2d')!; const dpr = Math.min(window.devicePixelRatio || 1, 2);
   let w = 0, h = 0, p = 0, on = false, raf = 0, played = false, disposed = false;
   const clamp = (v: number, a: number, b: number) => Math.min(b, Math.max(a, v));
@@ -14,18 +15,17 @@ export function initMap(c: HTMLCanvasElement, sites: MapSite[], { reduced = fals
   const X = (lon: number) => ((wrapLon(lon) - LON0) / (LON1 - LON0)) * w;
   const Y = (lat: number) => ((LAT1 - lat) / (LAT1 - LAT0)) * h;
   const HQ = sites.find(s => s.hq)!, nodes = sites.filter(s => !s.hq);
-  const root = document.documentElement; let tok: Tok | null = null;
-  const readTok = (): Tok => { const cs = getComputedStyle(root); tok = { fg: cs.getPropertyValue('--fg').trim() || '#D5DAE1', mute: cs.getPropertyValue('--mute').trim() || '#6F7A88', acc: cs.getPropertyValue('--acc').trim() || '#8A5BC2', acc2: cs.getPropertyValue('--acc-2').trim() || '#B79BE3' }; return tok; };
-  const mo = new MutationObserver(() => { tok = null; }); mo.observe(root, { attributes: true, attributeFilter: ['data-mode'] });
+  // drawn in the page's mode colours, re-read after a mode switch
+  const tok = modeTokens({ fg: '--fg', mute: '--mute', acc: '--acc', acc2: '--acc-2' });
   const size = () => { const r = c.getBoundingClientRect(); w = r.width; h = r.width / 2; c.width = w * dpr; c.height = h * dpr; c.style.height = h + 'px'; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); };
   const arc = (a: MapSite, b: MapSite): Arc => { const x0 = X(a.lon), y0 = Y(a.lat), x1 = X(b.lon), y1 = Y(b.lat); return { x0, y0, x1, y1, cx: (x0 + x1) / 2, cy: Math.min(y0, y1) - Math.abs(x1 - x0) * 0.32 }; };
   const qp = (A: Arc, t: number) => { const u = 1 - t; return { x: u * u * A.x0 + 2 * u * t * A.cx + t * t * A.x1, y: u * u * A.y0 + 2 * u * t * A.cy + t * t * A.y1 }; };
   const draw = (now: number) => {
     if (disposed) return;
     ctx.clearRect(0, 0, w, h);
-    const { fg, mute, acc: heat, acc2: heat2 } = tok || readTok();
+    const { fg, mute, acc: heat, acc2: heat2 } = tok.get();
     const small = w < 640;
-    ctx.font = `500 ${small ? 9 : 10.5}px 'IBM Plex Mono', monospace`; ctx.textBaseline = 'middle'; ctx.lineWidth = 1;
+    ctx.font = `500 ${small ? 9 : 10.5}px ${MONO}`; ctx.textBaseline = 'middle'; ctx.lineWidth = 1;
     for (let lon = -60; lon <= 105; lon += 15) {
       const x = ((lon - LON0) / (LON1 - LON0)) * w;
       ctx.globalAlpha = lon === 0 ? .25 : .1; ctx.strokeStyle = fg; ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke(); ctx.globalAlpha = 1;
@@ -56,7 +56,7 @@ export function initMap(c: HTMLCanvasElement, sites: MapSite[], { reduced = fals
     };
     ctx.globalAlpha = clamp(p / 0.25, 0, 1); dot(X(HQ.lon), Y(HQ.lat), true, HQ.map, 0); ctx.globalAlpha = 1;
     nodes.forEach((n, i) => { if (clamp((p - i * 0.08) / 0.7, 0, 1) < 1) return; ctx.globalAlpha = clamp((p - i * 0.08 - 0.7) / 0.15, 0, 1); dot(X(n.lon), Y(n.lat), false, n.map, n.dy); ctx.globalAlpha = 1; });
-    ctx.fillStyle = mute; ctx.font = `700 ${small ? 11 : 13}px 'Big Shoulders Display', sans-serif`; ctx.fillText('P A C I F I C   O C E A N', X(180) - (small ? 55 : 68), Y(38));
+    ctx.fillStyle = mute; ctx.font = `700 ${small ? 11 : 13}px ${DISPLAY}`; ctx.fillText('P A C I F I C   O C E A N', X(180) - (small ? 55 : 68), Y(38));
     if (on && !reduced) raf = requestAnimationFrame(draw);
   };
   const prog = { v: 0 };
@@ -74,6 +74,6 @@ export function initMap(c: HTMLCanvasElement, sites: MapSite[], { reduced = fals
   size(); draw(performance.now());
   return {
     redraw: () => draw(performance.now()),
-    destroy: () => { disposed = true; on = false; cancelAnimationFrame(raf); io.disconnect(); mo.disconnect(); removeEventListener('resize', onResize); gsap.killTweensOf(prog); }
+    destroy: () => { disposed = true; on = false; cancelAnimationFrame(raf); io.disconnect(); tok.destroy(); removeEventListener('resize', onResize); gsap.killTweensOf(prog); }
   };
 }

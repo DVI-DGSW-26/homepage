@@ -30,7 +30,8 @@ pnpm images     # 이미지 변환만 (dev / build 가 자동으로 먼저 실�
 | `index.html` | Vite 진입점. `<head>`(파비콘, 폰트, meta, 저장된 라이트 모드를 첫 페인트 전에 적용하는 인라인 스크립트)와 `#root` |
 | `src/main.tsx` | 영문 meta 적용 후 `<App>` 렌더 |
 | `src/App.tsx` | 섹션 배치, 앵커 스크롤, 페이지 전역 스크롤 연출 시작 |
-| `src/styles.css` | Tailwind 진입점. 디자인 토큰(`@theme`), 다크/라이트 두 벌의 `html[data-mode]` 토큰, 브레이크포인트, 유틸리티로 표현할 수 없는 것(슬라이더 thumb, 히어로 제목을 쪼갠 글자 노드) |
+| `src/token.css` | 모든 디자인 값: 브레이크포인트, 서체, 글자 크기·자간·행간, 유동 간격, 측정폭, 모서리, 이징, 그림자, 색(고정 / 모드별), 사진 스크림, WebGL·캔버스·메달 색, 모션 시간 |
+| `src/styles.css` | Tailwind 진입점. 변형(`light:`, `booting:`, `short:`), 기본 요소 스타일, 공용 유틸리티, 유틸리티로 표현할 수 없는 것(슬라이더 thumb, 히어로 제목을 쪼갠 글자 노드) |
 | `src/animation.css` | CSS 로 움직이는 것 전부: keyframes, 마키(`.marquee`), 스크롤 큐, 테마 크로스페이드, 헤더 바 ↔ 알약 전환, 각각의 reduced-motion 처리 |
 | `src/components/Img.tsx` | 모든 사진·로고를 그리는 `<Img>` (next/image 대응: AVIF/WebP srcset, 고유 크기, 지연 로딩, 플레이스홀더, `priority`) |
 | `scripts/images.mjs` | 빌드 전 이미지 변환: `public/assets/opt/` 에 폭별 AVIF/WebP, `src/generated/images.json` 에 목록(둘 다 생성물, git 제외) |
@@ -48,6 +49,7 @@ pnpm images     # 이미지 변환만 (dev / build 가 자동으로 먼저 실�
 | `src/components/Contact.tsx` | 커뮤니티, 문의, 푸터 |
 | `src/i18n/` | KOR / ENG. `locales/ko.ts`·`locales/en.ts` 화면 문구 사전, `store.ts` 언어 상태·`useT`·`pick`·`useLang`·`setLang`, `rich.tsx` 태그가 섞인 문구 렌더, `meta.ts` `<html lang>`·`<title>`·meta description, `index.ts` 진입점 |
 | `src/lib/theme.ts` | 다크 / 라이트 모드 상태(`useTheme`, `setTheme`), 저장, 크로스페이드 |
+| `src/lib/tokens.ts` | 스크립트에서 토큰 읽기: `token('--scene-alu')`, `withAlpha()`, 모드 전환 때 다시 읽는 `modeTokens()` (캔버스, WebGL 장면) |
 | `src/lib/scroll.ts` | 네이티브 스크롤 이동(`scroll.scrollTo`)과 앵커 링크 처리 |
 | `src/lib/reveals.ts` | 마커 클래스 기반 페이지 전역 리빌(한 번만 재생), 사진 와이프, 숫자 카운트업 |
 | `src/lib/gsap.ts`, `boot.ts`, `env.ts` | GSAP 플러그인 등록, 부팅 시점(웹폰트, 최대 1.5초), 환경 상수 |
@@ -64,15 +66,20 @@ pnpm images     # 이미지 변환만 (dev / build 가 자동으로 먼저 실�
 
 ## 디자인 토큰과 Tailwind
 
-- 브랜드 보라 `#5F298C` (원본 사이트 `--brand-color`). 다크 배경에서는 `#8A5BC2 / #B79BE3` 로 밝혀 사용
-- 그래파이트 `#0C1016`, 알루미늄 라이트 `#D8DBDF`
-- 서체: Big Shoulders Display (`font-display`), IBM Plex Sans KR (`font-sans`, 본문), IBM Plex Mono (`font-mono`, 수치)
-- 색 유틸리티는 토큰을 따라갑니다: `bg-bg`, `bg-bg-2`, `bg-card`, `text-fg`, `text-fg-2`, `text-mute`, `border-line`, `border-line-2`, `text-acc`, `text-acc-2`, `text-acc-ink`, `bg-acc-glow`. 모드와 무관하게 늘 그래파이트인 면(슬로건, Frame 01 사진 위 글자)은 `ink-*` 나 흰색을 씁니다. 수상 금색 `text-gold` 도 모드 토큰입니다(라이트에서는 진한 금색).
-- 공용 유틸리티: `wrap`(본문 폭), `pad-wrap`(전폭 블록의 내용을 `wrap` 열에 맞추는 좌우 패딩 — 헤더 바, Frame 01), `mono`, `disp`, `num`(tabular 숫자), `text-stroke`. 좌우 여백은 `--gutter` (`px-(--gutter)`).
-- 브레이크포인트는 원본 CSS 의 max-width 경계 + 1px 입니다. 그래서 `max-lg:` 가 정확히 `max-width: 900px`, `lg:` 가 `min-width: 901px` 이고, JS 의 데스크톱 / 모바일 분기(`src/lib/env.ts` 의 `DESKTOP` / `MOBILE`)와 같습니다. `xs` 640 · `sm` 760 · `md` 860 · `lg` 900 · `xl` 980 · `2xl` 1000 · `3xl` 1100.
+디자인 값은 전부 `src/token.css` 에 있고, 컴포넌트는 그 토큰이 만드는 Tailwind v4 유틸리티로만 씁니다. `.tsx` 에 hex·rgba 나 반복되는 임의값을 쓰지 않습니다.
+
+- **색**: 모드를 따르는 색 `bg-bg` `bg-bg-2` `bg-card` `text-fg` `text-fg-2` `text-mute` `border-line` `border-line-2` `text-acc` `text-acc-2` `text-acc-ink` `bg-acc-glow` `bg-nav` `text-gold`. 두 모드에서 같은 색 `ink-*`(늘 그래파이트인 면), `paper`, `brand`(#5F298C), `ink-acc`, `on-photo`(사진 위 글자), `on-acc`(보라 위 글자), `plate`(로고·스캔 뒤 흰 판). 투명도는 `text-on-photo/70`, `bg-ink/55` 처럼 붙입니다.
+- **사진 스크림·외곽선**: `bg-(image:--scrim-frame)`, `--scrim-card`, `--scrim-card-deep`, `--scrim-band`; 외곽선 글자 `[-webkit-text-stroke:1px_var(--stroke-on-photo)]`. 그림자 `text-shadow-photo`, `drop-shadow-medal`.
+- **글자**: 크기 `text-tag` .66 · `micro` .7 · `label` .74 · `mono-sm` .78 · `mono` .8 · `caption` .84 · `small` .9 · `body-sm` .95 · `body` 1 · `body-lg` 1.05 · `title-xs/sm/title/lg` 1.15–1.35 · `index` 1.4 · `figure-xs/sm/figure` 1.5–2rem, 그리고 유동 크기 `text-hero` `text-h2` `text-statement` `text-manifesto` `text-kpi` 등. 어떤 크기도 행간을 함께 바꾸지 않습니다. 자간 `tracking-display/heading/heading-sm/button/name/spec/mono-sm/tag/label`(+ Tailwind `tracking-widest` .1em, `tracking-tight`), 행간 `leading-display` .9 · `hero` · `statement` · `copy` 1.6 등.
+- **간격**: 고정 px 는 Tailwind 4px 스케일(`gap-4.5` = 18px, `size-18` = 72px)을 쓰고, 화면에 따라 변하는 값은 이름 있는 토큰입니다: `gutter`(좌우 여백, `px-gutter`), `wrap`(본문 열 폭), `section`(섹션 위아래), `sec-head`, `stack` / `stack-md` / `stack-sm`(블록 사이), `col-gap`, `nav-clear` 등. 측정폭 `max-w-measure`(26em) · `lead` · `hero-copy` · `hero-title`, 본문 열 최대 `--container-page`(1480px). 모서리 `rounded-tag` 3px · `thumb` 5px · `card` 8px · `pill` 40px.
+- **이름 규칙**: Tailwind 는 같은 이름을 여러 유틸리티에 씁니다. `--spacing-block` 은 `inline-block` 을 `inline-size` 로 바꿔 버리고, `--spacing-x` 와 `--container-x` 가 같으면 `max-w-x` 가 간격 쪽을 씁니다. 새 토큰 이름은 기존 클래스(`block`, `flex`, `grid` …)·다른 네임스페이스와 겹치지 않게 짓고, `cn()` 의 목록(`src/components/ui.tsx`)에도 추가합니다. 빠뜨리면 tailwind-merge 가 새 `text-*` 를 색으로 읽어 옆의 색 클래스를 지웁니다.
+- **스크립트**: 캔버스와 WebGL 은 `src/lib/tokens.ts` 로 `--fg`, `--scene-*`, `--font-mono` 등을 읽습니다. 셰이더에 바로 쓰는 색은 `raw()` 로 변환 없이 넘깁니다(`src/three/hero.ts`).
+- **v4 문법**: 비율 `aspect-800/216`, 시간 `duration-450`, 크기 `scale-106`, 투명도 `opacity-34`, 필터 `brightness-230`, 자식 `*:col-span-full`, 그라디언트 `bg-linear-to-r/srgb from-fg to-acc`(원래처럼 sRGB 보간), CSS 변수 `px-(--x)` / `bg-(image:--x)`. GSAP 이 transform 을 쓰는 요소의 초기값만 `[transform:...]` 로 둡니다(아래 "애니메이션 규칙").
+- 서체: Big Shoulders Display (`font-display`), IBM Plex Sans KR (`font-sans`, 본문), IBM Plex Mono (`font-mono`, 수치).
+- 공용 유틸리티: `wrap`(본문 폭), `pad-wrap`(전폭 블록의 내용을 `wrap` 열에 맞추는 좌우 패딩 — 헤더 바, Frame 01), `mono`, `disp`, `num`(tabular 숫자), `text-stroke`.
+- 브레이크포인트는 원본 CSS 의 max-width 경계 + 1px 입니다. 그래서 `max-lg:` 가 정확히 `max-width: 900px`, `lg:` 가 `min-width: 901px` 이고, JS 의 데스크톱 / 모바일 분기(`src/lib/env.ts` 의 `DESKTOP` / `MOBILE`)와 같습니다. `2xs` 360 · `xs` 640 · `sm` 760 · `md` 860 · `lg` 900 · `xl` 980 · `2xl` 1000 · `3xl` 1100 · `4xl` 1280. `short:` 는 높이 780px 이하 화면입니다.
 - 데스크톱 격자는 1101px 이상에서만 씁니다. 901~1100px 은 데스크톱 격자에 비해 폭이 모자라, 둘로 나뉘는 블록(Frame 01 캡션과 수치, 프로파일 랩, 행사, 커뮤니티)은 이 구간에서 `max-3xl:` 로 쌓거나 2단으로 바꿉니다. 한국어는 `:lang(ko)` 에서 `word-break: keep-all` 이 걸려 단어 중간에서 줄바꿈되지 않습니다.
 - `light:` 변형은 `html[data-mode="light"]` 일 때 적용됩니다. `booting:` 변형은 히어로 인트로가 시작되기 전(`html` 에 `data-ready` 가 붙기 전)에만 적용되며, 인트로로 등장할 카피·HUD·내비를 그때까지 숨깁니다.
-- 클래스 합성은 `cn()` (tailwind-merge) 으로 합니다. 이 프로젝트의 글자 크기는 모두 임의값(`text-[...]`)이라 줄 높이를 건드리지 않으므로, `cn()` 은 글자 크기가 `leading-*` 를 지우지 않도록 설정돼 있습니다. `text-base` 같은 이름 있는 크기는 v4 에서 line-height 까지 바꾸니 쓰지 않습니다.
 
 ## 다크 / 라이트 모드
 

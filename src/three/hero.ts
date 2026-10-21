@@ -5,6 +5,7 @@ import { MeshSurfaceSampler } from 'three/addons/math/MeshSurfaceSampler.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { gsap } from 'gsap';
 import { makeParts } from './parts';
+import { token } from '../lib/tokens';
 
 const VERT = /* glsl */`
 attribute vec3 aP0; attribute vec3 aP1; attribute vec3 aP2; attribute vec3 aP3;
@@ -37,17 +38,20 @@ void main(){
 }`;
 const FRAG = /* glsl */`
 precision highp float;
-uniform float uOpacity; uniform float uLight; varying float vA; varying float vHeat; varying float vSpark;
+uniform float uOpacity; uniform float uLight; uniform vec3 uChip, uChipLight, uSpark, uSparkLight; varying float vA; varying float vHeat; varying float vSpark;
 void main(){
   vec2 c = gl_PointCoord - 0.5; float d = length(c); if (d > 0.5) discard;
   float a = smoothstep(0.5, 0.12, d);
   // bright chips on graphite; on the light page they turn to darker, anodized-looking metal
-  vec3 chip = mix(vec3(0.84, 0.87, 0.91), vec3(0.27, 0.3, 0.35), uLight);
-  vec3 spark = mix(vec3(0.66, 0.44, 0.9), vec3(0.42, 0.2, 0.62), uLight);
+  vec3 chip = mix(uChip, uChipLight, uLight);
+  vec3 spark = mix(uSpark, uSparkLight, uLight);
   vec3 col = mix(chip, spark, max(vHeat, vSpark * 0.85));
   col *= 0.7 + 0.3 * vA;
   gl_FragColor = vec4(col, a * uOpacity * (0.5 + 0.5 * vA));
 }`;
+
+/** a colour token as plain 0–1 channels for a shader uniform */
+const raw = (name: string) => new THREE.Color().setStyle(token(name), THREE.LinearSRGBColorSpace);
 
 /** one part per headline beat */
 const PARTS = 4;
@@ -73,8 +77,8 @@ export function createHero(canvas: HTMLCanvasElement, { reduced = false, fine = 
   scene.environment = envRT.texture;
   pmrem.dispose();
 
-  const key = new THREE.DirectionalLight(0xffffff, 1.2); key.position.set(-3, 5, 5); scene.add(key);
-  const rim = new THREE.DirectionalLight(0xb79be3, 0.7); rim.position.set(5, -2, -4); scene.add(rim);
+  const key = new THREE.DirectionalLight(token('--scene-key'), 1.2); key.position.set(-3, 5, 5); scene.add(key);
+  const rim = new THREE.DirectionalLight(token('--scene-rim'), 0.7); rim.position.set(5, -2, -4); scene.add(rim);
 
   const group = new THREE.Group(); scene.add(group);
   const parts = makeParts(PARTS);
@@ -111,17 +115,20 @@ export function createHero(canvas: HTMLCanvasElement, { reduced = false, fine = 
 
   const uniforms = {
     uFrom: { value: 0 }, uTo: { value: 0 }, uMix: { value: 0 }, uIntro: { value: reduced ? 1 : 0 }, uTime: { value: 0 },
-    uPointer: { value: new THREE.Vector3(99, 99, 99) }, uAxis: { value: new THREE.Vector3(0, 0, 1) }, uPush: { value: 0 }, uSize: { value: 2.6 }, uDpr: { value: DPR }, uOpacity: { value: 1 }, uLight: { value: light ? 1 : 0 }
+    uPointer: { value: new THREE.Vector3(99, 99, 99) }, uAxis: { value: new THREE.Vector3(0, 0, 1) }, uPush: { value: 0 }, uSize: { value: 2.6 }, uDpr: { value: DPR }, uOpacity: { value: 1 }, uLight: { value: light ? 1 : 0 },
+    // the shader writes these straight out, so they go in unconverted (as the hex reads), not linearised
+    uChip: { value: raw('--scene-chip') }, uChipLight: { value: raw('--scene-chip-light') },
+    uSpark: { value: raw('--scene-spark') }, uSparkLight: { value: raw('--scene-spark-light') }
   };
   const pointsMat = new THREE.ShaderMaterial({ vertexShader: VERT, fragmentShader: FRAG, uniforms, transparent: true, depthWrite: false, depthTest: false });
   const points = new THREE.Points(geo, pointsMat);
   group.add(points);
 
-  const alu = () => new THREE.MeshPhysicalMaterial({ color: 0xd9dee5, metalness: 1, roughness: 0.3, envMapIntensity: 1.15, transparent: true, opacity: 0, clearcoat: 0.15, clearcoatRoughness: 0.4 });
+  const alu = () => new THREE.MeshPhysicalMaterial({ color: token('--scene-alu'), metalness: 1, roughness: 0.3, envMapIntensity: 1.15, transparent: true, opacity: 0, clearcoat: 0.15, clearcoatRoughness: 0.4 });
   const meshes = parts.map(p => { const m = new THREE.Mesh(p.geo, alu()); m.visible = false; group.add(m); return m; });
   // Light mode: the same aluminum would vanish against the pale page, so the solids darken and
   // reflect less, and the chips follow (uLight). The switch eases over the page's crossfade.
-  const DARK_ALU = new THREE.Color(0xd9dee5), LIGHT_ALU = new THREE.Color(0x8d96a2);
+  const DARK_ALU = new THREE.Color(token('--scene-alu')), LIGHT_ALU = new THREE.Color(token('--scene-alu-light'));
   const look = { v: light ? 1 : 0 };
   const applyLook = () => {
     uniforms.uLight.value = look.v;
