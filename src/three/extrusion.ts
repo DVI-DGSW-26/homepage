@@ -4,12 +4,9 @@
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { token, withAlpha } from '../lib/tokens';
+import { MAX_LEN, REST_LEN, type ProfileParams } from './meta';
 
 const S = 1 / 25;
-// Run-out readout in metres. REST is what the bar measures before the section is scrolled —
-// 6.2 m, a standard aluminium stock length — and it runs out to MAX as the press pushes.
-export const REST_LEN = 6.2;
-const MAX_LEN = 42;
 const rr = (p: THREE.Path, x: number, y: number, w: number, h: number, r: number) => {
   r = Math.min(r, w / 2, h / 2);
   p.moveTo(x + r, y); p.lineTo(x + w - r, y); p.quadraticCurveTo(x + w, y, x + w, y + r);
@@ -17,18 +14,6 @@ const rr = (p: THREE.Path, x: number, y: number, w: number, h: number, r: number
   p.lineTo(x + r, y + h); p.quadraticCurveTo(x, y + h, x, y + h - r);
   p.lineTo(x, y + r); p.quadraticCurveTo(x, y, x + r, y);
 };
-
-export interface ProfileParams { w: number; h: number; cells: number; wall: number }
-export interface ProfileMetrics { area: number; kgPerM: number; ccd: number; press: { inch: number; ton: number }; cw: number; ch: number }
-
-export function metricsFor({ w, h, cells, wall }: ProfileParams): ProfileMetrics {
-  const cw = (w - wall * (cells + 1)) / cells, ch = h - 2 * wall;
-  const area = Math.max(0, w * h - cells * Math.max(0, cw) * Math.max(0, ch)); // mm²
-  const kgPerM = area * 1000 * 2.7e-6; // AL density 2.7 g/cm³
-  const ccd = Math.sqrt(w * w + h * h);
-  const press = ccd <= 120 ? { inch: 6, ton: 1450 } : { inch: 10, ton: 3500 };
-  return { area, kgPerM, ccd, press, cw, ch };
-}
 
 export interface ExtrusionApi { setParams(p: Partial<ProfileParams>): void; setProgress(p: number): void; setActive(v: boolean): void; readonly length: number; destroy(): void }
 
@@ -40,7 +25,6 @@ export function createExtrusion(canvas: HTMLCanvasElement, { reduced = false, fi
   catch { canvas.style.display = 'none'; return api; }
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, (navigator.hardwareConcurrency || 8) <= 4 ? 1.25 : 1.5));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
-    // a height / roughness map, not a colour: mid grey with black and white streaks
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.0;
 
@@ -57,6 +41,7 @@ export function createExtrusion(canvas: HTMLCanvasElement, { reduced = false, fi
   // roughness: the die lines catch and break the reflection the way drawn aluminium does.
   const brush = (() => {
     const c = document.createElement('canvas'); c.width = 512; c.height = 64; const g = c.getContext('2d')!;
+    // a height / roughness map, not a colour: mid grey with black and white streaks
     g.fillStyle = '#8c8c8c'; g.fillRect(0, 0, 512, 64);
     for (let i = 0; i < 3200; i++) {
       const v = Math.random() < .5 ? 0 : 255;
@@ -69,13 +54,13 @@ export function createExtrusion(canvas: HTMLCanvasElement, { reduced = false, fi
   // mid grey (rather than the near-white it used to be) is what stops it reading as white plastic.
   // Satin, not mirror — roughness is the base multiplied by the streak map, landing near 0.45.
   const alu = new THREE.MeshStandardMaterial({
-    color: 0x7c828a, metalness: 1,
+    color: token('--scene-mill'), metalness: 1,
     roughness: 0.9, roughnessMap: brush,
     bumpMap: brush, bumpScale: 0.012,
     envMapIntensity: 0.45
   });
-  const steel = new THREE.MeshStandardMaterial({ color: 0x1e232b, metalness: 0.92, roughness: 0.6, envMapIntensity: 0.55 });
-  const steelLight = new THREE.MeshStandardMaterial({ color: 0x3a414c, metalness: 0.9, roughness: 0.5, envMapIntensity: 0.6 });
+  const steel = new THREE.MeshStandardMaterial({ color: token('--scene-steel'), metalness: 0.92, roughness: 0.6, envMapIntensity: 0.55 });
+  const steelLight = new THREE.MeshStandardMaterial({ color: token('--scene-steel-light'), metalness: 0.9, roughness: 0.5, envMapIntensity: 0.6 });
 
   const group = new THREE.Group(); scene.add(group);
   let profile: THREE.Mesh | null = null, die: THREE.Mesh | null = null, container: THREE.Group | null = null;
@@ -84,7 +69,7 @@ export function createExtrusion(canvas: HTMLCanvasElement, { reduced = false, fi
   const glowMat = new THREE.SpriteMaterial({ map: glowTex, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0 });
   const glow = new THREE.Sprite(glowMat); glow.position.z = 0.05; group.add(glow);
   const boltGeo = new THREE.CylinderGeometry(0.07, 0.07, 0.06, 12);
-  const boltMat = new THREE.MeshStandardMaterial({ color: 0x9aa3af, metalness: 1, roughness: 0.35 });
+  const boltMat = new THREE.MeshStandardMaterial({ color: token('--scene-bolt'), metalness: 1, roughness: 0.35 });
 
   const key = new THREE.DirectionalLight(token('--scene-key'), 0.9); key.position.set(-4, 6, 6); scene.add(key);
   const rim = new THREE.DirectionalLight(token('--scene-rim-cool'), 0.6); rim.position.set(6, 2, -6); scene.add(rim);

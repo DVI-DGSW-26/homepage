@@ -3,18 +3,27 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { build } from 'vite';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const dist = path.join(root, 'dist');
 const pub = path.join(root, 'public');
 const mime = { '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.svg': 'image/svg+xml', '.webp': 'image/webp', '.ico': 'image/x-icon' };
 
-const html = await fs.readFile(path.join(dist, 'index.html'), 'utf8');
-const ref = (re, what) => { const m = html.match(re); if (!m) throw new Error(`single: no ${what} in dist/index.html`); return m[1]; };
+// The site splits the WebGL scenes (and three.js) into chunks it loads on demand; a single file has
+// nowhere to load them from, so it gets its own build with every dynamic import folded into one script.
+const out = path.join(root, 'node_modules/.cache/dv-single');
+await build({
+  root, logLevel: 'warn', configFile: path.join(root, 'vite.config.ts'),
+  build: { outDir: out, emptyOutDir: true, copyPublicDir: false, chunkSizeWarningLimit: 1300, rolldownOptions: { output: { inlineDynamicImports: true } } }
+});
+
+const html = await fs.readFile(path.join(out, 'index.html'), 'utf8');
+const ref = (re, what) => { const m = html.match(re); if (!m) throw new Error(`single: no ${what} in the single-file build`); return m[1]; };
 const jsPath = ref(/<script[^>]+src="\/?([^"]+\.js)"/, 'module script');
 const cssPath = ref(/<link[^>]+rel="stylesheet"[^>]+href="\/?(assets\/[^"]+\.css)"/, 'stylesheet');
-const js = await fs.readFile(path.join(dist, jsPath), 'utf8');
-const css = await fs.readFile(path.join(dist, cssPath), 'utf8');
+const js = await fs.readFile(path.join(out, jsPath), 'utf8');
+const css = await fs.readFile(path.join(out, cssPath), 'utf8');
 
 const cache = new Map();
 const dataUri = async (rel) => {

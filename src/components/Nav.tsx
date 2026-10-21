@@ -36,9 +36,9 @@ export function Nav() {
         // pill: the wrap column's width, floating 16px down
         'group-data-pill/nav:mt-4 group-data-pill/nav:w-wrap group-data-pill/nav:rounded-pill group-data-pill/nav:border-line group-data-pill/nav:py-2.5 group-data-pill/nav:pr-3 group-data-pill/nav:pl-5 max-xs:group-data-pill/nav:pl-3.5 max-xs:group-data-pill/nav:pr-2'
       )}>
-        <a className="relative block aspect-[800/216] w-[clamp(110px,9vw,136px)] flex-none max-xs:w-24 max-[360px]:w-[88px]" href="#top" aria-label={m.home}>
-          <Img className="absolute inset-0 size-full object-contain transition-opacity duration-500 light:opacity-0" src="assets/img/logo-white.png" sizes="136px" priority alt={t.brand} />
-          <Img className="absolute inset-0 size-full object-contain opacity-0 transition-opacity duration-500 light:opacity-100" src="assets/img/logo.png" sizes="136px" priority alt="" />
+        <a className="relative block aspect-800/216 w-logo flex-none max-xs:w-24 max-2xs:w-22" href="#top" aria-label={m.home}>
+          <Img className="absolute inset-0 size-full object-contain transition-opacity duration-500 light:opacity-0" src="assets/img/logo-white.png" sizes="136px" priority={theme === 'dark'} alt={t.brand} />
+          <Img className="absolute inset-0 size-full object-contain opacity-0 transition-opacity duration-500 light:opacity-100" src="assets/img/logo.png" sizes="136px" priority={theme === 'light'} alt="" />
         </a>
         {/* no menu up to 900px: the sections follow one another, and the pill keeps contact in reach */}
         <nav aria-label={m.menu} className="max-lg:hidden">

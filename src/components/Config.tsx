@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { gsap, ScrollTrigger, useGSAP } from '../lib/gsap';
 import { FINE, REDUCED } from '../lib/env';
 import { useT } from '../i18n';
-import { REST_LEN, createExtrusion, metricsFor, type ExtrusionApi, type ProfileParams } from '../three/extrusion';
+import { REST_LEN, metricsFor, type ProfileParams } from '../three/meta';
+import type { ExtrusionApi } from '../three/extrusion';
 import { Eyebrow, H2, HudRow, Lead, Section, cn } from './ui';
 
 const fmt = (n: number, d = 1) => n.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
@@ -28,28 +29,27 @@ export function Config() {
   const [params, setParams] = useState<ProfileParams>(() => fitWall({ w: 90, h: 40, cells: 3, wall: 4.5 }));
   const m = metricsFor(params);
   const latest = useRef(params);
-  latest.current = params;
 
   useGSAP(() => {
-    let EXT: ExtrusionApi | null = null, active = false;
-    // The WebGL scene is built a viewport before the section arrives, not at page load...
-    const build = () => {
-      if (EXT) return;
+    let EXT: ExtrusionApi | null = null, active = false, alive = true, loading: Promise<void> | null = null;
+    // The WebGL scene (a separate chunk) is built a viewport before the section arrives, not at page load...
+    const build = () => loading ??= import('../three/extrusion').then(({ createExtrusion }) => {
+      if (!alive) return;
       EXT = createExtrusion(canvas.current!, { reduced: REDUCED, fine: FINE });
       ext.current = EXT;
       EXT.setParams(latest.current); EXT.setActive(active);
-    };
+    });
     ScrollTrigger.create({ trigger: root.current, start: 'top bottom+=100%', once: true, onEnter: build });
     // ...or earlier, in idle time once the hero entrance is over, so arriving costs nothing
     let wait = 0, idleId = 0;
-    const later = () => { wait = window.setTimeout(() => { idleId = typeof requestIdleCallback === 'function' ? requestIdleCallback(build, { timeout: 4000 }) : window.setTimeout(build, 0); }, 2500); };
+    const later = () => { wait = window.setTimeout(() => { idleId = typeof requestIdleCallback === 'function' ? requestIdleCallback(() => { build(); }, { timeout: 4000 }) : window.setTimeout(build, 0); }, 2500); };
     if (document.readyState === 'complete') later(); else addEventListener('load', later, { once: true });
     if (!REDUCED) gsap.from('[data-copy] > *', { x: -30, opacity: 0, duration: .9, stagger: .07, ease: 'power3.out', scrollTrigger: { trigger: root.current, start: 'top 70%', once: true } });
     ScrollTrigger.create({ trigger: root.current, start: 'top bottom', end: 'bottom top', onToggle: s => { active = s.isActive; if (active) build(); EXT?.setActive(active); } });
     // the profile stays at its resting run-out: the section is one screen, not a scroll-driven press
-    return () => { clearTimeout(wait); removeEventListener('load', later); if (typeof cancelIdleCallback === 'function') cancelIdleCallback(idleId); EXT?.destroy(); ext.current = null; };
+    return () => { alive = false; clearTimeout(wait); removeEventListener('load', later); if (typeof cancelIdleCallback === 'function') cancelIdleCallback(idleId); EXT?.destroy(); ext.current = null; };
   }, { scope: root });
-  useEffect(() => { ext.current?.setParams(params); }, [params]);
+  useEffect(() => { latest.current = params; ext.current?.setParams(params); }, [params]);
 
   const out = [
     { label: t.out.area, v: fmt(m.area / 100, 1), u: 'cm²' },

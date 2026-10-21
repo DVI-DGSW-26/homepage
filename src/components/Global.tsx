@@ -25,7 +25,7 @@ export function Global() {
         <ul data-batch className="m-0 grid list-none grid-cols-6 overflow-hidden rounded-b-card border border-t-0 border-line bg-card p-0 max-3xl:grid-cols-3 max-xs:grid-cols-2">
           {SITES.map(s => (
             <li key={s.k} className={cn(
-              'group rv grid cursor-pointer grid-rows-[auto_1fr] border-r border-line last:border-r-0',
+              'group rv grid grid-rows-[auto_1fr] border-r border-line last:border-r-0',
               'max-3xl:nth-[3n]:border-r-0 max-3xl:nth-[-n+3]:border-b',
               'max-xs:border-r! max-xs:border-b max-xs:even:border-r-0!'
             )}>

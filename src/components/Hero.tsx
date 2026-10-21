@@ -1,11 +1,11 @@
-import { useRef, useState, type RefObject } from 'react';
+import { useImperativeHandle, useRef, useState, type RefObject } from 'react';
 import { gsap, ScrollTrigger, SplitText, useGSAP } from '../lib/gsap';
 import { bootReady } from '../lib/boot';
 import { FINE, REDUCED } from '../lib/env';
-import { pick, useT } from '../i18n';
-import { createHero } from '../three/hero';
+import { pick, useLang, useT } from '../i18n';
+import type { HeroApi } from '../three/hero';
 import { getTheme, subscribeTheme } from '../lib/theme';
-import { PART_META } from '../three/parts';
+import { PART_LABELS } from '../three/meta';
 import { HudRow, Section, cn } from './ui';
 import { Img } from './Img';
 
@@ -14,8 +14,7 @@ const BANNERS = ['banner-01', 'banner-02', 'banner-03', 'banner-04'];
 /** seconds each beat stays up before the hero swipes to the next */
 const DWELL = 5.5;
 
-type HeroScene = ReturnType<typeof createHero>;
-const NO_SCENE: HeroScene = { setLight() {}, setBeat() {}, setIntro() {}, setProgress() {}, setActive() {}, destroy() {} };
+const NO_SCENE: HeroApi = { setLight() {}, setBeat() {}, setIntro() {}, setProgress() {}, setActive() {}, destroy() {} };
 
 /**
  * One screen: aluminum chips assemble into four parts in turn while the headline swipes beat by
@@ -24,7 +23,7 @@ const NO_SCENE: HeroScene = { setLight() {}, setBeat() {}, setIntro() {}, setPro
  * copy, HUD and nav stay hidden (`booting:`) so nothing flashes before it animates in.
  */
 export function Hero() {
-  const m = useT().hero;
+  const m = useT().hero, lang = useLang();
   const root = useRef<HTMLElement>(null), canvas = useRef<HTMLCanvasElement>(null);
   const beatEls = useRef<HTMLElement[]>([]), bgEls = useRef<HTMLImageElement[]>([]);
   const hud = useRef<(i: number) => void>(() => {});
@@ -33,15 +32,17 @@ export function Hero() {
   useGSAP((_, contextSafe) => {
     const beats = beatEls.current;
     const bgs = bgEls.current;
-    let HERO = NO_SCENE, alive = true, cur = 0, active = true, started = false, frame = 0;
+    let HERO = NO_SCENE, alive = true, cur = 0, active = true, started = false, frame = 0, intro = REDUCED ? 1 : 0;
     let timer: gsap.core.Tween | null = null;
-    // The WebGL scene is built after the first paint, so the page shows up before its set-up cost.
-    const build = () => {
+    // The WebGL scene (and three.js with it) is a separate chunk: fetched right away, built after the
+    // first paint, so the page shows up before either cost. A beat or the intro that arrives first is
+    // caught up on when the scene is there.
+    const scene = import('../three/hero');
+    const build = () => scene.then(({ createHero }) => {
       if (!alive || HERO !== NO_SCENE) return;
       HERO = createHero(canvas.current!, { reduced: REDUCED, fine: FINE, light: getTheme() === 'light' });
-      HERO.setBeat(cur); HERO.setActive(active);
-      if (REDUCED) HERO.setIntro(1);
-    };
+      HERO.setBeat(cur); HERO.setActive(active); HERO.setIntro(intro);
+    });
     frame = requestAnimationFrame(() => { frame = requestAnimationFrame(build); });
     const unTheme = subscribeTheme(() => HERO.setLight(getTheme() === 'light'));
 
@@ -78,12 +79,12 @@ export function Hero() {
       ready();
       const o = { v: 0 };
       gsap.timeline({ defaults: { ease: 'power4.out' }, onComplete: () => { started = true; schedule(); } })
-        .to(o, { v: 1, duration: 1.3, ease: 'expo.out', onUpdate: () => HERO.setIntro(o.v) }, 0)
+        .to(o, { v: 1, duration: 1.3, ease: 'expo.out', onUpdate: () => { intro = o.v; HERO.setIntro(o.v); } }, 0)
         .from(chars, { yPercent: 110, opacity: 0, filter: 'blur(10px)', duration: 1.1, stagger: .018 }, .1)
         .from(p, { opacity: 0, y: 18, duration: .9 }, .7)
         .from('[data-intro]', { opacity: 0, x: 24, duration: .8, stagger: .08 }, .6)
         .from('[data-cue]', { opacity: 0, duration: .8 }, 1.2)
-        // clearProps hands the transform back to the nav's own hide-on-scroll class
+        // clearProps leaves no transform behind on the header once it is in
         .from(document.getElementById('nav'), { y: -24, opacity: 0, duration: .9, clearProps: 'transform' }, .4);
     }));
 
@@ -112,8 +113,8 @@ export function Hero() {
             <div className="grid">
               {m.beats.map((b, i) => (
                 <article key={i} ref={el => { if (el) beatEls.current[i] = el; }} data-active={i === 0 ? '' : undefined} className="invisible col-start-1 row-start-1 data-active:visible">
-                  <h1 className="m-0 mb-[clamp(16px,2.5vh,28px)] max-w-[15ch] font-display text-[clamp(2.7rem,7vw,7.6rem)] leading-[.88] font-extrabold tracking-[-.005em] text-balance text-fg uppercase">{b.title}</h1>
-                  <p className="m-0 max-w-[30em] text-[clamp(.98rem,1.25vw,1.2rem)] leading-[1.7] text-fg-2">{b.body}</p>
+                  <h1 key={i === 0 ? lang : undefined} className="m-0 mb-hero-gap max-w-hero-title font-display text-hero leading-hero font-extrabold tracking-display text-balance text-fg uppercase">{b.title}</h1>
+                  <p className="m-0 max-w-hero-copy text-hero-body leading-hero-body text-fg-2">{b.body}</p>
                 </article>
               ))}
             </div>
@@ -132,8 +133,8 @@ export function Hero() {
 function HeroHud({ bind, choose }: { bind: RefObject<(i: number) => void>; choose: RefObject<(i: number) => void> }) {
   const m = useT().hero, h = m.hud;
   const [beat, setBeat] = useState(0);
-  bind.current = setBeat;
-  const part = PART_META[beat];
+  useImperativeHandle(bind, () => setBeat, []);
+  const part = PART_LABELS[beat];
   // up to 1280px the part turns behind the readout: a dim panel keeps it legible (no blur — it
   // would re-filter the WebGL canvas under it every frame)
   return (
@@ -151,7 +152,7 @@ function HeroHud({ bind, choose }: { bind: RefObject<(i: number) => void>; choos
           </button>
         ))}
       </div>
-      <span data-intro className="font-sans text-[.84rem] font-normal tracking-normal text-mute normal-case">{h.hint}</span>
+      <span data-intro className="font-sans text-caption font-normal tracking-normal text-mute normal-case">{h.hint}</span>
     </aside>
   );
 }

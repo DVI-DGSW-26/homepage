@@ -98,7 +98,7 @@ function Cine() {
             <span className="mono text-on-photo/70">{m.label}</span>
             <b className="disp text-frame">{m.title}</b>
           </div>
-          <p className="rv m-0 max-w-[26em] text-white/85">{m.body}</p>
+          <p className="rv m-0 max-w-measure text-on-photo/85">{m.body}</p>
         </div>
         {/* caption left, figures right; up to 1100px the figures go under the caption, two a row */}
         <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-x-12 gap-y-7 max-3xl:grid-cols-1">
@@ -131,11 +131,11 @@ function Years() {
             <div className="overflow-hidden">
               <div className={cn('num translate-y-[105%] font-display text-year leading-display font-extrabold transition-transform duration-700 ease-out group-data-on/y:translate-y-0 max-lg:translate-y-0 motion-reduce:translate-y-0', y.h && 'text-acc-ink')}>{y.y}</div>
             </div>
-            <p className="m-0 text-[.95rem] text-fg-2 opacity-0 transition-opacity delay-150 duration-600 group-data-on/y:opacity-100 max-lg:opacity-100 motion-reduce:opacity-100">{pick(y.t, y.tEn)}</p>
+            <p className="m-0 text-body-sm text-fg-2 opacity-0 transition-opacity delay-150 duration-600 group-data-on/y:opacity-100 max-lg:opacity-100 motion-reduce:opacity-100">{pick(y.t, y.tEn)}</p>
           </div>
         ))}
       </div>
-      <a className="-my-2 justify-self-end py-2 text-[.95rem] font-medium text-fg-2 hover:text-acc-ink" href="#history">{m.more}</a>
+      <a className="-my-2 justify-self-end py-2 text-body-sm font-medium text-fg-2 hover:text-acc-ink" href="#history">{m.more}</a>
     </div>
   );
 }
@@ -195,7 +195,7 @@ const STEM = 'block h-[22px] w-px origin-top bg-line-2 [transform:scaleY(0)] max
 function OrgChart() {
   const m = useT().about.org;
   const root = useRef<HTMLDetailsElement>(null);
-  const tl = useRef<gsap.core.Timeline | null>(null);
+  const tl = useRef<gsap.core.Timeline | null>(null), reached = useRef(false), body = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(true);
   useGSAP(() => {
     const tree = root.current!.querySelector('[data-org-tree]')!;
@@ -209,20 +209,37 @@ function OrgChart() {
       .from(teams, { y: 24, opacity: 0, duration: .8, ease: 'power3.out', stagger: { each: .07, from: 'center' } }, .75)
       .to(teams.map(el => el.querySelector('[data-stem]')), { scaleY: 1, duration: .3, stagger: { each: .07, from: 'center' } }, .75)
       .from('[data-team] li', { opacity: 0, duration: .4, stagger: .02 }, 1.05);
-    ScrollTrigger.create({ trigger: tree, start: 'top 85%', once: true, onEnter: () => { if (root.current?.open) tl.current?.play(); } });
+    ScrollTrigger.create({ trigger: tree, start: 'top 85%', once: true, onEnter: () => { reached.current = true; if (root.current?.open) tl.current?.play(); } });
     return () => { tl.current = null; };
   }, { scope: root });
 
   return (
-    <details ref={root} open={open} className="group/org rv mt-[clamp(64px,9vw,120px)]"
-      onToggle={e => { const isOpen = e.currentTarget.open; setOpen(isOpen); ScrollTrigger.refresh(); if (isOpen) tl.current?.play(); }}>
+    <details ref={root} open={open} className="group/org rv mt-stack"
+      onToggle={e => {
+        // <details open> also fires toggle when it first appears; only a real change counts
+        const isOpen = e.currentTarget.open; if (isOpen === open) return;
+        setOpen(isOpen);
+        if (isOpen && reached.current) tl.current?.play();
+        // Re-measure the page for the new height: closing drops the rows at once (a closed <details>
+        // hides them), opening grows them over the row transition, so measure again once that ends
+        requestAnimationFrame(() => ScrollTrigger.refresh());
+        const el = body.current;
+        if (!isOpen || !el || REDUCED) return;
+        let timer = 0;
+        const done = (ev?: TransitionEvent) => {
+          if (ev && ev.target !== el) return;
+          el.removeEventListener('transitionend', done); clearTimeout(timer); ScrollTrigger.refresh();
+        };
+        el.addEventListener('transitionend', done);
+        timer = window.setTimeout(done, 700);
+      }}>
       <summary className="flex cursor-pointer list-none flex-wrap items-center justify-between gap-x-5 gap-y-3 [&::-webkit-details-marker]:hidden">
         <IndexHead title={m.title} aside={m.aside} />
         <span className={btn({ size: 'sm' })}>
           <span className="hidden group-open/org:inline">{m.collapse}</span><span className="group-open/org:hidden">{m.expand}</span>
         </span>
       </summary>
-      <div className="grid grid-rows-[0fr] transition-[grid-template-rows] duration-600 ease-out group-open/org:grid-rows-[1fr] motion-reduce:transition-none">
+      <div ref={body} className="grid grid-rows-[0fr] transition-[grid-template-rows] duration-600 ease-out group-open/org:grid-rows-[1fr] motion-reduce:transition-none">
         <div className="overflow-hidden">
           <div data-org-tree className="relative grid grid-cols-6 gap-3.5 pt-7 max-lg:grid-cols-2">
             <div data-org-root className="relative col-[3/5] self-center justify-self-center rounded-full border border-line-2 px-7 py-3.5 font-semibold max-lg:col-span-full">

@@ -117,6 +117,7 @@ pnpm images     # 이미지 변환만 (dev / build 가 자동으로 먼저 실�
 - GSAP 은 컴포넌트마다 `useGSAP(fn, { scope })` 안에서 만듭니다. 정리될 때 트윈, ScrollTrigger, SplitText, matchMedia 가 함께 되돌려집니다. Three.js / Canvas 장면은 같은 effect 에서 만들고 반환한 정리 함수에서 `destroy()` 합니다.
 - 무거운 초기화는 첫 화면 뒤로 미룹니다. 히어로 장면은 첫 페인트 직후에 만들고 부품 샘플링은 첫 부품만 즉시, 나머지는 유휴 시간에 합니다. 프로파일 랩 장면은 로드 후 유휴 시간이나 섹션 한 화면 앞에서 만듭니다. 두 장면 모두 셰이더를 `compileAsync` 로 미리 컴파일한 뒤 그리기 시작합니다.
 - 스크롤 트리거를 만들기 전에 숨김 상태(스타일 쓰기)를 한꺼번에 먼저 적용합니다. 트리거는 만들어지는 순간 페이지를 측정하므로, 쓰기와 생성을 번갈아 하면 트리거 수만큼 레이아웃이 다시 계산됩니다.
+- three.js 와 두 WebGL 장면(`src/three/hero.ts`, `extrusion.ts`)은 `import()` 로 따로 받는 청크입니다. 페이지가 쓰는 부품 이름·프로파일 계산은 three.js 없는 `src/three/meta.ts` 에 있으니, 컴포넌트에서 `src/three/*` 의 장면 모듈을 정적으로 import 하지 마세요(타입은 `import type`). 단일 파일은 `scripts/single.mjs` 가 동적 import 를 한 스크립트로 합친 별도 빌드로 만듭니다.
 - 페이지 전역 리빌은 마커로 붙입니다 (`src/components/ui.tsx` 상단 주석): `.rv`, `[data-batch]`, `[data-wipe]`, `[data-count]`. 모두 처음 한 번만 재생되고 위로 되돌아갈 때 되감기지 않으며, 재생한 트리거는 스스로 사라집니다.
 - 스크롤에 따라 프레임마다 바뀌는 상태(박자 전환 중인 카피, 시네마틱 프레임, 연혁 칸)는 React state 가 아니라 `data-*` 속성을 직접 토글하고 `data-on:` / `group-data-*:` 변형으로 스타일을 겁니다. 탭, 필터, 카테고리, 설정기 값처럼 사용자가 바꾸는 상태만 React state 입니다.
 - 다른 컴포넌트의 `contextSafe` 함수를 GSAP 콜백 안에서 부르지 마세요. GSAP 은 콜백을 그 애니메이션의 컨텍스트 안에서 실행하므로, 호출된 쪽 컨텍스트 전체가 호출한 쪽 아래로 들어가 함께 정리됩니다.

@@ -34,7 +34,7 @@ const medalLines = (s: string) => {
 const BEADS = Array.from({ length: 28 }, (_, i) => { const a = (i / 28) * Math.PI * 2; return [(60 + Math.cos(a) * 43).toFixed(1), (96 + Math.sin(a) * 43).toFixed(1)]; });
 
 function Medal({ e, compact = false }: { e: DvEvent; compact?: boolean }) {
-  const uid = useId().replace(/[^w-]/g, '');
+  const uid = useId().replace(/[^\w-]/g, '');
   const face = pickLang(e.medal, e.medalEn) || award(e);
   if (!face) return null;
   const lines = compact ? [] : medalLines(face);
@@ -130,8 +130,8 @@ export function Events() {
                       ? (on ? 'border-gold bg-linear-to-r/srgb from-gold/16 to-transparent to-62%' : 'border-gold/34 bg-card')
                       : (on ? 'border-acc bg-linear-to-r/srgb from-acc-glow to-transparent to-62%' : 'border-line bg-card hover:border-line-2')
                   )}>
-                    <span className="relative block aspect-4/3 w-24 rounded-[5px] bg-bg-2 max-3xl:w-[76px]">
-                      <Img src={`${EVENT_IMG}${ev.id}-01-t.jpg`} sizes="64px" alt="" className="size-full rounded-[5px] object-cover" />
+                    <span className="relative block aspect-4/3 w-24 rounded-thumb bg-bg-2 max-3xl:w-19">
+                      <Img src={`${EVENT_IMG}${ev.id}-01-t.jpg`} sizes="96px" alt="" className="size-full rounded-thumb object-cover" />
                       {won && <Medal e={ev} compact />}
                     </span>
                     <span className="grid min-w-0 gap-1.25">

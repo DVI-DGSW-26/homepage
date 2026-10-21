@@ -19,6 +19,10 @@ const rowsOf = (cat: ProductCategory) => {
  * The part name rolls up and is replaced by a copy rising from below, one character at a time.
  * Each word is its own roll and the spaces between them are ordinary, so the name wraps like text.
  */
+const ROLL_CHAR = 'inline-block transition-transform duration-550 ease-out delay-[calc(var(--i)*18ms)]';
+const ROLL_OUT = ROLL_CHAR + ' group-hover/row:-translate-y-[105%]';
+const ROLL_IN = ROLL_CHAR + ' translate-y-[105%] group-hover/row:translate-y-0';
+
 function Roll({ text }: { text: string }) {
   let n = 0;   // the stagger runs on across the words
   return text.split(' ').map((word, w) => {
@@ -26,7 +30,7 @@ function Roll({ text }: { text: string }) {
     const chars = (b: boolean) => (
       <span className="col-start-1 row-start-1 inline-block whitespace-nowrap">
         {[...word].map((c, i) => (
-          <span key={i} style={{ '--i': from + i } as CSSProperties} className={cn('inline-block transition-transform duration-[550ms] ease-out [transition-delay:calc(var(--i)*18ms)]', b ? 'translate-y-[105%] group-hover/row:translate-y-0' : 'group-hover/row:-translate-y-[105%]')}>{c}</span>
+          <span key={i} style={{ '--i': from + i } as CSSProperties} className={b ? ROLL_IN : ROLL_OUT}>{c}</span>
         ))}
       </span>
     );
@@ -50,7 +54,6 @@ function Catalogue() {
   const m = useT().product;
   const root = useRef<HTMLDivElement>(null), gallery = useRef<HTMLDivElement>(null);
   const [catId, setCatId] = useState<CatId>('automotive');
-  const [hover, setHover] = useState<string | null>(null);
   const cat = PRODUCTS.find(c => c.id === catId)!;
   const rows = useMemo(() => rowsOf(cat), [cat]);
   const photos = cat.groups.reduce((n, g) => n + g.parts.length, 0);
@@ -67,6 +70,12 @@ function Catalogue() {
     ScrollTrigger.refresh();
   }, { scope: root, dependencies: [catId] });
 
+  // hovering a row lights its photos in the gallery: a DOM attribute, so the catalogue doesn't re-render
+  const mark = (name: string | null) => {
+    const g = gallery.current; if (!g) return;
+    g.querySelectorAll('figure[data-on]').forEach(f => f.removeAttribute('data-on'));
+    if (name) g.querySelectorAll(`figure[data-name="${CSS.escape(name)}"]`).forEach(f => f.toggleAttribute('data-on', true));
+  };
   const reveal = (name: string) => gallery.current?.querySelector(`figure[data-name="${CSS.escape(name)}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
 
   return (
@@ -74,11 +83,11 @@ function Catalogue() {
       <div data-batch className="grid grid-cols-4 gap-3.5 max-lg:grid-cols-2 max-xs:grid-cols-1">
         {PRODUCTS.map(c => (
           <button key={c.id} type="button" data-on={c.id === catId || undefined} onClick={() => setCatId(c.id)}
-            className="group/cat rv relative isolate aspect-3/4 cursor-pointer overflow-hidden rounded-card border border-line bg-ink text-left text-white max-lg:aspect-4/3 max-xs:aspect-[16/9]">
-            <Img src={c.cover} sizes="(max-width: 640px) 100vw, (max-width: 900px) 50vw, 25vw" className="absolute inset-0 size-full object-cover opacity-85 [transition:scale_1.2s_var(--ease-out),opacity_.6s] group-hover/cat:scale-[1.06] group-data-on/cat:scale-[1.06]" />
-            <div className="absolute inset-0 z-1 bg-[linear-gradient(180deg,rgba(12,16,22,.1),rgba(12,16,22,.85))]" />
-            <div className="absolute inset-0 z-2 flex flex-col justify-between p-[22px]">
-              <Img className="size-[38px] object-contain" src={c.icon} sizes="38px" />
+            className="group/cat rv relative isolate aspect-3/4 cursor-pointer overflow-hidden rounded-card border border-line bg-ink text-left text-on-photo max-lg:aspect-4/3 max-xs:aspect-video">
+            <Img src={c.cover} sizes="(max-width: 640px) 100vw, (max-width: 900px) 50vw, 25vw" className="absolute inset-0 size-full object-cover opacity-85 [transition:scale_1.2s_var(--ease-out),opacity_.6s] group-hover/cat:scale-106 group-data-on/cat:scale-106" />
+            <div className="absolute inset-0 z-1 bg-(image:--scrim-card)" />
+            <div className="absolute inset-0 z-2 flex flex-col justify-between p-5.5">
+              <Img className="size-9.5 object-contain" src={c.icon} sizes="38px" />
               <div>
                 <h3 className="m-0 text-card-title leading-tight font-semibold"><small className="mb-2 block font-mono text-label font-medium tracking-widest text-on-photo/70 uppercase">{m.labels[c.id]}</small>{pick(c.ko, c.en)}</h3>
                 <p className="mt-1.5 text-small text-on-photo/75">{pick(c.desc, c.descEn)}</p>
@@ -93,10 +102,10 @@ function Catalogue() {
         <IndexHead title={pick(cat.ko, cat.en)} aside={m.counts(rows.length, photos)} />
         <ul className="m-0 list-none p-0">
           {rows.map(r => (
-            <li key={catId + r.name} data-row onPointerEnter={() => setHover(r.name)} onPointerLeave={() => setHover(null)} onClick={() => reveal(r.name)}
+            <li key={catId + r.name} data-row onPointerEnter={() => mark(r.name)} onPointerLeave={() => mark(null)} onClick={() => reveal(r.name)}
               // fixed last column: each row is its own grid, so an auto column would shift the others row to row
-              className="group/row relative grid cursor-pointer grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)_7.5rem] items-center gap-5 border-b border-line py-[18px] after:absolute after:inset-x-0 after:-bottom-px after:h-px after:origin-left after:scale-x-0 after:bg-fg after:transition-transform after:duration-600 after:ease-out after:content-[''] hover:after:scale-x-100 max-lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)_7.5rem] max-sm:grid-cols-[minmax(0,1fr)_auto]">
-              <span className="font-display text-[clamp(1.6rem,3vw,2.8rem)] leading-none font-extrabold tracking-[.005em] uppercase">
+              className="group/row relative grid cursor-pointer grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)_7.5rem] items-center gap-5 border-b border-line py-4.5 after:absolute after:inset-x-0 after:-bottom-px after:h-px after:origin-left after:scale-x-0 after:bg-fg after:transition-transform after:duration-600 after:ease-out hover:after:scale-x-100 max-lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)_7.5rem] max-sm:grid-cols-[minmax(0,1fr)_auto]">
+              <span className="font-display text-subhead-lg leading-none font-extrabold tracking-name uppercase">
                 <Roll text={r.name} />
               </span>
               <span className="text-body-sm text-fg-2 max-sm:hidden">{m.showSystemEn ? <>{r.sys} <span className="mono ml-1.5 text-mute">{r.sysEn}</span></> : r.sysEn}</span>
@@ -108,9 +117,9 @@ function Catalogue() {
         <div ref={gallery} data-gallery aria-label={m.gallery}
           className="mt-7 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-3.5 [scrollbar-color:var(--line-2)_transparent] [scrollbar-width:thin]">
           {cat.groups.flatMap(g => g.parts.map((p, i) => (
-            <figure key={catId + g.en + i} data-name={p.name} data-on={hover === p.name || undefined} className="group/fig m-0 grid w-[clamp(180px,20vw,260px)] flex-none snap-start gap-2">
-              <div data-ph className="relative aspect-[335/300] overflow-hidden rounded-card border border-line bg-white group-data-on/fig:border-acc">
-                <Img src={'assets/img/products/' + p.img} sizes="(max-width: 640px) 50vw, 240px" alt={p.name} className="size-full object-cover transition-transform duration-800 ease-out group-hover/fig:scale-[1.06] group-data-on/fig:scale-[1.06]" />
+            <figure key={catId + g.en + i} data-name={p.name} className="group/fig m-0 grid w-product-thumb flex-none snap-start gap-2">
+              <div data-ph className="relative aspect-335/300 overflow-hidden rounded-card border border-line bg-plate group-data-on/fig:border-acc">
+                <Img src={'assets/img/products/' + p.img} sizes="(max-width: 640px) 50vw, 240px" alt={p.name} className="size-full object-cover transition-transform duration-800 ease-out group-hover/fig:scale-106 group-data-on/fig:scale-106" />
               </div>
               <figcaption className="flex justify-between gap-2.5 text-caption"><b>{p.name}</b><span className="font-mono text-tag tracking-widest text-mute uppercase">{pick(g.ko, g.en)}</span></figcaption>
             </figure>
