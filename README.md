@@ -51,6 +51,7 @@ pnpm coast      # 지도 해안선 데이터 다시 만들기 (결과는 커밋�
 | `src/components/Equipment.tsx` | 설비, 시험장비 표, 설비 사진 |
 | `src/components/Rnd.tsx` | R&D, 텔레메트리, ESG, 인증서 마키 |
 | `src/components/Global.tsx` | 글로벌 거점 지도와 거점 목록, 연혁(History) |
+| `src/components/QacFlow.tsx` | Q.A.C-Flow 품질검사 솔루션 섹션(`#qac-flow`, 연혁과 행사 사이). 화면 캡처는 `public/assets/img/qacflow/` (고객사명, 작업자 실명은 이미지에서 가림). 제품색 마젠타는 `qf-*` 토큰으로 이 섹션에서만 씀. CES QR 코드는 `/?lang=en#qac-flow` |
 | `src/components/Events.tsx` | 행사 목록과 상세 |
 | `src/components/Contact.tsx` | 커뮤니티, 문의, 푸터 |
 | `src/i18n/` | KOR / ENG. `locales/ko.ts`·`locales/en.ts` 화면 문구 사전, `store.ts` 언어 상태·`useT`·`pick`·`useLang`·`setLang`, `rich.tsx` 태그가 섞인 문구 렌더, `meta.ts` `<html lang>`·`<title>`·meta description, `index.ts` 진입점 |

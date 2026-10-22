@@ -86,7 +86,10 @@
   --text-year-sm: clamp(2.4rem, 4.4vw, 4rem);   /* history */
   --text-kpi: clamp(3.2rem, 5vw, 5.2rem);       /* press capacity */
   --text-kpi-tight: clamp(3.2rem, 4.6vw, 5.2rem); /* R&D figures */
-  --text-kpi-narrow: clamp(3.2rem, 9vw, 5rem);  /* R&D figures below 860px */
+  --text-kpi-narrow: clamp(3.2rem, 9vw, 5rem);  /* R&D figures up to 900px */
+  --text-wordmark: clamp(3.6rem, 9vw, 8rem);    /* the Q.A.C-Flow name */
+  --text-stat: clamp(2rem, 4.2vw, 3.4rem);      /* Q.A.C-Flow figures */
+  --text-milestone: clamp(2rem, 3.6vw, 3rem);   /* Q.A.C-Flow roadmap years */
   --text-subhead: clamp(1.6rem, 3vw, 2.6rem);
   --text-subhead-lg: clamp(1.6rem, 3vw, 2.8rem);
   --text-marquee: clamp(1.6rem, 3.4vw, 3rem);
@@ -204,6 +207,8 @@
   --color-on-acc: #fff;
   /* the white backing behind logos, scans and product shots */
   --color-plate: #fff;
+  /* Q.A.C-Flow product magenta: that section's accent only */
+  --color-qf: #941B82;
 }
 
 /* mode-dependent colours resolve through the mode set, so `bg-bg`, `text-fg-2`, `border-line`
@@ -224,6 +229,9 @@
   --color-nav: var(--nav-bg);
   /* award gold: pale on graphite, burnished on aluminum so it still reads as text */
   --color-gold: var(--gold);
+  --color-qf-ink: var(--qf-ink);
+  --color-qf-soft: var(--qf-soft);
+  --color-qf-line: var(--qf-line);
 }
 
 @layer base {
@@ -236,6 +244,8 @@
     --acc: #8A5BC2; --acc-2: var(--color-ink-acc); --acc-ink: var(--color-ink-acc); --acc-glow: rgb(138 91 194 / .35);
     --nav-bg: color-mix(in srgb, var(--color-ink) 94%, transparent);
     --gold: #E7C87A;
+    /* Q.A.C-Flow magenta: lifted for type on graphite, a tint and a hairline */
+    --qf-ink: #E58AD6; --qf-soft: color-mix(in srgb, var(--color-qf) 16%, transparent); --qf-line: rgb(229 138 214 / .42);
     /* liquid glass (the glass utility): the pane, its sheen, its lit top edge, its rim and its drop */
     --glass: color-mix(in srgb, var(--color-ink) 50%, transparent);
     --glass-sheen: rgb(255 255 255 / .07);
@@ -309,6 +319,7 @@
     --acc: var(--color-brand); --acc-2: #8A5BC2; --acc-ink: var(--color-brand); --acc-glow: color-mix(in srgb, var(--color-brand) 28%, transparent);
     --nav-bg: color-mix(in srgb, var(--color-paper) 95%, transparent);
     --gold: #8C6414;
+    --qf-ink: var(--color-qf); --qf-soft: color-mix(in srgb, var(--color-qf) 8%, transparent); --qf-line: color-mix(in srgb, var(--color-qf) 38%, transparent);
     --glass: color-mix(in srgb, var(--color-paper) 55%, transparent);
     --glass-sheen: rgb(255 255 255 / .35);
     --glass-hi: rgb(255 255 255 / .9);
