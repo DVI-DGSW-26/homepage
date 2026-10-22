@@ -1,13 +1,14 @@
 // Q.A.C-Flow, the smartphone quality inspection system built on DVISION's own line.
 // Hero with the figures up front, then problem, how it works, workflow, live monitor, traceability,
-// and report → data → roadmap. Magenta (qf-*) is this section's accent only.
+// and report → data (the roadmap after it is the next section, src/components/Future.tsx).
+// Magenta (qf-*) is this section's accent only.
 //
 // The screens come from the in-house deployment. Customer and personal names are masked in the
 // image files themselves (public/assets/img/qacflow/), and the phone captures have the status and
 // navigation bars cropped off so they sit in the CSS phone frame.
 import { useState, type KeyboardEvent, type ReactNode } from 'react';
 import { lines, useT } from '../i18n';
-import { ArrowIcon, Eyebrow, H2, Lead, SEC, Section, btn, cn } from './ui';
+import { ArrowIcon, Eyebrow, H2, Lead, LineIcon as Icon, SEC, Section, btn, cn } from './ui';
 import { Img } from './Img';
 
 const IMG = 'assets/img/qacflow/';
@@ -17,14 +18,6 @@ const MONITOR = ['measurement-detail', 'status-board', 'defect-actions'] as cons
 const BEFORE_ICONS = ['M4 7h16v10H4z M8 11h8', 'M6 3h9l3 3v15H6z M9 10h6M9 14h6M9 18h3', 'M3 5h18v14H3z M3 10h18M9 5v14M15 5v14'];
 const AFTER_ICONS = ['M4 8h3l2-3h6l2 3h3v11H4z M12 17a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z', 'M4 8V4h4M16 4h4v4M20 16v4h-4M8 20H4v-4 M8 12h8', 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z M8 12l3 3 5-6', 'M6 3h9l3 3v15H6z M9 13l2 2 4-4'];
 const WORKFLOW_ICONS = ['M6 3h9l3 3v15H6z M9 9h6M9 13h6M9 17h4', 'M7 2h10v20H7z M11 18h2 M10 7h4v5h-4z', 'M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3 M18 3v4h-4M6 21v-4h4', 'M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z M9 12l2 2 4-4', 'M6 3h9l3 3v15H6z M12 9v7m0 0l-3-3m3 3l3-3'];
-
-function Icon({ d, className }: { d: string; className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" className={cn('fill-none stroke-current stroke-[1.5] [stroke-linecap:round] [stroke-linejoin:round]', className)}>
-      <path d={d} />
-    </svg>
-  );
-}
 
 /** each block opens with the visitor's question, then answers it: a one-line answer, then the detail */
 function Head({ kicker, q, title, lead }: { kicker: string; q: string; title: string; lead?: string }) {
@@ -289,27 +282,6 @@ function Data() {
           ); })}
         </ol>
       </div>
-
-      <div className="rv mt-stack-md mb-8 flex flex-wrap items-end justify-between gap-x-5 gap-y-1 border-b border-line-2 pb-3.5 text-mute">
-        <h4 className="m-0 text-index font-semibold text-fg">{d.roadmap}</h4>
-        <span className="mono">2026 — 2029</span>
-      </div>
-      <ol data-batch className="m-0 grid list-none p-0 md:grid-cols-4 md:gap-6">
-        {d.milestones.map((x, i) => { const now = i === 0; return (
-          <li key={x.year} className={cn(
-            'rv relative pb-7.5 pl-8.5 last:pb-0 md:pt-7.5 md:pb-0 md:pl-0',
-            'before:absolute before:top-3 before:-bottom-3 before:left-1.25 before:border-l before:border-line-2 last:before:hidden',
-            'md:before:top-1.25 md:before:-right-6 md:before:bottom-auto md:before:left-3 md:before:border-t md:before:border-l-0 md:last:before:block md:last:before:right-0',
-            'after:absolute after:top-1.5 after:left-0 after:size-2.75 after:rounded-full after:border after:border-line-2 after:bg-bg md:after:top-0',
-            now && 'after:border-qf after:bg-qf after:shadow-[0_0_0_6px_var(--qf-soft)]'
-          )}>
-            <b className={cn('block font-display text-milestone leading-none font-extrabold text-fg-2', now && 'text-qf-ink')}>{x.year}</b>
-            <h4 className="m-0 mt-2.5 text-title-xs font-semibold">{x.title}</h4>
-            <p className="m-0 mt-1 text-small text-fg-2">{x.body}</p>
-            {now && <span className="mono mt-3 inline-block rounded-full bg-qf px-3 py-1.5 text-tag text-on-acc">{d.here}</span>}
-          </li>
-        ); })}
-      </ol>
     </div>
   );
 }

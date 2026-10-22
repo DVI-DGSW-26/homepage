@@ -274,16 +274,32 @@ export const ko = {
         { title: '검사마다 한 장의 보고서', body: '측정값, 공차, 사진, 결재가 한 기록에 담깁니다.' },
         { title: '보고서가 쌓여 데이터로', body: '품목, 설비, 검사 시점별로 매일 쌓입니다.' },
         { title: '학습 자산', body: '불량 예측과 공정 최적화를 위한 바탕이 됩니다.' }
-      ],
-      roadmap: '로드맵',
-      here: 'We are here',
-      milestones: [
-        { year: '2026', title: 'Internal PoC', body: '대구 공장 사내 운영' },
-        { year: '2027', title: 'External PoC', body: '사외 현장 실증' },
-        { year: '2028', title: 'SaaS 상용화', body: '상용화' },
-        { year: '2029', title: '데이터, 신용 사업', body: '축적된 검사 데이터 기반' }
       ]
     }
+  },
+
+  future: {
+    label: '데이터 산업 진입',
+    eyebrow: 'Our Future — Data Industry',
+    title: '데이터 산업 진입:\n<k>검증 기반 단계적 확장 전략</k>',
+    chainLabel: '제조에서 데이터 사업까지',
+    chain: [
+      { title: '제조공정', sub: '압출, 가공, 조립' },
+      { title: '데이터 확보', sub: '실시간 수집' },
+      { title: 'Internal PoC', sub: '내부 검증' },
+      { title: 'External PoC', sub: '외부 검증' },
+      { title: 'SaaS', sub: '서비스화' },
+      { title: 'Data Business', sub: '사업 확장' }
+    ],
+    roadmap: '단계별 로드맵',
+    here: 'We are here',
+    stages: [
+      { year: '2026', title: 'Internal PoC', sub: '내부 제조 경쟁력 강화', items: ['내부 공정 검증', '데이터 모델 테스트', '제조 최적화'] },
+      { year: '2027', title: 'External PoC', sub: '구축 시작', items: ['외부 고객 검증', '시스템 구축', '실증 테스트'] },
+      { year: '2028', title: 'SaaS 제품화', sub: '상용화', items: ['서비스 출시', '고객 확대', '수익화 시작'] },
+      { year: '2029', title: 'Data/Credit', sub: '사업 본격화', items: ['데이터 사업', '크레딧 시스템', '글로벌 확장'] }
+    ],
+    closing: '제조업을 넘어 <k>데이터/AI 시장으로 확장하여 새로운 성장 동력 확보</k>'
   },
 
   events: {

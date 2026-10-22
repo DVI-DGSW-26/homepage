@@ -267,16 +267,32 @@ export const en: Messages = {
         { title: 'One report per inspection', body: 'Values, tolerances, photos and approval in one record.' },
         { title: 'Reports pile up as data', body: 'By part, machine and inspection slot, day after day.' },
         { title: 'A learning asset', body: 'The groundwork for defect prediction and process optimization.' }
-      ],
-      roadmap: 'Roadmap',
-      here: 'We are here',
-      milestones: [
-        { year: '2026', title: 'Internal PoC', body: 'Running at our Daegu plant' },
-        { year: '2027', title: 'External PoC', body: 'Validation beyond our own plant' },
-        { year: '2028', title: 'SaaS launch', body: 'Commercial release' },
-        { year: '2029', title: 'Data & credit business', body: 'Built on accumulated inspection data' }
       ]
     }
+  },
+
+  future: {
+    label: 'Into the data industry',
+    eyebrow: 'Our Future — Data Industry',
+    title: 'Into the data industry:\n<k>expanding step by step, proven at each stage</k>',
+    chainLabel: 'From manufacturing to a data business',
+    chain: [
+      { title: 'Manufacturing', sub: 'Extrusion, machining, assembly' },
+      { title: 'Data capture', sub: 'Collected in real time' },
+      { title: 'Internal PoC', sub: 'Proven in-house' },
+      { title: 'External PoC', sub: 'Proven with customers' },
+      { title: 'SaaS', sub: 'Offered as a service' },
+      { title: 'Data Business', sub: 'A business of its own' }
+    ],
+    roadmap: 'Roadmap by stage',
+    here: 'We are here',
+    stages: [
+      { year: '2026', title: 'Internal PoC', sub: 'Sharpening our own manufacturing', items: ['Validate in-house processes', 'Test data models', 'Optimize manufacturing'] },
+      { year: '2027', title: 'External PoC', sub: 'Building out', items: ['Validate with external customers', 'Build the system', 'Field trials'] },
+      { year: '2028', title: 'SaaS product', sub: 'Commercial launch', items: ['Service launch', 'Grow the customer base', 'First revenue'] },
+      { year: '2029', title: 'Data/Credit', sub: 'Full-scale business', items: ['Data business', 'Credit system', 'Global expansion'] }
+    ],
+    closing: 'Beyond manufacturing, <k>into data and AI markets for a new engine of growth</k>'
   },
 
   events: {

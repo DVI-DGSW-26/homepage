@@ -13,6 +13,7 @@ import { Equipment } from './components/Equipment';
 import { Rnd } from './components/Rnd';
 import { Global, History } from './components/Global';
 import { QacFlow } from './components/QacFlow';
+import { Future } from './components/Future';
 import { Events } from './components/Events';
 import { Community, Contact } from './components/Contact';
 
@@ -56,6 +57,7 @@ export default function App() {
         <Global />
         <History />
         <QacFlow />
+        <Future />
         <Events />
         <Community />
         <Contact />

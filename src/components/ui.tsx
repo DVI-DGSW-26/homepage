@@ -116,6 +116,15 @@ export function DownloadIcon({ className = BTN_ICON }: { className?: string }) {
   );
 }
 
+/** a 24×24 line icon drawn with the current colour; `d` is the path (Q.A.C-Flow, the data-industry roadmap) */
+export function LineIcon({ d, className }: { d: string; className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={cn('fill-none stroke-current stroke-[1.5] [stroke-linecap:round] [stroke-linejoin:round]', className)}>
+      <path d={d} />
+    </svg>
+  );
+}
+
 /** a label / value row in the hero and configurator HUDs */
 export function HudRow({ label, children, className, ...rest }: ComponentProps<'div'> & { label: string }) {
   return (
