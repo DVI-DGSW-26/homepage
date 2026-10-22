@@ -9,6 +9,7 @@ import { initTelemetry } from './telemetry.js';
 import { PRODUCTS, PROCESSES, PROCESS_IMG, CERTS, CERT_KINDS, HISTORY, SITES, TEST_EQUIPMENT, ABOUT_YEARS, ORG, EVENTS, EVENT_IMG } from './data.js';
 import { EN, t, applyStatic } from './i18n.js';
 import { applyTheme as applySiteTheme } from './theme.js';
+import { initQacFlow } from './qacflow.js';
 
 // English copy has to land before SplitText measures a headline or any list is built.
 applyStatic();
@@ -33,6 +34,9 @@ document.addEventListener('click', e => {
   const a = e.target.closest('a[href^="#"]'); if (!a) return;
   const id = a.getAttribute('href'); if (id.length > 1 && $(id)) { e.preventDefault(); scrollTo(id); }
 });
+// Deep links (the CES QR code points at /?lang=en#qac-flow): the browser jumps before
+// headlines are split and images sized, so land on the target again once the page has loaded.
+addEventListener('load', () => { const el = location.hash.length > 1 && document.getElementById(location.hash.slice(1)); if (el) requestAnimationFrame(() => scrollTo(el, { immediate: true, force: true })); });
 
 /* ---------------- generated content ---------------- */
 const roll = (text) => {
@@ -301,7 +305,7 @@ $$('section[data-theme]').forEach(sec => ScrollTrigger.create({ trigger: sec, st
 const nav = $('#nav');
 ScrollTrigger.create({ start: 0, end: 'max', onUpdate: self => { const y = self.scroll(); nav.classList.toggle('is-hidden', self.direction === 1 && y > 240); nav.classList.toggle('is-solid', y > 80); } });
 const links = $$('.nav-links a');
-const linkFor = { about: 'about', statement: 'about', product: 'product', config: 'config', process: 'config', equip: 'config', rnd: 'rnd', global: 'about', history: 'about', events: 'events', community: 'community', contact: 'community' };
+const linkFor = { about: 'about', statement: 'about', product: 'product', config: 'config', process: 'config', equip: 'config', rnd: 'rnd', 'qac-flow': 'qac-flow', global: 'about', history: 'about', events: 'events', community: 'community', contact: 'community' };
 Object.keys(linkFor).forEach(id => { const el = document.getElementById(id); if (!el) return; ScrollTrigger.create({ trigger: el, start: 'top 45%', end: 'bottom 45%', onToggle: s => { if (s.isActive) links.forEach(a => a.classList.toggle('is-active', a.getAttribute('href') === '#' + linkFor[id])); } }); });
 
 /* ---------------- marquee skew ---------------- */
@@ -528,6 +532,8 @@ $('#form').addEventListener('submit', e => {
   location.href = `mailto:info@dvi-ind.com?subject=${encodeURIComponent(L.subject + d.company)}&body=${encodeURIComponent(body)}`;
   $('#formNote').textContent = L.sent;
 });
+
+initQacFlow();
 
 /* ---------------- cursor + magnetic ---------------- */
 if (FINE && !REDUCED) {

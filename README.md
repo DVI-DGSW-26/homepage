@@ -34,6 +34,8 @@ npm run build
 | `src/extrusion.js` | 프로파일 랩: 프레스 컨테이너, 금형, 프로파일 Three.js 장면과 중량 계산 |
 | `src/map.js`, `src/telemetry.js` | 글로벌 거점 지도, R&D 데모 파형 (Canvas 2D) |
 | `src/data.js` | 제품, 공정, 인증서, 연혁, 거점, 조직도, 행사 데이터. 사이트 내용 수정은 여기서 |
+| `src/qacflow.js` | Q.A.C-Flow 섹션(`#qac-flow`)의 모니터 화면 탭 |
+| `assets/img/qacflow/` | Q.A.C-Flow 화면 캡처(WebP). 고객사명, 작업자 실명은 회색 막대로 가린 상태. 모바일 캡처는 상태바, 내비게이션 바를 잘라 CSS 폰 프레임에 넣음 |
 | `assets/img/events/` | 행사 사진. `<행사 id>-NN.jpg` 본판과 `-NN-t.jpg` 썸네일 한 쌍 |
 | `assets/img/` | dvi-ind.com 에서 가져온 이미지(정리, 최적화본). `assets/img/site/` 는 원본 보관 |
 | `assets/img/favicon*`, `apple-touch-icon.png` | 탭 아이콘. `디비전_Logo.pdf` 의 심볼을 추출해 생성 (워드마크 제외, 16px 에서 읽히도록) |
@@ -94,3 +96,9 @@ npm run build
 
 - 문의 폼 백엔드 (현재는 메일 앱으로 열림)
 - 실제 부품 3D 모델 (현재는 절차적 형상, GLTF 교체 지점은 `src/parts.js`)
+
+## Q.A.C-Flow 섹션 (#qac-flow)
+
+R&D 와 Global 사이에 있는 품질검사 솔루션 소개 섹션입니다. CES 용 QR 코드는 영문으로 바로 열리도록 `/?lang=en#qac-flow` 를 가리키면 됩니다.
+
+공개 전에 채울 자리표시자는 `index.html` 에서 `[BOOTH #]`(부스 번호)와 `[EMAIL]`(문의 메일, `mailto:` 링크 두 곳 포함)입니다.
