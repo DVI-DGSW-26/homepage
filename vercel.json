@@ -1,5 +1,7 @@
 {
-  "buildCommand": "npm run build",
+  "framework": "vite",
+  "installCommand": "pnpm install",
+  "buildCommand": "pnpm build",
   "outputDirectory": "dist",
   "cleanUrls": true,
   "headers": [
