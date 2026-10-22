@@ -1,6 +1,6 @@
 import { useRef, useState, type FormEvent, type ReactNode } from 'react';
 import { gsap, useGSAP } from '../lib/gsap';
-import { rich, useT } from '../i18n';
+import { lines, rich, useT } from '../i18n';
 import { COMPANY } from '../data';
 import { ArrowIcon, DownloadIcon, Eyebrow, H2, Photo, SEC, SecHead, Section, btn, cn } from './ui';
 import { Img } from './Img';
@@ -30,7 +30,7 @@ export function Community() {
             <div className={TILE_IN}>
               <div className={TILE_META}><span>{m.news.tag}</span><span className="num">{m.news.date}</span></div>
               <h3 className={TILE_H3}>{m.news.title}</h3>
-              <p className={TILE_P}>{m.news.body}</p>
+              <p className={TILE_P}>{lines(m.news.body)}</p>
             </div>
             <div className={GO}><span>{m.news.more}</span><ArrowIcon className={GO_ICON} /></div>
           </a>
@@ -48,7 +48,7 @@ export function Community() {
             <div className={TILE_IN}>
               <div className={TILE_META}><span>{m.video.tag}</span><span>{m.video.source}</span></div>
               <h3 className={TILE_H3}>{m.video.title}</h3>
-              <p className={TILE_P}>{m.video.body}</p>
+              <p className={TILE_P}>{lines(m.video.body)}</p>
             </div>
             <a className={GO} href={COMPANY.youtube} target="_blank" rel="noopener"><span>{m.video.channel}</span><ArrowIcon className={GO_ICON} /></a>
           </div>
@@ -57,7 +57,7 @@ export function Community() {
               <div className={TILE_META}><span>{m.catalog.tag}</span><span>{m.catalog.size}</span></div>
               <div className="grid grid-cols-[auto_1fr] items-start gap-4.5">
                 <Photo data-wipe src="assets/img/community/catalog-cover.jpg" sizes="110px" alt={m.catalog.cover} className="aspect-660/925 w-27.5 border border-line bg-plate" />
-                <div><h3 className={TILE_H3}>{m.catalog.title}</h3><p className={cn(TILE_P, 'mt-2')}>{m.catalog.body}</p></div>
+                <div><h3 className={TILE_H3}>{m.catalog.title}</h3><p className={cn(TILE_P, 'mt-2')}>{lines(m.catalog.body)}</p></div>
               </div>
               <div className="mt-2 flex flex-wrap gap-2.5">
                 {(['youtube', 'instagram', 'linkedin'] as const).map(k => <a key={k} className={btn({ size: 'sm' })} href={COMPANY[k]} target="_blank" rel="noopener">{m.social[k]}</a>)}
@@ -121,7 +121,7 @@ function InquiryForm() {
       </div>
       <Field id="fMsg" label={m.message}><textarea id="fMsg" name="message" required className={cn(INPUT, 'min-h-27.5 resize-y')} /></Field>
       <button className={cn(btn({ acc: true }), 'justify-self-start')} type="submit"><span>{m.send}</span> <ArrowIcon /></button>
-      <p className="m-0 text-mono text-mute">{sent ? m.sent : m.note}</p>
+      <p className="m-0 text-mono text-mute">{lines(sent ? m.sent : m.note)}</p>
     </form>
   );
 }

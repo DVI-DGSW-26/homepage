@@ -2,7 +2,7 @@ import { useImperativeHandle, useRef, useState, type RefObject } from 'react';
 import { gsap, ScrollTrigger, SplitText, useGSAP } from '../lib/gsap';
 import { bootReady } from '../lib/boot';
 import { FINE, REDUCED } from '../lib/env';
-import { pick, useLang, useT } from '../i18n';
+import { lines, pick, useLang, useT } from '../i18n';
 import type { HeroApi } from '../three/hero';
 import { getTheme, subscribeTheme } from '../lib/theme';
 import { PART_LABELS } from '../three/meta';
@@ -19,8 +19,9 @@ const NO_SCENE: HeroApi = { setLight() {}, setBeat() {}, setIntro() {}, setProgr
 /**
  * One screen: aluminum chips assemble into four parts in turn while the headline swipes beat by
  * beat on its own (paused while the hero is off screen, and not at all with reduced motion — the
- * HUD ticks pick a beat by hand). The entrance plays as soon as the fonts are in; until then the
- * copy, HUD and nav stay hidden (`booting:`) so nothing flashes before it animates in.
+ * HUD ticks pick a beat by hand). Dragging the part turns it to any angle, and the beat holds until
+ * it is let go. The entrance plays as soon as the fonts are in; until then the copy, HUD and nav
+ * stay hidden (`booting:`) so nothing flashes before it animates in.
  */
 export function Hero() {
   const m = useT().hero, lang = useLang();
@@ -32,7 +33,7 @@ export function Hero() {
   useGSAP((_, contextSafe) => {
     const beats = beatEls.current;
     const bgs = bgEls.current;
-    let HERO = NO_SCENE, alive = true, cur = 0, active = true, started = false, frame = 0, intro = REDUCED ? 1 : 0;
+    let HERO = NO_SCENE, alive = true, cur = 0, active = true, started = false, held = false, frame = 0, intro = REDUCED ? 1 : 0;
     let timer: gsap.core.Tween | null = null;
     // The WebGL scene (and three.js with it) is a separate chunk: fetched right away, built after the
     // first paint, so the page shows up before either cost. A beat or the intro that arrives first is
@@ -40,7 +41,7 @@ export function Hero() {
     const scene = import('../three/hero');
     const build = () => scene.then(({ createHero }) => {
       if (!alive || HERO !== NO_SCENE) return;
-      HERO = createHero(canvas.current!, { reduced: REDUCED, fine: FINE, light: getTheme() === 'light' });
+      HERO = createHero(canvas.current!, { reduced: REDUCED, fine: FINE, light: getTheme() === 'light', surface: root.current!, onGrab: v => { held = v; schedule(); } });
       HERO.setBeat(cur); HERO.setActive(active); HERO.setIntro(intro);
     });
     frame = requestAnimationFrame(() => { frame = requestAnimationFrame(build); });
@@ -61,7 +62,7 @@ export function Hero() {
     };
     const schedule = contextSafe!(() => {
       timer?.kill(); timer = null;
-      if (REDUCED || !started || !active) return;
+      if (REDUCED || !started || !active || held) return;
       timer = gsap.delayedCall(DWELL, () => go((cur + 1) % beats.length));
     });
     const go = contextSafe!((i: number) => { showBeat(i); schedule(); });
@@ -94,7 +95,7 @@ export function Hero() {
   }, { scope: root });
 
   return (
-    <Section ref={root} id="hero" aria-label={m.label} className="h-svh min-h-140">
+    <Section ref={root} id="hero" aria-label={m.label} className="h-svh min-h-140 touch-pan-y">
       {/* The banners are dark photographs. On graphite they sit at a third strength; on the light page
           they are lifted (brightness up, contrast and colour down) and the veil turns to the page colour. */}
       <div className="relative h-full overflow-hidden">
@@ -114,7 +115,7 @@ export function Hero() {
               {m.beats.map((b, i) => (
                 <article key={i} ref={el => { if (el) beatEls.current[i] = el; }} data-active={i === 0 ? '' : undefined} className="invisible col-start-1 row-start-1 data-active:visible">
                   <h1 key={i === 0 ? lang : undefined} className="m-0 mb-hero-gap max-w-hero-title font-display text-hero leading-hero font-extrabold tracking-display text-balance text-fg uppercase">{b.title}</h1>
-                  <p className="m-0 max-w-hero-copy text-hero-body leading-hero-body text-fg-2">{b.body}</p>
+                  <p className="m-0 max-w-hero-copy text-hero-body leading-hero-body text-fg-2">{lines(b.body)}</p>
                 </article>
               ))}
             </div>

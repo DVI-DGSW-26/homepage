@@ -1,7 +1,7 @@
 import { useRef, type CSSProperties } from 'react';
 import { useGSAP } from '../lib/gsap';
 import { REDUCED } from '../lib/env';
-import { pick, useT } from '../i18n';
+import { lines, pick, useT } from '../i18n';
 import { initMap } from '../canvas/map';
 import { HISTORY, SITES } from '../data';
 import { Photo, SEC, SecHead, Section, cn } from './ui';
@@ -18,7 +18,7 @@ export function Global() {
   return (
     <Section id="global" className={SEC}>
       <div className="wrap">
-        <SecHead eyebrow={m.eyebrow} title={m.title} lead={m.lead} />
+        <SecHead eyebrow={m.eyebrow} title={m.title} lead={lines(m.lead)} />
         <div className="rv relative overflow-hidden rounded-t-card border border-line bg-card">
           <canvas ref={map} aria-label={m.mapAria} className="block aspect-2/1 h-auto w-full" />
         </div>
@@ -53,7 +53,7 @@ export function History() {
   return (
     <Section id="history" className={SEC}>
       <div className="wrap">
-        <SecHead eyebrow={m.eyebrow} title={m.title} lead={m.lead} />
+        <SecHead eyebrow={m.eyebrow} title={m.title} lead={lines(m.lead)} />
         <div data-tl style={{ '--tl': TL_COL } as CSSProperties} className="relative mt-5 grid before:absolute before:inset-y-0 before:left-(--tl) before:w-px before:bg-line">
           <i className="absolute inset-y-0 left-(--tl) w-px bg-linear-to-b/srgb from-fg to-acc" />
           {CHRONO.map(y => (

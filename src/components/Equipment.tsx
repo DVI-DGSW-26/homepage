@@ -1,6 +1,6 @@
 import { useRef, type CSSProperties } from 'react';
 import { gsap, useGSAP } from '../lib/gsap';
-import { useT, type Messages } from '../i18n';
+import { lines, useT, type Messages } from '../i18n';
 import { TEST_EQUIPMENT } from '../data';
 import { IndexHead, Photo, SEC, SecHead, Section, cn } from './ui';
 
@@ -42,7 +42,7 @@ export function Equipment() {
   return (
     <Section ref={root} id="equip" className={SEC}>
       <div className="wrap">
-        <SecHead eyebrow={m.eyebrow} title={m.title} lead={m.lead} />
+        <SecHead eyebrow={m.eyebrow} title={m.title} lead={lines(m.lead)} />
         <div className="grid grid-cols-[1.4fr_1fr] items-start gap-col-gap max-lg:grid-cols-1">
           <div className="rv">
             <h3 className={GROUP_H3}>{m.machining.title} <span className={GROUP_SUB}>{m.machining.sub}</span></h3>

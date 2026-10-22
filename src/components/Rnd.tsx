@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { useGSAP } from '../lib/gsap';
 import { REDUCED } from '../lib/env';
-import { pick, useT, type Messages } from '../i18n';
+import { lines, pick, useT, type Messages } from '../i18n';
 import { initTelemetry } from '../canvas/telemetry';
 import { CERTS, CERT_KINDS, PROJECTS } from '../data';
 import { Photo, SEC, SecHead, Section, cn } from './ui';
@@ -28,10 +28,11 @@ export function Rnd() {
   return (
     <Section ref={root} id="rnd" className={SEC}>
       <div className="wrap">
-        <Photo data-wipe src="assets/img/banners/rnd-bg.jpg" sizes="(max-width: 1480px) 100vw, 1480px" className="rv mb-stack-sm aspect-16/5 min-h-55 w-full">
+        {/* like Frame 01, a backdrop rather than a picture to take: presses go through it, so it can't be dragged out */}
+        <Photo data-wipe src="assets/img/banners/rnd-bg.jpg" sizes="(max-width: 1480px) 100vw, 1480px" className="rv mb-stack-sm aspect-16/5 min-h-55 w-full" imgClassName="pointer-events-none select-none">
           <div className="mono absolute bottom-4.5 left-5.5 text-on-photo">{m.heroTag}</div>
         </Photo>
-        <SecHead eyebrow={m.eyebrow} title={m.title} lead={m.lead} />
+        <SecHead eyebrow={m.eyebrow} title={m.title} lead={lines(m.lead)} />
         <div className="grid grid-cols-2 items-stretch gap-col-gap max-lg:grid-cols-1">
           <div className="rv grid min-h-90 grid-rows-[auto_1fr_auto] gap-3.5 rounded-card border border-line bg-card p-5.5">
             <div className="mono flex justify-between text-mute"><span>{m.signal.title}</span><span>{m.signal.badge}</span></div>
@@ -75,7 +76,7 @@ export function Rnd() {
               <div className="absolute inset-0 -z-1 bg-(image:--scrim-card-deep)" />
               <span aria-hidden="true" className="pointer-events-none absolute top-3.5 right-3.5 font-display text-letter leading-letter font-black text-transparent [-webkit-text-stroke:1px_var(--stroke-on-photo)]">{e.letter}</span>
               <h3 className="m-0 grid gap-1 text-title-xs font-semibold"><small className="font-mono text-micro font-medium tracking-label text-on-photo/70">{c.eyebrow}</small>{c.title}</h3>
-              <p className="m-0 max-w-measure text-body-sm text-on-photo/80">{c.body}</p>
+              <p className="m-0 max-w-measure text-body-sm text-on-photo/80">{lines(c.body)}</p>
               <div className="flex gap-kpi-gap">
                 {e.kpi.map((k, i) => (
                   <div key={i}>

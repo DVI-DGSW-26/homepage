@@ -30,7 +30,10 @@
   h3 { letter-spacing: var(--tracking-heading-sm) }
   /* Korean wraps between words, never inside one ("디비전의 제품을", not "제품 / 을"); a word longer
      than the line may still break, so nothing overflows */
-  :lang(ko) :where(h1, h2, h3, h4, p, b, li, small, label, figcaption, dd, td) { word-break: keep-all; overflow-wrap: break-word }
+  :lang(ko) { word-break: keep-all; overflow-wrap: break-word }
+  /* no lone word on a paragraph's last line ("…가능성을 / 제시합니다."); headings that carry
+     text-balance still balance. The longhand leaves white-space: nowrap alone. */
+  html { text-wrap-style: pretty }
   ::selection { background: var(--acc); color: var(--color-on-acc) }
   :focus-visible { outline: 2px solid var(--acc-2); outline-offset: 4px }
   /* the page stays put behind an open modal */
@@ -45,6 +48,13 @@
 @utility disp { font-family: var(--font-display); font-weight: 800; text-transform: uppercase; line-height: var(--leading-display); letter-spacing: var(--tracking-display); text-wrap: balance }
 @utility num { font-variant-numeric: tabular-nums }
 @utility text-stroke { color: transparent; -webkit-text-stroke: 1px var(--fg-2) }
+/* liquid glass: a frosted pane over a scene, with a sheen across one corner and a lit top edge */
+@utility glass {
+  background: linear-gradient(135deg, var(--glass-sheen), transparent 40%), var(--glass);
+  backdrop-filter: blur(20px) saturate(1.6);
+  border: 1px solid var(--glass-edge);
+  box-shadow: inset 0 1px 0 var(--glass-hi), inset 0 0 24px -12px var(--glass-hi), var(--glass-drop);
+}
 
 @layer components {
   /* configurator sliders: the thumb only exists as a vendor pseudo-element */

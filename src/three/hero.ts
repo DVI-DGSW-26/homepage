@@ -58,7 +58,15 @@ const PARTS = 4;
 
 export interface HeroApi { setLight(v: boolean): void; setBeat(i: number): void; setIntro(v: number): void; setProgress(p: number): void; setActive(v: boolean): void; destroy(): void }
 
-export function createHero(canvas: HTMLCanvasElement, { reduced = false, fine = true, light = false }: { reduced?: boolean; fine?: boolean; light?: boolean } = {}): HeroApi {
+export interface HeroOptions {
+  reduced?: boolean; fine?: boolean; light?: boolean;
+  /** the element over the canvas that takes the pointer: a drag that starts on the part turns it */
+  surface?: HTMLElement;
+  /** told when a drag starts (true) and ends (false), so the page can hold the beat meanwhile */
+  onGrab?: (held: boolean) => void;
+}
+
+export function createHero(canvas: HTMLCanvasElement, { reduced = false, fine = true, light = false, surface, onGrab }: HeroOptions = {}): HeroApi {
   const api: HeroApi = { setLight() {}, setBeat() {}, setIntro() {}, setProgress() {}, setActive() {}, destroy() {} };
   let renderer: THREE.WebGLRenderer;
   try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' }); }
@@ -151,6 +159,52 @@ export function createHero(canvas: HTMLCanvasElement, { reduced = false, fine = 
   const onPointer = (e: PointerEvent) => { mouse.set((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1); pushTo = 1; idleT = 0; };
   if (fine) addEventListener('pointermove', onPointer, { passive: true });
 
+  // Drag to turn: a press on the part grabs it, sideways turns it about its axis, up and down tilts
+  // it. Let go and it keeps a little momentum; a few seconds later the slow spin eases back in and
+  // the held tilt settles. `hold` is how much of the idle motion (spin, sway, mouse tilt) is on.
+  let dragging = false, dragX = 0, dragY = 0, dragT = 0, spinV = 0, tilt = 0, sinceGrab = 99, hold = 1;
+  const ndc = new THREE.Vector2(), centre = new THREE.Vector3();
+  const overPart = (e: PointerEvent) => {
+    const r = canvas.getBoundingClientRect();
+    ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+    ray.setFromCamera(ndc, camera);
+    // the parts are normalised to a 1.25 bounding sphere
+    return ray.ray.distanceToPoint(group.getWorldPosition(centre)) < 1.3 * group.scale.x;
+  };
+  const setCursor = (c: string) => { if (surface) surface.style.cursor = c; };
+  const onDown = (e: PointerEvent) => {
+    if (e.button !== 0 || (e.target as Element).closest('a, button, input, label') || !overPart(e)) return;
+    e.preventDefault(); // no text selection starting under the drag
+    dragging = true; dragX = e.clientX; dragY = e.clientY; dragT = e.timeStamp; spinV = 0;
+    surface!.setPointerCapture(e.pointerId);
+    setCursor('grabbing');
+    onGrab?.(true);
+  };
+  const onMove = (e: PointerEvent) => {
+    if (!dragging) { if (e.pointerType === 'mouse') setCursor(overPart(e) ? 'grab' : ''); return; }
+    const dx = e.clientX - dragX, dy = e.clientY - dragY, dts = Math.max(0.008, (e.timeStamp - dragT) / 1000);
+    dragX = e.clientX; dragY = e.clientY; dragT = e.timeStamp;
+    group.rotation.y += dx * 0.009;
+    tilt = Math.min(1.1, Math.max(-1.1, tilt + dy * 0.007));
+    spinV += (dx * 0.009 / dts - spinV) * 0.5;
+  };
+  const onUp = (e: PointerEvent) => {
+    if (!dragging) return;
+    dragging = false; sinceGrab = 0;
+    // a pause before letting go leaves no momentum
+    if (reduced || e.timeStamp - dragT > 80) spinV = 0;
+    if (surface!.hasPointerCapture(e.pointerId)) surface!.releasePointerCapture(e.pointerId);
+    setCursor(e.pointerType === 'mouse' && overPart(e) ? 'grab' : '');
+    onGrab?.(false);
+  };
+  if (surface) {
+    surface.addEventListener('pointerdown', onDown);
+    surface.addEventListener('pointermove', onMove, { passive: true });
+    surface.addEventListener('pointerup', onUp);
+    // a touch that turns into a vertical scroll is cancelled: that ends the drag too
+    surface.addEventListener('pointercancel', onUp);
+  }
+
   const showSolid = (k: number, on: boolean, delay = 0) => {
     const m = meshes[k];
     if (on) m.visible = true;
@@ -158,7 +212,8 @@ export function createHero(canvas: HTMLCanvasElement, { reduced = false, fine = 
   };
   // initial state: first part assembled by intro, solid revealed after intro
   api.setIntro = (v) => { uniforms.uIntro.value = v; if (v >= 0.999 && !meshes[0].visible && cur === 0 && !introDone) { introDone = true; showSolid(0, true, 0.1); gsap.to(uniforms.uOpacity, { value: 0.55, duration: 0.7, delay: 0.1 }); } };
-  if (reduced) { introDone = true; meshes[0].visible = true; meshes[0].material.opacity = 0.96; uniforms.uOpacity.value = 0.55; }
+  // reduced motion: a still three-quarter view (that only a drag turns)
+  if (reduced) { introDone = true; meshes[0].visible = true; meshes[0].material.opacity = 0.96; uniforms.uOpacity.value = 0.55; group.rotation.y = 0.6; }
 
   api.setBeat = (k) => {
     if (k === cur || k < 0 || k >= parts.length) return;
@@ -192,11 +247,15 @@ export function createHero(canvas: HTMLCanvasElement, { reduced = false, fine = 
       uniforms.uPointer.value.lerp(target, 0.14);
       group.getWorldQuaternion(qInv).invert(); uniforms.uAxis.value.copy(camDir).applyQuaternion(qInv).normalize();
     }
+    sinceGrab += dt;
+    if (!dragging) { group.rotation.y += spinV * dt; spinV *= Math.exp(-dt * 3.5); }
     if (!reduced) {
-      group.rotation.y += dt * 0.22;
-      group.rotation.x = 0.28 + Math.sin(t / 2600) * 0.08 + (fine ? -mouse.y * 0.12 : 0);
-      group.rotation.z = Math.sin(t / 3900) * 0.06;
-    } else { group.rotation.set(0.3, 0.6, 0); }
+      hold += ((dragging || sinceGrab < 2.5 ? 0 : 1) - hold) * Math.min(1, dt * 2.5);
+      tilt *= Math.exp(-dt * 1.5 * hold);
+      group.rotation.y += dt * 0.22 * hold;
+      group.rotation.x = 0.28 + (Math.sin(t / 2600) * 0.08 + (fine ? -mouse.y * 0.12 : 0)) * hold + tilt;
+      group.rotation.z = Math.sin(t / 3900) * 0.06 * hold;
+    } else { group.rotation.x = 0.3 + tilt; group.rotation.z = 0; }
     // the camera eases toward whatever setProgress() last asked for (the page currently leaves it at 0)
     prog += (progTo - prog) * Math.min(1, dt * 8);
     camera.position.y = 0.2 - prog * 1.6; camera.position.x = prog * 0.6;
@@ -210,6 +269,13 @@ export function createHero(canvas: HTMLCanvasElement, { reduced = false, fine = 
     if (hasIdle) cancelIdleCallback(idleId); else clearTimeout(idleId);
     removeEventListener('resize', resize);
     removeEventListener('pointermove', onPointer);
+    if (surface) {
+      surface.removeEventListener('pointerdown', onDown);
+      surface.removeEventListener('pointermove', onMove);
+      surface.removeEventListener('pointerup', onUp);
+      surface.removeEventListener('pointercancel', onUp);
+      setCursor('');
+    }
     gsap.killTweensOf([look, uniforms.uMix, uniforms.uOpacity, ...meshes.map(m => m.material)]);
     geo.dispose(); pointsMat.dispose();
     meshes.forEach(m => m.material.dispose());

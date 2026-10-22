@@ -3,6 +3,7 @@
 // profile runs out to the right, toward the camera, while the camera dollies back so it always fits.
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { gsap } from 'gsap';
 import { token, withAlpha } from '../lib/tokens';
 import { MAX_LEN, REST_LEN, type ProfileParams } from './meta';
 
@@ -15,11 +16,11 @@ const rr = (p: THREE.Path, x: number, y: number, w: number, h: number, r: number
   p.lineTo(x, y + r); p.quadraticCurveTo(x, y, x + r, y);
 };
 
-export interface ExtrusionApi { setParams(p: Partial<ProfileParams>): void; setProgress(p: number): void; setActive(v: boolean): void; readonly length: number; destroy(): void }
+export interface ExtrusionApi { setParams(p: Partial<ProfileParams>): void; setProgress(p: number): void; setActive(v: boolean): void; setLight(v: boolean): void; readonly length: number; destroy(): void }
 
-export function createExtrusion(canvas: HTMLCanvasElement, { reduced = false, fine = true }: { reduced?: boolean; fine?: boolean } = {}): ExtrusionApi {
+export function createExtrusion(canvas: HTMLCanvasElement, { reduced = false, fine = true, light = false }: { reduced?: boolean; fine?: boolean; light?: boolean } = {}): ExtrusionApi {
   let len = REST_LEN;
-  const api: ExtrusionApi = { setParams() {}, setProgress() {}, setActive() {}, get length() { return len; }, destroy() {} };
+  const api: ExtrusionApi = { setParams() {}, setProgress() {}, setActive() {}, setLight() {}, get length() { return len; }, destroy() {} };
   let renderer: THREE.WebGLRenderer;
   try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' }); }
   catch { canvas.style.display = 'none'; return api; }
@@ -60,7 +61,7 @@ export function createExtrusion(canvas: HTMLCanvasElement, { reduced = false, fi
     envMapIntensity: 0.45
   });
   const steel = new THREE.MeshStandardMaterial({ color: token('--scene-steel'), metalness: 0.92, roughness: 0.6, envMapIntensity: 0.55 });
-  const steelLight = new THREE.MeshStandardMaterial({ color: token('--scene-steel-light'), metalness: 0.9, roughness: 0.5, envMapIntensity: 0.6 });
+  const steelLight = new THREE.MeshStandardMaterial({ color: token('--scene-container'), metalness: 0.9, roughness: 0.5, envMapIntensity: 0.6 });
 
   const group = new THREE.Group(); scene.add(group);
   let profile: THREE.Mesh | null = null, die: THREE.Mesh | null = null, container: THREE.Group | null = null;
@@ -80,6 +81,17 @@ export function createExtrusion(canvas: HTMLCanvasElement, { reduced = false, fi
   const pGeo = new THREE.BufferGeometry(); pGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
   const pMat = new THREE.PointsMaterial({ color: token('--scene-dust'), size: 0.035, transparent: true, opacity: 0.5, depthWrite: false });
   scene.add(new THREE.Points(pGeo, pMat));
+
+  // Light mode: graphite steel would sit on the pale page as a black block, so the press turns to a
+  // lighter brushed steel and reflects more, and the dust darkens. The switch eases over the page's crossfade.
+  const pair = (dark: string, lite: string) => [new THREE.Color(token(dark)), new THREE.Color(token(lite))] as const;
+  const looks = [[steel, pair('--scene-steel', '--scene-steel-light')], [steelLight, pair('--scene-container', '--scene-container-light')], [pMat, pair('--scene-dust', '--scene-dust-light')]] as const;
+  const mode = { v: light ? 1 : 0 };
+  const applyLook = () => {
+    for (const [m, [d, l]] of looks) m.color.lerpColors(d, l, mode.v);
+    steel.envMapIntensity = 0.55 + mode.v * 0.35; steelLight.envMapIntensity = 0.6 + mode.v * 0.3;
+  };
+  applyLook();
 
   let params: ProfileParams = { w: 90, h: 40, cells: 3, wall: 4.5 };
   const build = () => {
@@ -166,10 +178,11 @@ export function createExtrusion(canvas: HTMLCanvasElement, { reduced = false, fi
   };
   api.setParams = (p) => { params = { ...params, ...p }; build(); };
   api.setProgress = (p) => { prog = Math.min(1, Math.max(0, p)); };
+  api.setLight = v => { gsap.to(mode, { v: v ? 1 : 0, duration: reduced ? 0 : 0.6, ease: 'power2.inOut', overwrite: true, onUpdate: applyLook }); };
   api.setActive = (v) => { active = v; if (v && !running && !disposed) { last = performance.now(); raf = requestAnimationFrame(tick); } };
   api.destroy = () => {
     if (disposed) return;
-    disposed = true; running = false; cancelAnimationFrame(raf);
+    disposed = true; running = false; cancelAnimationFrame(raf); gsap.killTweensOf(mode);
     removeEventListener('resize', resize);
     removeEventListener('pointermove', onPointer);
     profile?.geometry.dispose(); die?.geometry.dispose();

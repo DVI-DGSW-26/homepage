@@ -1,7 +1,7 @@
 import { useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { gsap, ScrollTrigger, SplitText, fontsReady, useGSAP } from '../lib/gsap';
 import { REDUCED, pad2 } from '../lib/env';
-import { pick, rich, useLang, useT } from '../i18n';
+import { lines, pick, rich, useLang, useT } from '../i18n';
 import { ABOUT_YEARS, ORG, PROJECTS } from '../data';
 import { Eyebrow, IndexHead, SEC, Section, btn, cn } from './ui';
 import { Img } from './Img';
@@ -90,8 +90,9 @@ function Cine() {
   return (
     <div className="mt-frame-top max-lg:mt-12">
       <div data-wipe className="pad-wrap relative isolate flex min-h-[72svh] w-full flex-col justify-between gap-14 overflow-hidden rounded-card bg-ink py-frame-pad text-on-photo max-lg:min-h-[60svh] max-lg:gap-10 max-lg:rounded-none">
-        <Img src="assets/img/company/company.jpg" sizes="100vw" alt={m.alt}
-          className="absolute inset-0 -z-2 size-full object-cover object-[center_62%]" />
+        {/* a backdrop, not a picture to take: it can't be dragged out, and presses go through it to the frame */}
+        <Img src="assets/img/company/company.jpg" sizes="100vw" alt={m.alt} draggable={false}
+          className="pointer-events-none absolute inset-0 -z-2 size-full object-cover object-[center_62%] select-none" />
         {/* dark at the top and the bottom where the copy sits, clear through the middle */}
         <div className="pointer-events-none absolute inset-0 -z-1 bg-(image:--scrim-frame) max-lg:bg-(image:--scrim-frame-narrow)" />
         <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] items-end gap-x-col-gap gap-y-5 max-lg:grid-cols-1">
@@ -99,14 +100,14 @@ function Cine() {
             <span className="mono text-on-photo/70">{m.label}</span>
             <b className="disp text-frame">{m.title}</b>
           </div>
-          <p className="rv m-0 max-w-measure text-on-photo/85">{m.body}</p>
+          <p className="rv m-0 max-w-measure text-on-photo/85">{lines(m.body)}</p>
         </div>
         {/* caption left, figures right; up to 1100px the figures go under the caption, two a row */}
         <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-x-12 gap-y-7 max-3xl:grid-cols-1">
           <div className="grid max-w-160 gap-1.5">
             <span className="mono text-on-photo/70">{m.tagEyebrow}</span>
-            <b className="font-display text-subhead leading-none font-extrabold uppercase">{m.tagTitle}</b>
-            <small className="text-small text-on-photo/75">{m.tagBody}</small>
+            <b className="font-display text-subhead leading-none font-extrabold uppercase">{lines(m.tagTitle)}</b>
+            <small className="text-small text-on-photo/75">{lines(m.tagBody)}</small>
           </div>
           <ul className="mono m-0 grid list-none gap-2 p-0 text-right text-on-photo/80 max-3xl:grid-cols-2 max-3xl:gap-x-8 max-3xl:text-left max-xs:grid-cols-1">
             {m.ledger.map((l, i) => (
@@ -160,7 +161,7 @@ function Pledge() {
         <div>
           <h3 className={PROMISE_H3}>{m.supplier.title} <span className={PROMISE_SUB}>{m.supplier.sub}</span></h3>
           <ul className="m-0 grid list-none gap-2.5 p-0">{m.supplier.items.map(x => <PromiseItem key={x}>{x}</PromiseItem>)}</ul>
-          <p className="rv mt-4.5 text-fg-2">{m.closing}</p>
+          <p className="rv mt-4.5 text-fg-2">{lines(m.closing)}</p>
         </div>
       </div>
     </div>
@@ -206,7 +207,7 @@ function Projects() {
             </div>
             <div className="grid gap-1.5">
               <p className="m-0 text-small font-medium text-fg-2">{pick(p.program, p.programEn)}</p>
-              <h4 className="m-0 text-title leading-title font-semibold tracking-heading-sm text-pretty">{pick(p.title, p.titleEn)}</h4>
+              <h4 className="m-0 text-title leading-title font-semibold tracking-heading-sm text-balance">{pick(p.title, p.titleEn)}</h4>
             </div>
           </article>
         ))}

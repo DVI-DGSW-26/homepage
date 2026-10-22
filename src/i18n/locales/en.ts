@@ -31,7 +31,7 @@ export const en: Messages = {
     ],
     hud: {
       sequence: 'Sequence', part: 'Part', system: 'System', process: 'Process',
-      hint: 'Move the mouse and the aluminum chips scatter',
+      hint: 'Drag the part to turn it to any angle',
       beatOf: (k: number, n: number) => `${pad2(k)} / ${pad2(n)}`,
       // read out by the tick buttons
       beatLabel: (k: number, n: number) => `${k} / ${n}`

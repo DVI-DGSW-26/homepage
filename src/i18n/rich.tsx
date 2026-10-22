@@ -18,3 +18,17 @@ export function rich(src: string, tags: Record<string, (chunk: string) => ReactN
   if (last < src.length) out.push(src.slice(last));
   return out;
 }
+
+/**
+ * Renders dictionary copy whose "\n" marks where a line had better break: lines(m.product.lead).
+ * Each piece stays whole on a line while it fits, so a wrapping paragraph breaks between sentences
+ * or phrases first ("…소재입니다. / 지속 가능한…", not "…소재입니다. 지속 / 가능한…"); pieces that fit
+ * together share a line, and a piece longer than the line still wraps inside itself.
+ * Copy shown without lines() reads the "\n" as a plain space.
+ */
+export function lines(src: string): ReactNode {
+  if (!src.includes('\n')) return src;
+  return src.split('\n').map((piece, i) => (
+    <Fragment key={i}>{i > 0 && ' '}<span className="inline-block">{piece}</span></Fragment>
+  ));
+}

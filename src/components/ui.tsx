@@ -26,7 +26,7 @@ export const cn = extendTailwindMerge({
         'timeline', 'footer-top', 'form-pad', 'panel-pad', 'events-gap', 'contact-gap', 'nav-gap', 'nav-gap-tight', 'process-gap', 'kpi-gap',
         'logo', 'process-card', 'product-thumb', 'medal'],
       container: ['page', 'measure', 'lead', 'hero-copy', 'manifesto', 'hero-title'],
-      radius: ['tag', 'thumb', 'card', 'pill'],
+      radius: ['tag', 'thumb', 'card', 'pill', 'glass'],
       breakpoint: ['2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl'],
       ease: ['out', 'theme'],
       'text-shadow': ['photo', 'photo-sm'],

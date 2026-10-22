@@ -129,7 +129,7 @@
   --spacing-frame-pad: clamp(28px, 6vh, 64px);
   --spacing-hero-bottom: clamp(40px, 8vh, 96px);
   --spacing-hero-gap: clamp(16px, 2.5vh, 28px);
-  --spacing-config-top: clamp(72px, 9vh, 104px);
+  --spacing-config-top: clamp(88px, 10vh, 112px);  /* clears the header pill above the glass pane */
   --spacing-config-top-narrow: clamp(80px, 12vw, 140px);
   --spacing-config-bottom: clamp(20px, 4vh, 48px);
   --spacing-config-gap: clamp(20px, 4vw, 64px);
@@ -165,6 +165,7 @@
   --radius-thumb: 5px;
   --radius-card: 8px;
   --radius-pill: 40px;   /* a length, not 9999px, so the header's bar-to-pill change can animate */
+  --radius-glass: 22px;  /* glass panels over a WebGL scene */
 
   /* legibility on photographs */
   --text-shadow-photo: 0 1px 6px rgb(0 0 0 / .6);
@@ -224,6 +225,12 @@
     --acc: #8A5BC2; --acc-2: var(--color-ink-acc); --acc-ink: var(--color-ink-acc); --acc-glow: rgb(138 91 194 / .35);
     --nav-bg: color-mix(in srgb, var(--color-ink) 94%, transparent);
     --gold: #E7C87A;
+    /* liquid glass (the glass utility): the pane, its sheen, its lit top edge, its rim and its drop */
+    --glass: color-mix(in srgb, var(--color-ink) 50%, transparent);
+    --glass-sheen: rgb(255 255 255 / .07);
+    --glass-hi: rgb(255 255 255 / .2);
+    --glass-edge: rgb(255 255 255 / .1);
+    --glass-drop: 0 24px 60px -12px rgb(0 0 0 / .5);
 
     /* ---- motion (src/animation.css) ---- */
     --duration-theme: .62s;      /* colour-mode crossfade; src/lib/theme.ts flips the tokens at its midpoint */
@@ -262,8 +269,12 @@
     /* profile lab: press, die and the extruded profile */
     --scene-mill: #7C828A;          /* mill-finish profile */
     --scene-steel: #1E232B;         /* die, ribs, stem, platen */
-    --scene-steel-light: #3A414C;   /* container */
+    --scene-container: #3A414C;     /* the billet container */
     --scene-bolt: #9AA3AF;
+    /* ...and what the press turns to on the light page, so it doesn't sit there as a black block */
+    --scene-steel-light: #7E8792;
+    --scene-container-light: #A3ABB5;
+    --scene-dust-light: #8D96A2;
     --scene-rim-cool: #C9B8FF;
     --scene-die-hot: #8A5BC2;       /* the hot light at the die */
     --scene-die-glow: #9E6EDC;      /* its glow sprite */
@@ -287,5 +298,10 @@
     --acc: var(--color-brand); --acc-2: #8A5BC2; --acc-ink: var(--color-brand); --acc-glow: color-mix(in srgb, var(--color-brand) 28%, transparent);
     --nav-bg: color-mix(in srgb, var(--color-paper) 95%, transparent);
     --gold: #8C6414;
+    --glass: color-mix(in srgb, var(--color-paper) 55%, transparent);
+    --glass-sheen: rgb(255 255 255 / .35);
+    --glass-hi: rgb(255 255 255 / .9);
+    --glass-edge: rgb(255 255 255 / .55);
+    --glass-drop: 0 24px 60px -16px rgb(12 16 22 / .28);
   }
 }

@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { gsap, ScrollTrigger, useGSAP } from '../lib/gsap';
 import { FINE, REDUCED } from '../lib/env';
-import { useT } from '../i18n';
+import { lines, useT } from '../i18n';
+import { getTheme, subscribeTheme } from '../lib/theme';
 import { REST_LEN, metricsFor, type ProfileParams } from '../three/meta';
 import type { ExtrusionApi } from '../three/extrusion';
 import { Eyebrow, H2, HudRow, Lead, Section, cn } from './ui';
@@ -35,11 +36,12 @@ export function Config() {
     // The WebGL scene (a separate chunk) is built a viewport before the section arrives, not at page load...
     const build = () => loading ??= import('../three/extrusion').then(({ createExtrusion }) => {
       if (!alive) return;
-      EXT = createExtrusion(canvas.current!, { reduced: REDUCED, fine: FINE });
+      EXT = createExtrusion(canvas.current!, { reduced: REDUCED, fine: FINE, light: getTheme() === 'light' });
       ext.current = EXT;
       EXT.setParams(latest.current); EXT.setActive(active);
     });
     ScrollTrigger.create({ trigger: root.current, start: 'top bottom+=100%', once: true, onEnter: build });
+    const unTheme = subscribeTheme(() => EXT?.setLight(getTheme() === 'light'));
     // ...or earlier, in idle time once the hero entrance is over, so arriving costs nothing
     let wait = 0, idleId = 0;
     const later = () => { wait = window.setTimeout(() => { idleId = typeof requestIdleCallback === 'function' ? requestIdleCallback(() => { build(); }, { timeout: 4000 }) : window.setTimeout(build, 0); }, 2500); };
@@ -47,7 +49,7 @@ export function Config() {
     if (!REDUCED) gsap.from('[data-copy] > *', { x: -30, opacity: 0, duration: .9, stagger: .07, ease: 'power3.out', scrollTrigger: { trigger: root.current, start: 'top 70%', once: true } });
     ScrollTrigger.create({ trigger: root.current, start: 'top bottom', end: 'bottom top', onToggle: s => { active = s.isActive; if (active) build(); EXT?.setActive(active); } });
     // the profile stays at its resting run-out: the section is one screen, not a scroll-driven press
-    return () => { alive = false; clearTimeout(wait); removeEventListener('load', later); if (typeof cancelIdleCallback === 'function') cancelIdleCallback(idleId); EXT?.destroy(); ext.current = null; };
+    return () => { alive = false; unTheme(); clearTimeout(wait); removeEventListener('load', later); if (typeof cancelIdleCallback === 'function') cancelIdleCallback(idleId); EXT?.destroy(); ext.current = null; };
   }, { scope: root });
   useEffect(() => { latest.current = params; ext.current?.setParams(params); }, [params]);
 
@@ -59,13 +61,14 @@ export function Config() {
   ];
   return (
     <Section ref={root} id="config" aria-label={t.label}>
-      <div className="grid min-h-svh grid-cols-[minmax(320px,.9fr)_1.4fr] items-center gap-config-gap overflow-hidden pt-config-top pb-config-bottom max-3xl:min-h-0 max-3xl:grid-cols-1 max-3xl:overflow-visible max-3xl:pt-config-top-narrow max-3xl:pb-10">
-        {/* up to 1100px the stage stacks above the copy, and the scene keeps to it instead of sitting under the copy */}
+      <div className="grid min-h-svh grid-cols-[minmax(360px,1fr)_1.4fr] items-center gap-config-gap overflow-hidden pt-config-top pb-config-bottom max-3xl:min-h-0 max-3xl:grid-cols-1 max-3xl:overflow-visible max-3xl:pt-config-top-narrow max-3xl:pb-10">
+        {/* up to 1100px the stage stacks above the copy, and the scene keeps to it instead of sitting under the copy;
+            wider, the copy floats on a glass pane and the press shows through it, frosted */}
         <canvas ref={canvas} aria-hidden="true" className="absolute inset-0 z-0 size-full max-3xl:bottom-auto max-3xl:h-[calc(var(--spacing-config-stage)+var(--spacing-config-top-narrow))]" />
-        <div data-copy className="relative z-2 grid max-w-150 content-center gap-3.5 bg-linear-to-r/srgb from-bg via-bg via-78% to-transparent pr-6 pl-gutter max-3xl:max-w-none max-3xl:bg-none max-3xl:px-gutter">
+        <div data-copy className="relative z-2 grid max-w-150 content-center gap-3.5 px-gutter max-3xl:max-w-none 3xl:ml-gutter 3xl:glass 3xl:rounded-glass 3xl:px-7 3xl:py-6">
           <Eyebrow>{t.eyebrow}</Eyebrow>
           <H2 className="text-h2-sm">{t.title}</H2>
-          <Lead className={cn('text-body-sm leading-copy', HIDE_SHORT)}>{t.lead}</Lead>
+          <Lead className={cn('text-body-sm leading-copy', HIDE_SHORT)}>{lines(t.lead)}</Lead>
           <div className="grid gap-2 border-t border-line-2 pt-3">
             {CTRLS.map(c => (
               <div key={c.k} className="grid grid-cols-[1fr_auto] items-center gap-x-3.5 gap-y-0.5">
@@ -76,7 +79,7 @@ export function Config() {
               </div>
             ))}
           </div>
-          <div className="grid grid-cols-2 overflow-hidden rounded-card border border-line bg-card">
+          <div className="grid grid-cols-2 overflow-hidden rounded-card border border-line bg-card 3xl:bg-card/45">
             {out.map((o, i) => (
               <div key={o.label} className={cn('grid gap-0.5 border-line px-3.5 py-2.5', i % 2 === 0 && 'border-r', i < 2 && 'border-b')}>
                 <span className="font-mono text-micro tracking-widest text-mute uppercase">{o.label}</span>
@@ -84,7 +87,7 @@ export function Config() {
               </div>
             ))}
           </div>
-          <p className={cn('m-0 text-label leading-normal text-mute', HIDE_SHORT)}>{t.note}</p>
+          <p className={cn('m-0 text-label leading-normal text-mute', HIDE_SHORT)}>{lines(t.note)}</p>
         </div>
         <div className="pointer-events-none relative h-full min-h-105 max-3xl:-order-1 max-3xl:h-config-stage max-3xl:min-h-90">
           <div className="mono pointer-events-auto absolute right-gutter bottom-0 z-2 grid min-w-50 gap-2 text-fg-2 max-3xl:bottom-3">

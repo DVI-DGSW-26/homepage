@@ -1,7 +1,7 @@
 import { Fragment, useMemo, useRef, useState, type CSSProperties } from 'react';
 import { gsap, ScrollTrigger, useGSAP } from '../lib/gsap';
 import { REDUCED } from '../lib/env';
-import { pick, useT } from '../i18n';
+import { lines, pick, useT } from '../i18n';
 import { PRODUCTS, type ProductCategory } from '../data';
 import { IndexHead, SEC, SecHead, Section, cn } from './ui';
 import { Img } from './Img';
@@ -43,7 +43,7 @@ export function Product() {
   return (
     <Section id="product" className={SEC}>
       <div className="wrap">
-        <SecHead eyebrow={m.eyebrow} title={m.title} lead={m.lead} />
+        <SecHead eyebrow={m.eyebrow} title={m.title} lead={lines(m.lead)} />
         <Catalogue />
       </div>
     </Section>
@@ -153,7 +153,7 @@ export function Statement() {
         <div data-line className={cn(LINE, 'text-right text-ink-acc')}>{m.lines[1]}</div>
         <div data-line className={LINE}>{m.lines[2]}</div>
       </div>
-      <p className="absolute bottom-statement-bottom left-gutter m-0 max-w-measure text-ink-fg-2">{m.body}</p>
+      <p className="absolute bottom-statement-bottom left-gutter m-0 max-w-measure text-ink-fg-2">{lines(m.body)}</p>
     </Section>
   );
 }
