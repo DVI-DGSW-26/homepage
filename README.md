@@ -1,6 +1,9 @@
 # DVISION homepage
 
 dvi-ind.com 리메이크. React + Vite + Tailwind CSS(v4) + TypeScript 정적 사이트이며 서버 없이 배포 가능합니다. 패키지 매니저는 pnpm 입니다.
+전에 있던 JS로 만든 homepage는 main-old 브런치로 옮겼습니다. https://github.com/DVI-DGSW-26/homepage/tree/main-old
+
+
 
 ## 실행
 
