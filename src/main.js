@@ -8,9 +8,12 @@ import { initMap } from './map.js';
 import { initTelemetry } from './telemetry.js';
 import { PRODUCTS, PROCESSES, PROCESS_IMG, CERTS, CERT_KINDS, HISTORY, SITES, TEST_EQUIPMENT, ABOUT_YEARS, ORG, EVENTS, EVENT_IMG } from './data.js';
 import { EN, t, applyStatic } from './i18n.js';
+import { applyTheme as applySiteTheme } from './theme.js';
 
 // English copy has to land before SplitText measures a headline or any list is built.
 applyStatic();
+// Section tones are re-tagged for the light site before the scroll triggers read them.
+applySiteTheme();
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
