@@ -280,6 +280,8 @@ export const ko = {
 
   future: {
     label: '데이터 산업 진입',
+    /** the step at the end of Q.A.C-Flow's last block that leads here: the label above, then this */
+    bridge: '쌓인 검사 데이터가\n데이터 산업의 출발점이 됩니다',
     eyebrow: 'Our Future — Data Industry',
     title: '데이터 산업 진입:\n<k>검증 기반 단계적 확장 전략</k>',
     chainLabel: '제조에서 데이터 사업까지',

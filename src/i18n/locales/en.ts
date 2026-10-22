@@ -273,6 +273,7 @@ export const en: Messages = {
 
   future: {
     label: 'Into the data industry',
+    bridge: 'The inspection data piling up\nis where the data business begins',
     eyebrow: 'Our Future — Data Industry',
     title: 'Into the data industry:\n<k>expanding step by step, proven at each stage</k>',
     chainLabel: 'From manufacturing to a data business',

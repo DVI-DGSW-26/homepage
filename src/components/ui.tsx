@@ -25,7 +25,7 @@ export const cn = extendTailwindMerge({
       spacing: ['gutter', 'wrap', 'section', 'sec-head', 'stack', 'stack-md', 'stack-sm', 'col-gap', 'nav-clear', 'about-top', 'manifesto-top', 'frame-top',
         'frame-pad', 'hero-bottom', 'hero-gap', 'config-top', 'config-top-narrow', 'config-bottom', 'config-gap', 'config-stage', 'statement-bottom',
         'timeline', 'footer-top', 'form-pad', 'panel-pad', 'events-gap', 'contact-gap', 'nav-gap', 'nav-gap-tight', 'process-gap', 'kpi-gap',
-        'logo', 'process-card', 'product-thumb', 'medal', 'hinge', 'hinge-gap'],
+        'logo', 'process-card', 'product-thumb', 'medal', 'bridge', 'hinge', 'hinge-gap'],
       container: ['page', 'measure', 'lead', 'hero-copy', 'manifesto', 'hero-title'],
       radius: ['tag', 'thumb', 'card', 'pill', 'glass'],
       breakpoint: ['2xs', 'sm', 'md', 'lg', 'xl'],

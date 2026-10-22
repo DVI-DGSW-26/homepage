@@ -160,6 +160,7 @@
   --spacing-process-card: clamp(280px, 26vw, 380px);
   --spacing-product-thumb: clamp(180px, 20vw, 260px);
   --spacing-medal: clamp(58px, 13%, 104px);
+  --spacing-bridge: clamp(48px, 6vw, 96px);     /* each run of the line from Q.A.C-Flow into the data industry */
   /* the hinge of a dual-screen device spanned side by side (0 anywhere else), and a column gap
      that clears it with a gutter on either side (the hinge-cols utility, the spanned: variant) */
   --spacing-hinge: max(0px, env(viewport-segment-left 1 0, 0px) - env(viewport-segment-right 0 0, 0px));

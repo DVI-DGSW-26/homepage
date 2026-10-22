@@ -1,6 +1,8 @@
 // Our future: from manufacturing into the data industry. The value chain from the press to a data
 // business, the four stages it takes year by year (2026, where we are, is lit), and the aim in one line.
-// Follows Q.A.C-Flow, the system the first stages are built on.
+// Q.A.C-Flow, the system whose inspection data the first stages are built on, runs into it: its last
+// block's steps end in a step that points here, and the line from it comes down into the top of this
+// section (src/components/QacFlow.tsx), so the section starts just below where that line ends.
 import { Fragment } from 'react';
 import { rich, useT } from '../i18n';
 import { pad2 } from '../lib/env';
@@ -16,6 +18,8 @@ const ICONS = [
   'M4 4v16h16 M7 15l4-4 3 3 5-6'                                                                   // chart: data business
 ];
 const ARROW = 'M5 12h14m-5-5l5 5-5 5';
+/** the chain's link that Q.A.C-Flow feeds: real-time data capture */
+const FROM_QF = 1;
 /** the stages begin at the chain's third link */
 const STAGE_AT = 2;
 
@@ -26,7 +30,8 @@ const underline = (chunk: string) => <span className="text-acc-ink underline dec
 export function Future() {
   const m = useT().future;
   return (
-    <Section id="future" aria-label={m.label} className={SEC}>
+    // the top padding clears the line coming down from Q.A.C-Flow, then leaves the usual gap under it
+    <Section id="future" aria-label={m.label} className={cn(SEC, 'pt-[calc(var(--spacing-bridge)+var(--spacing-stack-sm))]')}>
       <div className="wrap">
         <div className="mb-sec-head">
           <Eyebrow className="rv mb-5.5">{m.eyebrow}</Eyebrow>
@@ -37,10 +42,16 @@ export function Future() {
         <ol data-batch aria-label={m.chainLabel}
           className="m-0 grid list-none grid-cols-6 gap-x-8 gap-y-6 rounded-card border border-line bg-card p-panel-pad max-lg:grid-cols-3 max-lg:gap-x-5 max-sm:grid-cols-2 spanned:gap-x-hinge">
           {m.chain.map((c, i) => (
-            <li key={c.title} className="rv relative grid grid-cols-[auto_minmax(0,1fr)] items-center gap-x-3 gap-y-0.5">
-              <LineIcon d={ICONS[i]} className={cn('row-span-2 size-10 flex-none rounded-full border p-2.25', i < STAGE_AT ? 'border-line-2 text-fg-2' : 'border-acc/50 text-acc-ink')} />
+            <li key={c.title} className="rv relative grid grid-cols-[auto_minmax(0,1fr)] content-center items-center gap-x-3 gap-y-0.5">
+              <LineIcon d={ICONS[i]} className={cn('row-span-2 size-10 flex-none rounded-full border p-2.25',
+                i === FROM_QF ? 'border-qf-line text-qf-ink' : i < STAGE_AT ? 'border-line-2 text-fg-2' : 'border-acc/50 text-acc-ink')} />
               <b className="text-body leading-tight font-semibold">{c.title}</b>
-              <span className="text-caption leading-caption text-mute">{c.sub}</span>
+              <span className="text-caption leading-caption text-mute">
+                {c.sub}
+                {/* data capture is where Q.A.C-Flow comes in: its magenta, and its name, in line after the sub-line
+                    (on its own line where the column is too narrow) so it never sits on the title */}
+                {i === FROM_QF && <> <span className="mono inline-block rounded-full border border-qf-line px-1.5 py-px align-[.1em] text-tag leading-normal text-qf-ink">Q.A.C-Flow</span></>}
+              </span>
               {i < m.chain.length - 1 && <LineIcon d={ARROW} className="absolute top-1/2 -right-7 size-4 -translate-y-1/2 text-mute max-lg:hidden" />}
             </li>
           ))}
