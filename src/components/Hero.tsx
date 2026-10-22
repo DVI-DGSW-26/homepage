@@ -1,11 +1,11 @@
-import { useRef, useState, type RefObject } from 'react';
+import { useImperativeHandle, useRef, useState, type RefObject } from 'react';
 import { gsap, ScrollTrigger, SplitText, useGSAP } from '../lib/gsap';
 import { bootReady } from '../lib/boot';
 import { FINE, REDUCED } from '../lib/env';
-import { pick, useT } from '../i18n';
-import { createHero } from '../three/hero';
+import { pick, useLang, useT } from '../i18n';
+import type { HeroApi } from '../three/hero';
 import { getTheme, subscribeTheme } from '../lib/theme';
-import { PART_META } from '../three/parts';
+import { PART_LABELS } from '../three/meta';
 import { HudRow, Section, cn } from './ui';
 import { Img } from './Img';
 
@@ -14,8 +14,7 @@ const BANNERS = ['banner-01', 'banner-02', 'banner-03', 'banner-04'];
 /** seconds each beat stays up before the hero swipes to the next */
 const DWELL = 5.5;
 
-type HeroScene = ReturnType<typeof createHero>;
-const NO_SCENE: HeroScene = { setLight() {}, setBeat() {}, setIntro() {}, setProgress() {}, setActive() {}, destroy() {} };
+const NO_SCENE: HeroApi = { setLight() {}, setBeat() {}, setIntro() {}, setProgress() {}, setActive() {}, destroy() {} };
 
 /**
  * One screen: aluminum chips assemble into four parts in turn while the headline swipes beat by
@@ -24,7 +23,7 @@ const NO_SCENE: HeroScene = { setLight() {}, setBeat() {}, setIntro() {}, setPro
  * copy, HUD and nav stay hidden (`booting:`) so nothing flashes before it animates in.
  */
 export function Hero() {
-  const m = useT().hero;
+  const m = useT().hero, lang = useLang();
   const root = useRef<HTMLElement>(null), canvas = useRef<HTMLCanvasElement>(null);
   const beatEls = useRef<HTMLElement[]>([]), bgEls = useRef<HTMLImageElement[]>([]);
   const hud = useRef<(i: number) => void>(() => {});
@@ -33,15 +32,17 @@ export function Hero() {
   useGSAP((_, contextSafe) => {
     const beats = beatEls.current;
     const bgs = bgEls.current;
-    let HERO = NO_SCENE, alive = true, cur = 0, active = true, started = false, frame = 0;
+    let HERO = NO_SCENE, alive = true, cur = 0, active = true, started = false, frame = 0, intro = REDUCED ? 1 : 0;
     let timer: gsap.core.Tween | null = null;
-    // The WebGL scene is built after the first paint, so the page shows up before its set-up cost.
-    const build = () => {
+    // The WebGL scene (and three.js with it) is a separate chunk: fetched right away, built after the
+    // first paint, so the page shows up before either cost. A beat or the intro that arrives first is
+    // caught up on when the scene is there.
+    const scene = import('../three/hero');
+    const build = () => scene.then(({ createHero }) => {
       if (!alive || HERO !== NO_SCENE) return;
       HERO = createHero(canvas.current!, { reduced: REDUCED, fine: FINE, light: getTheme() === 'light' });
-      HERO.setBeat(cur); HERO.setActive(active);
-      if (REDUCED) HERO.setIntro(1);
-    };
+      HERO.setBeat(cur); HERO.setActive(active); HERO.setIntro(intro);
+    });
     frame = requestAnimationFrame(() => { frame = requestAnimationFrame(build); });
     const unTheme = subscribeTheme(() => HERO.setLight(getTheme() === 'light'));
 
@@ -78,12 +79,12 @@ export function Hero() {
       ready();
       const o = { v: 0 };
       gsap.timeline({ defaults: { ease: 'power4.out' }, onComplete: () => { started = true; schedule(); } })
-        .to(o, { v: 1, duration: 1.3, ease: 'expo.out', onUpdate: () => HERO.setIntro(o.v) }, 0)
+        .to(o, { v: 1, duration: 1.3, ease: 'expo.out', onUpdate: () => { intro = o.v; HERO.setIntro(o.v); } }, 0)
         .from(chars, { yPercent: 110, opacity: 0, filter: 'blur(10px)', duration: 1.1, stagger: .018 }, .1)
         .from(p, { opacity: 0, y: 18, duration: .9 }, .7)
         .from('[data-intro]', { opacity: 0, x: 24, duration: .8, stagger: .08 }, .6)
         .from('[data-cue]', { opacity: 0, duration: .8 }, 1.2)
-        // clearProps hands the transform back to the nav's own hide-on-scroll class
+        // clearProps leaves no transform behind on the header once it is in
         .from(document.getElementById('nav'), { y: -24, opacity: 0, duration: .9, clearProps: 'transform' }, .4);
     }));
 
@@ -93,12 +94,12 @@ export function Hero() {
   }, { scope: root });
 
   return (
-    <Section ref={root} id="hero" aria-label={m.label} className="h-svh min-h-[560px]">
+    <Section ref={root} id="hero" aria-label={m.label} className="h-svh min-h-140">
       {/* The banners are dark photographs. On graphite they sit at a third strength; on the light page
           they are lifted (brightness up, contrast and colour down) and the veil turns to the page colour. */}
       <div className="relative h-full overflow-hidden">
         <div className="absolute inset-0" aria-hidden="true">
-          <div className="absolute inset-0 opacity-[.34] transition-[opacity,filter] duration-600 light:opacity-[.55] light:[filter:brightness(2.3)_contrast(.82)_saturate(.75)]">
+          <div className="absolute inset-0 opacity-34 transition-[opacity,filter] duration-600 light:opacity-55 light:brightness-230 light:contrast-82 light:saturate-75">
           {BANNERS.map((b, i) => (
             <Img key={b} ref={el => { if (el) bgEls.current[i] = el; }} src={`assets/img/hero/${b}.jpg`} sizes="100vw" priority={i === 0} loading="eager"
               className={cn('absolute inset-0 size-full object-cover opacity-0 [transform:scale(1.08)]', i === 0 && 'opacity-100')} />
@@ -107,20 +108,20 @@ export function Hero() {
           <div className="absolute inset-0 bg-[radial-gradient(70%_70%_at_62%_45%,transparent,color-mix(in_srgb,var(--bg)_75%,transparent)_70%,var(--bg)),linear-gradient(180deg,color-mix(in_srgb,var(--bg)_60%,transparent),transparent_30%,transparent_65%,var(--bg))]" />
         </div>
         <canvas ref={canvas} aria-hidden="true" className="absolute inset-0 size-full" />
-        <div className="wrap relative grid h-full grid-cols-[minmax(0,1fr)_auto] items-end gap-6 pb-[clamp(40px,8vh,96px)] text-fg max-md:grid-cols-1 max-md:content-end">
+        <div className="wrap relative grid h-full grid-cols-[minmax(0,1fr)_auto] items-end gap-6 pb-hero-bottom text-fg max-md:grid-cols-1 max-md:content-end">
           <div className="booting:opacity-0">
             <div className="grid">
               {m.beats.map((b, i) => (
                 <article key={i} ref={el => { if (el) beatEls.current[i] = el; }} data-active={i === 0 ? '' : undefined} className="invisible col-start-1 row-start-1 data-active:visible">
-                  <h1 className="m-0 mb-[clamp(16px,2.5vh,28px)] max-w-[15ch] font-display text-[clamp(2.7rem,7vw,7.6rem)] leading-[.88] font-extrabold tracking-[-.005em] text-balance text-fg uppercase">{b.title}</h1>
-                  <p className="m-0 max-w-[30em] text-[clamp(.98rem,1.25vw,1.2rem)] leading-[1.7] text-fg-2">{b.body}</p>
+                  <h1 key={i === 0 ? lang : undefined} className="m-0 mb-hero-gap max-w-hero-title font-display text-hero leading-hero font-extrabold tracking-display text-balance text-fg uppercase">{b.title}</h1>
+                  <p className="m-0 max-w-hero-copy text-hero-body leading-hero-body text-fg-2">{b.body}</p>
                 </article>
               ))}
             </div>
           </div>
           <HeroHud bind={hud} choose={choose} />
-          <div data-cue className="mono absolute bottom-[26px] left-1/2 flex -translate-x-1/2 flex-col items-center gap-2.5 text-mute booting:opacity-0 max-3xl:hidden">
-            <span className="relative h-11 w-px overflow-hidden bg-line-2 after:absolute after:-top-full after:left-0 after:size-full after:animate-cue after:bg-fg after:content-[''] motion-reduce:after:animate-none" />{m.cue}
+          <div data-cue className="mono absolute bottom-6.5 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2.5 text-mute booting:opacity-0 max-3xl:hidden">
+            <span className="relative h-11 w-px overflow-hidden bg-line-2 after:absolute after:-top-full after:left-0 after:size-full after:animate-cue after:bg-fg motion-reduce:after:animate-none" />{m.cue}
           </div>
         </div>
       </div>
@@ -132,12 +133,12 @@ export function Hero() {
 function HeroHud({ bind, choose }: { bind: RefObject<(i: number) => void>; choose: RefObject<(i: number) => void> }) {
   const m = useT().hero, h = m.hud;
   const [beat, setBeat] = useState(0);
-  bind.current = setBeat;
-  const part = PART_META[beat];
+  useImperativeHandle(bind, () => setBeat, []);
+  const part = PART_LABELS[beat];
   // up to 1280px the part turns behind the readout: a dim panel keeps it legible (no blur — it
   // would re-filter the WebGL canvas under it every frame)
   return (
-    <aside className="mono grid min-w-[240px] gap-2.5 pb-1.5 text-fg-2 booting:opacity-0 max-md:hidden max-[1281px]:rounded-card max-[1281px]:bg-bg/65 max-[1281px]:px-4 max-[1281px]:pt-2 max-[1281px]:pb-3">
+    <aside className="mono grid min-w-60 gap-2.5 pb-1.5 text-fg-2 booting:opacity-0 max-md:hidden max-4xl:rounded-card max-4xl:bg-bg/65 max-4xl:px-4 max-4xl:pt-2 max-4xl:pb-3">
       <HudRow data-intro label={h.sequence}><span className="num">{h.beatOf(beat + 1, m.beats.length)}</span></HudRow>
       <HudRow data-intro label={h.part}>{part.en}</HudRow>
       <HudRow data-intro label={h.system}>{pick(part.ko, part.koEn)}</HudRow>
@@ -147,11 +148,11 @@ function HeroHud({ bind, choose }: { bind: RefObject<(i: number) => void>; choos
           // a tall hit area around the 2px tick
           <button key={k} type="button" aria-label={h.beatLabel(k + 1, m.beats.length)} aria-current={k === beat || undefined} onClick={() => choose.current(k)}
             className="flex-1 cursor-pointer py-2">
-            <i data-on={k <= beat || undefined} className="relative block h-0.5 overflow-hidden bg-line-2 after:absolute after:inset-0 after:origin-left after:scale-x-0 after:bg-acc after:transition-transform after:duration-500 after:ease-out after:content-[''] data-on:after:scale-x-100" />
+            <i data-on={k <= beat || undefined} className="relative block h-0.5 overflow-hidden bg-line-2 after:absolute after:inset-0 after:origin-left after:scale-x-0 after:bg-acc after:transition-transform after:duration-500 after:ease-out data-on:after:scale-x-100" />
           </button>
         ))}
       </div>
-      <span data-intro className="font-sans text-[.84rem] font-normal tracking-normal text-mute normal-case">{h.hint}</span>
+      <span data-intro className="font-sans text-caption font-normal tracking-normal text-mute normal-case">{h.hint}</span>
     </aside>
   );
 }
@@ -163,14 +164,14 @@ export function Marquee() {
       {items.map((s, i) => (
         <span key={i} className="contents">
           {/* every other word is set in outline */}
-          <span className={cn('font-display text-[clamp(1.6rem,3.4vw,3rem)] font-extrabold tracking-[.01em] whitespace-nowrap uppercase', i % 2 ? 'text-stroke' : 'text-fg')}>{s}</span>
+          <span className={cn('font-display text-marquee font-extrabold tracking-button whitespace-nowrap uppercase', i % 2 ? 'text-stroke' : 'text-fg')}>{s}</span>
           <i className="size-2.5 flex-none rounded-full bg-acc" />
         </span>
       ))}
     </div>
   );
   return (
-    <div className="marquee-host overflow-hidden border-y border-line py-[22px]" aria-hidden="true">
+    <div className="marquee-host overflow-hidden border-y border-line py-5.5" aria-hidden="true">
       <div className="flex w-max">{track}{track}</div>
     </div>
   );

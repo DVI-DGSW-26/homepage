@@ -2,6 +2,7 @@
 // Each factory returns a geometry normalised to a ~1.25 unit bounding sphere so the
 // point cloud morphs between them at a constant scale.
 import * as THREE from 'three';
+import { PART_LABELS, type PartLabel } from './meta';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 
 type Pt = [number, number];
@@ -98,15 +99,12 @@ export function sleeveBush() {
   return normalize(lathe([[0.6, -0.7], [0.82, -0.7], [0.86, -0.66], [0.86, 0.66], [0.82, 0.7], [0.6, 0.7], [0.6, -0.7]], 64));
 }
 
-export interface PartMeta { id: string; en: string; ko: string; koEn: string; proc: string; procEn: string; make: () => THREE.BufferGeometry }
+export type PartMeta = PartLabel & { make: () => THREE.BufferGeometry };
 
-export const PART_META: PartMeta[] = [
-  { id: 'rotor', en: 'Brake Disc Hat', ko: '제동장치', koEn: 'Brake', proc: '압출 / CNC / T6', procEn: 'Extrusion / CNC / T6', make: brakeRotor },
-  { id: 'ujoint', en: 'U-Joint Yoke', ko: '조향장치', koEn: 'Steering', proc: '단조재 CNC', procEn: 'Forged stock, CNC', make: ujointYoke },
-  { id: 'profile', en: 'Multi-hollow Profile', ko: '압출 프로파일', koEn: 'Extruded profile', proc: '압출 / T6 / 절단', procEn: 'Extrusion / T6 / cutting', make: profileChunk },
-  { id: 'collar', en: 'Grooved Collar', ko: '조향장치', koEn: 'Steering', proc: '압출 / CNC 선반', procEn: 'Extrusion / CNC lathe', make: groovedCollar },
-  { id: 'inner-pipe', en: 'Inner Pipe', ko: '방진장치', koEn: 'Anti-vibration', proc: '압출 / 절단 / 디버링', procEn: 'Extrusion / cutting / deburring', make: innerPipe },
-  { id: 'sleeve-bush', en: 'Sleeve Bush', ko: '조향장치', koEn: 'Steering', proc: '압출 / CNC 선반', procEn: 'Extrusion / CNC lathe', make: sleeveBush }
-];
+// the labels (three/meta.ts, read by the HUD) with the geometry each one is built from
+const MAKERS: Record<PartLabel['id'], () => THREE.BufferGeometry> = {
+  rotor: brakeRotor, ujoint: ujointYoke, profile: profileChunk, collar: groovedCollar, 'inner-pipe': innerPipe, 'sleeve-bush': sleeveBush
+};
+export const PART_META: PartMeta[] = PART_LABELS.map(l => ({ ...l, make: MAKERS[l.id] }));
 
 export function makeParts(count = PART_META.length): (PartMeta & { geo: THREE.BufferGeometry })[] { return PART_META.slice(0, count).map(m => ({ ...m, geo: m.make() })); }

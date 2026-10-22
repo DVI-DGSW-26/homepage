@@ -6,6 +6,6 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: { host: '127.0.0.1', port: 5173 },
   preview: { host: '127.0.0.1', port: 4173 },
-  // three.js is most of the bundle, and the hero needs it on first paint
-  build: { chunkSizeWarningLimit: 1300 }
+  // three.js (the WebGL scenes' shared chunk) is ~580 kB on its own; it loads after the page does
+  build: { chunkSizeWarningLimit: 650 }
 });

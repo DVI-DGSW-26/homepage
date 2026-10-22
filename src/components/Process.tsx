@@ -59,7 +59,7 @@ export function Process() {
 
   return (
     <Section ref={root} id="process" aria-label={m.label} className={SEC}>
-      <div className="flex flex-col gap-[clamp(20px,3vh,40px)]">
+      <div className="flex flex-col gap-process-gap">
         <div className="wrap flex flex-wrap items-end justify-between gap-8">
           <div>
             <Eyebrow>{m.eyebrow}</Eyebrow>
@@ -69,7 +69,7 @@ export function Process() {
             <div className="flex flex-wrap gap-1.5" role="tablist">
               {PROCESSES.map(p => (
                 <button key={p.id} type="button" role="tab" aria-selected={p.id === procId} onClick={() => setProcId(p.id)}
-                  className={cn('cursor-pointer rounded-full border border-line-2 px-5 py-3 font-sans text-[.95rem] font-semibold tracking-[.01em] text-fg-2 transition-[background-color,color,border-color] duration-400', p.id === procId && 'border-fg bg-fg text-bg')}>
+                  className={cn('cursor-pointer rounded-full border border-line-2 px-5 py-3 font-sans text-body-sm font-semibold tracking-button text-fg-2 transition-[background-color,color,border-color] duration-400', p.id === procId && 'border-fg bg-fg text-bg')}>
                   {pick(p.tab, p.tabEn)}
                 </button>
               ))}
@@ -81,21 +81,21 @@ export function Process() {
           {PROCESSES.map(p => (
             <div key={p.id} ref={el => { tracks.current[p.id] = el; }} data-track data-on={p.id === procId || undefined}
               tabIndex={p.id === procId ? 0 : -1} aria-label={pick(p.ko, p.en)}
-              className="hidden gap-[18px] pr-(--gutter) pl-[max(var(--gutter),calc((100vw_-_1480px)/2))] [scrollbar-width:none] focus-visible:outline-offset-[-2px] data-on:flex lg:overflow-x-auto lg:overscroll-x-contain [&::-webkit-scrollbar]:hidden max-lg:flex-col max-lg:px-(--gutter)">
+              className="hidden gap-4.5 pr-gutter pl-[max(var(--spacing-gutter),calc((100vw-var(--container-page))/2))] [scrollbar-width:none] focus-visible:-outline-offset-2 data-on:flex lg:overflow-x-auto lg:overscroll-x-contain [&::-webkit-scrollbar]:hidden max-lg:flex-col max-lg:px-gutter">
               {p.steps.map((s, i) => (
-                <article key={s.ko} data-step className="group/step relative grid w-[clamp(280px,26vw,380px)] flex-none grid-rows-[auto_1fr] overflow-hidden rounded-md border border-line bg-card transition-[border-color] duration-400 hover:border-line-2 max-lg:w-full">
-                  <div data-wipe className="relative aspect-[505/350] overflow-hidden bg-bg-2">
+                <article key={s.ko} data-step className="group/step relative grid w-process-card flex-none grid-rows-[auto_1fr] overflow-hidden rounded-md border border-line bg-card transition-[border-color] duration-400 hover:border-line-2 max-lg:w-full">
+                  <div data-wipe className="relative aspect-505/350 overflow-hidden bg-bg-2">
                     {s.imgs.map((im, k) => (
                       <Img key={im} src={PROCESS_IMG + im} sizes="(max-width: 900px) 85vw, 400px" alt={`${pick(s.ko, s.koEn)} ${k + 1}`}
                         className={cn('absolute inset-0 size-full object-cover transition-opacity duration-600', k > 0 && 'opacity-0 group-hover/step:opacity-100')} />
                     ))}
-                    {s.imgs.length > 1 && <span className="absolute right-2.5 bottom-2 font-mono text-[.7rem] tracking-[.1em] text-white uppercase opacity-80 [text-shadow:0_1px_4px_rgba(0,0,0,.6)]">{m.photoHint}</span>}
+                    {s.imgs.length > 1 && <span className="absolute right-2.5 bottom-2 font-mono text-micro tracking-widest text-on-photo uppercase opacity-80 text-shadow-photo-sm">{m.photoHint}</span>}
                   </div>
-                  <div className="grid grid-cols-[1fr_auto] content-start gap-x-3.5 gap-y-2 px-5 pt-[18px] pb-5">
+                  <div className="grid grid-cols-[1fr_auto] content-start gap-x-3.5 gap-y-2 px-5 pt-4.5 pb-5">
                     <div className="mono col-span-full flex justify-between text-mute"><span>{m.step(i + 1)}</span><em className={cn('not-italic', (s.heat === 'hot' || s.heat === 'warm') && HEAT[s.heat])}>{s.en}</em></div>
-                    <h3 className="m-0 text-[1.25rem] font-semibold">{pick(s.ko, s.koEn)}</h3>
-                    <div className={cn('num self-start font-display text-[3.2rem] leading-[.8] font-extrabold tracking-[-.02em]', s.heat && HEAT[s.heat])}>{pad2(i + 1)}</div>
-                    <p className="col-span-full m-0 text-[.92rem] leading-[1.6] text-fg-2">{pick(s.d, s.dEn)}</p>
+                    <h3 className="m-0 text-title font-semibold">{pick(s.ko, s.koEn)}</h3>
+                    <div className={cn('num self-start font-display text-step leading-step font-extrabold tracking-heading', s.heat && HEAT[s.heat])}>{pad2(i + 1)}</div>
+                    <p className="col-span-full m-0 text-small leading-copy text-fg-2">{pick(s.d, s.dEn)}</p>
                   </div>
                 </article>
               ))}
@@ -103,7 +103,7 @@ export function Process() {
           ))}
         </div>
         <div className="wrap">
-          <div className="relative h-0.5 bg-line max-lg:hidden"><i ref={bar} className="absolute inset-0 origin-left bg-[linear-gradient(90deg,var(--fg-2),var(--acc))] [transform:scaleX(0)]" /></div>
+          <div className="relative h-0.5 bg-line max-lg:hidden"><i ref={bar} className="absolute inset-0 origin-left bg-linear-to-r/srgb from-fg-2 to-acc [transform:scaleX(0)]" /></div>
           <div className="mono flex justify-between gap-5 text-mute max-lg:hidden"><span>{proc.foot[0]}</span><span>{m.middle}</span><span>{proc.foot[1]}</span></div>
         </div>
       </div>

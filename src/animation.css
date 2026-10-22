@@ -11,23 +11,25 @@
 
 @theme {
   /* the "Scroll" cue: a light running down a hairline */
-  --animate-cue: cue 1.8s var(--ease-out) infinite;
+  --animate-cue: cue var(--duration-cue) var(--ease-out) infinite;
   @keyframes cue { 0% { top: -100% } 60% { top: 100% } 100% { top: 100% } }
   @keyframes marquee { to { transform: translateX(-100%) } }
+  @keyframes dialog-in { from { opacity: 0; transform: translateY(16px) scale(.98) } }
+  @keyframes fade-in { from { opacity: 0 } }
 }
 
 @layer components {
   /* Marquee: the strip's content is written twice in a row and each copy slides one width left,
      so the loop is seamless. --marquee-duration sets the pace per strip. */
-  .marquee { animation: marquee var(--marquee-duration, 42s) linear infinite; will-change: transform }
+  .marquee { animation: marquee var(--marquee-duration, var(--duration-marquee)) linear infinite; will-change: transform }
   /* a strip stops while the pointer is on it, or while something inside it has focus */
   .marquee-host:hover .marquee, .marquee-host:focus-within .marquee { animation-play-state: paused }
 
   /* Header: a full-width bar over the hero that draws in to the floating pill once the hero is
      behind (header[data-pill], set by src/components/Nav.tsx) */
   .nav-morph {
-    transition: width .7s var(--ease-out), margin-top .7s var(--ease-out), padding .7s var(--ease-out),
-      border-radius .7s var(--ease-out), background-color .4s, border-color .4s;
+    transition: width var(--duration-morph) var(--ease-out), margin-top var(--duration-morph) var(--ease-out), padding var(--duration-morph) var(--ease-out),
+      border-radius var(--duration-morph) var(--ease-out), background-color var(--duration-fade), border-color var(--duration-fade);
   }
 }
 
@@ -37,12 +39,17 @@
      the midpoint (src/lib/theme.ts) */
   body::after {
     content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; will-change: opacity;
-    background: #D8DBDF; opacity: 0; transition: opacity .62s cubic-bezier(.45, 0, .2, 1);
+    background: var(--color-paper); opacity: 0; transition: opacity var(--duration-theme) var(--ease-theme);
   }
   html[data-bg="light"] body::after { opacity: 1 }
 
+  /* the video modal rises in over a fading backdrop (closing is instant) */
+  .video-dialog[open] { animation: dialog-in var(--duration-morph) var(--ease-out) }
+  .video-dialog[open]::backdrop { animation: fade-in var(--duration-fade) ease-out }
+
   @media (prefers-reduced-motion: reduce) {
     body::after { transition: none }
+    .video-dialog[open], .video-dialog[open]::backdrop { animation: none }
     .marquee { animation: none }
     .nav-morph { transition: none }
   }

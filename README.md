@@ -18,6 +18,7 @@ pnpm build      # 이미지 변환 → 타입 검사 → vite build → 단일 �
 pnpm preview    # dist/ 를 http://127.0.0.1:4173 에서 확인
 pnpm typecheck  # 타입 검사만
 pnpm images     # 이미지 변환만 (dev / build 가 자동으로 먼저 실행)
+pnpm coast      # 지도 해안선 데이터 다시 만들기 (결과는 커밋돼 있어 평소엔 필요 없음)
 ```
 
 - `dist/` 에 배포용 정적 파일(index.html, 해시가 붙은 JS/CSS, `public/` 의 에셋)이 생성됩니다. Vercel 은 `vercel.json` 대로 `pnpm build` 후 `dist/` 를 배포합니다.
@@ -30,7 +31,8 @@ pnpm images     # 이미지 변환만 (dev / build 가 자동으로 먼저 실�
 | `index.html` | Vite 진입점. `<head>`(파비콘, 폰트, meta, 저장된 라이트 모드를 첫 페인트 전에 적용하는 인라인 스크립트)와 `#root` |
 | `src/main.tsx` | 영문 meta 적용 후 `<App>` 렌더 |
 | `src/App.tsx` | 섹션 배치, 앵커 스크롤, 페이지 전역 스크롤 연출 시작 |
-| `src/styles.css` | Tailwind 진입점. 디자인 토큰(`@theme`), 다크/라이트 두 벌의 `html[data-mode]` 토큰, 브레이크포인트, 유틸리티로 표현할 수 없는 것(슬라이더 thumb, 히어로 제목을 쪼갠 글자 노드) |
+| `src/token.css` | 모든 디자인 값: 브레이크포인트, 서체, 글자 크기·자간·행간, 유동 간격, 측정폭, 모서리, 이징, 그림자, 색(고정 / 모드별), 사진 스크림, WebGL·캔버스·메달 색, 모션 시간 |
+| `src/styles.css` | Tailwind 진입점. 변형(`light:`, `booting:`, `short:`), 기본 요소 스타일, 공용 유틸리티, 유틸리티로 표현할 수 없는 것(슬라이더 thumb, 히어로 제목을 쪼갠 글자 노드) |
 | `src/animation.css` | CSS 로 움직이는 것 전부: keyframes, 마키(`.marquee`), 스크롤 큐, 테마 크로스페이드, 헤더 바 ↔ 알약 전환, 각각의 reduced-motion 처리 |
 | `src/components/Img.tsx` | 모든 사진·로고를 그리는 `<Img>` (next/image 대응: AVIF/WebP srcset, 고유 크기, 지연 로딩, 플레이스홀더, `priority`) |
 | `scripts/images.mjs` | 빌드 전 이미지 변환: `public/assets/opt/` 에 폭별 AVIF/WebP, `src/generated/images.json` 에 목록(둘 다 생성물, git 제외) |
@@ -47,6 +49,7 @@ pnpm images     # 이미지 변환만 (dev / build 가 자동으로 먼저 실�
 | `src/components/Events.tsx` | 행사 목록과 상세 |
 | `src/components/Contact.tsx` | 커뮤니티, 문의, 푸터 |
 | `src/i18n/` | KOR / ENG. `locales/ko.ts`·`locales/en.ts` 화면 문구 사전, `store.ts` 언어 상태·`useT`·`pick`·`useLang`·`setLang`, `rich.tsx` 태그가 섞인 문구 렌더, `meta.ts` `<html lang>`·`<title>`·meta description, `index.ts` 진입점 |
+| `src/lib/tokens.ts` | 스크립트에서 토큰 읽기: `token('--scene-alu')`, `withAlpha()`, 모드 전환 때 다시 읽는 `modeTokens()` (캔버스, WebGL 장면) |
 | `src/lib/theme.ts` | 다크 / 라이트 모드 상태(`useTheme`, `setTheme`), 저장, 크로스페이드 |
 | `src/lib/scroll.ts` | 네이티브 스크롤 이동(`scroll.scrollTo`)과 앵커 링크 처리 |
 | `src/lib/reveals.ts` | 마커 클래스 기반 페이지 전역 리빌(한 번만 재생), 사진 와이프, 숫자 카운트업 |
@@ -54,7 +57,8 @@ pnpm images     # 이미지 변환만 (dev / build 가 자동으로 먼저 실�
 | `src/three/hero.ts` | 히어로 파티클(자동차 부품으로 모이는 알루미늄 칩) Three.js 장면 |
 | `src/three/parts.ts` | 부품 형상(Brake Hat, Yoke, Inner Pipe 등) 절차적 지오메트리와 HUD 라벨 |
 | `src/three/extrusion.ts` | 프로파일 랩: 프레스 컨테이너, 금형, 프로파일 Three.js 장면과 중량 계산 |
-| `src/canvas/map.ts`, `telemetry.ts` | 글로벌 거점 지도, R&D 데모 파형 (Canvas 2D) |
+| `src/canvas/map.ts`, `telemetry.ts` | 글로벌 거점 지도(태평양 중심 메르카토르, 실제 해안선), R&D 데모 파형 (Canvas 2D) |
+| `src/canvas/coast.json`, `scripts/coast.mjs` | 지도 해안선. Natural Earth 1:50m 육지(world-atlas, 공개 데이터)를 지도 범위로 잘라 단순화한 것. 범위를 바꾸면 `pnpm coast` 로 다시 만듭니다(map.ts 와 같은 LON0/LON1/LAT0) |
 | `src/data.ts` | 제품, 공정, 인증서, 연혁, 거점, 조직도, 행사 데이터와 타입. 사이트 내용 수정은 여기서 |
 | `public/assets/img/` | dvi-ind.com 에서 가져온 이미지(정리, 최적화본). 코드에서는 `assets/img/...` 로 참조 |
 | `public/assets/img/events/` | 행사 사진. `<행사 id>-NN.jpg` 본판과 `-NN-t.jpg` 썸네일 한 쌍 |
@@ -64,15 +68,20 @@ pnpm images     # 이미지 변환만 (dev / build 가 자동으로 먼저 실�
 
 ## 디자인 토큰과 Tailwind
 
-- 브랜드 보라 `#5F298C` (원본 사이트 `--brand-color`). 다크 배경에서는 `#8A5BC2 / #B79BE3` 로 밝혀 사용
-- 그래파이트 `#0C1016`, 알루미늄 라이트 `#D8DBDF`
-- 서체: Big Shoulders Display (`font-display`), IBM Plex Sans KR (`font-sans`, 본문), IBM Plex Mono (`font-mono`, 수치)
-- 색 유틸리티는 토큰을 따라갑니다: `bg-bg`, `bg-bg-2`, `bg-card`, `text-fg`, `text-fg-2`, `text-mute`, `border-line`, `border-line-2`, `text-acc`, `text-acc-2`, `text-acc-ink`, `bg-acc-glow`. 모드와 무관하게 늘 그래파이트인 면(슬로건, Frame 01 사진 위 글자)은 `ink-*` 나 흰색을 씁니다. 수상 금색 `text-gold` 도 모드 토큰입니다(라이트에서는 진한 금색).
-- 공용 유틸리티: `wrap`(본문 폭), `pad-wrap`(전폭 블록의 내용을 `wrap` 열에 맞추는 좌우 패딩 — 헤더 바, Frame 01), `mono`, `disp`, `num`(tabular 숫자), `text-stroke`. 좌우 여백은 `--gutter` (`px-(--gutter)`).
-- 브레이크포인트는 원본 CSS 의 max-width 경계 + 1px 입니다. 그래서 `max-lg:` 가 정확히 `max-width: 900px`, `lg:` 가 `min-width: 901px` 이고, JS 의 데스크톱 / 모바일 분기(`src/lib/env.ts` 의 `DESKTOP` / `MOBILE`)와 같습니다. `xs` 640 · `sm` 760 · `md` 860 · `lg` 900 · `xl` 980 · `2xl` 1000 · `3xl` 1100.
+디자인 값은 전부 `src/token.css` 에 있고, 컴포넌트는 그 토큰이 만드는 Tailwind v4 유틸리티로만 씁니다. `.tsx` 에 hex·rgba 나 반복되는 임의값을 쓰지 않습니다.
+
+- **색**: 모드를 따르는 색 `bg-bg` `bg-bg-2` `bg-card` `text-fg` `text-fg-2` `text-mute` `border-line` `border-line-2` `text-acc` `text-acc-2` `text-acc-ink` `bg-acc-glow` `bg-nav` `text-gold`. 두 모드에서 같은 색 `ink-*`(늘 그래파이트인 면), `paper`, `brand`(#5F298C), `ink-acc`, `on-photo`(사진 위 글자), `on-acc`(보라 위 글자), `plate`(로고·스캔 뒤 흰 판). 투명도는 `text-on-photo/70`, `bg-ink/55` 처럼 붙입니다.
+- **사진 스크림·외곽선**: `bg-(image:--scrim-frame)`, `--scrim-card`, `--scrim-card-deep`, `--scrim-band`; 외곽선 글자 `[-webkit-text-stroke:1px_var(--stroke-on-photo)]`. 그림자 `text-shadow-photo`, `drop-shadow-medal`.
+- **글자**: 크기 `text-tag` .66 · `micro` .7 · `label` .74 · `mono-sm` .78 · `mono` .8 · `caption` .84 · `small` .9 · `body-sm` .95 · `body` 1 · `body-lg` 1.05 · `title-xs/sm/title/lg` 1.15–1.35 · `index` 1.4 · `figure-xs/sm/figure` 1.5–2rem, 그리고 유동 크기 `text-hero` `text-h2` `text-statement` `text-manifesto` `text-kpi` 등. 어떤 크기도 행간을 함께 바꾸지 않습니다. 자간 `tracking-display/heading/heading-sm/button/name/spec/mono-sm/tag/label`(+ Tailwind `tracking-widest` .1em, `tracking-tight`), 행간 `leading-display` .9 · `hero` · `statement` · `copy` 1.6 등.
+- **간격**: 고정 px 는 Tailwind 4px 스케일(`gap-4.5` = 18px, `size-18` = 72px)을 쓰고, 화면에 따라 변하는 값은 이름 있는 토큰입니다: `gutter`(좌우 여백, `px-gutter`), `wrap`(본문 열 폭), `section`(섹션 위아래), `sec-head`, `stack` / `stack-md` / `stack-sm`(블록 사이), `col-gap`, `nav-clear` 등. 측정폭 `max-w-measure`(26em) · `lead` · `hero-copy` · `hero-title`, 본문 열 최대 `--container-page`(1480px). 모서리 `rounded-tag` 3px · `thumb` 5px · `card` 8px · `pill` 40px.
+- **이름 규칙**: Tailwind 는 같은 이름을 여러 유틸리티에 씁니다. `--spacing-block` 은 `inline-block` 을 `inline-size` 로 바꿔 버리고, `--spacing-x` 와 `--container-x` 가 같으면 `max-w-x` 가 간격 쪽을 씁니다. 새 토큰 이름은 기존 클래스(`block`, `flex`, `grid` …)·다른 네임스페이스와 겹치지 않게 짓고, `cn()` 의 목록(`src/components/ui.tsx`)에도 추가합니다. 빠뜨리면 tailwind-merge 가 새 `text-*` 를 색으로 읽어 옆의 색 클래스를 지웁니다.
+- **스크립트**: 캔버스와 WebGL 은 `src/lib/tokens.ts` 로 `--fg`, `--scene-*`, `--font-mono` 등을 읽습니다. 셰이더에 바로 쓰는 색은 `raw()` 로 변환 없이 넘깁니다(`src/three/hero.ts`).
+- **v4 문법**: 비율 `aspect-800/216`, 시간 `duration-450`, 크기 `scale-106`, 투명도 `opacity-34`, 필터 `brightness-230`, 자식 `*:col-span-full`, 그라디언트 `bg-linear-to-r/srgb from-fg to-acc`(원래처럼 sRGB 보간), CSS 변수 `px-(--x)` / `bg-(image:--x)`. GSAP 이 transform 을 쓰는 요소의 초기값만 `[transform:...]` 로 둡니다(아래 "애니메이션 규칙").
+- 서체: Big Shoulders Display (`font-display`), IBM Plex Sans KR (`font-sans`, 본문), IBM Plex Mono (`font-mono`, 수치).
+- 공용 유틸리티: `wrap`(본문 폭), `pad-wrap`(전폭 블록의 내용을 `wrap` 열에 맞추는 좌우 패딩 — 헤더 바, Frame 01), `mono`, `disp`, `num`(tabular 숫자), `text-stroke`.
+- 브레이크포인트는 원본 CSS 의 max-width 경계 + 1px 입니다. 그래서 `max-lg:` 가 정확히 `max-width: 900px`, `lg:` 가 `min-width: 901px` 이고, JS 의 데스크톱 / 모바일 분기(`src/lib/env.ts` 의 `DESKTOP` / `MOBILE`)와 같습니다. `2xs` 360 · `xs` 640 · `sm` 760 · `md` 860 · `lg` 900 · `xl` 980 · `2xl` 1000 · `3xl` 1100 · `4xl` 1280. `short:` 는 높이 780px 이하 화면입니다.
 - 데스크톱 격자는 1101px 이상에서만 씁니다. 901~1100px 은 데스크톱 격자에 비해 폭이 모자라, 둘로 나뉘는 블록(Frame 01 캡션과 수치, 프로파일 랩, 행사, 커뮤니티)은 이 구간에서 `max-3xl:` 로 쌓거나 2단으로 바꿉니다. 한국어는 `:lang(ko)` 에서 `word-break: keep-all` 이 걸려 단어 중간에서 줄바꿈되지 않습니다.
 - `light:` 변형은 `html[data-mode="light"]` 일 때 적용됩니다. `booting:` 변형은 히어로 인트로가 시작되기 전(`html` 에 `data-ready` 가 붙기 전)에만 적용되며, 인트로로 등장할 카피·HUD·내비를 그때까지 숨깁니다.
-- 클래스 합성은 `cn()` (tailwind-merge) 으로 합니다. 이 프로젝트의 글자 크기는 모두 임의값(`text-[...]`)이라 줄 높이를 건드리지 않으므로, `cn()` 은 글자 크기가 `leading-*` 를 지우지 않도록 설정돼 있습니다. `text-base` 같은 이름 있는 크기는 v4 에서 line-height 까지 바꾸니 쓰지 않습니다.
 
 ## 다크 / 라이트 모드
 
@@ -108,6 +117,7 @@ pnpm images     # 이미지 변환만 (dev / build 가 자동으로 먼저 실�
 - CSS 로 움직이는 것(keyframes, 무한 반복, 상태 전환 트랜지션)은 `src/animation.css` 에 모읍니다. 한 번 재생되는 스크립트 연출(히어로 인트로·박자 전환, 리빌, 여섯 해 레일, 조직도)은 GSAP 으로 각 컴포넌트와 `src/lib/reveals.ts` 에 있고, 호버 트랜지션은 요소의 유틸리티로 둡니다.
 - 마키는 내용을 두 번 이어 쓴 트랙에 `.marquee` 를 주고, 감싸는 요소에 `.marquee-host` 를 줍니다. 속도는 `[--marquee-duration:48s]` 처럼 트랙마다 정합니다(기본 42s). 포인터를 올리거나 안에 포커스가 있으면 멈춥니다(히어로 아래 라벨, 고객사 로고, 인증서).
 - GSAP 은 컴포넌트마다 `useGSAP(fn, { scope })` 안에서 만듭니다. 정리될 때 트윈, ScrollTrigger, SplitText, matchMedia 가 함께 되돌려집니다. Three.js / Canvas 장면은 같은 effect 에서 만들고 반환한 정리 함수에서 `destroy()` 합니다.
+- three.js 와 두 WebGL 장면(`src/three/hero.ts`, `extrusion.ts`)은 `import()` 로 따로 받는 청크입니다. 페이지가 쓰는 부품 이름·프로파일 계산은 three.js 없는 `src/three/meta.ts` 에 있으니, 컴포넌트에서 `src/three/*` 의 장면 모듈을 정적으로 import 하지 마세요(타입은 `import type`). 단일 파일은 `scripts/single.mjs` 가 동적 import 를 한 스크립트로 합친 별도 빌드로 만듭니다.
 - 무거운 초기화는 첫 화면 뒤로 미룹니다. 히어로 장면은 첫 페인트 직후에 만들고 부품 샘플링은 첫 부품만 즉시, 나머지는 유휴 시간에 합니다. 프로파일 랩 장면은 로드 후 유휴 시간이나 섹션 한 화면 앞에서 만듭니다. 두 장면 모두 셰이더를 `compileAsync` 로 미리 컴파일한 뒤 그리기 시작합니다.
 - 스크롤 트리거를 만들기 전에 숨김 상태(스타일 쓰기)를 한꺼번에 먼저 적용합니다. 트리거는 만들어지는 순간 페이지를 측정하므로, 쓰기와 생성을 번갈아 하면 트리거 수만큼 레이아웃이 다시 계산됩니다.
 - 페이지 전역 리빌은 마커로 붙입니다 (`src/components/ui.tsx` 상단 주석): `.rv`, `[data-batch]`, `[data-wipe]`, `[data-count]`. 모두 처음 한 번만 재생되고 위로 되돌아갈 때 되감기지 않으며, 재생한 트리거는 스스로 사라집니다.
