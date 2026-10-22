@@ -46,7 +46,7 @@ function Phone({ src, alt, className }: { src: string; alt: string; className?: 
       'before:absolute before:top-3.25 before:left-1/2 before:z-1 before:h-2.25 before:w-[22%] before:-translate-x-1/2 before:rounded-full before:bg-ink',
       className
     )}>
-      <Img src={IMG + src} alt={alt} sizes="(max-width: 900px) 60vw, 260px" className="aspect-664/1284 h-auto w-full rounded-[23px] bg-plate" />
+      <Img src={IMG + src} alt={alt} sizes="(max-width: 859px) 60vw, 260px" className="aspect-664/1284 h-auto w-full rounded-[23px] bg-plate" />
     </figure>
   );
 }
@@ -92,17 +92,17 @@ export function QacFlow() {
 function Hero() {
   const m = useT().qf;
   return (
-    <div className="grid items-center gap-stack-sm lg:grid-cols-[minmax(0,1.15fr)_minmax(0,.85fr)]">
+    <div className="grid items-center gap-stack-sm md:grid-cols-[minmax(0,1.15fr)_minmax(0,.85fr)]">
       <div>
         <p className="rv m-0 mb-4.5 font-display text-wordmark leading-display font-extrabold tracking-heading-sm">Q.A.C<span className="text-qf-ink">-Flow</span></p>
         <Eyebrow className="rv">{m.expand}</Eyebrow>
         <H2 className="rv mt-5.5">{m.title}</H2>
         <Lead className="rv mt-5.5">{lines(m.lead)}</Lead>
         <div className="rv mt-8 flex flex-wrap gap-3">
-          <a href="#contact" className={cn(btn(), 'border-qf bg-qf text-on-acc max-lg:flex-[1_1_220px] max-lg:justify-center')}><span>{m.demo}</span><ArrowIcon /></a>
-          <a href="#contact" className={cn(btn(), 'max-lg:flex-[1_1_220px] max-lg:justify-center')}><span>{m.poc}</span><ArrowIcon /></a>
+          <a href="#contact" className={cn(btn(), 'border-qf bg-qf text-on-acc max-md:flex-[1_1_220px] max-md:justify-center')}><span>{m.demo}</span><ArrowIcon /></a>
+          <a href="#contact" className={cn(btn(), 'max-md:flex-[1_1_220px] max-md:justify-center')}><span>{m.poc}</span><ArrowIcon /></a>
         </div>
-        <ul className="rv m-0 mt-8 grid list-none grid-cols-3 border-t border-line p-0 lg:mt-12">
+        <ul className="rv m-0 mt-8 grid list-none grid-cols-3 border-t border-line p-0 md:mt-12">
           {[
             <><small className="text-[.5em] text-fg-2">~</small><span data-count="98">0</span><small className="text-[.5em] text-fg-2">%</small></>,
             <span data-count="0">0</span>,
@@ -116,7 +116,7 @@ function Hero() {
         </ul>
         <p className="rv mono m-0 mt-4 text-mute">{m.statsNote}</p>
       </div>
-      <div className="rv relative isolate before:absolute before:inset-[8%_-10%_0] before:-z-1 max-lg:before:inset-[8%_0_0] before:bg-[radial-gradient(50%_50%_at_50%_50%,var(--qf-soft),transparent_70%)]">
+      <div className="rv relative isolate before:absolute before:inset-[8%_-10%_0] before:-z-1 max-md:before:inset-[8%_0_0] before:bg-[radial-gradient(50%_50%_at_50%_50%,var(--qf-soft),transparent_70%)]">
         <PhonePair back={['ocr-input.jpg', m.alt.ocr]} front={['capture.jpg', m.alt.capture]} />
       </div>
     </div>
@@ -144,7 +144,7 @@ function Problem() {
   return (
     <div className="mt-stack">
       <Head kicker={p.kicker} q={p.q} title={p.title} />
-      <div data-batch className="grid gap-4 lg:grid-cols-2 lg:gap-6">
+      <div data-batch className="grid gap-4 md:grid-cols-2 md:gap-6">
         <article className="rv grid content-start gap-6.5 rounded-card border border-dashed border-line-2 p-panel-pad text-fg-2">
           <span className="mono justify-self-start rounded-full border border-line-2 px-3 py-1.5 text-micro">{p.before}</span>
           {flow(p.beforeSteps, BEFORE_ICONS, false)}
@@ -187,14 +187,14 @@ function Workflow() {
   return (
     <div className="mt-stack">
       <Head kicker={w.kicker} q={w.q} title={w.title} />
-      <ol data-batch className="m-0 grid list-none p-0 2xl:grid-cols-5 2xl:gap-[clamp(16px,2vw,32px)]">
+      <ol data-batch className="m-0 grid list-none p-0 lg:grid-cols-5 lg:gap-[clamp(16px,2vw,32px)]">
         {w.steps.map((s, i) => (
           <li key={s.title} className={cn(
             'rv relative grid grid-cols-[52px_1fr] gap-x-4.5 pb-7 last:pb-0',
             'before:absolute before:top-13 before:bottom-0 before:left-6.25 before:border-l before:border-qf-line last:before:hidden',
-            '2xl:grid-cols-1 2xl:content-start 2xl:pb-0 2xl:before:top-6.5 2xl:before:right-[calc(clamp(16px,2vw,32px)*-1)] 2xl:before:bottom-auto 2xl:before:left-16 2xl:before:border-t 2xl:before:border-l-0'
+            'lg:grid-cols-1 lg:content-start lg:pb-0 lg:before:top-6.5 lg:before:right-[calc(clamp(16px,2vw,32px)*-1)] lg:before:bottom-auto lg:before:left-16 lg:before:border-t lg:before:border-l-0'
           )}>
-            <span className={cn('row-span-3 grid size-13 place-items-center rounded-full border border-qf-line bg-bg text-qf-ink 2xl:row-span-1 2xl:mb-5', i === w.steps.length - 1 && 'border-qf bg-qf text-on-acc')}>
+            <span className={cn('row-span-3 grid size-13 place-items-center rounded-full border border-qf-line bg-bg text-qf-ink lg:row-span-1 lg:mb-5', i === w.steps.length - 1 && 'border-qf bg-qf text-on-acc')}>
               <Icon d={WORKFLOW_ICONS[i]} className="size-6" />
             </span>
             <b className="mono pt-1 text-micro text-mute">{w.step(i + 1)}</b>
@@ -253,7 +253,7 @@ function Trace() {
   return (
     <div className="mt-stack">
       <Head kicker={t.kicker} q={t.q} title={t.title} lead={t.lead} />
-      <div className="grid items-center gap-stack-sm 2xl:grid-cols-[minmax(0,.8fr)_minmax(0,1.2fr)]">
+      <div className="grid items-center gap-stack-sm md:grid-cols-[minmax(0,.8fr)_minmax(0,1.2fr)]">
         <PhonePair className="rv max-w-105" back={['mobile-compare.jpg', m.alt.compare]} front={['mobile-photo-compare.jpg', m.alt.photos]} />
         <div className="grid gap-[clamp(28px,3vw,40px)]">
           <ul data-batch className="m-0 grid list-none gap-4.5 p-0">
@@ -277,7 +277,7 @@ function Data() {
   return (
     <div className="mt-stack">
       <Head kicker={d.kicker} q={d.q} title={d.title} />
-      <div className="grid items-center gap-[clamp(32px,4vw,56px)] 2xl:grid-cols-[minmax(0,1.45fr)_minmax(0,.55fr)]">
+      <div className="grid items-center gap-[clamp(32px,4vw,56px)] lg:grid-cols-[minmax(0,1.45fr)_minmax(0,.55fr)]">
         <Browser className="rv" src="report-summary.jpg" alt={m.alt.report} sizes="(max-width: 1000px) 100vw, 1000px" caption={d.caption} />
         <ol data-batch className="m-0 grid list-none p-0">
           {d.steps.map((s, i) => { const last = i === d.steps.length - 1; return (
@@ -294,13 +294,13 @@ function Data() {
         <h4 className="m-0 text-index font-semibold text-fg">{d.roadmap}</h4>
         <span className="mono">2026 — 2029</span>
       </div>
-      <ol data-batch className="m-0 grid list-none p-0 lg:grid-cols-4 lg:gap-6">
+      <ol data-batch className="m-0 grid list-none p-0 md:grid-cols-4 md:gap-6">
         {d.milestones.map((x, i) => { const now = i === 0; return (
           <li key={x.year} className={cn(
-            'rv relative pb-7.5 pl-8.5 last:pb-0 lg:pt-7.5 lg:pb-0 lg:pl-0',
+            'rv relative pb-7.5 pl-8.5 last:pb-0 md:pt-7.5 md:pb-0 md:pl-0',
             'before:absolute before:top-3 before:-bottom-3 before:left-1.25 before:border-l before:border-line-2 last:before:hidden',
-            'lg:before:top-1.25 lg:before:-right-6 lg:before:bottom-auto lg:before:left-3 lg:before:border-t lg:before:border-l-0 lg:last:before:block lg:last:before:right-0',
-            'after:absolute after:top-1.5 after:left-0 after:size-2.75 after:rounded-full after:border after:border-line-2 after:bg-bg lg:after:top-0',
+            'md:before:top-1.25 md:before:-right-6 md:before:bottom-auto md:before:left-3 md:before:border-t md:before:border-l-0 md:last:before:block md:last:before:right-0',
+            'after:absolute after:top-1.5 after:left-0 after:size-2.75 after:rounded-full after:border after:border-line-2 after:bg-bg md:after:top-0',
             now && 'after:border-qf after:bg-qf after:shadow-[0_0_0_6px_var(--qf-soft)]'
           )}>
             <b className={cn('block font-display text-milestone leading-none font-extrabold text-fg-2', now && 'text-qf-ink')}>{x.year}</b>

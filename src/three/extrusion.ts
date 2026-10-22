@@ -80,8 +80,19 @@ export function createExtrusion(canvas: HTMLCanvasElement, { reduced = false, fi
   const N = 360, pos = new Float32Array(N * 3), spd = new Float32Array(N);
   for (let i = 0; i < N; i++) { pos[i * 3] = (Math.random() - .5) * 30; pos[i * 3 + 1] = (Math.random() - .5) * 14; pos[i * 3 + 2] = (Math.random() - .5) * 16 - 2; spd[i] = 0.002 + Math.random() * 0.006; }
   const pGeo = new THREE.BufferGeometry(); pGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-  const pMat = new THREE.PointsMaterial({ color: 0xd5dae1, size: 0.035, transparent: true, opacity: 0.5, depthWrite: false });
+  const pMat = new THREE.PointsMaterial({ color: token('--scene-dust'), size: 0.035, transparent: true, opacity: 0.5, depthWrite: false });
   scene.add(new THREE.Points(pGeo, pMat));
+
+  // Light mode: graphite steel would sit on the pale page as a black block, so the press turns to a
+  // lighter brushed steel and reflects more, and the dust darkens. The switch eases over the page's crossfade.
+  const pair = (dark: string, lite: string) => [new THREE.Color(token(dark)), new THREE.Color(token(lite))] as const;
+  const looks = [[steel, pair('--scene-steel', '--scene-steel-light')], [steelLight, pair('--scene-container', '--scene-container-light')], [pMat, pair('--scene-dust', '--scene-dust-light')]] as const;
+  const mode = { v: light ? 1 : 0 };
+  const applyLook = () => {
+    for (const [m, [d, l]] of looks) m.color.lerpColors(d, l, mode.v);
+    steel.envMapIntensity = 0.55 + mode.v * 0.35; steelLight.envMapIntensity = 0.6 + mode.v * 0.3;
+  };
+  applyLook();
 
   let params: ProfileParams = { w: 90, h: 40, cells: 3, wall: 4.5 };
   const build = () => {
