@@ -1,6 +1,6 @@
 // Q.A.C-Flow, the smartphone quality inspection system built on DVISION's own line.
 // Hero with the figures up front, then problem, how it works, workflow, live monitor, traceability,
-// and report → data (the roadmap after it is the next section, src/components/Future.tsx).
+// and report → data (whose last step links on to the data-industry page, src/components/Future.tsx).
 // Magenta (qf-*) is this section's accent only.
 //
 // The screens come from the in-house deployment. Customer and personal names are masked in the
@@ -17,8 +17,8 @@ const MONITOR = ['measurement-detail', 'status-board', 'defect-actions'] as cons
 // line icons, 24×24, drawn with the current colour
 const BEFORE_ICONS = ['M4 7h16v10H4z M8 11h8', 'M6 3h9l3 3v15H6z M9 10h6M9 14h6M9 18h3', 'M3 5h18v14H3z M3 10h18M9 5v14M15 5v14'];
 const AFTER_ICONS = ['M4 8h3l2-3h6l2 3h3v11H4z M12 17a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z', 'M4 8V4h4M16 4h4v4M20 16v4h-4M8 20H4v-4 M8 12h8', 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z M8 12l3 3 5-6', 'M6 3h9l3 3v15H6z M9 13l2 2 4-4'];
-/** the arrow on the step that leads on into the data industry (Data, below) */
-const DOWN = 'M12 5v14m-5-5l5 5 5-5';
+/** the arrow on the step that leads on to the data-industry page (Data, below) */
+const NEXT = 'M5 12h14m-5-5l5 5-5 5';
 const WORKFLOW_ICONS = ['M6 3h9l3 3v15H6z M9 9h6M9 13h6M9 17h4', 'M7 2h10v20H7z M11 18h2 M10 7h4v5h-4z', 'M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3 M18 3v4h-4M6 21v-4h4', 'M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z M9 12l2 2 4-4', 'M6 3h9l3 3v15H6z M12 9v7m0 0l-3-3m3 3l3-3'];
 
 /** each block opens with the visitor's question, then answers it: a one-line answer, then the detail */
@@ -273,7 +273,6 @@ function Data() {
   return (
     <div className="mt-stack">
       <Head kicker={d.kicker} q={d.q} title={d.title} />
-      {/* the steps sit at the foot of the report, so the line out of them runs straight on into the next section */}
       <div className="grid items-center gap-[clamp(32px,4vw,56px)] lg:grid-cols-[minmax(0,1.45fr)_minmax(0,.55fr)] lg:items-end">
         <Browser className="rv" src="report-summary.jpg" alt={m.alt.report} sizes="(max-width: 1000px) 100vw, 1000px" caption={d.caption} />
         <ol data-batch className="m-0 grid list-none p-0">
@@ -288,16 +287,11 @@ function Data() {
               <p className="m-0 mt-1.5 text-body-sm leading-copy text-fg-2">{s.body}</p>
             </li>
           ); })}
-          {/* and the answer runs on: the next step is the data industry, the section after this one. Its line
-              carries on down past the end of this section to an arrowhead just above that section's heading */}
+          {/* and the answer runs on: the next step is the data industry, on its own page */}
           <li className="rv relative grid grid-cols-[44px_1fr] gap-x-4">
-            <span className="row-span-2 grid size-11 place-items-center rounded-full border border-acc bg-acc text-on-acc"><Icon d={DOWN} className="size-5" /></span>
-            <h4 className="m-0 mt-2.5 text-title-xs font-semibold"><a href="#future" className="text-acc-ink transition-colors duration-300 hover:text-fg">{f.label} →</a></h4>
+            <span className="row-span-2 grid size-11 place-items-center rounded-full border border-acc bg-acc text-on-acc"><Icon d={NEXT} className="size-5" /></span>
+            <h4 className="m-0 mt-2.5 text-title-xs font-semibold"><a href="/data" className="text-acc-ink transition-colors duration-300 hover:text-fg">{f.label} →</a></h4>
             <p className="m-0 mt-1.5 text-body-sm leading-copy text-fg-2">{lines(f.bridge)}</p>
-            <i aria-hidden="true" className="absolute top-11 left-5.25 h-[calc(100%-2.75rem+var(--spacing-bridge))] w-px bg-linear-to-b/srgb from-acc to-acc/35" />
-            <span aria-hidden="true" className="absolute top-[calc(100%+var(--spacing-bridge)-.5rem)] left-5.5 flex w-0 justify-center text-acc-ink">
-              <Icon d="M6 9l6 6 6-6" className="size-4 flex-none" />
-            </span>
           </li>
         </ol>
       </div>

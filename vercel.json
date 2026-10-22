@@ -4,6 +4,7 @@
   "buildCommand": "pnpm build",
   "outputDirectory": "dist",
   "cleanUrls": true,
+  "rewrites": [{ "source": "/(company|qac-flow|data)", "destination": "/index.html" }],
   "headers": [
     {
       "source": "/assets/(.*)",

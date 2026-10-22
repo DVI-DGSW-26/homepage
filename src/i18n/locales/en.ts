@@ -15,7 +15,7 @@ export const en: Messages = {
   nav: {
     home: 'DVISION home',
     menu: 'Main menu',
-    links: { about: 'About', rnd: 'R&D', product: 'Product', config: 'Technology', 'qac-flow': 'Q.A.C-Flow', events: 'Events', community: 'Community' },
+    links: { '/company': 'Company', '/qac-flow': 'Q.A.C-Flow', '/data': 'Data Industry' },
     langs: { ko: 'KOR', en: 'ENG' },
     theme: { toLight: 'Switch to light mode', toDark: 'Switch to dark mode' },
     contact: 'Contact us',
@@ -40,6 +40,15 @@ export const en: Messages = {
     },
     cue: 'Scroll',
     marquee: ['Aluminum Extrusion', 'CNC Machining', 'T6 Heat Treatment', 'Pipe Bending', 'Daegu → Michigan → Monterrey', '1,450 t / 3,500 t Press']
+  },
+
+  directory: {
+    label: 'The three engines',
+    pages: {
+      '/company': { engine: 'Manufacturing', body: 'We extrude and machine aluminum ourselves, and the line we run is where our data comes from.', tags: ['Automotive parts', 'Aluminum extrusions', 'OEM / ODM'] },
+      '/qac-flow': { engine: 'Solutions', body: 'Inspection that measures and manages quality with vision data analysis.', tags: ['PoC', 'Deployment', 'Maintenance', 'SaaS'] },
+      '/data': { engine: 'Data', body: 'From manufacturing data we verify ourselves to a data and AI business.', tags: ['Data licensing', 'API', 'Credits'] }
+    }
   },
 
   about: {

@@ -3,6 +3,10 @@
 dvi-ind.com 리메이크. React + Vite + Tailwind CSS(v4) + TypeScript 정적 사이트이며 서버 없이 배포 가능합니다. 패키지 매니저는 pnpm 입니다.
 전에 있던 JS로 만든 homepage는 main-old 브런치로 옮겼습니다. https://github.com/DVI-DGSW-26/homepage/tree/main-old
 
+또한 [feature/Separation](https://github.com/DVI-DGSW-26/homepage/tree/main)
+는 현재 페이지 스크롤을 많이 해야하는 문제를 줄인 브런치입니다. 
+
+다른 브런치에 push , merge , pull 등 다른 branch와 관여하지않습니다.
 
 
 전에 있던 JS로 만든 homepage는 main-old 브런치로 옮겼습니다.
@@ -26,7 +30,7 @@ pnpm images     # 이미지 변환만 (dev / build 가 자동으로 먼저 실�
 pnpm coast      # 지도 해안선 데이터 다시 만들기 (결과는 커밋돼 있어 평소엔 필요 없음)
 ```
 
-- `dist/` 에 배포용 정적 파일(index.html, 해시가 붙은 JS/CSS, `public/` 의 에셋)이 생성됩니다. Vercel 은 `vercel.json` 대로 `pnpm build` 후 `dist/` 를 배포합니다.
+- `dist/` 에 배포용 정적 파일(index.html, 해시가 붙은 JS/CSS, `public/` 의 에셋)이 생성됩니다. Vercel 은 `vercel.json` 대로 `pnpm build` 후 `dist/` 를 배포하고, `/company` 같은 페이지 경로는 `index.html` 로 보냅니다(rewrites). 페이지를 더하면 `src/lib/router.ts` 의 `PAGES` 와 함께 여기도 고칩니다.
 - `dist/dvision-single.html` 은 이미지, 스크립트, 스타일을 모두 인라인한 단일 파일(공유, 시안 검토용)입니다. `scripts/single.mjs` 가 만들며, 다운로드가 막힌 뷰어를 위해 카탈로그 PDF 는 dvi-ind.com 원본을 새 탭으로 엽니다.
 
 ## 구조
@@ -35,15 +39,17 @@ pnpm coast      # 지도 해안선 데이터 다시 만들기 (결과는 커밋�
 | --- | --- |
 | `index.html` | Vite 진입점. `<head>`(파비콘, 폰트, meta, 저장된 라이트 모드를 첫 페인트 전에 적용하는 인라인 스크립트)와 `#root` |
 | `src/main.tsx` | 영문 meta 적용 후 `<App>` 렌더 |
-| `src/App.tsx` | 섹션 배치, 앵커 스크롤, 페이지 전역 스크롤 연출 시작 |
+| `src/App.tsx` | 페이지별 섹션 배치(`/` 홈, `/company`, `/qac-flow`, `/data`, 모든 페이지 끝에 문의), 앵커 스크롤, 페이지마다 스크롤 연출 시작 |
+| `src/lib/router.ts` | 페이지 경로와 새로고침 없는 이동(`navigate`, 뒤로/앞으로 포함). 한 페이지 시절의 `/#섹션` 링크는 그 섹션이 있는 페이지로 옮김 (`/?lang=en#qac-flow` → `/qac-flow`). 없는 경로는 홈 |
 | `src/token.css` | 모든 디자인 값: 브레이크포인트, 서체, 글자 크기·자간·행간, 유동 간격, 측정폭, 모서리, 이징, 그림자, 색(고정 / 모드별), 사진 스크림, WebGL·캔버스·메달 색, 모션 시간 |
 | `src/styles.css` | Tailwind 진입점. 변형(`light:`, `booting:`, 화면 모양·자세 `narrow:` `wide:` `low:` `tall:` `short:` `spanned:` `spanned-y:`), 기본 요소 스타일, 공용 유틸리티, 유틸리티로 표현할 수 없는 것(슬라이더 thumb, 히어로 제목을 쪼갠 글자 노드) |
 | `src/animation.css` | CSS 로 움직이는 것 전부: keyframes, 마키(`.marquee`), 스크롤 큐, 테마 크로스페이드, 헤더 바 ↔ 알약 전환, 각각의 reduced-motion 처리 |
 | `src/components/Img.tsx` | 모든 사진·로고를 그리는 `<Img>` (next/image 대응: AVIF/WebP srcset, 고유 크기, 지연 로딩, 플레이스홀더, `priority`) |
 | `scripts/images.mjs` | 빌드 전 이미지 변환: `public/assets/opt/` 에 폭별 AVIF/WebP, `src/generated/images.json` 에 목록(둘 다 생성물, git 제외) |
 | `src/components/ui.tsx` | 공용 조각: `Section`, `SecHead`, `Eyebrow`, `H2`, `IndexHead`, `Photo`, `btn()`, `cn()` |
-| `src/components/Nav.tsx` | 헤더(히어로 위 전폭 바 → 알약), KOR / ENG 토글, 테마 버튼 |
+| `src/components/Nav.tsx` | 헤더(홈은 히어로 위 전폭 바 → 알약, 다른 페이지는 처음부터 알약), 페이지 메뉴, KOR / ENG 토글, 테마 버튼 |
 | `src/components/Hero.tsx` | 히어로 4박자 카피, HUD, 마키 |
+| `src/components/Directory.tsx` | 홈의 3-Engine 화면: 대각선 두 줄로 한 화면을 제조(`/company`), 솔루션(`/qac-flow`), 데이터(`/data`) 세 칸으로 나누고(가운데 칸은 위가 좁은 사다리꼴), 칸마다 사진과 색으로 채우고 위에 문구. 들어오면 선이 그어지고 세 사진이 함께 열림. 마우스를 올리거나 탭 키로 고른 칸만 남기고 나머지 둘은 흑백으로 가라앉음(고른 칸은 사진이 밝아지고, 경계 대각선이 그 칸 색으로 켜지고, 빛줄기가 한 번 사선으로 지나감). 1200px 아래에서는 완만한 대각선으로 위아래로 쌓임 |
 | `src/components/About.tsx` | 매니페스토, Frame 01(사진 위에 제목·캡션·수치), 여섯 해 레일, 약속, 고객사 마키, 조직도 |
 | `src/components/Product.tsx` | 제품 카테고리 / 부품 행 / 갤러리, 슬로건(Statement) |
 | `src/components/Config.tsx` | 프로파일 랩(단면 설정기 + 압출 장면) |
@@ -51,9 +57,10 @@ pnpm coast      # 지도 해안선 데이터 다시 만들기 (결과는 커밋�
 | `src/components/Equipment.tsx` | 설비, 시험장비 표, 설비 사진 |
 | `src/components/Rnd.tsx` | R&D, 텔레메트리, ESG, 인증서 마키 |
 | `src/components/Global.tsx` | 글로벌 거점 지도와 거점 목록, 연혁(History) |
-| `src/components/QacFlow.tsx` | Q.A.C-Flow 품질검사 솔루션 섹션(`#qac-flow`, 연혁과 행사 사이). 화면 캡처는 `public/assets/img/qacflow/` (고객사명, 작업자 실명은 이미지에서 가림). 제품색 마젠타는 `qf-*` 토큰으로 이 섹션에서만 씀. CES QR 코드는 `/?lang=en#qac-flow` |
-| `src/components/Events.tsx` | 행사 목록과 상세 |
-| `src/components/Contact.tsx` | 커뮤니티, 문의, 푸터 |
+| `src/components/QacFlow.tsx` | Q.A.C-Flow 품질검사 솔루션 페이지(`/qac-flow`). 화면 캡처는 `public/assets/img/qacflow/` (고객사명, 작업자 실명은 이미지에서 가림). 제품색 마젠타는 `qf-*` 토큰으로 이 섹션에서만 씀. CES QR 코드 `/?lang=en#qac-flow` 는 이 페이지로 이동 |
+| `src/components/Future.tsx` | 데이터 산업 페이지(`/data`): 제조에서 데이터 사업까지의 흐름, 2026–2029 로드맵 |
+| `src/components/Events.tsx` | 행사 목록과 상세 (지금은 어느 페이지에도 없음) |
+| `src/components/Contact.tsx` | 문의, 푸터(모든 페이지), 커뮤니티(지금은 어느 페이지에도 없음) |
 | `src/i18n/` | KOR / ENG. `locales/ko.ts`·`locales/en.ts` 화면 문구 사전, `store.ts` 언어 상태·`useT`·`pick`·`useLang`·`setLang`, `rich.tsx` 태그가 섞인 문구 렌더, `meta.ts` `<html lang>`·`<title>`·meta description, `index.ts` 진입점 |
 | `src/lib/tokens.ts` | 스크립트에서 토큰 읽기: `token('--scene-alu')`, `withAlpha()`, 모드 전환 때 다시 읽는 `modeTokens()` (캔버스, WebGL 장면) |
 | `src/lib/theme.ts` | 다크 / 라이트 모드 상태(`useTheme`, `setTheme`), 저장, 크로스페이드 |

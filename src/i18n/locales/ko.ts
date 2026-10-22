@@ -21,7 +21,7 @@ export const ko = {
   nav: {
     home: 'DVISION 홈',
     menu: '주요 메뉴',
-    links: { about: 'About', rnd: 'R&D', product: 'Product', config: 'Technology', 'qac-flow': 'Q.A.C-Flow', events: 'Events', community: 'Community' },
+    links: { '/company': 'Company', '/qac-flow': 'Q.A.C-Flow', '/data': 'Data Industry' },
     langs: { ko: 'KOR', en: 'ENG' },
     theme: { toLight: '라이트 모드로 전환', toDark: '다크 모드로 전환' },
     contact: '제품 문의',
@@ -46,6 +46,15 @@ export const ko = {
     },
     cue: 'Scroll',
     marquee: ['Aluminum Extrusion', 'CNC Machining', 'T6 Heat Treatment', 'Pipe Bending', 'Daegu → Michigan → Monterrey', '1,450 t / 3,500 t Press']
+  },
+
+  directory: {
+    label: '3-Engine 페이지 안내',
+    pages: {
+      '/company': { engine: '제조', body: '알루미늄 압출·가공으로 직접 만들고, 그 현장에서 데이터를 얻습니다.', tags: ['자동차 부품 공급', '알루미늄 압출 제품', 'OEM/ODM 생산'] },
+      '/qac-flow': { engine: '솔루션', body: '비전 데이터 분석으로 품질을 측정하고 관리하는 검사 솔루션.', tags: ['PoC', '구축', '유지보수', 'SaaS'] },
+      '/data': { engine: '데이터', body: '직접 검증한 제조 데이터로 데이터·AI 사업까지.', tags: ['데이터 라이선스', 'API', '크레딧'] }
+    }
   },
 
   about: {

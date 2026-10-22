@@ -1,8 +1,10 @@
 // The header: a full-width bar over the hero that draws in to a floating pill once the hero is behind
-// (the change itself is .nav-morph in animation.css). Lights the menu item of the section in view.
+// (the change itself is .nav-morph in animation.css); on a page without the hero it is a pill from the
+// start. The menu links to the pages, the current one lit.
 // Below 1200px (tablets, phones, a spanned dual-screen device) the menu moves into a sheet behind a button.
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { ScrollTrigger, useGSAP } from '../lib/gsap';
+import type { Page } from '../lib/router';
 import { setLang, useLang, useT, type Lang } from '../i18n';
 import { holdPosition } from '../lib/scroll';
 import { setTheme, useTheme } from '../lib/theme';
@@ -10,16 +12,13 @@ import { LG, pad2 } from '../lib/env';
 import { ArrowIcon, btn, cn } from './ui';
 import { Img } from './Img';
 
-const LINKS = ['about', 'rnd', 'product', 'config', 'qac-flow', 'events', 'community'] as const;
-// which menu item lights up while each section is under the 45% line
-const LINK_FOR: Record<string, string> = { about: 'about', statement: 'about', product: 'product', config: 'config', process: 'config', equip: 'config', rnd: 'rnd', global: 'about', history: 'about', 'qac-flow': 'qac-flow', future: 'qac-flow', events: 'events', community: 'community', contact: 'community' };
+const LINKS = ['/company', '/qac-flow', '/data'] as const satisfies readonly Page[];
 const LANGS: Lang[] = ['ko', 'en'];
 
 const ROUND_BTN = 'relative grid size-9 flex-none cursor-pointer place-items-center rounded-full border border-line text-fg-2 transition-colors duration-300 hover:border-line-2 hover:text-fg max-sm:size-8';
 
-export function Nav() {
+export function Nav({ page }: { page: Page }) {
   const ref = useRef<HTMLElement>(null), sheet = useRef<HTMLDialogElement>(null);
-  const [active, setActive] = useState<string>();
   const lang = useLang(), theme = useTheme(), t = useT(), m = t.nav;
   // turned to a desktop width with the sheet open (a tablet rotated, a window widened): the bar has the menu again
   useEffect(() => {
@@ -29,16 +28,11 @@ export function Nav() {
   }, []);
   const closeSheet = () => sheet.current?.close();
   useGSAP(() => {
-    const nav = ref.current!;
+    const nav = ref.current!, hero = document.getElementById('hero');
+    nav.toggleAttribute('data-pill', !hero);
     // a pill from the moment the hero's bottom edge reaches the bar
-    ScrollTrigger.create({ trigger: '#hero', start: 'bottom top+=88', end: 'max', onToggle: s => nav.toggleAttribute('data-pill', s.isActive) });
-    // back on the hero nothing is lit
-    ScrollTrigger.create({ trigger: '#hero', start: 'top 45%', end: 'bottom 45%', onToggle: s => { if (s.isActive) setActive(undefined); } });
-    Object.entries(LINK_FOR).forEach(([id, to]) => {
-      const el = document.getElementById(id); if (!el) return;
-      ScrollTrigger.create({ trigger: el, start: 'top 45%', end: 'bottom 45%', onToggle: s => { if (s.isActive) setActive(to); } });
-    });
-  });
+    if (hero) ScrollTrigger.create({ trigger: hero, start: 'bottom top+=88', end: 'max', onToggle: s => nav.toggleAttribute('data-pill', s.isActive) });
+  }, { dependencies: [page], revertOnUpdate: true });
   return (
     <>
     <header ref={ref} id="nav" className="group/nav fixed inset-x-0 top-0 z-100 booting:opacity-0">
@@ -48,20 +42,20 @@ export function Nav() {
         // pill: the wrap column's width, floating 16px down
         'group-data-pill/nav:mt-4 group-data-pill/nav:w-wrap group-data-pill/nav:rounded-pill group-data-pill/nav:border-line group-data-pill/nav:py-2.5 group-data-pill/nav:pr-3 group-data-pill/nav:pl-5 max-sm:group-data-pill/nav:pl-3.5 max-sm:group-data-pill/nav:pr-2'
       )}>
-        <a className="relative block aspect-800/216 w-logo flex-none max-sm:w-24 max-2xs:w-22" href="#top" aria-label={m.home}>
+        <a className="relative block aspect-800/216 w-logo flex-none max-sm:w-24 max-2xs:w-22" href="/" aria-label={m.home}>
           <Img className="absolute inset-0 size-full object-contain transition-opacity duration-500 light:opacity-0" src="assets/img/logo-white.png" sizes="136px" priority={theme === 'dark'} alt={t.brand} />
           <Img className="absolute inset-0 size-full object-contain opacity-0 transition-opacity duration-500 light:opacity-100" src="assets/img/logo.png" sizes="136px" priority={theme === 'light'} alt="" />
         </a>
         {/* below 1200px the menu is in the sheet (the button at the end of the bar) */}
         <nav aria-label={m.menu} className="max-lg:hidden">
           <ul className="mono m-0 flex list-none gap-nav-gap p-0 max-xl:gap-nav-gap-tight">
-            {LINKS.map(id => (
-              <li key={id}>
-                <a href={'#' + id} data-active={active === id || undefined} className={cn(
+            {LINKS.map(to => (
+              <li key={to}>
+                <a href={to} aria-current={page === to ? 'page' : undefined} data-active={page === to || undefined} className={cn(
                   'relative py-1.5 text-fg-2 transition-colors duration-300 hover:text-fg data-active:text-fg',
                   "after:absolute after:inset-x-0 after:bottom-0 after:h-px after:origin-right after:scale-x-0 after:bg-fg after:transition-transform after:duration-500 after:ease-out",
                   'hover:after:origin-left hover:after:scale-x-100 data-active:after:origin-left data-active:after:scale-x-100'
-                )}>{m.links[id]}</a>
+                )}>{m.links[to]}</a>
               </li>
             ))}
           </ul>
@@ -90,7 +84,7 @@ export function Nav() {
       </div>
     </header>
     {/* The sheet: the whole screen, the links large and numbered. A modal <dialog>, so focus stays inside, Esc
-        closes it and the page holds still behind it; a link closes it and the page glides to its section. */}
+        closes it and the page holds still behind it; a link closes it and opens its page. */}
     <dialog ref={sheet} aria-label={m.menu} className="menu-sheet m-0 h-dvh max-h-none w-full max-w-none overflow-y-auto border-0 bg-bg p-0 text-fg backdrop:bg-transparent">
       <div className="wrap flex min-h-full flex-col pt-4 pb-8">
         <div className="flex items-center justify-between py-2.5">
@@ -99,11 +93,11 @@ export function Nav() {
         </div>
         <nav aria-label={m.menu} className="mt-6 spanned:max-w-[calc(50%-var(--spacing-hinge-gap)/2)]">
           <ul className="m-0 grid list-none border-t border-line p-0">
-            {LINKS.map((id, i) => (
-              <li key={id}>
-                <a href={'#' + id} onClick={closeSheet} data-active={active === id || undefined}
+            {LINKS.map((to, i) => (
+              <li key={to}>
+                <a href={to} onClick={closeSheet} aria-current={page === to ? 'page' : undefined} data-active={page === to || undefined}
                   className="group/link flex items-baseline gap-4 border-b border-line py-4 text-menu leading-tight font-semibold tracking-heading text-fg-2 transition-colors duration-300 hover:text-fg data-active:text-fg max-sm:py-3.5">
-                  <span className="mono w-8 flex-none text-mute group-data-active/link:text-acc-ink">{pad2(i + 1)}</span>{m.links[id]}
+                  <span className="mono w-8 flex-none text-mute group-data-active/link:text-acc-ink">{pad2(i + 1)}</span>{m.links[to]}
                 </a>
               </li>
             ))}

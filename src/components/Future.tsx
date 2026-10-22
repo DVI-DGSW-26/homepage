@@ -1,8 +1,7 @@
 // Our future: from manufacturing into the data industry. The value chain from the press to a data
 // business, the four stages it takes year by year (2026, where we are, is lit), and the aim in one line.
-// Q.A.C-Flow, the system whose inspection data the first stages are built on, runs into it: its last
-// block's steps end in a step that points here, and the line from it comes down into the top of this
-// section (src/components/QacFlow.tsx), so the section starts just below where that line ends.
+// Q.A.C-Flow, the system whose inspection data the first stages are built on, leads here: its last
+// block's steps end in a step that links to this page (src/components/QacFlow.tsx).
 import { Fragment } from 'react';
 import { rich, useT } from '../i18n';
 import { pad2 } from '../lib/env';
@@ -30,8 +29,7 @@ const underline = (chunk: string) => <span className="text-acc-ink underline dec
 export function Future() {
   const m = useT().future;
   return (
-    // the top padding clears the line coming down from Q.A.C-Flow, then leaves the usual gap under it
-    <Section id="future" aria-label={m.label} className={cn(SEC, 'pt-[calc(var(--spacing-bridge)+var(--spacing-stack-sm))]')}>
+    <Section id="future" aria-label={m.label} className={SEC}>
       <div className="wrap">
         <div className="mb-sec-head">
           <Eyebrow className="rv mb-5.5">{m.eyebrow}</Eyebrow>

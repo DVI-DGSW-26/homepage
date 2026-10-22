@@ -82,6 +82,7 @@
   --text-h2-sm: clamp(1.6rem, 2.6vw, 2.4rem);   /* profile lab, where the copy shares the screen */
   --text-h2-lg: clamp(2.2rem, 4.6vw, 4.2rem);   /* contact */
   --text-frame: clamp(2.6rem, 6vw, 6rem);       /* Frame 01 title */
+  --text-domain: clamp(1.9rem, min(3.4vw, 7svh), 3.9rem); /* the home page's three engine titles */
   --text-year: clamp(2.6rem, 5vw, 5.4rem);      /* six years */
   --text-year-sm: clamp(2.4rem, 4.4vw, 4rem);   /* history */
   --text-kpi: clamp(3.2rem, 5vw, 5.2rem);       /* press capacity */
@@ -160,7 +161,6 @@
   --spacing-process-card: clamp(280px, 26vw, 380px);
   --spacing-product-thumb: clamp(180px, 20vw, 260px);
   --spacing-medal: clamp(58px, 13%, 104px);
-  --spacing-bridge: clamp(48px, 6vw, 96px);     /* each run of the line from Q.A.C-Flow into the data industry */
   /* the hinge of a dual-screen device spanned side by side (0 anywhere else), and a column gap
      that clears it with a gutter on either side (the hinge-cols utility, the spanned: variant) */
   --spacing-hinge: max(0px, env(viewport-segment-left 1 0, 0px) - env(viewport-segment-right 0 0, 0px));
