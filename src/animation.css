@@ -18,7 +18,20 @@
   @keyframes fade-in { from { opacity: 0 } }
 }
 
+/* The home page's three engines (src/components/Directory.tsx): where the two diagonals cut the
+   top and the foot of the screen. Registered, so they animate: the panel pointed at widens and the
+   other two make room. */
+@property --cut-1t { syntax: '<percentage>'; inherits: true; initial-value: 37% }
+@property --cut-1b { syntax: '<percentage>'; inherits: true; initial-value: 26% }
+@property --cut-2t { syntax: '<percentage>'; inherits: true; initial-value: 63% }
+@property --cut-2b { syntax: '<percentage>'; inherits: true; initial-value: 75% }
+
 @layer components {
+  .engines {
+    transition: --cut-1t var(--duration-engines) var(--ease-out), --cut-1b var(--duration-engines) var(--ease-out),
+      --cut-2t var(--duration-engines) var(--ease-out), --cut-2b var(--duration-engines) var(--ease-out);
+  }
+
   /* Marquee: the strip's content is written twice in a row and each copy slides one width left,
      so the loop is seamless. --marquee-duration sets the pace per strip. */
   .marquee { animation: marquee var(--marquee-duration, var(--duration-marquee)) linear infinite; will-change: transform }
@@ -54,5 +67,6 @@
     .video-dialog[open], .video-dialog[open]::backdrop, .menu-sheet[open] { animation: none }
     .marquee { animation: none }
     .nav-morph { transition: none }
+    .engines { transition: none }
   }
 }

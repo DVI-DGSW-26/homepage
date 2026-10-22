@@ -49,7 +49,7 @@ pnpm coast      # 지도 해안선 데이터 다시 만들기 (결과는 커밋�
 | `src/components/ui.tsx` | 공용 조각: `Section`, `SecHead`, `Eyebrow`, `H2`, `IndexHead`, `Photo`, `btn()`, `cn()` |
 | `src/components/Nav.tsx` | 헤더(홈은 히어로 위 전폭 바 → 알약, 다른 페이지는 처음부터 알약), 페이지 메뉴, KOR / ENG 토글, 테마 버튼 |
 | `src/components/Hero.tsx` | 히어로 4박자 카피, HUD, 마키 |
-| `src/components/Directory.tsx` | 홈의 3-Engine 화면: 대각선 두 줄로 한 화면을 제조(`/company`), 솔루션(`/qac-flow`), 데이터(`/data`) 세 칸으로 나누고(가운데 칸은 위가 좁은 사다리꼴), 칸마다 사진과 색으로 채우고 위에 문구. 들어오면 선이 그어지고 세 사진이 함께 열림. 마우스를 올리거나 탭 키로 고른 칸만 남기고 나머지 둘은 흑백으로 가라앉음(고른 칸은 사진이 밝아지고, 경계 대각선이 그 칸 색으로 켜지고, 빛줄기가 한 번 사선으로 지나감). 1200px 아래에서는 완만한 대각선으로 위아래로 쌓임 |
+| `src/components/Directory.tsx` | 홈의 3-Engine 화면: 대각선 두 줄로 한 화면을 제조(`/company`), 솔루션(`/qac-flow`), 데이터(`/data`) 세 칸으로 나누고(가운데 칸은 위가 좁은 사다리꼴), 칸마다 사진과 색으로 채우고 위에 문구. 들어오면 선이 그어지고 세 사진이 함께 열림. 마우스를 올리거나 탭 키로 고른 칸이 넓어짐(대각선이 밀려나며 나머지 둘은 좁아지고 흐려짐, 고른 칸은 사진이 밝아지고 경계가 그 칸 색으로 켜짐). 대각선 위치는 `src/animation.css` 의 등록된 속성 `--cut-*`, 칸별 위치는 `Directory.tsx` 의 `CUTS`. 1200px 아래에서는 완만한 대각선으로 위아래로 쌓임 |
 | `src/components/About.tsx` | 매니페스토, Frame 01(사진 위에 제목·캡션·수치), 여섯 해 레일, 약속, 고객사 마키, 조직도 |
 | `src/components/Product.tsx` | 제품 카테고리 / 부품 행 / 갤러리, 슬로건(Statement) |
 | `src/components/Config.tsx` | 프로파일 랩(단면 설정기 + 압출 장면) |

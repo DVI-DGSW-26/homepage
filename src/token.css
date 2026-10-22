@@ -258,6 +258,7 @@
     --duration-theme: .62s;      /* colour-mode crossfade; src/lib/theme.ts flips the tokens at its midpoint */
     --duration-morph: .7s;       /* header bar ↔ pill */
     --duration-fade: .4s;
+    --duration-engines: .8s;     /* a home-page engine panel widening under the pointer */
     --duration-cue: 1.8s;
     --duration-marquee: 42s;     /* text strip; the logo and certificate strips run slower */
     --duration-marquee-logos: 48s;
