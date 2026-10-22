@@ -209,6 +209,7 @@ export const ko = {
     },
     problem: {
       kicker: '01 / Problem',
+      q: '왜 Q.A.C-Flow가 필요한가요?',
       title: '숫자를 두 번 옮겨 적는 순간, 데이터는 신뢰를 잃습니다.',
       before: '기존 방식',
       after: 'Q.A.C-Flow',
@@ -218,6 +219,7 @@ export const ko = {
     },
     how: {
       kicker: '02 / How it works',
+      q: '측정은 어떻게 하나요?',
       title: '찍고, 자르고, 끝. 측정기에서 데이터까지 세 단계.',
       lead: '장비 교체는 필요 없습니다.\n지금 쓰는 캘리퍼스와 측정기, 그리고 스마트폰 카메라면 됩니다.\n모바일과 PC 웹을 지원합니다.',
       steps: [
@@ -228,6 +230,7 @@ export const ko = {
     },
     workflow: {
       kicker: '03 / Workflow',
+      q: '검사는 어떤 순서로 진행되나요?',
       title: '하나의 검사, 다섯 단계, 하나의 기록.',
       step: (n: number) => `Step ${n}`,
       steps: [
@@ -240,6 +243,7 @@ export const ko = {
     },
     live: {
       kicker: '04 / Live monitoring',
+      q: '불량은 언제 알 수 있나요?',
       title: '불량은 생기는 순간 보입니다.',
       lead: '측정값은 측정하는 그 순간 현장 모니터에 올라옵니다.\n설비별 진행 현황, 공차 대비 측정값, 불량과 조치, 검사 지연 알림까지.',
       tabsAria: '모니터 화면',
@@ -248,6 +252,7 @@ export const ko = {
     },
     trace: {
       kicker: '05 / Traceability',
+      q: '측정값은 어떻게 믿을 수 있나요?',
       title: '모든 측정값에는 사진이 붙어 있습니다.',
       lead: '자주검사와 순회검사 결과가 나란히 놓여,\n불일치는 결재 전에 드러나고\n모든 기록은 고객사 감사와 IATF 심사에서 추적할 수 있습니다.',
       points: [
@@ -258,6 +263,7 @@ export const ko = {
     },
     data: {
       kicker: '06 / From report to data',
+      q: '쌓인 검사 데이터는 어디에 쓰이나요?',
       title: '결재된 보고서가 쌓이면, 공장이 배우는 데이터가 됩니다.',
       caption: '검사보고서, 결재와 동시에 발행 / PDF',
       steps: [

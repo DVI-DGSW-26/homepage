@@ -202,6 +202,7 @@ export const en: Messages = {
     },
     problem: {
       kicker: '01 / Problem',
+      q: 'Why does the shop floor need Q.A.C-Flow?',
       title: 'Writing a number twice is where data loses trust.',
       before: 'Before',
       after: 'With Q.A.C-Flow',
@@ -211,6 +212,7 @@ export const en: Messages = {
     },
     how: {
       kicker: '02 / How it works',
+      q: 'How do you take a measurement?',
       title: 'Snap, crop, done. Three taps from gauge to data.',
       lead: 'No new equipment.\nYour existing calipers and gauges plus a smartphone camera.\nWorks on mobile and PC web.',
       steps: [
@@ -221,6 +223,7 @@ export const en: Messages = {
     },
     workflow: {
       kicker: '03 / Workflow',
+      q: 'How does an inspection flow?',
       title: 'One inspection, five steps, one record.',
       step: (n: number) => `Step ${n}`,
       steps: [
@@ -233,6 +236,7 @@ export const en: Messages = {
     },
     live: {
       kicker: '04 / Live monitoring',
+      q: 'When do you find out about a defect?',
       title: 'Detect defects the moment they happen.',
       lead: 'Every measurement lands on the shop-floor monitor as it is taken:\nprogress by machine, each value against its tolerance,\ndefects and actions, and alerts for late inspections.',
       tabsAria: 'Monitor screens',
@@ -241,6 +245,7 @@ export const en: Messages = {
     },
     trace: {
       kicker: '05 / Traceability',
+      q: 'How can you trust every value?',
       title: 'Every value comes with its photo.',
       lead: 'Self-inspection and patrol inspection sit side by side,\nso a mismatch is caught before approval\nand every record can be traced in a customer audit or IATF review.',
       points: [
@@ -251,6 +256,7 @@ export const en: Messages = {
     },
     data: {
       kicker: '06 / From report to data',
+      q: 'What happens to all that inspection data?',
       title: 'Every approved report becomes data the factory can learn from.',
       caption: 'Inspection report, issued on approval / PDF',
       steps: [

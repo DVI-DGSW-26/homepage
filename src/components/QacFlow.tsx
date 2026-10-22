@@ -26,13 +26,14 @@ function Icon({ d, className }: { d: string; className?: string }) {
   );
 }
 
-/** kicker, title and an optional lead over each block */
-function Head({ kicker, title, lead }: { kicker: string; title: string; lead?: string }) {
+/** each block opens with the visitor's question, then answers it: a one-line answer, then the detail */
+function Head({ kicker, q, title, lead }: { kicker: string; q: string; title: string; lead?: string }) {
   return (
     <div className="mb-stack-sm max-w-208">
       <span className="mono text-qf-ink">{kicker}</span>
-      <h3 className="rv m-0 mt-3.5 text-subhead leading-h2 font-semibold tracking-tight text-balance">{title}</h3>
-      {lead && <Lead className="rv mt-4 max-w-160">{lines(lead)}</Lead>}
+      <h3 className="rv m-0 mt-3.5 text-h2 leading-h2 font-semibold tracking-tight text-balance">{q}</h3>
+      <p className="rv m-0 mt-5 border-l-2 border-qf pl-4 text-title-lg leading-title font-semibold text-balance">{title}</p>
+      {lead && <Lead className="rv mt-3.5 max-w-160 pl-4.5">{lines(lead)}</Lead>}
     </div>
   );
 }
@@ -142,7 +143,7 @@ function Problem() {
   );
   return (
     <div className="mt-stack">
-      <Head kicker={p.kicker} title={p.title} />
+      <Head kicker={p.kicker} q={p.q} title={p.title} />
       <div data-batch className="grid gap-4 lg:grid-cols-2 lg:gap-6">
         <article className="rv grid content-start gap-6.5 rounded-card border border-dashed border-line-2 p-panel-pad text-fg-2">
           <span className="mono justify-self-start rounded-full border border-line-2 px-3 py-1.5 text-micro">{p.before}</span>
@@ -165,7 +166,7 @@ function How() {
   const h = m.how;
   return (
     <div className="mt-stack">
-      <Head kicker={h.kicker} title={h.title} lead={h.lead} />
+      <Head kicker={h.kicker} q={h.q} title={h.title} lead={h.lead} />
       <Img src={IMG + 'trio.png'} alt={m.alt.trio} sizes="(max-width: 1200px) 100vw, 1200px" className="rv mx-auto h-auto w-full max-w-300" />
       <ol data-batch className="m-0 mx-auto mt-8 grid max-w-300 list-none gap-5.5 p-0 sm:grid-cols-3 sm:gap-[clamp(20px,4vw,64px)]">
         {h.steps.map((s, i) => (
@@ -185,7 +186,7 @@ function Workflow() {
   const w = m.workflow;
   return (
     <div className="mt-stack">
-      <Head kicker={w.kicker} title={w.title} />
+      <Head kicker={w.kicker} q={w.q} title={w.title} />
       <ol data-batch className="m-0 grid list-none p-0 2xl:grid-cols-5 2xl:gap-[clamp(16px,2vw,32px)]">
         {w.steps.map((s, i) => (
           <li key={s.title} className={cn(
@@ -218,7 +219,7 @@ function Live() {
   };
   return (
     <div className="mt-stack">
-      <Head kicker={l.kicker} title={l.title} lead={l.lead} />
+      <Head kicker={l.kicker} q={l.q} title={l.title} lead={l.lead} />
       <div role="tablist" aria-label={l.tabsAria} className="mono mb-4.5 flex gap-1.5 overflow-x-auto [scrollbar-width:none]">
         {l.tabs.map((label, i) => (
           <button key={label} id={`qf-tab-${i}`} type="button" role="tab" aria-selected={tab === i} aria-controls={`qf-panel-${i}`} tabIndex={tab === i ? 0 : -1}
@@ -251,7 +252,7 @@ function Trace() {
   const t = m.trace;
   return (
     <div className="mt-stack">
-      <Head kicker={t.kicker} title={t.title} lead={t.lead} />
+      <Head kicker={t.kicker} q={t.q} title={t.title} lead={t.lead} />
       <div className="grid items-center gap-stack-sm 2xl:grid-cols-[minmax(0,.8fr)_minmax(0,1.2fr)]">
         <PhonePair className="rv max-w-105" back={['mobile-compare.jpg', m.alt.compare]} front={['mobile-photo-compare.jpg', m.alt.photos]} />
         <div className="grid gap-[clamp(28px,3vw,40px)]">
@@ -275,7 +276,7 @@ function Data() {
   const d = m.data;
   return (
     <div className="mt-stack">
-      <Head kicker={d.kicker} title={d.title} />
+      <Head kicker={d.kicker} q={d.q} title={d.title} />
       <div className="grid items-center gap-[clamp(32px,4vw,56px)] 2xl:grid-cols-[minmax(0,1.45fr)_minmax(0,.55fr)]">
         <Browser className="rv" src="report-summary.jpg" alt={m.alt.report} sizes="(max-width: 1000px) 100vw, 1000px" caption={d.caption} />
         <ol data-batch className="m-0 grid list-none p-0">
