@@ -24,9 +24,9 @@ export function Community() {
     <Section id="community" className={SEC}>
       <div className="wrap">
         <SecHead eyebrow={m.eyebrow} title={m.title} />
-        <div data-batch className="grid grid-cols-[1.1fr_1.3fr_.9fr] gap-4.5 max-3xl:grid-cols-2 max-sm:grid-cols-1">
+        <div data-batch className="grid grid-cols-[1.1fr_1.3fr_.9fr] gap-4.5 max-lg:grid-cols-2 max-sm:grid-cols-1 spanned:gap-x-hinge">
           <a className={TILE} href={COMPANY.news} target="_blank" rel="noopener">
-            <Photo data-wipe src="assets/img/community/news-2025-11-12.jpg" sizes="(max-width: 760px) 100vw, (max-width: 1100px) 50vw, 30vw" className="aspect-video rounded-none" />
+            <Photo data-wipe src="assets/img/community/news-2025-11-12.jpg" sizes="(max-width: 599px) 100vw, (max-width: 1199px) 50vw, 30vw" className="aspect-video rounded-none" />
             <div className={TILE_IN}>
               <div className={TILE_META}><span>{m.news.tag}</span><span className="num">{m.news.date}</span></div>
               <h3 className={TILE_H3}>{m.news.title}</h3>
@@ -38,7 +38,7 @@ export function Community() {
             <div role="button" tabIndex={0} aria-label={m.video.play}
               onClick={play} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); play(); } }}
               className="group/video relative aspect-video cursor-pointer overflow-hidden bg-ink">
-              <Img src="assets/img/hero/banner-02.jpg" sizes="(max-width: 760px) 100vw, (max-width: 1100px) 50vw, 40vw" alt="" className="size-full object-cover opacity-70 transition-transform duration-1000 ease-out group-hover/video:scale-104" />
+              <Img src="assets/img/hero/banner-02.jpg" sizes="(max-width: 599px) 100vw, (max-width: 1199px) 50vw, 40vw" alt="" className="size-full object-cover opacity-70 transition-transform duration-1000 ease-out group-hover/video:scale-104" />
               <div className="absolute inset-0 grid place-items-center text-on-photo">
                 <i className="grid size-18 place-items-center rounded-full border border-on-photo/70 bg-ink/55 [transition:scale_.5s_var(--ease-out),background-color_.4s] group-hover/video:scale-108 group-hover/video:bg-acc">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
@@ -52,7 +52,7 @@ export function Community() {
             </div>
             <a className={GO} href={COMPANY.youtube} target="_blank" rel="noopener"><span>{m.video.channel}</span><ArrowIcon className={GO_ICON} /></a>
           </div>
-          <div className={cn(TILE, 'max-3xl:col-span-2 max-sm:col-span-1')}>
+          <div className={cn(TILE, 'max-lg:col-span-2 max-sm:col-span-1')}>
             <div className={TILE_IN}>
               <div className={TILE_META}><span>{m.catalog.tag}</span><span>{m.catalog.size}</span></div>
               <div className="grid grid-cols-[auto_1fr] items-start gap-4.5">
@@ -69,7 +69,10 @@ export function Community() {
       </div>
       <dialog ref={dialog} aria-label={m.video.frameTitle} onClose={() => setPlaying(false)}
         onClick={e => { if (e.target === e.currentTarget) e.currentTarget.close(); }}
-        className="video-dialog m-auto w-[min(1200px,100%-var(--spacing-gutter)*2,(100svh-120px)*16/9)] max-w-none overflow-visible border-0 bg-transparent p-0 text-on-photo backdrop:bg-ink/85">
+        className={cn('video-dialog m-auto w-[min(1200px,100%-var(--spacing-gutter)*2,(100svh-120px)*16/9)] max-w-none overflow-visible border-0 bg-transparent p-0 text-on-photo backdrop:bg-ink/85',
+          // a dual-screen device: the player keeps to one screen instead of folding over the hinge
+          'spanned:mr-gutter spanned:ml-[calc(env(viewport-segment-left_1_0)+var(--spacing-gutter))] spanned:w-[calc(env(viewport-segment-width_1_0)-var(--spacing-gutter)*2)]',
+          'spanned-y:mt-[calc(env(viewport-segment-top_0_1)+var(--spacing-gutter))] spanned-y:mb-gutter')}>
         <div className="mb-3 flex items-center justify-between gap-4">
           <span className="mono text-on-photo/70">{m.video.frameTitle}</span>
           <button type="button" onClick={() => dialog.current?.close()}
@@ -111,11 +114,11 @@ function InquiryForm() {
   return (
     <form className="rv grid gap-3.5 rounded-card border border-line bg-card p-form-pad" noValidate onSubmit={submit}>
       <h3 className="m-0 mb-1.5 text-title font-semibold">{m.title}</h3>
-      <div className="grid grid-cols-2 gap-3.5 max-lg:grid-cols-1">
+      <div className="grid grid-cols-2 gap-3.5 max-sm:grid-cols-1">
         <Field id="fCompany" label={m.company}><input id="fCompany" name="company" type="text" autoComplete="organization" required className={INPUT} /></Field>
         <Field id="fName" label={m.name}><input id="fName" name="name" type="text" autoComplete="name" required className={INPUT} /></Field>
       </div>
-      <div className="grid grid-cols-2 gap-3.5 max-lg:grid-cols-1">
+      <div className="grid grid-cols-2 gap-3.5 max-sm:grid-cols-1">
         <Field id="fTel" label={m.tel}><input id="fTel" name="tel" type="tel" autoComplete="tel" required className={INPUT} /></Field>
         <Field id="fMail" label={m.email}><input id="fMail" name="email" type="email" autoComplete="email" required className={INPUT} /></Field>
       </div>
@@ -136,7 +139,7 @@ export function Contact() {
     <Section ref={root} id="contact" className={cn(SEC, 'overflow-hidden pb-0')}>
       <Img src="assets/img/company/symbol-bg.png" sizes="min(46vw, 620px)" alt="" aria-hidden="true" className="pointer-events-none absolute top-[8vh] -right-[6vw] w-[min(46vw,620px)] opacity-6" />
       <div className="wrap">
-        <div className="relative grid grid-cols-[1.1fr_1fr] items-start gap-contact-gap max-lg:grid-cols-1">
+        <div className="relative grid grid-cols-[1.1fr_1fr] items-start gap-contact-gap max-md:grid-cols-1 spanned:hinge-cols">
           <div>
             <Eyebrow className="rv">{m.eyebrow}</Eyebrow>
             <H2 className="rv mt-5.5 text-h2-lg">{m.title}</H2>
@@ -158,7 +161,7 @@ export function Contact() {
           <div data-biglogo className="relative mb-7 aspect-800/216 w-[min(100%,340px)]">
             <Img className="absolute inset-0 size-full origin-bottom-left object-contain object-left" src="assets/img/logo.png" sizes="340px" alt={t.brand} />
           </div>
-          <div className="mono flex flex-wrap justify-between gap-5 text-caption text-mute max-xs:flex-col max-xs:gap-2">
+          <div className="mono flex flex-wrap justify-between gap-5 text-caption text-mute max-sm:flex-col max-sm:gap-2 spanned:grid spanned:hinge-cols spanned:gap-y-2">
             <span>{m.footer.copyright}</span>
             <span>{m.footer.tagline}</span>
             <a href="#top" className="hover:text-fg">{m.footer.top}</a>

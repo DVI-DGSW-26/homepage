@@ -108,7 +108,7 @@ export function Events() {
       <div ref={root} className="wrap">
         <SecHead eyebrow={L.eyebrow} title={L.title} />
         <div className="mb-5.5 flex flex-wrap items-baseline justify-between gap-5">
-          <div className="mono flex flex-wrap gap-2" role="group" aria-label={L.filters}>
+          <div className="mono flex flex-wrap gap-2 spanned:max-w-[calc(50%-var(--spacing-hinge-gap)/2)]" role="group" aria-label={L.filters}>
             {[['all', L.all], ...YEARS.map(y => [y, y])].map(([v, label]) => (
               <button key={v} type="button" onClick={() => chooseYear(v)} aria-pressed={v === year}
                 className={cn('cursor-pointer rounded-full border px-4.5 py-2 transition-[color,border-color,background-color] duration-300',
@@ -117,7 +117,8 @@ export function Events() {
           </div>
           <span className="mono text-mute">{L.count(rows.length)}</span>
         </div>
-        <div className="grid grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] items-start gap-events-gap max-3xl:grid-cols-1">
+        {/* list and detail side by side from 860px (spanned, one per screen); below that the detail goes on top */}
+        <div className="grid grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] items-start gap-events-gap max-md:grid-cols-1 spanned:hinge-cols">
           <ul className="m-0 grid list-none gap-2.5 p-0">
             {rows.map(ev => {
               const on = ev.id === currentId, won = award(ev), n = ev.press.length + ev.video.length;
@@ -125,12 +126,12 @@ export function Events() {
                 <li key={ev.id}>
                   <button type="button" data-ev-item onClick={() => chooseEvent(ev.id)} className={cn(
                     'grid w-full cursor-pointer grid-cols-[96px_minmax(0,1fr)_auto] items-center gap-4 rounded-card border py-3 pr-4 pl-3 text-left',
-                    '[transition:border-color_.35s,background_.35s,translate_.45s_var(--ease-out)] hover:translate-x-0.75 max-3xl:grid-cols-[76px_minmax(0,1fr)] max-3xl:gap-y-2',
+                    '[transition:border-color_.35s,background_.35s,translate_.45s_var(--ease-out)] hover:translate-x-0.75 max-lg:grid-cols-[76px_minmax(0,1fr)] max-lg:gap-y-2',
                     won
                       ? (on ? 'border-gold bg-linear-to-r/srgb from-gold/16 to-transparent to-62%' : 'border-gold/34 bg-card')
                       : (on ? 'border-acc bg-linear-to-r/srgb from-acc-glow to-transparent to-62%' : 'border-line bg-card hover:border-line-2')
                   )}>
-                    <span className="relative block aspect-4/3 w-24 rounded-thumb bg-bg-2 max-3xl:w-19">
+                    <span className="relative block aspect-4/3 w-24 rounded-thumb bg-bg-2 max-lg:w-19">
                       <Img src={`${EVENT_IMG}${ev.id}-01-t.jpg`} sizes="96px" alt="" className="size-full rounded-thumb object-cover" />
                       {won && <Medal e={ev} compact />}
                     </span>
@@ -143,21 +144,23 @@ export function Events() {
                       <b className="text-body leading-caption font-semibold wrap-anywhere">{name(ev)}</b>
                       <span className="text-small leading-note text-fg-2 wrap-anywhere">{pickLang(ev.org, ev.orgEn) || pickLang(ev.note, ev.noteEn) || ''}</span>
                     </span>
-                    <span className="mono self-center whitespace-nowrap text-mute max-3xl:col-start-2 max-3xl:justify-self-start">{n ? L.coverageCount(n) : ''}</span>
+                    <span className="mono self-center whitespace-nowrap text-mute max-lg:col-start-2 max-lg:justify-self-start">{n ? L.coverageCount(n) : ''}</span>
                   </button>
                 </li>
               );
             })}
           </ul>
-          <aside data-ev-detail aria-live="polite" className="sticky top-nav-clear grid gap-3.5 rounded-card border border-line bg-card p-panel-pad max-3xl:static max-3xl:-order-1">
+          {/* Beside the list it sticks while the list scrolls, if the screen is tall enough to hold it. On top of the
+              list (below 860px) the photo goes wide so it does not tower over it, and on a landscape screen the
+              panel splits in two: the photos on the left, the details on the right, so it stays within a screen. */}
+          <aside data-ev-detail aria-live="polite" className="grid gap-3.5 rounded-card border border-line bg-card p-panel-pad tall:sticky tall:top-nav-clear max-md:static max-md:-order-1 sm:max-md:landscape:grid-cols-2 sm:max-md:landscape:gap-x-5">
             {e && <>
-              {/* full width (one column, up to 1100px) the photo goes wide so it does not tower over the list */}
-              <div className="relative aspect-3/2 rounded-md bg-bg-2 max-3xl:aspect-video">
-                <Img ref={stage} src={photos[photo]} sizes="(max-width: 1100px) 100vw, 50vw" alt={name(e)} className="size-full rounded-md object-cover" />
+              <div className="relative aspect-3/2 rounded-md bg-bg-2 max-md:aspect-video sm:max-md:landscape:col-start-1">
+                <Img ref={stage} src={photos[photo]} sizes="(max-width: 859px) 100vw, 50vw" alt={name(e)} className="size-full rounded-md object-cover" />
                 {award(e) && <Medal e={e} />}
               </div>
               {photos.length > 1 && (
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap items-start gap-2 self-start sm:max-md:landscape:col-start-1">
                   {photos.map((p, i) => (
                     <button key={p} type="button" aria-label={L.photo(i + 1)} onClick={() => setPhoto(i)}
                       className={cn('aspect-4/3 w-16 cursor-pointer overflow-hidden rounded-sm border transition-[opacity,border-color] duration-300', i === photo ? 'border-acc opacity-100' : 'border-transparent opacity-55 hover:opacity-85')}>
@@ -166,13 +169,13 @@ export function Events() {
                   ))}
                 </div>
               )}
-              <div className="grid gap-2">
+              <div className="grid content-start gap-2 sm:max-md:landscape:col-start-2 sm:max-md:landscape:row-start-1">
                 <span className="mono text-mute">{date(e.date)} · {KIND[e.kind]}{award(e) && <> · <em className="text-gold not-italic">{award(e)}</em></>}</span>
                 <h3 className="m-0 text-title leading-title font-semibold">{name(e)}</h3>
                 {pickLang(e.note, e.noteEn) && <p className="m-0 text-body-sm text-fg-2">{pickLang(e.note, e.noteEn)}</p>}
                 {pickLang(e.org, e.orgEn) && <div className="grid grid-cols-[5.5rem_minmax(0,1fr)] items-baseline gap-3 border-t border-line pt-2.5"><span className="mono text-mute">{L.host}</span><b className="text-body-sm font-medium text-fg-2">{pickLang(e.org, e.orgEn)}</b></div>}
               </div>
-              <div>
+              <div className="sm:max-md:landscape:col-start-2">
                 <IndexHead as="h4" title={L.coverage} aside={links.length} className="mb-1.5" titleClassName="text-body" />
                 {links.length
                   ? <ul className="m-0 grid list-none p-0">{links.map(x => (

@@ -15,7 +15,7 @@ const ESG: { id: keyof Messages['rnd']['esg']; img: string; letter: string; kpi:
   { id: 's', img: 'esg-02', letter: 'S', kpi: [{ v: 'AI' }] },
   { id: 'g', img: 'esg-03', letter: 'G', kpi: [{ v: 'ISO' }] }
 ];
-const KPI_B = 'flex items-baseline gap-1 font-display text-kpi-tight leading-display font-extrabold tracking-heading-sm max-lg:text-kpi-narrow';
+const KPI_B = 'flex items-baseline gap-1 font-display text-kpi-tight leading-display font-extrabold tracking-heading-sm max-md:text-kpi-narrow';
 
 export function Rnd() {
   const m = useT().rnd;
@@ -33,8 +33,8 @@ export function Rnd() {
           <div className="mono absolute bottom-4.5 left-5.5 text-on-photo">{m.heroTag}</div>
         </Photo>
         <SecHead eyebrow={m.eyebrow} title={m.title} lead={lines(m.lead)} />
-        <div className="grid grid-cols-2 items-stretch gap-col-gap max-lg:grid-cols-1">
-          <div className="rv grid min-h-90 grid-rows-[auto_1fr_auto] gap-3.5 rounded-card border border-line bg-card p-5.5">
+        <div className="grid grid-cols-2 items-stretch gap-col-gap max-sm:grid-cols-1 spanned:gap-x-hinge-gap">
+          <div className="rv grid min-h-90 grid-rows-[auto_1fr_auto] gap-3.5 self-start rounded-card border border-line bg-card p-5.5 md:self-stretch">
             <div className="mono flex justify-between text-mute"><span>{m.signal.title}</span><span>{m.signal.badge}</span></div>
             <canvas ref={sig} aria-label={m.signal.aria} className="size-full min-h-50" />
             <div className="mono flex flex-wrap justify-between gap-4.5 text-fg-2">
@@ -69,10 +69,10 @@ export function Rnd() {
           </div>
         </div>
 
-        <div data-batch className="mt-stack-md grid grid-cols-3 gap-4.5 max-lg:grid-cols-1 sm:max-lg:grid-cols-2">
+        <div data-batch className="mt-stack-md grid grid-cols-3 gap-4.5 max-md:grid-cols-2 max-sm:grid-cols-1 spanned:grid-cols-2 spanned:gap-x-hinge-gap">
           {ESG.map(({ id, ...e }) => { const c = m.esg[id]; return (
-            <article key={id} className="group rv relative isolate grid min-h-105 sm:max-lg:last:col-span-2 content-end gap-4.5 overflow-hidden rounded-card border border-line p-7 text-on-photo max-lg:min-h-75">
-              <Img src={`assets/img/esg/${e.img}.jpg`} sizes="(max-width: 900px) 100vw, 33vw" className="absolute inset-0 -z-2 size-full object-cover transition-transform duration-1200 ease-out group-hover:scale-106" />
+            <article key={id} className="group rv relative isolate grid min-h-105 content-end gap-4.5 overflow-hidden rounded-card border border-line p-7 text-on-photo max-md:min-h-75 sm:max-md:last:col-span-2 spanned:last:col-span-2">
+              <Img src={`assets/img/esg/${e.img}.jpg`} sizes="(max-width: 599px) 100vw, (max-width: 859px) 50vw, 33vw" className="absolute inset-0 -z-2 size-full object-cover transition-transform duration-1200 ease-out group-hover:scale-106" />
               <div className="absolute inset-0 -z-1 bg-(image:--scrim-card-deep)" />
               <span aria-hidden="true" className="pointer-events-none absolute top-3.5 right-3.5 font-display text-letter leading-letter font-black text-transparent [-webkit-text-stroke:1px_var(--stroke-on-photo)]">{e.letter}</span>
               <h3 className="m-0 grid gap-1 text-title-xs font-semibold"><small className="font-mono text-micro font-medium tracking-label text-on-photo/70">{c.eyebrow}</small>{c.title}</h3>
@@ -99,7 +99,7 @@ export function Rnd() {
                 <div key={copy} aria-hidden={copy > 0 || undefined} className="marquee flex gap-3.5 pr-3.5 [--marquee-duration:var(--duration-marquee-certs)]">
                   {CERTS.map(c => (
                     // my-[1em] mx-10: the spacing these figures always had from the UA's default figure margins
-                    <figure key={c.f} className="group mx-10 my-[1em] grid w-42.5 flex-none gap-2 max-xs:mx-4">
+                    <figure key={c.f} className="group mx-10 my-[1em] grid w-42.5 flex-none gap-2 max-sm:mx-4">
                       <Photo data-wipe src={c.src} sizes="170px" alt={pick(c.t, c.tEn)} className="aspect-248/354 border border-line bg-plate" imgClassName="transition-transform duration-800 ease-out group-hover:scale-104" />
                       <b className="block text-caption leading-caption font-medium">{pick(c.t, c.tEn)}</b>
                       <span className={cn('font-sans text-mono font-medium text-mute', c.k === '수상' && 'text-acc-ink')}>{pick(c.k, CERT_KINDS[c.k])}</span>

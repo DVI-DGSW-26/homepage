@@ -6,6 +6,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { gsap } from 'gsap';
 import { token, withAlpha } from '../lib/tokens';
 import { MAX_LEN, REST_LEN, type ProfileParams } from './meta';
+import { NARROW } from '../lib/env';
 
 const S = 1 / 25;
 const rr = (p: THREE.Path, x: number, y: number, w: number, h: number, r: number) => {
@@ -128,11 +129,12 @@ export function createExtrusion(canvas: HTMLCanvasElement, { reduced = false, fi
 
   let prog = 0, active = true, running = false, last = 0, mx = 0, my = 0, tx = 0, ty = 0, dolly = 0, disposed = false, raf = 0;
   const look = new THREE.Vector3(), tip = new THREE.Vector3();
+  const stack = matchMedia(NARROW);
   const resize = () => {
     const w = canvas.clientWidth || innerWidth, h = canvas.clientHeight || innerHeight;
     renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
-    // stacked layout (the stage above the copy) up to 1100px, the same split as Config.tsx
-    const narrow = w <= 1100; group.position.set(narrow ? -1.2 : -1.1, narrow ? 1.2 : 0.3, 0);
+    // stacked layout (the stage above the copy) wherever Config.tsx stacks it: the `narrow:` variant
+    const stacked = stack.matches; group.position.set(stacked ? -1.2 : -1.1, stacked ? 1.2 : 0.3, 0);
   };
   addEventListener('resize', resize); resize();
   const onPointer = (e: PointerEvent) => { mx = (e.clientX / innerWidth - .5) * 2; my = (e.clientY / innerHeight - .5) * 2; };

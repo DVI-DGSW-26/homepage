@@ -80,11 +80,11 @@ function Catalogue() {
 
   return (
     <div ref={root}>
-      <div data-batch className="grid grid-cols-4 gap-3.5 max-lg:grid-cols-2 max-xs:grid-cols-1">
+      <div data-batch className="grid grid-cols-4 gap-3.5 max-md:grid-cols-2 max-sm:grid-cols-1 spanned:gap-x-hinge">
         {PRODUCTS.map(c => (
           <button key={c.id} type="button" data-on={c.id === catId || undefined} onClick={() => setCatId(c.id)}
-            className="group/cat rv relative isolate aspect-3/4 cursor-pointer overflow-hidden rounded-card border border-line bg-ink text-left text-on-photo max-lg:aspect-4/3 max-xs:aspect-video">
-            <Img src={c.cover} sizes="(max-width: 640px) 100vw, (max-width: 900px) 50vw, 25vw" className="absolute inset-0 size-full object-cover opacity-85 [transition:scale_1.2s_var(--ease-out),opacity_.6s] group-hover/cat:scale-106 group-data-on/cat:scale-106" />
+            className="group/cat rv relative isolate aspect-3/4 cursor-pointer overflow-hidden rounded-card border border-line bg-ink text-left text-on-photo max-md:aspect-4/3 max-sm:aspect-video">
+            <Img src={c.cover} sizes="(max-width: 599px) 100vw, (max-width: 859px) 50vw, 25vw" className="absolute inset-0 size-full object-cover opacity-85 [transition:scale_1.2s_var(--ease-out),opacity_.6s] group-hover/cat:scale-106 group-data-on/cat:scale-106" />
             <div className="absolute inset-0 z-1 bg-(image:--scrim-card)" />
             <div className="absolute inset-0 z-2 flex flex-col justify-between p-5.5">
               <Img className="size-9.5 object-contain" src={c.icon} sizes="38px" />
@@ -103,13 +103,14 @@ function Catalogue() {
         <ul className="m-0 list-none p-0">
           {rows.map(r => (
             <li key={catId + r.name} data-row onPointerEnter={() => mark(r.name)} onPointerLeave={() => mark(null)} onClick={() => reveal(r.name)}
-              // fixed last column: each row is its own grid, so an auto column would shift the others row to row
-              className="group/row relative grid cursor-pointer grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)_7.5rem] items-center gap-5 border-b border-line py-4.5 after:absolute after:inset-x-0 after:-bottom-px after:h-px after:origin-left after:scale-x-0 after:bg-fg after:transition-transform after:duration-600 after:ease-out hover:after:scale-x-100 max-lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)_7.5rem] max-sm:grid-cols-[minmax(0,1fr)_auto]">
+              // fixed last column: each row is its own grid, so an auto column would shift the others row to row.
+              // Spanned: the name on the left-hand screen, the system and the count past the hinge (a gap column)
+              className="group/row relative grid cursor-pointer grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)_7.5rem] items-center gap-5 border-b border-line py-4.5 after:absolute after:inset-x-0 after:-bottom-px after:h-px after:origin-left after:scale-x-0 after:bg-fg after:transition-transform after:duration-600 after:ease-out hover:after:scale-x-100 max-md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)_7.5rem] max-sm:grid-cols-[minmax(0,1fr)_auto] spanned:grid-cols-[calc(50%-var(--spacing-hinge-gap)/2)_var(--spacing-hinge-gap)_minmax(0,1fr)_7.5rem] spanned:gap-x-0">
               <span className="font-display text-subhead-lg leading-none font-extrabold tracking-name uppercase">
                 <Roll text={r.name} />
               </span>
-              <span className="text-body-sm text-fg-2 max-sm:hidden">{m.showSystemEn ? <>{r.sys} <span className="mono ml-1.5 text-mute">{r.sysEn}</span></> : r.sysEn}</span>
-              <span className="flex flex-wrap gap-1.5 max-lg:hidden">{m.tags[catId].map(tag => <span key={tag} className="rounded-full border border-line px-2.25 py-1 font-sans text-caption font-medium tracking-normal text-mute">{tag}</span>)}</span>
+              <span className="text-body-sm text-fg-2 max-sm:hidden spanned:col-start-3">{m.showSystemEn ? <>{r.sys} <span className="mono ml-1.5 text-mute">{r.sysEn}</span></> : r.sysEn}</span>
+              <span className="flex flex-wrap gap-1.5 max-md:hidden spanned:hidden">{m.tags[catId].map(tag => <span key={tag} className="rounded-full border border-line px-2.25 py-1 font-sans text-caption font-medium tracking-normal text-mute">{tag}</span>)}</span>
               <span className="num text-right font-mono text-mono-sm tracking-tag text-mute">{m.photoCount(r.imgs.length)}</span>
             </li>
           ))}
@@ -119,7 +120,7 @@ function Catalogue() {
           {cat.groups.flatMap(g => g.parts.map((p, i) => (
             <figure key={catId + g.en + i} data-name={p.name} className="group/fig m-0 grid w-product-thumb flex-none snap-start gap-2">
               <div data-ph className="relative aspect-335/300 overflow-hidden rounded-card border border-line bg-plate group-data-on/fig:border-acc">
-                <Img src={'assets/img/products/' + p.img} sizes="(max-width: 640px) 50vw, 240px" alt={p.name} className="size-full object-cover transition-transform duration-800 ease-out group-hover/fig:scale-106 group-data-on/fig:scale-106" />
+                <Img src={'assets/img/products/' + p.img} sizes="(max-width: 599px) 50vw, 240px" alt={p.name} className="size-full object-cover transition-transform duration-800 ease-out group-hover/fig:scale-106 group-data-on/fig:scale-106" />
               </div>
               <figcaption className="flex justify-between gap-2.5 text-caption"><b>{p.name}</b><span className="font-mono text-tag tracking-widest text-mute uppercase">{pick(g.ko, g.en)}</span></figcaption>
             </figure>
@@ -141,19 +142,22 @@ export function Statement() {
     ScrollTrigger.create({ trigger: root.current, start: 'top 70%', once: true, onEnter: () => gsap.to(lines, { xPercent: 0, opacity: 1, duration: 1.4, ease: 'power3.out', stagger: .08 }) });
   }, { scope: root });
   const LINE = 'font-display text-statement leading-statement font-black whitespace-nowrap uppercase max-sm:whitespace-normal';
+  // A band about a screen tall, but never much taller than it is wide (an upright tablet would leave most
+  // of it empty) and never shorter than its copy (a phone on its side): the slogan centred in what is left
+  // above the paragraph.
   return (
-    <Section ref={root} id="statement" aria-label={m.label} className="h-[110vh] min-h-160 overflow-hidden bg-ink text-ink-fg">
+    <Section ref={root} id="statement" aria-label={m.label} className="grid h-[min(110svh,90vw)] min-h-fit grid-rows-[1fr_auto] gap-8 overflow-hidden bg-ink py-statement-bottom text-ink-fg">
       <div data-photo className="absolute inset-0 overflow-hidden bg-ink">
         <Img src="assets/img/company/company-bg.jpg" sizes="100vw" className="size-full object-cover opacity-42" />
         <div className="absolute inset-0 bg-(image:--scrim-band)" />
       </div>
-      <div className="absolute inset-0 grid content-center px-gutter" aria-hidden="true">
+      <div className="relative grid content-center px-gutter" aria-hidden="true">
         {/* outline, accent and plain, the middle line set to the right */}
         <div data-line className={cn(LINE, 'text-transparent [-webkit-text-stroke:1.5px_var(--stroke-on-ink)]')}>{m.lines[0]}</div>
         <div data-line className={cn(LINE, 'text-right text-ink-acc')}>{m.lines[1]}</div>
         <div data-line className={LINE}>{m.lines[2]}</div>
       </div>
-      <p className="absolute bottom-statement-bottom left-gutter m-0 max-w-measure text-ink-fg-2">{lines(m.body)}</p>
+      <p className="relative mx-gutter my-0 max-w-measure text-ink-fg-2">{lines(m.body)}</p>
     </Section>
   );
 }

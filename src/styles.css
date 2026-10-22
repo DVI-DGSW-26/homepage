@@ -17,8 +17,21 @@
 @custom-variant light (&:where([data-mode="light"] *));
 /* until the hero entrance starts (html[data-ready] is set by src/components/Hero.tsx) */
 @custom-variant booting (&:where(html:not([data-ready]) *));
+/* ---- screen shape and posture (the widths are the breakpoints in token.css; keep src/lib/env.ts in step) ----
+   narrow: one column, a phone or any tablet held upright; wide: everything else (the exact complement) */
+@custom-variant narrow { @media (width < 600px), (width < 1200px) and (orientation: portrait) { @slot; } }
+@custom-variant wide { @media (width >= 1200px), (width >= 600px) and (orientation: landscape) { @slot; } }
+/* a phone on its side: too low for anything sized to the height of the screen */
+@custom-variant low (@media (orientation: landscape) and (max-height: 540px));
+/* tall enough for a panel that sticks beside a list */
+@custom-variant tall (@media (min-height: 700px));
 /* short screens (a landscape laptop with the browser chrome showing): the profile lab drops its long copy */
 @custom-variant short (@media (max-height: 780px));
+/* a dual-screen device spanned side by side (Surface Duo, a foldable reporting its fold): a hinge runs
+   down the middle, so two-column blocks put one column on each screen (hinge-cols) */
+@custom-variant spanned (@media (horizontal-viewport-segments: 2));
+/* ...spanned one screen above the other: the hinge runs across the middle */
+@custom-variant spanned-y (@media (vertical-viewport-segments: 2));
 
 @layer base {
   /* the dark half of the page background; the light half crossfades over it (animation.css) */
@@ -47,6 +60,8 @@
 @utility mono { font-family: var(--font-mono); font-size: var(--text-mono); letter-spacing: var(--tracking-widest); text-transform: uppercase; font-weight: 500 }
 @utility disp { font-family: var(--font-display); font-weight: 800; text-transform: uppercase; line-height: var(--leading-display); letter-spacing: var(--tracking-display); text-wrap: balance }
 @utility num { font-variant-numeric: tabular-nums }
+/* two equal columns either side of a spanned device's hinge (the wrap column is centred, so the gap lands on it) */
+@utility hinge-cols { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--spacing-hinge-gap) }
 @utility text-stroke { color: transparent; -webkit-text-stroke: 1px var(--fg-2) }
 /* liquid glass: a frosted pane over a scene, with a sheen across one corner and a lit top edge */
 @utility glass {

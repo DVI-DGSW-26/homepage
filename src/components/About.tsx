@@ -37,7 +37,7 @@ export function About() {
   return (
     <Section ref={root} id="about" className={cn(SEC, 'pt-about-top')}>
       <div className="wrap">
-        <div className="flex items-center justify-between gap-5 max-xs:flex-col max-xs:items-start max-xs:gap-2"><Eyebrow className="rv">{m.eyebrow}</Eyebrow><span className="mono rv text-mute">{m.aside}</span></div>
+        <div className="flex items-center justify-between gap-5 max-sm:flex-col max-sm:items-start max-sm:gap-2"><Eyebrow className="rv">{m.eyebrow}</Eyebrow><span className="mono rv text-mute">{m.aside}</span></div>
         <Manifesto />
       </div>
 
@@ -77,7 +77,7 @@ function Manifesto() {
     return () => { alive = false; };
   }, { scope: ref, dependencies: [lang], revertOnUpdate: true });
   return (
-    <p key={lang} ref={ref} className="mt-manifesto-top max-w-manifesto text-manifesto leading-manifesto font-medium tracking-heading text-pretty break-keep">
+    <p key={lang} ref={ref} className="mt-manifesto-top max-w-manifesto text-manifesto leading-manifesto font-medium tracking-heading text-pretty break-keep spanned:max-w-none spanned:columns-2 spanned:gap-hinge-gap">
       {rich(text, { k: chunk => <K>{chunk}</K> })}
     </p>
   );
@@ -86,30 +86,30 @@ function Manifesto() {
 function Cine() {
   const m = useT().about.frame;
   // everything is set on the photo: the heading at the top, the caption and the figures at the bottom.
-  // The frame grows with its copy, so on a phone the two blocks stack instead of overlapping.
+  // The frame grows with its copy, so below 860px the two blocks stack instead of overlapping.
   return (
-    <div className="mt-frame-top max-lg:mt-12">
-      <div data-wipe className="pad-wrap relative isolate flex min-h-[72svh] w-full flex-col justify-between gap-14 overflow-hidden rounded-card bg-ink py-frame-pad text-on-photo max-lg:min-h-[60svh] max-lg:gap-10 max-lg:rounded-none">
+    <div className="mt-frame-top max-md:mt-12">
+      <div data-wipe className="pad-wrap relative isolate flex min-h-[72svh] w-full flex-col justify-between gap-14 overflow-hidden rounded-card bg-ink py-frame-pad text-on-photo max-md:min-h-[60svh] max-md:gap-10 max-md:rounded-none">
         {/* a backdrop, not a picture to take: it can't be dragged out, and presses go through it to the frame */}
         <Img src="assets/img/company/company.jpg" sizes="100vw" alt={m.alt} draggable={false}
           className="pointer-events-none absolute inset-0 -z-2 size-full object-cover object-[center_62%] select-none" />
         {/* dark at the top and the bottom where the copy sits, clear through the middle */}
-        <div className="pointer-events-none absolute inset-0 -z-1 bg-(image:--scrim-frame) max-lg:bg-(image:--scrim-frame-narrow)" />
-        <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] items-end gap-x-col-gap gap-y-5 max-lg:grid-cols-1">
+        <div className="pointer-events-none absolute inset-0 -z-1 bg-(image:--scrim-frame) max-md:bg-(image:--scrim-frame-narrow)" />
+        <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] items-end gap-x-col-gap gap-y-5 max-md:grid-cols-1 spanned:hinge-cols">
           <div className="rv grid gap-3.5">
             <span className="mono text-on-photo/70">{m.label}</span>
             <b className="disp text-frame">{m.title}</b>
           </div>
           <p className="rv m-0 max-w-measure text-on-photo/85">{lines(m.body)}</p>
         </div>
-        {/* caption left, figures right; up to 1100px the figures go under the caption, two a row */}
-        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-x-12 gap-y-7 max-3xl:grid-cols-1">
+        {/* caption left, figures right; below 1200px the figures go under the caption, two a row (one on a phone) */}
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-x-12 gap-y-7 max-lg:grid-cols-1 spanned:hinge-cols">
           <div className="grid max-w-160 gap-1.5">
             <span className="mono text-on-photo/70">{m.tagEyebrow}</span>
             <b className="font-display text-subhead leading-none font-extrabold uppercase">{lines(m.tagTitle)}</b>
             <small className="text-small text-on-photo/75">{lines(m.tagBody)}</small>
           </div>
-          <ul className="mono m-0 grid list-none gap-2 p-0 text-right text-on-photo/80 max-3xl:grid-cols-2 max-3xl:gap-x-8 max-3xl:text-left max-xs:grid-cols-1">
+          <ul className="mono m-0 grid list-none gap-2 p-0 text-right text-on-photo/80 max-lg:grid-cols-2 max-lg:gap-x-8 max-lg:text-left max-sm:grid-cols-1">
             {m.ledger.map((l, i) => (
               <li key={i}><b className="num mr-2.5 font-display text-ledger font-extrabold tracking-normal text-on-photo">{l.value}</b>{l.label}</li>
             ))}
@@ -125,15 +125,15 @@ function Years() {
   return (
     <div className="mt-stack grid gap-4.5">
       <IndexHead title={m.title} aside={m.range} />
-      <div data-years className="relative grid grid-cols-6 pt-6.5 before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-line max-lg:grid-cols-2 max-lg:gap-x-5 max-lg:gap-y-7">
-        <i data-years-rail className="absolute inset-x-0 top-0 h-px origin-left bg-linear-to-r/srgb from-fg to-acc [transform:scaleX(0)] max-lg:hidden" />
-        <i data-years-dot className="absolute -top-[3.5px] -left-1 size-2 rounded-full bg-acc will-change-transform max-lg:hidden" />
+      <div data-years className="relative grid grid-cols-6 pt-6.5 before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-line max-md:grid-cols-3 max-md:gap-x-5 max-md:gap-y-7 max-sm:grid-cols-2 spanned:gap-x-hinge">
+        <i data-years-rail className="absolute inset-x-0 top-0 h-px origin-left bg-linear-to-r/srgb from-fg to-acc [transform:scaleX(0)] max-md:hidden" />
+        <i data-years-dot className="absolute -top-[3.5px] -left-1 size-2 rounded-full bg-acc will-change-transform max-md:hidden" />
         {ABOUT_YEARS.map(y => (
           <div key={y.y} data-y className="group/y grid content-start gap-2.5 pr-5">
             <div className="overflow-hidden">
-              <div className={cn('num translate-y-[105%] font-display text-year leading-display font-extrabold transition-transform duration-700 ease-out group-data-on/y:translate-y-0 max-lg:translate-y-0 motion-reduce:translate-y-0', y.h && 'text-acc-ink')}>{y.y}</div>
+              <div className={cn('num translate-y-[105%] font-display text-year leading-display font-extrabold transition-transform duration-700 ease-out group-data-on/y:translate-y-0 max-md:translate-y-0 motion-reduce:translate-y-0', y.h && 'text-acc-ink')}>{y.y}</div>
             </div>
-            <p className="m-0 text-body-sm text-fg-2 opacity-0 transition-opacity delay-150 duration-600 group-data-on/y:opacity-100 max-lg:opacity-100 motion-reduce:opacity-100">{pick(y.t, y.tEn)}</p>
+            <p className="m-0 text-body-sm text-fg-2 opacity-0 transition-opacity delay-150 duration-600 group-data-on/y:opacity-100 max-md:opacity-100 motion-reduce:opacity-100">{pick(y.t, y.tEn)}</p>
           </div>
         ))}
       </div>
@@ -153,7 +153,7 @@ function Pledge() {
   return (
     <div data-batch className="mt-stack grid gap-5.5">
       <IndexHead className="rv" title={m.title} aside={m.aside} />
-      <div className="grid grid-cols-2 gap-col-gap border-t border-line-2 pt-7 max-lg:grid-cols-1">
+      <div className="grid grid-cols-2 gap-col-gap border-t border-line-2 pt-7 max-sm:grid-cols-1 spanned:gap-x-hinge-gap">
         <div>
           <h3 className={PROMISE_H3}>{m.customer.title} <span className={PROMISE_SUB}>{m.customer.sub}</span></h3>
           <ul className="m-0 grid list-none gap-2.5 p-0">{m.customer.items.map(x => <PromiseItem key={x}>{x}</PromiseItem>)}</ul>
@@ -197,11 +197,12 @@ function Projects() {
   return (
     <div data-batch className="mt-stack grid gap-4.5">
       <IndexHead className="rv" title={m.title} aside={m.count(PROJECTS.length)} />
-      {/* one full-width row each: number and status on the left, the programme and the work on the right */}
-      <div className="grid gap-3">
+      {/* one full-width row each: number and status on the left, the programme and the work on the right
+          (spanned, two columns of cards, one per screen) */}
+      <div className="grid gap-3 spanned:grid-cols-2 spanned:gap-x-hinge-gap">
         {PROJECTS.map((p, i) => (
-          <article key={p.program} className="rv grid grid-cols-[12rem_minmax(0,1fr)] items-start gap-x-col-gap gap-y-3 rounded-card border border-line bg-card px-7 py-6.5 transition-[border-color] duration-400 hover:border-line-2 max-md:grid-cols-1 max-xs:p-5">
-            <div className="mono flex flex-col gap-2 text-mute max-md:flex-row max-md:items-center max-md:justify-between">
+          <article key={p.program} className="rv grid grid-cols-[12rem_minmax(0,1fr)] items-start gap-x-col-gap gap-y-3 rounded-card border border-line bg-card px-7 py-6.5 transition-[border-color] duration-400 hover:border-line-2 max-sm:grid-cols-1 max-sm:p-5 spanned:grid-cols-1">
+            <div className="mono flex flex-col gap-2 text-mute max-sm:flex-row max-sm:items-center max-sm:justify-between spanned:flex-row spanned:items-center spanned:justify-between">
               <span>{m.item(i + 1)}</span>
               <span className="flex items-center gap-2 font-sans text-caption font-medium tracking-normal text-acc-ink normal-case"><i aria-hidden="true" className="size-1.5 rounded-full bg-acc" />{m.status}</span>
             </div>
@@ -216,7 +217,9 @@ function Projects() {
   );
 }
 
-const STEM = 'block h-5.5 w-px origin-top bg-line-2 [transform:scaleY(0)] max-lg:hidden';
+// the connectors are drawn only for the six-across tree (860px up, not spanned: its root would sit on the hinge)
+const NO_TREE = 'max-md:hidden spanned:hidden';
+const STEM = cn('block h-5.5 w-px origin-top bg-line-2 [transform:scaleY(0)]', NO_TREE);
 
 /** organisation chart: an HTML tree that draws its connectors when it scrolls in */
 function OrgChart() {
@@ -268,14 +271,14 @@ function OrgChart() {
       </summary>
       <div ref={body} className="grid grid-rows-[0fr] transition-[grid-template-rows] duration-600 ease-out group-open/org:grid-rows-[1fr] motion-reduce:transition-none">
         <div className="overflow-hidden">
-          <div data-org-tree className="relative grid grid-cols-6 gap-3.5 pt-7 max-lg:grid-cols-2">
-            <div data-org-root className="relative col-[3/5] self-center justify-self-center rounded-full border border-line-2 px-7 py-3.5 font-semibold max-lg:col-span-full">
+          <div data-org-tree className="relative grid grid-cols-6 gap-3.5 pt-7 max-md:grid-cols-3 max-sm:grid-cols-2 spanned:grid-cols-2 spanned:gap-x-hinge-gap">
+            <div data-org-root className="relative col-[3/5] self-center justify-self-center rounded-full border border-line-2 px-7 py-3.5 font-semibold max-md:col-span-full spanned:col-span-full spanned:justify-self-start">
               {pick(ORG.root, ORG.rootEn)}<i data-stem className={cn(STEM, 'absolute top-full left-1/2 h-7')} />
             </div>
-            <div data-staff className="relative col-start-6 self-center rounded-card border border-dashed border-line-2 px-4.5 py-3 text-fg-2 max-lg:col-span-full max-lg:justify-self-start">
-              <i data-branch className="absolute top-1/2 right-full h-px w-10 origin-right border-t border-dashed border-line-2 [transform:scaleX(0)] max-lg:hidden" />{pick(ORG.staff, ORG.staffEn)}
+            <div data-staff className="relative col-start-6 self-center rounded-card border border-dashed border-line-2 px-4.5 py-3 text-fg-2 max-md:col-span-full max-md:justify-self-start spanned:col-span-full spanned:justify-self-start">
+              <i data-branch className="absolute top-1/2 right-full h-px w-10 origin-right border-t border-dashed border-line-2 [transform:scaleX(0)] max-md:hidden spanned:hidden" />{pick(ORG.staff, ORG.staffEn)}
             </div>
-            <i data-bus className="col-span-full h-px origin-center bg-line-2 [transform:scaleX(0)] max-lg:hidden" />
+            <i data-bus className={cn('col-span-full h-px origin-center bg-line-2 [transform:scaleX(0)]', NO_TREE)} />
             {ORG.teams.map((team, i) => (
               <article key={team.n} data-team className="relative grid content-start gap-2 rounded-card border border-line bg-card p-4.5">
                 <i data-stem className={cn(STEM, 'absolute bottom-full left-1/2 m-0')} />

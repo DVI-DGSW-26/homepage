@@ -18,7 +18,9 @@ export const en: Messages = {
     links: { about: 'About', rnd: 'R&D', product: 'Product', config: 'Technology', events: 'Events', community: 'Community' },
     langs: { ko: 'KOR', en: 'ENG' },
     theme: { toLight: 'Switch to light mode', toDark: 'Switch to dark mode' },
-    contact: 'Contact us'
+    contact: 'Contact us',
+    open: 'Open menu',
+    close: 'Close menu'
   },
 
   hero: {
@@ -104,7 +106,9 @@ export const en: Messages = {
     label: 'Manufacturing process',
     eyebrow: 'Technology — Manufacturing process',
     hint: 'Scroll over the cards to move along',
+    hintTouch: 'Swipe the cards to move along',
     photoHint: 'Hover: photo',
+    photoHintTouch: 'Tap: photo',
     step: (n: number) => `Step ${pad2(n)}`,
     middle: 'DVISION, Daegu'
   },

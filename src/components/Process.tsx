@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { gsap, useGSAP } from '../lib/gsap';
-import { DESKTOP, REDUCED, clamp, pad2 } from '../lib/env';
+import { FINE, REDUCED, SM, clamp, pad2 } from '../lib/env';
 import { pick, useT } from '../i18n';
 import { PROCESSES, type Process as Proc } from '../data';
 import { Eyebrow, H2, SEC, Section, cn } from './ui';
@@ -10,9 +10,11 @@ const PROCESS_IMG = 'assets/img/process/';
 const HEAT = { hot: 'text-acc', warm: 'text-acc-2', cool: 'text-fg' } as const;
 
 /**
- * Three process tracks behind tabs. On desktop the active track is a sideways strip: scrolling the
+ * Three process tracks behind tabs. From 600px the active track is a sideways strip: scrolling the
  * wheel with the pointer over it moves it along, and once it reaches an end the page scrolls on.
- * Trackpad swipes, the keyboard and touch use the strip's own native scrolling.
+ * Trackpad swipes, the keyboard and touch use the strip's own native scrolling (on a touch screen
+ * the cards snap). On a phone the cards stack. A card with a second photo shows it on hover, or on
+ * a tap where there is no hover.
  */
 export function Process() {
   const m = useT().process;
@@ -24,7 +26,7 @@ export function Process() {
   // vertical wheel over the strip -> horizontal travel, eased; the progress bar follows the strip
   useEffect(() => {
     const el = tracks.current[procId]; if (!el) return;
-    const desktop = matchMedia(DESKTOP);
+    const strip = matchMedia(SM);
     let target = el.scrollLeft, raf = 0;
     const max = () => el.scrollWidth - el.clientWidth;
     const paint = () => { const m = max(); bar.current!.style.transform = `scaleX(${m > 0 ? el.scrollLeft / m : 0})`; };
@@ -34,7 +36,7 @@ export function Process() {
       el.scrollLeft += d * .2; raf = requestAnimationFrame(glide);
     };
     const onWheel = (e: WheelEvent) => {
-      if (!desktop.matches || e.ctrlKey || Math.abs(e.deltaX) >= Math.abs(e.deltaY)) return;
+      if (!strip.matches || e.ctrlKey || Math.abs(e.deltaX) >= Math.abs(e.deltaY)) return;
       const dy = e.deltaY * (e.deltaMode === 1 ? 40 : e.deltaMode === 2 ? el.clientWidth : 1), m = max();
       if (!raf) target = el.scrollLeft;
       if ((dy > 0 && target >= m - 1) || (dy < 0 && target <= 1)) return;   // at an end: the page scrolls on
@@ -74,22 +76,23 @@ export function Process() {
                 </button>
               ))}
             </div>
-            <span className="mono text-mute max-lg:hidden">{m.hint}</span>
+            <span className="mono text-mute max-sm:hidden">{FINE ? m.hint : m.hintTouch}</span>
           </div>
         </div>
         <div>
           {PROCESSES.map(p => (
             <div key={p.id} ref={el => { tracks.current[p.id] = el; }} data-track data-on={p.id === procId || undefined}
               tabIndex={p.id === procId ? 0 : -1} aria-label={pick(p.ko, p.en)}
-              className="hidden gap-4.5 pr-gutter pl-[max(var(--spacing-gutter),calc((100vw-var(--container-page))/2))] [scrollbar-width:none] focus-visible:-outline-offset-2 data-on:flex lg:overflow-x-auto lg:overscroll-x-contain [&::-webkit-scrollbar]:hidden max-lg:flex-col max-lg:px-gutter">
+              className="hidden gap-4.5 pr-gutter pl-[max(var(--spacing-gutter),calc((100vw-var(--container-page))/2))] [scrollbar-width:none] focus-visible:-outline-offset-2 data-on:flex sm:overflow-x-auto sm:overscroll-x-contain sm:pointer-coarse:snap-x sm:pointer-coarse:snap-mandatory sm:pointer-coarse:scroll-pl-[max(var(--spacing-gutter),calc((100vw-var(--container-page))/2))] [&::-webkit-scrollbar]:hidden max-sm:flex-col max-sm:px-gutter">
               {p.steps.map((s, i) => (
-                <article key={s.ko} data-step className="group/step relative grid w-process-card flex-none grid-rows-[auto_1fr] overflow-hidden rounded-md border border-line bg-card transition-[border-color] duration-400 hover:border-line-2 max-lg:w-full">
+                <article key={s.ko} data-step onClick={!FINE && s.imgs.length > 1 ? e => e.currentTarget.toggleAttribute('data-flip') : undefined}
+                  className="group/step relative grid w-process-card flex-none snap-start grid-rows-[auto_1fr] overflow-hidden rounded-md border border-line bg-card transition-[border-color] duration-400 hover:border-line-2 max-sm:w-full">
                   <div data-wipe className="relative aspect-505/350 overflow-hidden bg-bg-2">
                     {s.imgs.map((im, k) => (
-                      <Img key={im} src={PROCESS_IMG + im} sizes="(max-width: 900px) 85vw, 400px" alt={`${pick(s.ko, s.koEn)} ${k + 1}`}
-                        className={cn('absolute inset-0 size-full object-cover transition-opacity duration-600', k > 0 && 'opacity-0 group-hover/step:opacity-100')} />
+                      <Img key={im} src={PROCESS_IMG + im} sizes="(max-width: 599px) 100vw, 400px" alt={`${pick(s.ko, s.koEn)} ${k + 1}`}
+                        className={cn('absolute inset-0 size-full object-cover transition-opacity duration-600', k > 0 && 'opacity-0 group-hover/step:opacity-100 group-data-flip/step:opacity-100')} />
                     ))}
-                    {s.imgs.length > 1 && <span className="absolute right-2.5 bottom-2 font-mono text-micro tracking-widest text-on-photo uppercase opacity-80 text-shadow-photo-sm">{m.photoHint}</span>}
+                    {s.imgs.length > 1 && <span className="absolute right-2.5 bottom-2 font-mono text-micro tracking-widest text-on-photo uppercase opacity-80 text-shadow-photo-sm">{FINE ? m.photoHint : m.photoHintTouch}</span>}
                   </div>
                   <div className="grid grid-cols-[1fr_auto] content-start gap-x-3.5 gap-y-2 px-5 pt-4.5 pb-5">
                     <div className="mono col-span-full flex justify-between text-mute"><span>{m.step(i + 1)}</span><em className={cn('not-italic', (s.heat === 'hot' || s.heat === 'warm') && HEAT[s.heat])}>{s.en}</em></div>
@@ -103,8 +106,8 @@ export function Process() {
           ))}
         </div>
         <div className="wrap">
-          <div className="relative h-0.5 bg-line max-lg:hidden"><i ref={bar} className="absolute inset-0 origin-left bg-linear-to-r/srgb from-fg-2 to-acc [transform:scaleX(0)]" /></div>
-          <div className="mono flex justify-between gap-5 text-mute max-lg:hidden"><span>{proc.foot[0]}</span><span>{m.middle}</span><span>{proc.foot[1]}</span></div>
+          <div className="relative h-0.5 bg-line max-sm:hidden"><i ref={bar} className="absolute inset-0 origin-left bg-linear-to-r/srgb from-fg-2 to-acc [transform:scaleX(0)]" /></div>
+          <div className="mono flex justify-between gap-5 text-mute max-sm:hidden"><span>{proc.foot[0]}</span><span>{m.middle}</span><span>{proc.foot[1]}</span></div>
         </div>
       </div>
     </Section>

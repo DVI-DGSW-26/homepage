@@ -20,7 +20,9 @@ const fitWall = (p: ProfileParams): ProfileParams => {
   const maxWall = Math.min((p.w - 8 * p.cells) / (p.cells + 1), (p.h - 6) / 2);
   return p.wall > maxWall ? { ...p, wall: Math.max(1.5, Math.floor(maxWall * 2) / 2) } : p;
 };
-const HIDE_SHORT = 'short:hidden';
+// on a short screen the glass pane drops its long copy so it fits; stacked, the copy just runs on
+const HIDE_SHORT = 'wide:short:hidden';
+const GROUP = 'contents sm:narrow:grid sm:narrow:content-start sm:narrow:gap-3.5';
 
 /** Profile lab: tune a multi-hollow section and read its weight. */
 export function Config() {
@@ -46,7 +48,7 @@ export function Config() {
     let wait = 0, idleId = 0;
     const later = () => { wait = window.setTimeout(() => { idleId = typeof requestIdleCallback === 'function' ? requestIdleCallback(() => { build(); }, { timeout: 4000 }) : window.setTimeout(build, 0); }, 2500); };
     if (document.readyState === 'complete') later(); else addEventListener('load', later, { once: true });
-    if (!REDUCED) gsap.from('[data-copy] > *', { x: -30, opacity: 0, duration: .9, stagger: .07, ease: 'power3.out', scrollTrigger: { trigger: root.current, start: 'top 70%', once: true } });
+    if (!REDUCED) gsap.from('[data-copy] > * > *', { x: -30, opacity: 0, duration: .9, stagger: .07, ease: 'power3.out', scrollTrigger: { trigger: root.current, start: 'top 70%', once: true } });
     ScrollTrigger.create({ trigger: root.current, start: 'top bottom', end: 'bottom top', onToggle: s => { active = s.isActive; if (active) build(); EXT?.setActive(active); } });
     // the profile stays at its resting run-out: the section is one screen, not a scroll-driven press
     return () => { alive = false; unTheme(); clearTimeout(wait); removeEventListener('load', later); if (typeof cancelIdleCallback === 'function') cancelIdleCallback(idleId); EXT?.destroy(); ext.current = null; };
@@ -61,36 +63,43 @@ export function Config() {
   ];
   return (
     <Section ref={root} id="config" aria-label={t.label}>
-      <div className="grid min-h-svh grid-cols-[minmax(360px,1fr)_1.4fr] items-center gap-config-gap overflow-hidden pt-config-top pb-config-bottom max-3xl:min-h-0 max-3xl:grid-cols-1 max-3xl:overflow-visible max-3xl:pt-config-top-narrow max-3xl:pb-10">
-        {/* up to 1100px the stage stacks above the copy, and the scene keeps to it instead of sitting under the copy;
-            wider, the copy floats on a glass pane and the press shows through it, frosted */}
-        <canvas ref={canvas} aria-hidden="true" className="absolute inset-0 z-0 size-full max-3xl:bottom-auto max-3xl:h-[calc(var(--spacing-config-stage)+var(--spacing-config-top-narrow))]" />
-        <div data-copy className="relative z-2 grid max-w-150 content-center gap-3.5 px-gutter max-3xl:max-w-none 3xl:ml-gutter 3xl:glass 3xl:rounded-glass 3xl:px-7 3xl:py-6">
-          <Eyebrow>{t.eyebrow}</Eyebrow>
-          <H2 className="text-h2-sm">{t.title}</H2>
-          <Lead className={cn('text-body-sm leading-copy', HIDE_SHORT)}>{lines(t.lead)}</Lead>
-          <div className="grid gap-2 border-t border-line-2 pt-3">
-            {CTRLS.map(c => (
-              <div key={c.k} className="grid grid-cols-[1fr_auto] items-center gap-x-3.5 gap-y-0.5">
-                <label htmlFor={'cfg-' + c.k} className="text-small text-fg-2">{t.controls[c.k]}</label>
-                <output htmlFor={'cfg-' + c.k} className="font-mono text-label tracking-mono-sm text-fg">{c.show(params[c.k])}</output>
-                <input id={'cfg-' + c.k} className="range col-span-full" type="range" min={c.min} max={c.max} step={c.step} value={params[c.k]}
-                  onChange={e => { const v = +e.target.value; setParams(p => fitWall({ ...p, [c.k]: v })); }} />
-              </div>
-            ))}
+      <div className="grid min-h-svh grid-cols-[minmax(360px,1fr)_1.4fr] items-center gap-config-gap overflow-hidden pt-config-top pb-config-bottom narrow:min-h-0 narrow:grid-cols-1 narrow:overflow-visible narrow:pt-config-top-narrow narrow:pb-10">
+        {/* One column (`narrow:` a phone, or a tablet held upright): the stage stacks above the copy, and the
+            scene keeps to it instead of sitting under the copy. Otherwise (a landscape screen from 600px)
+            the copy floats on a glass pane and the press shows through it, frosted. */}
+        <canvas ref={canvas} aria-hidden="true" className="absolute inset-0 z-0 size-full narrow:bottom-auto narrow:h-[calc(var(--spacing-config-stage)+var(--spacing-config-top-narrow))]" />
+        {/* the copy in two groups: one run on the glass pane (the groups are display: contents), or side by side
+            under the stage on an upright tablet so the sliders don't stretch across it */}
+        <div data-copy className="relative z-2 grid max-w-150 content-center gap-3.5 px-gutter narrow:max-w-none sm:narrow:grid-cols-2 sm:narrow:items-start sm:narrow:gap-x-col-gap wide:ml-gutter wide:glass wide:rounded-glass wide:px-7 wide:py-6">
+          <div className={GROUP}>
+            <Eyebrow>{t.eyebrow}</Eyebrow>
+            <H2 className="text-h2-sm">{t.title}</H2>
+            <Lead className={cn('text-body-sm leading-copy', HIDE_SHORT)}>{lines(t.lead)}</Lead>
           </div>
-          <div className="grid grid-cols-2 overflow-hidden rounded-card border border-line bg-card 3xl:bg-card/45">
-            {out.map((o, i) => (
-              <div key={o.label} className={cn('grid gap-0.5 border-line px-3.5 py-2.5', i % 2 === 0 && 'border-r', i < 2 && 'border-b')}>
-                <span className="font-mono text-micro tracking-widest text-mute uppercase">{o.label}</span>
-                <b className={cn('num flex items-baseline gap-1.25 font-display text-figure-sm leading-none font-extrabold', o.acc && 'text-acc-2')}>{o.v}<small className="text-unit-lg font-bold text-fg-2">{o.u}</small></b>
-              </div>
-            ))}
+          <div className={GROUP}>
+            <div className="grid gap-2 border-t border-line-2 pt-3">
+              {CTRLS.map(c => (
+                <div key={c.k} className="grid grid-cols-[1fr_auto] items-center gap-x-3.5 gap-y-0.5">
+                  <label htmlFor={'cfg-' + c.k} className="text-small text-fg-2">{t.controls[c.k]}</label>
+                  <output htmlFor={'cfg-' + c.k} className="font-mono text-label tracking-mono-sm text-fg">{c.show(params[c.k])}</output>
+                  <input id={'cfg-' + c.k} className="range col-span-full" type="range" min={c.min} max={c.max} step={c.step} value={params[c.k]}
+                    onChange={e => { const v = +e.target.value; setParams(p => fitWall({ ...p, [c.k]: v })); }} />
+                </div>
+              ))}
+            </div>
+            <div className="grid grid-cols-2 overflow-hidden rounded-card border border-line bg-card wide:bg-card/45">
+              {out.map((o, i) => (
+                <div key={o.label} className={cn('grid gap-0.5 border-line px-3.5 py-2.5', i % 2 === 0 && 'border-r', i < 2 && 'border-b')}>
+                  <span className="font-mono text-micro tracking-widest text-mute uppercase">{o.label}</span>
+                  <b className={cn('num flex items-baseline gap-1.25 font-display text-figure-sm leading-none font-extrabold', o.acc && 'text-acc-2')}>{o.v}<small className="text-unit-lg font-bold text-fg-2">{o.u}</small></b>
+                </div>
+              ))}
+            </div>
+            <p className={cn('m-0 text-label leading-normal text-mute', HIDE_SHORT)}>{lines(t.note)}</p>
           </div>
-          <p className={cn('m-0 text-label leading-normal text-mute', HIDE_SHORT)}>{lines(t.note)}</p>
         </div>
-        <div className="pointer-events-none relative h-full min-h-105 max-3xl:-order-1 max-3xl:h-config-stage max-3xl:min-h-90">
-          <div className="mono pointer-events-auto absolute right-gutter bottom-0 z-2 grid min-w-50 gap-2 text-fg-2 max-3xl:bottom-3">
+        <div className="pointer-events-none relative h-full min-h-105 narrow:-order-1 narrow:h-config-stage narrow:min-h-0">
+          <div className="mono pointer-events-auto absolute right-gutter bottom-0 z-2 grid min-w-50 gap-2 text-fg-2 narrow:bottom-3">
             <HudRow label={t.hud.runOut}><span className="num">{REST_LEN.toFixed(1)} m</span></HudRow>
             <HudRow label={t.hud.die}>{t.hud.dieValue}</HudRow>
           </div>

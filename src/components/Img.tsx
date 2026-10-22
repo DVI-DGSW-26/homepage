@@ -24,7 +24,7 @@ const srcSet = (src: string, m: Meta, fmt: string) => m.ws.map(w => `${variant(s
 
 export type ImgProps = Omit<ComponentProps<'img'>, 'src' | 'srcSet' | 'width' | 'height'> & {
   src: string;
-  /** how wide the image is drawn, as for <img sizes>: '100vw' (the default), '(max-width: 900px) 50vw, 25vw', '170px' */
+  /** how wide the image is drawn, as for <img sizes>: '100vw' (the default), '(max-width: 859px) 50vw, 25vw', '170px' */
   sizes?: string;
   /** above the fold: load now, at high priority */
   priority?: boolean;

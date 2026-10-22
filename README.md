@@ -37,7 +37,7 @@ pnpm coast      # 지도 해안선 데이터 다시 만들기 (결과는 커밋�
 | `src/main.tsx` | 영문 meta 적용 후 `<App>` 렌더 |
 | `src/App.tsx` | 섹션 배치, 앵커 스크롤, 페이지 전역 스크롤 연출 시작 |
 | `src/token.css` | 모든 디자인 값: 브레이크포인트, 서체, 글자 크기·자간·행간, 유동 간격, 측정폭, 모서리, 이징, 그림자, 색(고정 / 모드별), 사진 스크림, WebGL·캔버스·메달 색, 모션 시간 |
-| `src/styles.css` | Tailwind 진입점. 변형(`light:`, `booting:`, `short:`), 기본 요소 스타일, 공용 유틸리티, 유틸리티로 표현할 수 없는 것(슬라이더 thumb, 히어로 제목을 쪼갠 글자 노드) |
+| `src/styles.css` | Tailwind 진입점. 변형(`light:`, `booting:`, 화면 모양·자세 `narrow:` `wide:` `low:` `tall:` `short:` `spanned:` `spanned-y:`), 기본 요소 스타일, 공용 유틸리티, 유틸리티로 표현할 수 없는 것(슬라이더 thumb, 히어로 제목을 쪼갠 글자 노드) |
 | `src/animation.css` | CSS 로 움직이는 것 전부: keyframes, 마키(`.marquee`), 스크롤 큐, 테마 크로스페이드, 헤더 바 ↔ 알약 전환, 각각의 reduced-motion 처리 |
 | `src/components/Img.tsx` | 모든 사진·로고를 그리는 `<Img>` (next/image 대응: AVIF/WebP srcset, 고유 크기, 지연 로딩, 플레이스홀더, `priority`) |
 | `scripts/images.mjs` | 빌드 전 이미지 변환: `public/assets/opt/` 에 폭별 AVIF/WebP, `src/generated/images.json` 에 목록(둘 다 생성물, git 제외) |
@@ -84,8 +84,10 @@ pnpm coast      # 지도 해안선 데이터 다시 만들기 (결과는 커밋�
 - **v4 문법**: 비율 `aspect-800/216`, 시간 `duration-450`, 크기 `scale-106`, 투명도 `opacity-34`, 필터 `brightness-230`, 자식 `*:col-span-full`, 그라디언트 `bg-linear-to-r/srgb from-fg to-acc`(원래처럼 sRGB 보간), CSS 변수 `px-(--x)` / `bg-(image:--x)`. GSAP 이 transform 을 쓰는 요소의 초기값만 `[transform:...]` 로 둡니다(아래 "애니메이션 규칙").
 - 서체: Big Shoulders Display (`font-display`), IBM Plex Sans KR (`font-sans`, 본문), IBM Plex Mono (`font-mono`, 수치).
 - 공용 유틸리티: `wrap`(본문 폭), `pad-wrap`(전폭 블록의 내용을 `wrap` 열에 맞추는 좌우 패딩 — 헤더 바, Frame 01), `mono`, `disp`, `num`(tabular 숫자), `text-stroke`.
-- 브레이크포인트는 원본 CSS 의 max-width 경계 + 1px 입니다. 그래서 `max-lg:` 가 정확히 `max-width: 900px`, `lg:` 가 `min-width: 901px` 이고, JS 의 데스크톱 / 모바일 분기(`src/lib/env.ts` 의 `DESKTOP` / `MOBILE`)와 같습니다. `2xs` 360 · `xs` 640 · `sm` 760 · `md` 860 · `lg` 900 · `xl` 980 · `2xl` 1000 · `3xl` 1100 · `4xl` 1280. `short:` 는 높이 780px 이하 화면입니다.
-- 데스크톱 격자는 1101px 이상에서만 씁니다. 901~1100px 은 데스크톱 격자에 비해 폭이 모자라, 둘로 나뉘는 블록(Frame 01 캡션과 수치, 프로파일 랩, 행사, 커뮤니티)은 이 구간에서 `max-3xl:` 로 쌓거나 2단으로 바꿉니다. 한국어는 `:lang(ko)` 에서 `word-break: keep-all` 이 걸려 단어 중간에서 줄바꿈되지 않습니다.
+- 브레이크포인트는 기기 구간으로 나눕니다(데스크톱 우선, `max-*`). `max-2xs` 361 미만(폴드 커버 화면) · `max-sm` 600 미만(세로 폰, Surface Duo 한 화면) · `sm`–`md` 600~859(세로 태블릿, 펼친 Z Fold, 가로 폰) · `md`–`lg` 860~1199(가로 태블릿, 세로 iPad Pro 12.9", 펼친 iPhone Duo 890×626) · `lg` 1200 이상(노트북·데스크톱, `max-xl` 1280 미만은 그 좁은 쪽). JS 는 `src/lib/env.ts` 의 `SM` / `LG` / `NARROW` / `SPANNED` 로 같은 값을 씁니다.
+- 폭만으로 정할 수 없는 것은 모양·자세 변형으로 씁니다. `narrow:` 한 단(폰, 또는 세워 든 태블릿: 600px 미만이거나 1200px 미만 세로 화면)과 그 정확한 반대인 `wide:`(프로파일 랩이 이 둘로 쌓기 / 유리 패널을 가릅니다), `low:` 가로로 눕힌 폰(높이 540px 이하), `tall:` 높이 700px 이상(행사 상세가 sticky 되는 조건), `short:` 높이 780px 이하. Tailwind 기본 `portrait:` / `landscape:`, `pointer-coarse:` 도 씁니다.
+- 듀얼 스크린(Surface Duo, 폴더블)은 Viewport Segments 로 대응합니다. `spanned:` 는 두 화면을 좌우로 펼친 상태로, 가운데 힌지를 글자가 가로지르지 않도록 두 단 블록을 화면 하나에 한 단씩 놓습니다(`hinge-cols` 유틸리티, 간격 토큰 `gap-x-hinge` / `gap-x-hinge-gap`). `spanned-y:` 는 위아래로 펼친 상태입니다. 지원하지 않는 브라우저에서는 힌지 폭이 0 이 되어 아무 것도 바뀌지 않습니다. 확인은 Chrome DevTools 의 Surface Duo 기기(힌지 표시)로 합니다.
+- 히어로와 프로파일 랩의 3D 장면은 폭이 아니라 캔버스 비율(세로 / 가로)과 펼침 상태로 위치·크기를 정합니다(`src/three/hero.ts` 의 `place`, `extrusion.ts` 는 `NARROW`). 한국어는 `:lang(ko)` 에서 `word-break: keep-all` 이 걸려 단어 중간에서 줄바꿈되지 않습니다.
 - `light:` 변형은 `html[data-mode="light"]` 일 때 적용됩니다. `booting:` 변형은 히어로 인트로가 시작되기 전(`html` 에 `data-ready` 가 붙기 전)에만 적용되며, 인트로로 등장할 카피·HUD·내비를 그때까지 숨깁니다.
 
 ## 다크 / 라이트 모드
@@ -100,14 +102,14 @@ pnpm coast      # 지도 해안선 데이터 다시 만들기 (결과는 커밋�
 
 - `pnpm dev` / `pnpm build` 가 먼저 `scripts/images.mjs` 를 돌려 `public/assets/img/` 의 JPG/PNG 마다 AVIF·WebP 를 480 / 828 / 1200 / 1600 / 2048px(원본보다 넓은 폭은 만들지 않음)로 만들고, 목록을 `src/generated/images.json` 에 씁니다. 파일 이름에 원본 해시가 들어가 영구 캐시해도 되고, 사진을 바꾸면 주소도 바뀝니다. 4KB 미만(아이콘, 작은 로고)은 원본 그대로 씁니다.
 - 변환 결과는 `node_modules/.cache/dv-img` 에 남아, 새로 넣거나 바꾼 사진만 다시 변환합니다(처음 약 40초, 이후 2초 안팎). 지운 원본의 사본은 다음 실행 때 지워집니다.
-- `<Img src="assets/img/..." sizes="(max-width: 900px) 50vw, 25vw" />` — `sizes` 에 화면에서 그려지는 폭을 적으면 브라우저가 맞는 파일을 고릅니다(기본 `100vw`). 첫 화면 이미지는 `priority`(즉시, 높은 우선순위). 너비·높이는 목록에서 자동으로 붙고, 불투명한 사진은 로딩 중 평균색(800px 이상은 16px 흐림 미리보기)이 깔립니다.
+- `<Img src="assets/img/..." sizes="(max-width: 859px) 50vw, 25vw" />` — `sizes` 에 화면에서 그려지는 폭을 적으면 브라우저가 맞는 파일을 고릅니다(기본 `100vw`). 첫 화면 이미지는 `priority`(즉시, 높은 우선순위). 너비·높이는 목록에서 자동으로 붙고, 불투명한 사진은 로딩 중 평균색(800px 이상은 16px 흐림 미리보기)이 깔립니다.
 - `<picture>` 는 `display: contents` 라 클래스, ref, 그리드 배치는 지금처럼 `<img>` 에 겁니다.
 - 새 사진은 `public/assets/img/` 에 넣고 `<Img>` 로 쓰면 됩니다. 목록에 없는 경로는 일반 `<img>` 로 그려집니다.
 - 단일 파일(`dvision-single.html`)에는 원본만 data URI 로 들어가고, `<Img>` 가 이를 알아채 일반 `<img>` 를 그립니다.
 
 ## 헤더
 
-히어로 위에서는 가장자리까지 닿는 바(모서리 없음, 내용은 `wrap` 열에 맞춤)이고, 히어로 아래 끝이 헤더에 닿으면 `wrap` 폭의 떠 있는 알약으로 줄어듭니다(`header[data-pill]`, 전환은 `animation.css` 의 `.nav-morph`). 스크롤 방향에 따라 숨지 않습니다. 900px 이하에서는 메뉴가 빠지고 로고, KOR / ENG, 테마 버튼, 문의 버튼만 남습니다.
+히어로 위에서는 가장자리까지 닿는 바(모서리 없음, 내용은 `wrap` 열에 맞춤)이고, 히어로 아래 끝이 헤더에 닿으면 `wrap` 폭의 떠 있는 알약으로 줄어듭니다(`header[data-pill]`, 전환은 `animation.css` 의 `.nav-morph`). 스크롤 방향에 따라 숨지 않습니다. 1200px 미만에서는 메뉴가 메뉴 버튼 뒤의 전체 화면 시트(모달 `<dialog>`)로 옮겨 가고, 폰에서는 문의 버튼이 화살표만 남으며 폴드 커버 화면(361px 미만)에서는 빠집니다(시트 아래에 문의 버튼이 있습니다).
 
 ## 스크롤 동작
 

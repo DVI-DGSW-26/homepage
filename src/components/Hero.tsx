@@ -95,7 +95,7 @@ export function Hero() {
   }, { scope: root });
 
   return (
-    <Section ref={root} id="hero" aria-label={m.label} className="h-svh min-h-140 touch-pan-y">
+    <Section ref={root} id="hero" aria-label={m.label} className="h-svh min-h-140 touch-pan-y low:min-h-0">
       {/* The banners are dark photographs. On graphite they sit at a third strength; on the light page
           they are lifted (brightness up, contrast and colour down) and the veil turns to the page colour. */}
       <div className="relative h-full overflow-hidden">
@@ -109,7 +109,7 @@ export function Hero() {
           <div className="absolute inset-0 bg-[radial-gradient(70%_70%_at_62%_45%,transparent,color-mix(in_srgb,var(--bg)_75%,transparent)_70%,var(--bg)),linear-gradient(180deg,color-mix(in_srgb,var(--bg)_60%,transparent),transparent_30%,transparent_65%,var(--bg))]" />
         </div>
         <canvas ref={canvas} aria-hidden="true" className="absolute inset-0 size-full" />
-        <div className="wrap relative grid h-full grid-cols-[minmax(0,1fr)_auto] items-end gap-6 pb-hero-bottom text-fg max-md:grid-cols-1 max-md:content-end">
+        <div className="wrap relative grid h-full grid-cols-[minmax(0,1fr)_auto] items-end gap-6 pb-hero-bottom text-fg max-md:grid-cols-1 max-md:content-end max-md:gap-4 spanned:hinge-cols">
           <div className="booting:opacity-0">
             <div className="grid">
               {m.beats.map((b, i) => (
@@ -121,7 +121,7 @@ export function Hero() {
             </div>
           </div>
           <HeroHud bind={hud} choose={choose} />
-          <div data-cue className="mono absolute bottom-6.5 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2.5 text-mute booting:opacity-0 max-3xl:hidden">
+          <div data-cue className="mono absolute bottom-6.5 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2.5 text-mute booting:opacity-0 max-lg:hidden">
             <span className="relative h-11 w-px overflow-hidden bg-line-2 after:absolute after:-top-full after:left-0 after:size-full after:animate-cue after:bg-fg motion-reduce:after:animate-none" />{m.cue}
           </div>
         </div>
@@ -136,15 +136,17 @@ function HeroHud({ bind, choose }: { bind: RefObject<(i: number) => void>; choos
   const [beat, setBeat] = useState(0);
   useImperativeHandle(bind, () => setBeat, []);
   const part = PART_LABELS[beat];
-  // up to 1280px the part turns behind the readout: a dim panel keeps it legible (no blur — it
-  // would re-filter the WebGL canvas under it every frame)
+  // 860–1280px the part turns behind the readout: a dim panel keeps it legible (no blur — it would
+  // re-filter the WebGL canvas under it every frame). Below 860px, under the copy, only the beat
+  // ticks stay: on a touch screen they are the one way to pick a beat.
+  const ROW = 'max-md:hidden';
   return (
-    <aside className="mono grid min-w-60 gap-2.5 pb-1.5 text-fg-2 booting:opacity-0 max-md:hidden max-4xl:rounded-card max-4xl:bg-bg/65 max-4xl:px-4 max-4xl:pt-2 max-4xl:pb-3">
-      <HudRow data-intro label={h.sequence}><span className="num">{h.beatOf(beat + 1, m.beats.length)}</span></HudRow>
-      <HudRow data-intro label={h.part}>{part.en}</HudRow>
-      <HudRow data-intro label={h.system}>{pick(part.ko, part.koEn)}</HudRow>
-      <HudRow data-intro label={h.process}>{pick(part.proc, part.procEn)}</HudRow>
-      <div data-intro className="flex gap-1.5 pt-1.5">
+    <aside className="mono grid min-w-60 gap-2.5 pb-1.5 text-fg-2 booting:opacity-0 max-md:min-w-0 max-md:pb-0 md:max-xl:rounded-card md:max-xl:bg-bg/65 md:max-xl:px-4 md:max-xl:pt-2 md:max-xl:pb-3 spanned:justify-self-end">
+      <HudRow data-intro label={h.sequence} className={ROW}><span className="num">{h.beatOf(beat + 1, m.beats.length)}</span></HudRow>
+      <HudRow data-intro label={h.part} className={ROW}>{part.en}</HudRow>
+      <HudRow data-intro label={h.system} className={ROW}>{pick(part.ko, part.koEn)}</HudRow>
+      <HudRow data-intro label={h.process} className={ROW}>{pick(part.proc, part.procEn)}</HudRow>
+      <div data-intro className="flex gap-1.5 pt-1.5 max-md:max-w-60 max-md:pt-0">
         {m.beats.map((_, k) => (
           // a tall hit area around the 2px tick
           <button key={k} type="button" aria-label={h.beatLabel(k + 1, m.beats.length)} aria-current={k === beat || undefined} onClick={() => choose.current(k)}
@@ -153,7 +155,7 @@ function HeroHud({ bind, choose }: { bind: RefObject<(i: number) => void>; choos
           </button>
         ))}
       </div>
-      <span data-intro className="font-sans text-caption font-normal tracking-normal text-mute normal-case">{h.hint}</span>
+      <span data-intro className="font-sans text-caption font-normal tracking-normal text-mute normal-case max-md:hidden">{h.hint}</span>
     </aside>
   );
 }

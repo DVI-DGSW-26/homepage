@@ -6,6 +6,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { gsap } from 'gsap';
 import { makeParts } from './parts';
 import { token } from '../lib/tokens';
+import { SPANNED, SPANNED_Y } from '../lib/env';
 
 const VERT = /* glsl */`
 attribute vec3 aP0; attribute vec3 aP1; attribute vec3 aP2; attribute vec3 aP3;
@@ -149,11 +150,25 @@ export function createHero(canvas: HTMLCanvasElement, { reduced = false, fine = 
   const mouse = new THREE.Vector2(9, 9), ray = new THREE.Raycaster(), plane = new THREE.Plane(), hit = new THREE.Vector3(), target = new THREE.Vector3(99, 99, 99);
   let pushTo = 0, idleT = 0;
   const camDir = new THREE.Vector3(), gPos = new THREE.Vector3(), qInv = new THREE.Quaternion();
+  // Where the part sits is decided by the frame's shape, not its width alone, and its size by how
+  // much of the frame the camera sees, so it is never cut off (a 1024px iPad held upright, a 344px
+  // foldable cover). The camera aims at half the group's offset, so an offset x lands x/2 off centre.
+  const spanned = matchMedia(SPANNED), spannedY = matchMedia(SPANNED_Y);
+  const HALF_H = camera.position.z * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)), R = 1.25;   // parts fit a 1.25 sphere
+  const place = (w: number) => {
+    const halfW = HALF_H * camera.aspect;
+    let x: number, y: number, s: number;
+    if (spanned.matches) { x = halfW; y = 0.35; s = Math.min(1, (halfW * 0.4) / R); }           // centred on the right-hand screen
+    else if (spannedY.matches) { x = 0; y = HALF_H; s = Math.min(0.8, (HALF_H * 0.4) / R); }    // centred on the upper screen
+    else if (camera.aspect < 1) { x = 0; y = 1.1; s = Math.min(0.9, (halfW * 0.85) / R); }     // upright: above the copy
+    else if (w < 860) { x = halfW * 0.72; y = 0.2; s = Math.min(0.85, (HALF_H * 0.75) / R, (halfW * 0.35) / R); }   // low and wide: right of the copy
+    else { x = 1.75; y = 0.35; s = 1; }                                                          // desktop: right of the copy, beside the HUD
+    group.position.set(x, y, 0); group.scale.setScalar(s);
+  };
   const resize = () => {
     const w = canvas.clientWidth || innerWidth, h = canvas.clientHeight || innerHeight;
     renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
-    const narrow = w < 860; group.position.set(narrow ? 0 : 1.75, narrow ? 1.1 : 0.35, 0);
-    group.scale.setScalar(narrow ? 0.72 : 1);
+    place(w);
   };
   addEventListener('resize', resize); resize();
   const onPointer = (e: PointerEvent) => { mouse.set((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1); pushTo = 1; idleT = 0; };

@@ -20,19 +20,23 @@
    ============================================================ */
 
 @theme {
-  /* The original stylesheet is desktop-first (max-width queries). Each breakpoint is
-     the original boundary + 1px, so `max-lg:` is exactly `max-width: 900px` and `lg:` is
-     `min-width: 901px` — the same split src/lib/env.ts uses in matchMedia. */
+  /* Device classes. The layout is desktop-first (max-* utilities); each boundary falls
+     between two kinds of screen:
+       max-2xs    < 361    the narrowest phones, a foldable's cover screen (Galaxy Z Fold, 344px)
+       max-sm     < 600    phones held upright, one screen of a Surface Duo (540px)
+       sm–md    600–859    tablets held upright (iPad 744–834, Galaxy Tab 800), a Z Fold opened
+                           (Z Fold ≈ 690–750), phones on their side
+       md–lg    860–1199   tablets on their side (1024–1180), iPad Pro 12.9" upright, an iPhone Duo opened
+                           (890 × 626, on its side), the widest phones on their side (896–932)
+       lg+      ≥ 1200     laptops and desktops; max-xl (< 1280) is their narrow end
+     Height and posture have variants of their own in styles.css (narrow, wide, low, tall, short,
+     spanned, spanned-y). src/lib/env.ts repeats these numbers for matchMedia. */
   --breakpoint-*: initial;
   --breakpoint-2xs: 361px;
-  --breakpoint-xs: 641px;
-  --breakpoint-sm: 761px;
-  --breakpoint-md: 861px;
-  --breakpoint-lg: 901px;
-  --breakpoint-xl: 981px;
-  --breakpoint-2xl: 1001px;
-  --breakpoint-3xl: 1101px;
-  --breakpoint-4xl: 1281px;
+  --breakpoint-sm: 600px;
+  --breakpoint-md: 860px;
+  --breakpoint-lg: 1200px;
+  --breakpoint-xl: 1280px;
 
   --font-display: 'Big Shoulders Display', 'Archivo Narrow', 'Arial Narrow', Impact, sans-serif;
   --font-sans: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif;
@@ -68,9 +72,11 @@
   --text-unit-lg: .5em;
   --text-ledger: 1.5em;
   /* fluid display sizes */
-  --text-hero: clamp(2.7rem, 7vw, 7.6rem);
+  /* the hero and the slogan also follow the screen's height, so a phone on its side still fits them */
+  --text-hero: clamp(2.7rem, min(7vw, 12svh), 7.6rem);
   --text-hero-body: clamp(.98rem, 1.25vw, 1.2rem);
-  --text-statement: clamp(2.6rem, 14vw, 15rem);
+  --text-statement: clamp(2.6rem, min(14vw, 24svh), 15rem);
+  --text-menu: clamp(1.9rem, 6vw, 3rem);        /* the links in the menu sheet */
   --text-manifesto: clamp(2rem, 3.8vw, 3.8rem);
   --text-h2: clamp(1.85rem, 3.9vw, 3.5rem);
   --text-h2-sm: clamp(1.6rem, 2.6vw, 2.4rem);   /* profile lab, where the copy shares the screen */
@@ -80,7 +86,7 @@
   --text-year-sm: clamp(2.4rem, 4.4vw, 4rem);   /* history */
   --text-kpi: clamp(3.2rem, 5vw, 5.2rem);       /* press capacity */
   --text-kpi-tight: clamp(3.2rem, 4.6vw, 5.2rem); /* R&D figures */
-  --text-kpi-narrow: clamp(3.2rem, 9vw, 5rem);  /* R&D figures up to 900px */
+  --text-kpi-narrow: clamp(3.2rem, 9vw, 5rem);  /* R&D figures below 860px */
   --text-subhead: clamp(1.6rem, 3vw, 2.6rem);
   --text-subhead-lg: clamp(1.6rem, 3vw, 2.8rem);
   --text-marquee: clamp(1.6rem, 3.4vw, 3rem);
@@ -123,18 +129,19 @@
   --spacing-stack-sm: clamp(40px, 5vw, 72px);
   --spacing-col-gap: clamp(24px, 4vw, 64px);    /* between a heading and its lead, side by side */
   --spacing-nav-clear: 104px;                   /* below the floating header */
-  --spacing-about-top: clamp(120px, 18vh, 220px);
+  /* heights follow the small viewport (svh: the browser's bars showing), so nothing jumps as they slide away */
+  --spacing-about-top: clamp(120px, 18svh, 220px);
   --spacing-manifesto-top: clamp(40px, 6vw, 80px);
-  --spacing-frame-top: clamp(48px, 8vh, 110px);
-  --spacing-frame-pad: clamp(28px, 6vh, 64px);
-  --spacing-hero-bottom: clamp(40px, 8vh, 96px);
-  --spacing-hero-gap: clamp(16px, 2.5vh, 28px);
-  --spacing-config-top: clamp(88px, 10vh, 112px);  /* clears the header pill above the glass pane */
+  --spacing-frame-top: clamp(48px, 8svh, 110px);
+  --spacing-frame-pad: clamp(28px, 6svh, 64px);
+  --spacing-hero-bottom: clamp(40px, 8svh, 96px);
+  --spacing-hero-gap: clamp(16px, 2.5svh, 28px);
+  --spacing-config-top: clamp(88px, 10svh, 112px);  /* clears the header pill above the glass pane */
   --spacing-config-top-narrow: clamp(80px, 12vw, 140px);
-  --spacing-config-bottom: clamp(20px, 4vh, 48px);
+  --spacing-config-bottom: clamp(20px, 4svh, 48px);
   --spacing-config-gap: clamp(20px, 4vw, 64px);
-  --spacing-config-stage: 62vh;
-  --spacing-statement-bottom: clamp(32px, 6vh, 64px);
+  --spacing-config-stage: clamp(320px, 55svh, 560px);  /* the press above the copy, one column */
+  --spacing-statement-bottom: clamp(32px, 6svh, 64px);
   --spacing-timeline: clamp(28px, 4vw, 64px);
   --spacing-footer-top: clamp(80px, 10vw, 150px);
   --spacing-form-pad: clamp(20px, 3vw, 36px);
@@ -143,13 +150,17 @@
   --spacing-contact-gap: clamp(32px, 5vw, 90px);
   --spacing-nav-gap: clamp(18px, 3vw, 40px);
   --spacing-nav-gap-tight: clamp(12px, 1.6vw, 24px);
-  --spacing-process-gap: clamp(20px, 3vh, 40px);
+  --spacing-process-gap: clamp(20px, 3svh, 40px);
   --spacing-kpi-gap: clamp(18px, 2vw, 32px);
   /* fluid widths */
   --spacing-logo: clamp(110px, 9vw, 136px);
   --spacing-process-card: clamp(280px, 26vw, 380px);
   --spacing-product-thumb: clamp(180px, 20vw, 260px);
   --spacing-medal: clamp(58px, 13%, 104px);
+  /* the hinge of a dual-screen device spanned side by side (0 anywhere else), and a column gap
+     that clears it with a gutter on either side (the hinge-cols utility, the spanned: variant) */
+  --spacing-hinge: max(0px, env(viewport-segment-left 1 0, 0px) - env(viewport-segment-right 0 0, 0px));
+  --spacing-hinge-gap: calc(var(--spacing-hinge) + var(--spacing-gutter) * 2);
 
   /* ---- measures (max-w-*) ---- */
   --container-page: 1480px;    /* widest content column */

@@ -24,7 +24,9 @@ export const ko = {
     links: { about: 'About', rnd: 'R&D', product: 'Product', config: 'Technology', events: 'Events', community: 'Community' },
     langs: { ko: 'KOR', en: 'ENG' },
     theme: { toLight: '라이트 모드로 전환', toDark: '다크 모드로 전환' },
-    contact: '제품 문의'
+    contact: '제품 문의',
+    open: '메뉴 열기',
+    close: '메뉴 닫기'
   },
 
   hero: {
@@ -111,7 +113,9 @@ export const ko = {
     label: '제조 공정',
     eyebrow: 'Technology — Manufacturing process',
     hint: '카드 위에서 스크롤하면 옆으로 넘어갑니다',
+    hintTouch: '카드를 옆으로 밀어 넘겨 보세요',
     photoHint: 'Hover: photo',
+    photoHintTouch: 'Tap: photo',
     step: (n: number) => `Step ${pad2(n)}`,
     middle: 'DVISION, Daegu'
   },
