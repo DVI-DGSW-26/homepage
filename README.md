@@ -99,6 +99,6 @@ npm run build
 
 ## Q.A.C-Flow 섹션 (#qac-flow)
 
-R&D 와 Global 사이에 있는 품질검사 솔루션 소개 섹션입니다. CES 용 QR 코드는 영문으로 바로 열리도록 `/?lang=en#qac-flow` 를 가리키면 됩니다.
+History(연혁)와 Events 사이에 있는 품질검사 솔루션 소개 섹션입니다. CES 용 QR 코드는 영문으로 바로 열리도록 `/?lang=en#qac-flow` 를 가리키면 됩니다.
 
-공개 전에 채울 자리표시자는 `index.html` 에서 `[BOOTH #]`(부스 번호)와 `[EMAIL]`(문의 메일, `mailto:` 링크 두 곳 포함)입니다.
+Hero 의 두 버튼(Book a Demo at CES, Request a PoC)은 사이트 하단 문의 섹션(`#contact`)으로 이동합니다.
