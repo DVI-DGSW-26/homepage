@@ -18,7 +18,7 @@ export const cn = extendTailwindMerge({
     theme: {
       text: ['tag', 'micro', 'label', 'mono-sm', 'mono', 'caption', 'small', 'body-sm', 'body', 'body-lg', 'page', 'title-xs', 'title-sm', 'title', 'title-lg',
         'index', 'figure-xs', 'figure-sm', 'figure', 'step', 'letter', 'unit-sm', 'unit', 'unit-lg', 'ledger', 'hero', 'hero-body', 'statement',
-        'manifesto', 'h2', 'h2-sm', 'h2-lg', 'frame', 'year', 'year-sm', 'kpi', 'kpi-tight', 'kpi-narrow', 'subhead', 'subhead-lg', 'marquee', 'card-title'],
+        'manifesto', 'h2', 'h2-sm', 'h2-lg', 'frame', 'year', 'year-sm', 'kpi', 'kpi-tight', 'kpi-narrow', 'subhead', 'subhead-lg', 'marquee', 'card-title', 'wordmark', 'stat', 'milestone'],
       tracking: ['display', 'heading', 'heading-sm', 'button', 'name', 'spec', 'mono-sm', 'tag', 'label'],
       leading: ['letter', 'step', 'figure', 'statement', 'hero', 'display', 'h2', 'title', 'caption', 'note', 'manifesto', 'copy', 'hero-body', 'page'],
       spacing: ['gutter', 'wrap', 'section', 'sec-head', 'stack', 'stack-md', 'stack-sm', 'col-gap', 'nav-clear', 'about-top', 'manifesto-top', 'frame-top',

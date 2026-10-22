@@ -15,7 +15,7 @@ export const en: Messages = {
   nav: {
     home: 'DVISION home',
     menu: 'Main menu',
-    links: { about: 'About', rnd: 'R&D', product: 'Product', config: 'Technology', events: 'Events', community: 'Community' },
+    links: { about: 'About', rnd: 'R&D', product: 'Product', config: 'Technology', 'qac-flow': 'Q.A.C-Flow', events: 'Events', community: 'Community' },
     langs: { ko: 'KOR', en: 'ENG' },
     theme: { toLight: 'Switch to light mode', toDark: 'Switch to dark mode' },
     contact: 'Contact us'
@@ -179,6 +179,94 @@ export const en: Messages = {
     eyebrow: 'About — History',
     title: 'From a sole proprietorship in 2020 to an exporter',
     lead: 'Over six years we brought in presses, stacked up certifications and opened logistics centers overseas. Here is the full month-by-month history.'
+  },
+
+  qf: {
+    label: 'Q.A.C-Flow quality inspection solution',
+    expand: 'Quality · Analysis · Control',
+    title: 'Quality inspection without paper check sheets.',
+    lead: 'Measure, judge and issue the report, all from one smartphone.\nBuilt and proven in DVISION\'s own factory.',
+    demo: 'Book a Demo at CES',
+    poc: 'Request a PoC',
+    stats: ['OCR recognition rate', 'New hardware', 'In use at our Daegu HQ plant'],
+    statsNote: 'In-house validation at our Daegu HQ plant · IATF 16949',
+    alt: {
+      capture: 'Smartphone camera framing the display of a digital caliper reading 30.00 mm',
+      ocr: 'App screen: the caliper reading is filled in by OCR and judged as a pass against the tolerance',
+      trio: 'Three smartphone screens in sequence: photographing a caliper display, cropping to the reading, and the value filled in by OCR with a pass result',
+      monitor: ['Measurement detail screen: each measured value plotted against its tolerance band, with the out-of-tolerance value flagged NG in red', 'Status board by machine: self-inspection and patrol inspection progress per time slot, with delays highlighted', 'Defects and actions dashboard: defect counts by type and the status of each corrective action'],
+      compare: 'Mobile patrol inspection screen comparing self-inspection and patrol inspection values per dimension, with a mismatch marked as fail',
+      photos: 'Side-by-side photos of the same caliper reading taken at self-inspection and at patrol inspection',
+      approval: 'PC web approval screen: self-inspection and patrol inspection results compared, with an Approve and issue report button',
+      report: 'Approved inspection report summary listing process, machine and each inspection slot with self-inspection and patrol inspection results'
+    },
+    problem: {
+      kicker: '01 / Problem',
+      title: 'Writing a number twice is where data loses trust.',
+      before: 'Before',
+      after: 'With Q.A.C-Flow',
+      beforeSteps: ['Read the gauge', 'Write it on paper', 'Re-type it into Excel'],
+      pains: ['Time spent copying the same number again', 'Typing errors creep in', 'Quality status is known only after the weekly tally'],
+      afterSteps: ['Photograph the gauge', 'OCR reads the value', 'Pass / fail against tolerance, instantly', 'Report issued on approval']
+    },
+    how: {
+      kicker: '02 / How it works',
+      title: 'Snap, crop, done. Three taps from gauge to data.',
+      lead: 'No new equipment.\nYour existing calipers and gauges plus a smartphone camera.\nWorks on mobile and PC web.',
+      steps: [
+        { title: 'Snap', body: 'Point the phone at the gauge display and take the shot.' },
+        { title: 'Crop', body: 'Drag the frame around the reading only.' },
+        { title: 'OCR input', body: 'The value fills itself in and is judged against the tolerance on the spot.' }
+      ]
+    },
+    workflow: {
+      kicker: '03 / Workflow',
+      title: 'One inspection, five steps, one record.',
+      step: (n: number) => `Step ${n}`,
+      steps: [
+        { title: 'Inspection order', body: 'The production manager registers what to inspect, where and when.' },
+        { title: 'Self-inspection', body: 'The operator photographs the gauge; OCR enters the value.' },
+        { title: 'Patrol inspection', body: 'The patrol inspector re-measures the same items and compares the photos.' },
+        { title: 'Approval', body: 'The quality manager reviews both results side by side and approves.' },
+        { title: 'Report', body: 'The inspection report is issued automatically, ready as a PDF.' }
+      ]
+    },
+    live: {
+      kicker: '04 / Live monitoring',
+      title: 'Detect defects the moment they happen.',
+      lead: 'Every measurement lands on the shop-floor monitor as it is taken:\nprogress by machine, each value against its tolerance,\ndefects and actions, and alerts for late inspections.',
+      tabsAria: 'Monitor screens',
+      tabs: ['Measurement detail', 'Status board', 'Defects & actions'],
+      note: 'Screens from our in-house deployment, Korean UI. Customer names hidden.'
+    },
+    trace: {
+      kicker: '05 / Traceability',
+      title: 'Every value comes with its photo.',
+      lead: 'Self-inspection and patrol inspection sit side by side,\nso a mismatch is caught before approval\nand every record can be traced in a customer audit or IATF review.',
+      points: [
+        { title: 'Photo evidence on every value', body: 'The gauge photo is stored with the number it produced.' },
+        { title: 'Self vs. patrol, side by side', body: 'Two people, two measurements, one screen to compare.' },
+        { title: 'Approve once, report ready', body: 'Approval issues the audit-ready report at the same moment.' }
+      ]
+    },
+    data: {
+      kicker: '06 / From report to data',
+      title: 'Every approved report becomes data the factory can learn from.',
+      caption: 'Inspection report, issued on approval / PDF',
+      steps: [
+        { title: 'One report per inspection', body: 'Values, tolerances, photos and approval in one record.' },
+        { title: 'Reports pile up as data', body: 'By part, machine and inspection slot, day after day.' },
+        { title: 'A learning asset', body: 'The groundwork for defect prediction and process optimization.' }
+      ],
+      roadmap: 'Roadmap',
+      here: 'We are here',
+      milestones: [
+        { year: '2026', title: 'Internal PoC', body: 'Running at our Daegu plant' },
+        { year: '2027', title: 'External PoC', body: 'Validation beyond our own plant' },
+        { year: '2028', title: 'SaaS launch', body: 'Commercial release' },
+        { year: '2029', title: 'Data & credit business', body: 'Built on accumulated inspection data' }
+      ]
+    }
   },
 
   events: {

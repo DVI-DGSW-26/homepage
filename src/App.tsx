@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef } from 'react';
 import { gsap, ScrollTrigger, useGSAP } from './lib/gsap';
-import { releasePosition, scroll, smoothAnchors } from './lib/scroll';
+import { landOnHash, releasePosition, scroll, smoothAnchors } from './lib/scroll';
 import { setupReveals } from './lib/reveals';
 import { useLang } from './i18n';
 import { Nav } from './components/Nav';
@@ -12,6 +12,7 @@ import { Process } from './components/Process';
 import { Equipment } from './components/Equipment';
 import { Rnd } from './components/Rnd';
 import { Global, History } from './components/Global';
+import { QacFlow } from './components/QacFlow';
 import { Events } from './components/Events';
 import { Community, Contact } from './components/Contact';
 
@@ -34,6 +35,7 @@ export default function App() {
     // Triggers created before the process section set its pinned height measured a shorter page;
     // one refresh now puts them right. (ScrollTrigger refreshes again by itself on window load.)
     ScrollTrigger.refresh();
+    landOnHash();
     // debug handle (harmless in production)
     Object.assign(window, { __dv: { gsap, ScrollTrigger, scroll } });
   });
@@ -53,6 +55,7 @@ export default function App() {
         <Rnd />
         <Global />
         <History />
+        <QacFlow />
         <Events />
         <Community />
         <Contact />

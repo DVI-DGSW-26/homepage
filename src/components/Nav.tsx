@@ -8,9 +8,9 @@ import { setTheme, useTheme } from '../lib/theme';
 import { ArrowIcon, btn, cn } from './ui';
 import { Img } from './Img';
 
-const LINKS = ['about', 'rnd', 'product', 'config', 'events', 'community'] as const;
+const LINKS = ['about', 'rnd', 'product', 'config', 'qac-flow', 'events', 'community'] as const;
 // which menu item lights up while each section is under the 45% line
-const LINK_FOR: Record<string, string> = { about: 'about', statement: 'about', product: 'product', config: 'config', process: 'config', equip: 'config', rnd: 'rnd', global: 'about', history: 'about', events: 'events', community: 'community', contact: 'community' };
+const LINK_FOR: Record<string, string> = { about: 'about', statement: 'about', product: 'product', config: 'config', process: 'config', equip: 'config', rnd: 'rnd', global: 'about', history: 'about', 'qac-flow': 'qac-flow', events: 'events', community: 'community', contact: 'community' };
 const LANGS: Lang[] = ['ko', 'en'];
 
 export function Nav() {

@@ -21,7 +21,7 @@ export const ko = {
   nav: {
     home: 'DVISION 홈',
     menu: '주요 메뉴',
-    links: { about: 'About', rnd: 'R&D', product: 'Product', config: 'Technology', events: 'Events', community: 'Community' },
+    links: { about: 'About', rnd: 'R&D', product: 'Product', config: 'Technology', 'qac-flow': 'Q.A.C-Flow', events: 'Events', community: 'Community' },
     langs: { ko: 'KOR', en: 'ENG' },
     theme: { toLight: '라이트 모드로 전환', toDark: '다크 모드로 전환' },
     contact: '제품 문의'
@@ -186,6 +186,94 @@ export const ko = {
     eyebrow: 'About — History',
     title: '2020년 개인사업자에서 수출 기업까지',
     lead: '여섯 해 동안 프레스를 들이고, 인증을 쌓고,\n바다 건너 물류센터를 열었습니다.\n월 단위 전체 연혁입니다.'
+  },
+
+  qf: {
+    label: 'Q.A.C-Flow 품질검사 솔루션',
+    expand: 'Quality · Analysis · Control',
+    title: '종이 검사표 없는 품질검사',
+    lead: '스마트폰 하나로 측정, 판정, 보고서 발행까지.\n디비전 공장에서 직접 만들고 검증했습니다.',
+    demo: 'Book a Demo at CES',
+    poc: 'Request a PoC',
+    stats: ['OCR 인식률', '추가 하드웨어', '대구 본사 공장 실운영'],
+    statsNote: '대구 본사 공장 사내 검증 · IATF 16949',
+    alt: {
+      capture: '스마트폰 카메라로 디지털 캘리퍼스 화면을 촬영하는 장면',
+      ocr: '측정값이 OCR로 자동 입력되고 합격으로 판정된 화면',
+      trio: '세 대의 스마트폰 화면: 측정기 촬영, 측정 부위 자르기, OCR 값 자동 입력',
+      monitor: ['측정 상세 화면: 항목별 측정값과 허용 공차 범위 막대, 공차를 벗어난 값은 NG로 표시', '설비별 검사 진행 현황판: 시점별 자주검사, 순회검사 진행 상태와 지연 표시', '불량, 조치 현황 대시보드: 불량 유형별 건수와 조치 진행 상태'],
+      compare: '모바일 순회검사 결재 화면: 치수별 자주검사와 순회검사 측정값 비교, 불일치 항목은 불합격 표시',
+      photos: '자주검사와 순회검사의 측정 사진을 나란히 대조하는 화면',
+      approval: 'PC 웹 결재 화면: 자주검사와 순회검사 결과 비교 후 승인, 보고서 발행 버튼',
+      report: '승인된 검사보고서 요약: 공정, 설비, 검사 차수별 자주검사와 순회검사 결과'
+    },
+    problem: {
+      kicker: '01 / Problem',
+      title: '숫자를 두 번 옮겨 적는 순간, 데이터는 신뢰를 잃습니다.',
+      before: '기존 방식',
+      after: 'Q.A.C-Flow',
+      beforeSteps: ['측정기 읽기', '종이에 기록', '엑셀에 재입력'],
+      pains: ['같은 숫자를 다시 옮기는 시간', '입력 오류', '주간 집계가 끝나야 보이는 품질 상태'],
+      afterSteps: ['측정기 화면 촬영', 'OCR 자동 인식', '공차 기준 즉시 합격, 불합격 판정', '승인과 동시에 보고서 발행']
+    },
+    how: {
+      kicker: '02 / How it works',
+      title: '찍고, 자르고, 끝. 측정기에서 데이터까지 세 단계.',
+      lead: '장비 교체는 필요 없습니다.\n지금 쓰는 캘리퍼스와 측정기, 그리고 스마트폰 카메라면 됩니다.\n모바일과 PC 웹을 지원합니다.',
+      steps: [
+        { title: '촬영', body: '측정기 화면에 카메라를 맞추고 촬영합니다.' },
+        { title: '자르기', body: '측정값 부분만 남도록 영역을 맞춥니다.' },
+        { title: 'OCR 입력', body: '값이 자동으로 입력되고, 그 자리에서 공차 기준으로 판정됩니다.' }
+      ]
+    },
+    workflow: {
+      kicker: '03 / Workflow',
+      title: '하나의 검사, 다섯 단계, 하나의 기록.',
+      step: (n: number) => `Step ${n}`,
+      steps: [
+        { title: '검사지시 등록', body: '생산관리자가 품목, 설비, 검사 시점을 등록합니다.' },
+        { title: '자주검사', body: '작업자가 측정기를 촬영하고, OCR이 값을 입력합니다.' },
+        { title: '순회검사', body: '순회검사자가 같은 항목을 다시 측정하고 사진을 대조합니다.' },
+        { title: '결재', body: '품질관리자가 두 결과를 나란히 보고 결재합니다.' },
+        { title: '보고서 발행', body: '검사보고서가 자동으로 발행되고 PDF로 내려받을 수 있습니다.' }
+      ]
+    },
+    live: {
+      kicker: '04 / Live monitoring',
+      title: '불량은 생기는 순간 보입니다.',
+      lead: '측정값은 측정하는 그 순간 현장 모니터에 올라옵니다.\n설비별 진행 현황, 공차 대비 측정값, 불량과 조치, 검사 지연 알림까지.',
+      tabsAria: '모니터 화면',
+      tabs: ['측정 상세', '현황판', '불량, 조치'],
+      note: '사내 운영 화면(한국어 UI). 고객사명은 가렸습니다.'
+    },
+    trace: {
+      kicker: '05 / Traceability',
+      title: '모든 측정값에는 사진이 붙어 있습니다.',
+      lead: '자주검사와 순회검사 결과가 나란히 놓여,\n불일치는 결재 전에 드러나고\n모든 기록은 고객사 감사와 IATF 심사에서 추적할 수 있습니다.',
+      points: [
+        { title: '모든 값에 사진 증빙', body: '측정기 사진이 그 숫자와 함께 저장됩니다.' },
+        { title: '자주검사와 순회검사를 나란히', body: '두 사람, 두 번의 측정을 한 화면에서 비교합니다.' },
+        { title: '한 번의 결재로 보고서 완성', body: '결재와 동시에 감사 대응용 보고서가 발행됩니다.' }
+      ]
+    },
+    data: {
+      kicker: '06 / From report to data',
+      title: '결재된 보고서가 쌓이면, 공장이 배우는 데이터가 됩니다.',
+      caption: '검사보고서, 결재와 동시에 발행 / PDF',
+      steps: [
+        { title: '검사마다 한 장의 보고서', body: '측정값, 공차, 사진, 결재가 한 기록에 담깁니다.' },
+        { title: '보고서가 쌓여 데이터로', body: '품목, 설비, 검사 시점별로 매일 쌓입니다.' },
+        { title: '학습 자산', body: '불량 예측과 공정 최적화를 위한 바탕이 됩니다.' }
+      ],
+      roadmap: '로드맵',
+      here: 'We are here',
+      milestones: [
+        { year: '2026', title: 'Internal PoC', body: '대구 공장 사내 운영' },
+        { year: '2027', title: 'External PoC', body: '사외 현장 실증' },
+        { year: '2028', title: 'SaaS 상용화', body: '상용화' },
+        { year: '2029', title: '데이터, 신용 사업', body: '축적된 검사 데이터 기반' }
+      ]
+    }
   },
 
   events: {
