@@ -5,7 +5,7 @@
 import { Fragment } from 'react';
 import { rich, useT } from '../i18n';
 import { pad2 } from '../lib/env';
-import { Eyebrow, H2, IndexHead, LineIcon, SEC, Section, cn } from './ui';
+import { Band, Eyebrow, H2, IndexHead, LineIcon, cn } from './ui';
 
 // one per link of the chain; the four stages reuse the last four
 const ICONS = [
@@ -29,8 +29,9 @@ const underline = (chunk: string) => <span className="text-acc-ink underline dec
 export function Future() {
   const m = useT().future;
   return (
-    <Section id="future" aria-label={m.label} className={SEC}>
-      <div className="wrap">
+    // the chain, the roadmap and the closing line each get a band of their own
+    <div id="future" role="region" aria-label={m.label}>
+      <Band id="future-chain" className="grid min-h-svh content-center">
         <div className="mb-sec-head">
           <Eyebrow className="rv mb-5.5">{m.eyebrow}</Eyebrow>
           <H2 className="rv">{m.title.split('\n').map((line, i) => <span key={i} className="block">{rich(line, { k: em })}</span>)}</H2>
@@ -54,8 +55,10 @@ export function Future() {
             </li>
           ))}
         </ol>
+      </Band>
 
-        <div className="mt-stack-sm">
+      <Band id="future-roadmap" alt>
+        <div>
           <IndexHead title={m.roadmap} aside={`${m.stages[0].year} — ${m.stages[m.stages.length - 1].year}`} className="mb-6" />
           {/* four stages, the current one lit; the cards share a top rule like the year rail in About */}
           <ol data-batch className="m-0 grid list-none grid-cols-4 gap-4.5 p-0 max-lg:grid-cols-2 max-sm:grid-cols-1 spanned:gap-x-hinge">
@@ -84,11 +87,13 @@ export function Future() {
             ); })}
           </ol>
         </div>
+      </Band>
 
-        <p className="rv m-0 mt-stack-sm rounded-card border border-line bg-card px-panel-pad py-6 text-center text-title-lg leading-title font-semibold text-balance">
+      <Band id="future-closing">
+        <p className="rv m-0 mx-auto max-w-240 text-center text-h2 leading-h2 font-semibold tracking-tight text-balance">
           <Fragment>“{rich(m.closing, { k: underline })}”</Fragment>
         </p>
-      </div>
-    </Section>
+      </Band>
+    </div>
   );
 }

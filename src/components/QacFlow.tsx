@@ -8,7 +8,7 @@
 // navigation bars cropped off so they sit in the CSS phone frame.
 import { useState, type KeyboardEvent, type ReactNode } from 'react';
 import { lines, useT } from '../i18n';
-import { Eyebrow, H2, Lead, LineIcon as Icon, SEC, Section, cn } from './ui';
+import { Band, Eyebrow, H2, Lead, LineIcon as Icon, cn } from './ui';
 import { Img } from './Img';
 
 const IMG = 'assets/img/qacflow/';
@@ -69,19 +69,17 @@ function Browser({ src, alt, sizes, caption, className }: { src: string; alt: st
 
 export function QacFlow() {
   const m = useT().qf;
+  // each block is its own band, the surfaces alternating
   return (
-    // no bottom padding: the line that runs on into the data industry (Future.tsx) is the gap
-    <Section id="qac-flow" aria-label={m.label} className={cn(SEC, 'pb-0')}>
-      <div className="wrap">
-        <Hero />
-        <Problem />
-        <How />
-        <Workflow />
-        <Live />
-        <Trace />
-        <Data />
-      </div>
-    </Section>
+    <div id="qac-flow" role="region" aria-label={m.label}>
+      <Band id="qf-intro" className="grid min-h-svh content-center"><Hero /></Band>
+      <Band id="qf-problem" alt><Problem /></Band>
+      <Band id="qf-how"><How /></Band>
+      <Band id="qf-workflow" alt><Workflow /></Band>
+      <Band id="qf-live"><Live /></Band>
+      <Band id="qf-trace" alt><Trace /></Band>
+      <Band id="qf-data"><Data /></Band>
+    </div>
   );
 }
 
@@ -134,7 +132,7 @@ function Problem() {
     </ol>
   );
   return (
-    <div className="mt-stack">
+    <div>
       <Head kicker={p.kicker} q={p.q} title={p.title} />
       <div data-batch className="grid gap-4 md:grid-cols-2 md:gap-6">
         <article className="rv grid content-start gap-6.5 rounded-card border border-dashed border-line-2 p-panel-pad text-fg-2">
@@ -157,7 +155,7 @@ function How() {
   const m = useT().qf;
   const h = m.how;
   return (
-    <div className="mt-stack">
+    <div>
       <Head kicker={h.kicker} q={h.q} title={h.title} lead={h.lead} />
       <Img src={IMG + 'trio.png'} alt={m.alt.trio} sizes="(max-width: 1200px) 100vw, 1200px" className="rv mx-auto h-auto w-full max-w-300" />
       <ol data-batch className="m-0 mx-auto mt-8 grid max-w-300 list-none gap-5.5 p-0 sm:grid-cols-3 sm:gap-[clamp(20px,4vw,64px)]">
@@ -177,7 +175,7 @@ function Workflow() {
   const m = useT().qf;
   const w = m.workflow;
   return (
-    <div className="mt-stack">
+    <div>
       <Head kicker={w.kicker} q={w.q} title={w.title} />
       <ol data-batch className="m-0 grid list-none p-0 lg:grid-cols-5 lg:gap-[clamp(16px,2vw,32px)]">
         {w.steps.map((s, i) => (
@@ -210,7 +208,7 @@ function Live() {
     document.getElementById(`qf-tab-${next}`)?.focus();
   };
   return (
-    <div className="mt-stack">
+    <div>
       <Head kicker={l.kicker} q={l.q} title={l.title} lead={l.lead} />
       <div role="tablist" aria-label={l.tabsAria} className="mono mb-4.5 flex gap-1.5 overflow-x-auto [scrollbar-width:none]">
         {l.tabs.map((label, i) => (
@@ -243,7 +241,7 @@ function Trace() {
   const m = useT().qf;
   const t = m.trace;
   return (
-    <div className="mt-stack">
+    <div>
       <Head kicker={t.kicker} q={t.q} title={t.title} lead={t.lead} />
       <div className="grid items-center gap-stack-sm md:grid-cols-[minmax(0,.8fr)_minmax(0,1.2fr)]">
         <PhonePair className="rv max-w-105" back={['mobile-compare.jpg', m.alt.compare]} front={['mobile-photo-compare.jpg', m.alt.photos]} />
@@ -267,7 +265,7 @@ function Data() {
   const t = useT(), m = t.qf, f = t.future;
   const d = m.data;
   return (
-    <div className="mt-stack">
+    <div>
       <Head kicker={d.kicker} q={d.q} title={d.title} />
       <div className="grid items-center gap-[clamp(32px,4vw,56px)] lg:grid-cols-[minmax(0,1.45fr)_minmax(0,.55fr)] lg:items-end">
         <Browser className="rv" src="report-summary.jpg" alt={m.alt.report} sizes="(max-width: 1000px) 100vw, 1000px" caption={d.caption} />
@@ -299,9 +297,11 @@ function Data() {
 export function Launch() {
   const m = useT().qf;
   return (
-    <footer id="launch" className="wrap grid gap-3 border-t border-line py-section">
-      <span className="mono text-mute">{m.launch}</span>
-      <time dateTime="2026-06-01" className="num font-display text-stat leading-display font-extrabold text-qf-ink">2026.06.01</time>
+    <footer id="launch" className="border-t border-line bg-bg-2 py-section">
+      <div className="wrap grid gap-3">
+        <span className="mono text-mute">{m.launch}</span>
+        <time dateTime="2026-06-01" className="num font-display text-stat leading-display font-extrabold text-qf-ink">2026.06.01</time>
+      </div>
     </footer>
   );
 }

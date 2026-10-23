@@ -43,6 +43,16 @@ export function Section({ className, ...rest }: ComponentProps<'section'>) {
 /** the default vertical rhythm of a content section */
 export const SEC = 'py-section';
 
+/** One chapter of a page: a full-width band with its own rule, every other one on the second surface,
+ * so the chapters read as separate pages-within-the-page rather than one long column. */
+export function Band({ alt, className, children, ...rest }: ComponentProps<'section'> & { alt?: boolean }) {
+  return (
+    <section className={cn('relative border-t border-line py-section first:border-t-0', alt && 'bg-bg-2', className)} {...rest}>
+      <div className="wrap">{children}</div>
+    </section>
+  );
+}
+
 export function Eyebrow({ className, ...rest }: ComponentProps<'div'>) {
   return <div className={cn("mono flex items-center gap-3.5 text-fg-2 before:h-px before:w-8.5 before:bg-line-2", className)} {...rest} />;
 }
