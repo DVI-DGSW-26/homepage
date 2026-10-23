@@ -1,6 +1,6 @@
 // Pages. The site is one bundle with a page per path, switched in place: a click on a same-site
 // link (href="/data") swaps the page without a reload, and back / forward work as usual.
-// Every other path (a typo, the single-file build opened from disk) shows the home page.
+// Every other path ("/", a typo, the single-file build opened from disk) shows Q.A.C-Flow.
 //
 // The site used to be one long page, so links into it are #anchors on "/" (the CES QR code opens
 // /?lang=en#qac-flow). Such a link is moved to the page that section now lives on, keeping the
@@ -8,24 +8,21 @@
 import { useSyncExternalStore } from 'react';
 import { scroll } from './scroll';
 
-export const PAGES = ['/', '/company', '/qac-flow', '/data'] as const;
+export const PAGES = ['/qac-flow', '/data'] as const;
 export type Page = (typeof PAGES)[number];
 
 /** the old one-page sections, by id, and the page each is on now */
-const MOVED: Record<string, Page> = {
-  about: '/company', product: '/company', statement: '/company', config: '/company', process: '/company',
-  equip: '/company', rnd: '/company', global: '/company', history: '/company',
-  'qac-flow': '/qac-flow', future: '/data'
-};
+const MOVED: Record<string, Page> = { 'qac-flow': '/qac-flow', future: '/data' };
 
+const clean = (path: string) => path.replace(/\/+$/, '') || '/';
 const toPage = (path: string): Page => {
-  const p = path.replace(/\/+$/, '') || '/';
-  return (PAGES as readonly string[]).includes(p) ? p as Page : '/';
+  const p = clean(path);
+  return (PAGES as readonly string[]).includes(p) ? p as Page : '/qac-flow';
 };
 
 let page = toPage(location.pathname);
 {
-  const moved = page === '/' ? MOVED[decodeURIComponent(location.hash.slice(1))] : undefined;
+  const moved = clean(location.pathname) === '/' ? MOVED[decodeURIComponent(location.hash.slice(1))] : undefined;
   if (moved) { page = moved; try { history.replaceState(history.state, '', moved + location.search + location.hash); } catch { /* file:// */ } }
 }
 

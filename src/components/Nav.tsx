@@ -12,7 +12,7 @@ import { LG, pad2 } from '../lib/env';
 import { ArrowIcon, btn, cn } from './ui';
 import { Img } from './Img';
 
-const LINKS = ['/company', '/qac-flow', '/data'] as const satisfies readonly Page[];
+const LINKS = ['/qac-flow', '/data'] as const satisfies readonly Page[];
 const LANGS: Lang[] = ['ko', 'en'];
 
 const ROUND_BTN = 'relative grid size-9 flex-none cursor-pointer place-items-center rounded-full border border-line text-fg-2 transition-colors duration-300 hover:border-line-2 hover:text-fg max-sm:size-8';
@@ -42,7 +42,7 @@ export function Nav({ page }: { page: Page }) {
         // pill: the wrap column's width, floating 16px down
         'group-data-pill/nav:mt-4 group-data-pill/nav:w-wrap group-data-pill/nav:rounded-pill group-data-pill/nav:border-line group-data-pill/nav:py-2.5 group-data-pill/nav:pr-3 group-data-pill/nav:pl-5 max-sm:group-data-pill/nav:pl-3.5 max-sm:group-data-pill/nav:pr-2'
       )}>
-        <a className="relative block aspect-800/216 w-logo flex-none max-sm:w-24 max-2xs:w-22" href="/" aria-label={m.home}>
+        <a className="relative block aspect-800/216 w-logo flex-none max-sm:w-24 max-2xs:w-22" href="/qac-flow" aria-label={m.home}>
           <Img className="absolute inset-0 size-full object-contain transition-opacity duration-500 light:opacity-0" src="assets/img/logo-white.png" sizes="136px" priority={theme === 'dark'} alt={t.brand} />
           <Img className="absolute inset-0 size-full object-contain opacity-0 transition-opacity duration-500 light:opacity-100" src="assets/img/logo.png" sizes="136px" priority={theme === 'light'} alt="" />
         </a>

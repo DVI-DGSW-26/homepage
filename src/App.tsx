@@ -6,23 +6,12 @@ import { bootReady } from './lib/boot';
 import { followLinks, usePage, type Page } from './lib/router';
 import { useLang } from './i18n';
 import { Nav } from './components/Nav';
-import { Hero, Marquee } from './components/Hero';
-import { Directory } from './components/Directory';
-import { About } from './components/About';
-import { Product, Statement } from './components/Product';
-import { Config } from './components/Config';
-import { Process } from './components/Process';
-import { Equipment } from './components/Equipment';
-import { Rnd } from './components/Rnd';
-import { Global, History } from './components/Global';
 import { QacFlow } from './components/QacFlow';
 import { Future } from './components/Future';
 import { Contact } from './components/Contact';
 
 /** the sections of each page; every page ends in the contact section */
 const VIEWS: Record<Page, () => ReactNode> = {
-  '/': () => <><Hero /><Marquee /><Directory /></>,
-  '/company': () => <><About /><Product /><Statement /><Config /><Process /><Equipment /><Rnd /><Global /><History /></>,
   '/qac-flow': () => <QacFlow />,
   '/data': () => <Future />
 };
