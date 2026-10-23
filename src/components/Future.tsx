@@ -31,7 +31,7 @@ export function Future() {
   return (
     // the chain, the roadmap and the closing line each get a band of their own
     <div id="future" role="region" aria-label={m.label}>
-      <Band id="future-chain" className="grid min-h-svh content-center">
+      <Band id="future-chain" cover>
         <div className="mb-sec-head">
           <Eyebrow className="rv mb-5.5">{m.eyebrow}</Eyebrow>
           <H2 className="rv">{m.title.split('\n').map((line, i) => <span key={i} className="block">{rich(line, { k: em })}</span>)}</H2>
@@ -89,7 +89,7 @@ export function Future() {
         </div>
       </Band>
 
-      <Band id="future-closing">
+      <Band id="future-closing" className="bg-[radial-gradient(ellipse_45%_70%_at_50%_50%,var(--color-qf-soft),transparent_70%)]">
         <p className="rv m-0 mx-auto max-w-240 text-center text-h2 leading-h2 font-semibold tracking-tight text-balance">
           <Fragment>“{rich(m.closing, { k: underline })}”</Fragment>
         </p>

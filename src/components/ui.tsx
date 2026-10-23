@@ -44,11 +44,23 @@ export function Section({ className, ...rest }: ComponentProps<'section'>) {
 export const SEC = 'py-section';
 
 /** One chapter of a page: a full-width band with its own rule, every other one on the second surface,
- * so the chapters read as separate pages-within-the-page rather than one long column. */
-export function Band({ alt, className, children, ...rest }: ComponentProps<'section'> & { alt?: boolean }) {
+ * so the chapters read as separate pages-within-the-page rather than one long column.
+ * Behind the content, kept quiet so they fill the space without competing with it:
+ * - alt: a dot grid, fading out toward the edges
+ * - cover: the screen's height, a line grid and a green glow (a page's opening band)
+ * - mark: a large outlined chapter mark ("01") at the top right */
+export function Band({ alt, cover, mark, className, children, ...rest }: ComponentProps<'section'> & { alt?: boolean; cover?: boolean; mark?: string }) {
   return (
-    <section className={cn('relative border-t border-line py-section first:border-t-0', alt && 'bg-bg-2', className)} {...rest}>
-      <div className="wrap">{children}</div>
+    <section className={cn('relative isolate overflow-hidden border-t border-line py-section first:border-t-0', alt && 'bg-bg-2', cover && 'grid min-h-svh content-center', className)} {...rest}>
+      {alt && <div aria-hidden="true" className="absolute inset-0 -z-1 bg-[radial-gradient(var(--color-deco)_1.2px,transparent_1.2px)] bg-size-[22px_22px] mask-[radial-gradient(ellipse_80%_70%_at_50%_40%,#000,transparent)]" />}
+      {cover && <>
+        <div aria-hidden="true" className="absolute inset-0 -z-1 bg-[linear-gradient(var(--color-deco)_1px,transparent_1px),linear-gradient(90deg,var(--color-deco)_1px,transparent_1px)] bg-size-[64px_64px] mask-[radial-gradient(ellipse_70%_60%_at_60%_45%,#000,transparent)]" />
+        <div aria-hidden="true" className="absolute top-[10%] right-[-10%] -z-1 size-[min(70vw,760px)] rounded-full bg-[radial-gradient(circle,var(--color-acc-glow),transparent_65%)] blur-2xl" />
+      </>}
+      <div className="wrap relative">
+        {mark && <span aria-hidden="true" className="pointer-events-none absolute -top-4 right-0 -z-1 font-display text-[clamp(7rem,16vw,15rem)] leading-none font-extrabold text-transparent select-none [-webkit-text-stroke:1.5px_var(--color-deco)] max-sm:hidden">{mark}</span>}
+        {children}
+      </div>
     </section>
   );
 }

@@ -126,7 +126,7 @@
   /* ---- fluid spacing (p-*, m-*, gap-*, inset, w-*, h-*) ---- */
   --spacing-gutter: clamp(20px, 5vw, 88px);     /* page side margin */
   --spacing-wrap: min(var(--container-page), 100% - var(--spacing-gutter) * 2); /* the content column */
-  --spacing-section: clamp(96px, 12vw, 180px);  /* vertical rhythm of a section */
+  --spacing-section: clamp(80px, 9vw, 136px);   /* vertical rhythm of a section */
   --spacing-sec-head: clamp(48px, 6vw, 88px);   /* under a section heading */
   --spacing-stack: clamp(64px, 9vw, 120px);     /* between blocks in a section */
   --spacing-stack-md: clamp(56px, 7vw, 100px);
@@ -191,25 +191,27 @@
 
 @theme static {
   /* graphite: surfaces that stay dark whatever the mode (the statement band, copy set on photographs) */
-  --color-ink: #0C1016;
-  --color-ink-fg: #D5DAE1;
-  --color-ink-fg-2: #A3ACB8;
-  --color-ink-mute: #6F7A88;
-  --color-ink-line: rgb(213 218 225 / .13);
-  --color-ink-line-2: rgb(213 218 225 / .3);
+  --color-ink: #2A2D33;
+  /* the dark of a device frame (phone, monitor), a step below the page */
+  --color-ink-deep: #1D1F24;
+  --color-ink-fg: #E6E9EC;
+  --color-ink-fg-2: #B6BCC4;
+  --color-ink-mute: #8C939D;
+  --color-ink-line: rgb(230 233 236 / .1);
+  --color-ink-line-2: rgb(230 233 236 / .24);
   /* the accent as it reads on graphite */
-  --color-ink-acc: #B79BE3;
+  --color-ink-acc: #3CCB9A;
   /* anodized aluminum, the light page */
   --color-paper: #D8DBDF;
-  /* brand purple (dvi-ind.com --brand-color) */
+  /* brand purple (dvi-ind.com --brand-color); the pages no longer use it */
   --color-brand: #5F298C;
   /* type set on photographs and on the accent fill */
   --color-on-photo: #fff;
-  --color-on-acc: #fff;
+  --color-on-acc: #2A2D33;
   /* the white backing behind logos, scans and product shots */
   --color-plate: #fff;
-  /* Q.A.C-Flow product magenta: that section's accent only */
-  --color-qf: #941B82;
+  /* the mint green that marks Q.A.C-Flow and the whole page now (one accent) */
+  --color-qf: #3CCB9A;
 }
 
 /* mode-dependent colours resolve through the mode set, so `bg-bg`, `text-fg-2`, `border-line`
@@ -233,20 +235,23 @@
   --color-qf-ink: var(--qf-ink);
   --color-qf-soft: var(--qf-soft);
   --color-qf-line: var(--qf-line);
+  /* the decorations behind the bands: dot grid, line grid, the outlined chapter marks */
+  --color-deco: var(--deco);
 }
 
 @layer base {
   :root {
     /* ---- mode set: graphite (default) ---- */
     color-scheme: dark;
-    --bg: var(--color-ink); --bg-2: #121821; --card: #10151C;
+    --bg: var(--color-ink); --bg-2: #30343A; --card: #33373E;
     --fg: var(--color-ink-fg); --fg-2: var(--color-ink-fg-2); --mute: var(--color-ink-mute);
     --line: var(--color-ink-line); --line-2: var(--color-ink-line-2);
-    --acc: #8A5BC2; --acc-2: var(--color-ink-acc); --acc-ink: var(--color-ink-acc); --acc-glow: rgb(138 91 194 / .35);
+    --acc: #3CCB9A; --acc-2: #74DDB9; --acc-ink: var(--color-ink-acc); --acc-glow: rgb(60 203 154 / .28);
     --nav-bg: color-mix(in srgb, var(--color-ink) 94%, transparent);
     --gold: #E7C87A;
-    /* Q.A.C-Flow magenta: lifted for type on graphite, a tint and a hairline */
-    --qf-ink: #E58AD6; --qf-soft: color-mix(in srgb, var(--color-qf) 16%, transparent); --qf-line: rgb(229 138 214 / .42);
+    --deco: rgb(230 233 236 / .07);
+    /* Q.A.C-Flow green: for type, a tint and a hairline */
+    --qf-ink: #3CCB9A; --qf-soft: color-mix(in srgb, var(--color-qf) 12%, transparent); --qf-line: rgb(60 203 154 / .4);
     /* liquid glass (the glass utility): the pane, its sheen, its lit top edge, its rim and its drop */
     --glass: color-mix(in srgb, var(--color-ink) 50%, transparent);
     --glass-sheen: rgb(255 255 255 / .07);
@@ -316,12 +321,13 @@
   html[data-mode="light"] {
     color-scheme: light;
     --bg: var(--color-paper); --bg-2: #E4E6E9; --card: #E9EBEE;
-    --fg: var(--color-ink); --fg-2: #3A424C; --mute: #6B7480;
+    --fg: var(--color-ink); --fg-2: #454A52; --mute: #6B717A;
     --line: color-mix(in srgb, var(--color-ink) 14%, transparent); --line-2: color-mix(in srgb, var(--color-ink) 32%, transparent);
-    --acc: var(--color-brand); --acc-2: #8A5BC2; --acc-ink: var(--color-brand); --acc-glow: color-mix(in srgb, var(--color-brand) 28%, transparent);
+    --acc: #3CCB9A; --acc-2: #1E9E74; --acc-ink: #157A57; --acc-glow: rgb(60 203 154 / .3);
     --nav-bg: color-mix(in srgb, var(--color-paper) 95%, transparent);
     --gold: #8C6414;
-    --qf-ink: var(--color-qf); --qf-soft: color-mix(in srgb, var(--color-qf) 8%, transparent); --qf-line: color-mix(in srgb, var(--color-qf) 38%, transparent);
+    --deco: rgb(42 45 51 / .09);
+    --qf-ink: #157A57; --qf-soft: color-mix(in srgb, var(--color-qf) 14%, transparent); --qf-line: color-mix(in srgb, #157A57 40%, transparent);
     --glass: color-mix(in srgb, var(--color-paper) 55%, transparent);
     --glass-sheen: rgb(255 255 255 / .35);
     --glass-hi: rgb(255 255 255 / .9);

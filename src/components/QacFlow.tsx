@@ -25,7 +25,7 @@ const WORKFLOW_ICONS = ['M6 3h9l3 3v15H6z M9 9h6M9 13h6M9 17h4', 'M7 2h10v20H7z 
 function Head({ kicker, q, title, lead }: { kicker: string; q: string; title: string; lead?: string }) {
   return (
     <div className="mb-stack-sm max-w-208">
-      <span className="mono text-qf-ink">{kicker}</span>
+      <span className="mono flex items-center gap-3 text-qf-ink before:h-0.5 before:w-6 before:rounded-full before:bg-qf">{kicker}</span>
       <h3 className="rv m-0 mt-3.5 text-h2 leading-h2 font-semibold tracking-tight text-balance">{q}</h3>
       <p className="rv m-0 mt-5 border-l-2 border-qf pl-4 text-title-lg leading-title font-semibold text-balance">{title}</p>
       {lead && <Lead className="rv mt-3.5 max-w-160 pl-4.5">{lines(lead)}</Lead>}
@@ -37,8 +37,8 @@ function Head({ kicker, q, title, lead }: { kicker: string; q: string; title: st
 function Phone({ src, alt, className }: { src: string; alt: string; className?: string }) {
   return (
     <figure className={cn(
-      'relative m-0 rounded-[30px] border border-ink-line-2 bg-ink p-1.75 shadow-[0_30px_60px_-30px_rgb(0_0_0/.7)]',
-      'before:absolute before:top-3.25 before:left-1/2 before:z-1 before:h-2.25 before:w-[22%] before:-translate-x-1/2 before:rounded-full before:bg-ink',
+      'relative m-0 rounded-[30px] border border-ink-line-2 bg-ink-deep p-1.75 shadow-[0_30px_60px_-30px_rgb(0_0_0/.7)]',
+      'before:absolute before:top-3.25 before:left-1/2 before:z-1 before:h-2.25 before:w-[22%] before:-translate-x-1/2 before:rounded-full before:bg-ink-deep',
       className
     )}>
       <Img src={IMG + src} alt={alt} sizes="(max-width: 859px) 60vw, 260px" className="aspect-664/1284 h-auto w-full rounded-[23px] bg-plate" />
@@ -72,13 +72,13 @@ export function QacFlow() {
   // each block is its own band, the surfaces alternating
   return (
     <div id="qac-flow" role="region" aria-label={m.label}>
-      <Band id="qf-intro" className="grid min-h-svh content-center"><Hero /></Band>
-      <Band id="qf-problem" alt><Problem /></Band>
-      <Band id="qf-how"><How /></Band>
-      <Band id="qf-workflow" alt><Workflow /></Band>
-      <Band id="qf-live"><Live /></Band>
-      <Band id="qf-trace" alt><Trace /></Band>
-      <Band id="qf-data"><Data /></Band>
+      <Band id="qf-intro" cover><Hero /></Band>
+      <Band id="qf-problem" alt mark="01"><Problem /></Band>
+      <Band id="qf-how" mark="02"><How /></Band>
+      <Band id="qf-workflow" alt mark="03"><Workflow /></Band>
+      <Band id="qf-live" mark="04"><Live /></Band>
+      <Band id="qf-trace" alt mark="05"><Trace /></Band>
+      <Band id="qf-data" mark="06"><Data /></Band>
     </div>
   );
 }
@@ -220,8 +220,8 @@ function Live() {
       </div>
       {/* the monitor: a CSS bezel, neck and foot; hidden panels don't fetch their screen until opened */}
       <div className={cn(
-        'rv relative mb-[calc(clamp(22px,3vw,40px)+14px)] rounded-[clamp(8px,1.2vw,16px)] border border-ink-line-2 bg-ink p-[clamp(6px,1vw,14px)]',
-        'before:absolute before:top-full before:left-1/2 before:h-[clamp(22px,3vw,40px)] before:w-[12%] before:-translate-x-1/2 before:bg-ink before:light:bg-ink-mute',
+        'rv relative mb-[calc(clamp(22px,3vw,40px)+14px)] rounded-[clamp(8px,1.2vw,16px)] border border-ink-line-2 bg-ink-deep p-[clamp(6px,1vw,14px)]',
+        'before:absolute before:top-full before:left-1/2 before:h-[clamp(22px,3vw,40px)] before:w-[12%] before:-translate-x-1/2 before:bg-ink-deep before:light:bg-ink-mute',
         'after:absolute after:top-[calc(100%+clamp(22px,3vw,40px))] after:left-1/2 after:h-1.5 after:w-[28%] after:-translate-x-1/2 after:rounded-full after:bg-ink-line-2 after:light:bg-ink-mute'
       )}>
         <div className="aspect-1600/876 overflow-hidden rounded-[4px] bg-plate">
@@ -297,10 +297,14 @@ function Data() {
 export function Launch() {
   const m = useT().qf;
   return (
-    <footer id="launch" className="border-t border-line bg-bg-2 py-section">
-      <div className="wrap grid gap-3">
-        <span className="mono text-mute">{m.launch}</span>
-        <time dateTime="2026-06-01" className="num font-display text-stat leading-display font-extrabold text-qf-ink">2026.06.01</time>
+    <footer id="launch" className="relative isolate overflow-hidden border-t border-line bg-bg-2 py-section">
+      <div aria-hidden="true" className="absolute inset-0 -z-1 bg-[radial-gradient(var(--color-deco)_1.2px,transparent_1.2px)] bg-size-[22px_22px] mask-[linear-gradient(90deg,transparent,#000)]" />
+      <div className="wrap flex flex-wrap items-end justify-between gap-6">
+        <div className="grid gap-3">
+          <span className="mono flex items-center gap-3 text-mute before:h-0.5 before:w-6 before:rounded-full before:bg-qf">{m.launch}</span>
+          <time dateTime="2026-06-01" className="num font-display text-stat leading-display font-extrabold text-qf-ink">2026.06.01</time>
+        </div>
+        <p aria-hidden="true" className="m-0 font-display text-wordmark leading-display font-extrabold text-transparent select-none [-webkit-text-stroke:1.5px_var(--qf-line)] max-sm:hidden">Q.A.C-Flow</p>
       </div>
     </footer>
   );
