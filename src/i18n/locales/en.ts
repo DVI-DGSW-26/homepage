@@ -195,6 +195,7 @@ export const en: Messages = {
   },
 
   qf: {
+    launch: 'Q.A.C-Flow launch date',
     label: 'Q.A.C-Flow quality inspection solution',
     expand: 'Quality · Analysis · Control',
     title: 'Quality inspection without paper check sheets.',

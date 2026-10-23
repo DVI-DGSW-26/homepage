@@ -9,7 +9,7 @@ import { setLang, useLang, useT, type Lang } from '../i18n';
 import { holdPosition } from '../lib/scroll';
 import { setTheme, useTheme } from '../lib/theme';
 import { LG, pad2 } from '../lib/env';
-import { ArrowIcon, btn, cn } from './ui';
+import { cn } from './ui';
 import { Img } from './Img';
 
 const LINKS = ['/qac-flow', '/data'] as const satisfies readonly Page[];
@@ -74,9 +74,6 @@ export function Nav({ page }: { page: Page }) {
             <SunIcon className="col-start-1 row-start-1 transition-[opacity,rotate] duration-500 ease-out light:-rotate-90 light:opacity-0" />
             <MoonIcon className="col-start-1 row-start-1 rotate-90 opacity-0 transition-[opacity,rotate] duration-500 ease-out light:rotate-0 light:opacity-100" />
           </button>
-          {/* on a phone the logo, the toggles and the pill don't fit one line: the pill keeps only its arrow (the label is
-              still read out), and on a cover screen it goes (contact is at the foot of the sheet) */}
-          <a className={cn(btn({ size: 'sm' }), 'max-sm:size-8 max-sm:justify-center max-sm:p-0 max-2xs:hidden')} href="#contact"><span className="max-sm:sr-only">{m.contact}</span><ArrowIcon /></a>
           <button type="button" onClick={() => sheet.current?.showModal()} aria-label={m.open} aria-haspopup="dialog" className={cn(ROUND_BTN, 'lg:hidden')}>
             <MenuIcon />
           </button>
@@ -103,7 +100,6 @@ export function Nav({ page }: { page: Page }) {
             ))}
           </ul>
         </nav>
-        <a href="#contact" onClick={closeSheet} className={cn(btn({ acc: true }), 'mt-auto self-start')}><span>{m.contact}</span><ArrowIcon /></a>
       </div>
     </dialog>
     </>

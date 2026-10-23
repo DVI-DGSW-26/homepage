@@ -6,11 +6,10 @@ import { bootReady } from './lib/boot';
 import { followLinks, usePage, type Page } from './lib/router';
 import { useLang } from './i18n';
 import { Nav } from './components/Nav';
-import { QacFlow } from './components/QacFlow';
+import { Launch, QacFlow } from './components/QacFlow';
 import { Future } from './components/Future';
-import { Contact } from './components/Contact';
 
-/** the sections of each page; every page ends in the contact section */
+/** the sections of each page; every page ends in the launch date */
 const VIEWS: Record<Page, () => ReactNode> = {
   '/qac-flow': () => <QacFlow />,
   '/data': () => <Future />
@@ -54,7 +53,7 @@ export default function App() {
       <Nav page={page} />
       <main id="top" key={page}>
         <View />
-        <Contact />
+        <Launch />
       </main>
     </>
   );

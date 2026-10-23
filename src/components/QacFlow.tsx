@@ -8,7 +8,7 @@
 // navigation bars cropped off so they sit in the CSS phone frame.
 import { useState, type KeyboardEvent, type ReactNode } from 'react';
 import { lines, useT } from '../i18n';
-import { ArrowIcon, Eyebrow, H2, Lead, LineIcon as Icon, SEC, Section, btn, cn } from './ui';
+import { Eyebrow, H2, Lead, LineIcon as Icon, SEC, Section, cn } from './ui';
 import { Img } from './Img';
 
 const IMG = 'assets/img/qacflow/';
@@ -94,10 +94,6 @@ function Hero() {
         <Eyebrow className="rv">{m.expand}</Eyebrow>
         <H2 className="rv mt-5.5">{m.title}</H2>
         <Lead className="rv mt-5.5">{lines(m.lead)}</Lead>
-        <div className="rv mt-8 flex flex-wrap gap-3">
-          <a href="#contact" className={cn(btn(), 'border-qf bg-qf text-on-acc max-md:flex-[1_1_220px] max-md:justify-center')}><span>{m.demo}</span><ArrowIcon /></a>
-          <a href="#contact" className={cn(btn(), 'max-md:flex-[1_1_220px] max-md:justify-center')}><span>{m.poc}</span><ArrowIcon /></a>
-        </div>
         <ul className="rv m-0 mt-8 grid list-none grid-cols-3 border-t border-line p-0 md:mt-12">
           {[
             <><small className="text-[.5em] text-fg-2">~</small><span data-count="98">0</span><small className="text-[.5em] text-fg-2">%</small></>,
@@ -296,5 +292,16 @@ function Data() {
         </ol>
       </div>
     </div>
+  );
+}
+
+/** the foot of every page: just the launch date */
+export function Launch() {
+  const m = useT().qf;
+  return (
+    <footer id="launch" className="wrap grid gap-3 border-t border-line py-section">
+      <span className="mono text-mute">{m.launch}</span>
+      <time dateTime="2026-06-01" className="num font-display text-stat leading-display font-extrabold text-qf-ink">2026.06.01</time>
+    </footer>
   );
 }

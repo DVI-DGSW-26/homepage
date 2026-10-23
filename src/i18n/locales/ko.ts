@@ -202,6 +202,7 @@ export const ko = {
   },
 
   qf: {
+    launch: 'Q.A.C-Flow 출시일',
     label: 'Q.A.C-Flow 품질검사 솔루션',
     expand: 'Quality · Analysis · Control',
     title: '종이 검사표 없는 품질검사',
