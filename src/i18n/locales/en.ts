@@ -284,26 +284,68 @@ export const en: Messages = {
   future: {
     label: 'Into the data industry',
     bridge: 'The inspection data piling up\nis where the data business begins',
-    eyebrow: 'Our Future — Data Industry',
-    title: 'Into the data industry:\n<k>expanding step by step, proven at each stage</k>',
-    chainLabel: 'From manufacturing to a data business',
-    chain: [
-      { title: 'Manufacturing', sub: 'Extrusion, machining, assembly' },
-      { title: 'Data capture', sub: 'Collected in real time' },
-      { title: 'Internal PoC', sub: 'Proven in-house' },
-      { title: 'External PoC', sub: 'Proven with customers' },
-      { title: 'SaaS', sub: 'Offered as a service' },
-      { title: 'Data Business', sub: 'A business of its own' }
+    eyebrow: 'Data Industry',
+    title: 'Every inspection\nbecomes a <k>data asset</k>',
+    lead: 'Expanding into the data and AI market. Q.A.C-Flow gathers the data; Data Industry builds a business on it.',
+    storyLabel: 'From where data comes in to where it goes out',
+    story: [
+      { tag: 'Input', title: 'Q.A.C-Flow', body: 'Where data comes in. One photo captures the inspection data' },
+      { tag: 'Asset', title: 'Verified data', body: 'Measurements + photo evidence + verdicts + action history' },
+      { tag: 'Output', title: 'Data Industry', body: 'Where data goes out. SaaS · data business · credits' }
     ],
-    roadmap: 'Roadmap by stage',
-    here: 'We are here',
-    stages: [
-      { year: '2026', title: 'Internal PoC', sub: 'Sharpening our own manufacturing', items: ['Validate in-house processes', 'Test data models', 'Optimize manufacturing'] },
-      { year: '2027', title: 'External PoC', sub: 'Building out', items: ['Validate with external customers', 'Build the system', 'Field trials'] },
-      { year: '2028', title: 'SaaS product', sub: 'Commercial launch', items: ['Service launch', 'Grow the customer base', 'First revenue'] },
-      { year: '2029', title: 'Data/Credit', sub: 'Full-scale business', items: ['Data business', 'Credit system', 'Global expansion'] }
-    ],
-    closing: 'Beyond manufacturing, <k>into data and AI markets for a new engine of growth</k>'
+    why: {
+      kicker: '02 / Why us',
+      title: 'We don’t buy data. We make it.',
+      from: 'The data is gathered by Q.A.C-Flow',
+      items: [
+        { title: 'Measurements', sub: 'DIM · nominal · tolerance' },
+        { title: 'Measurement photos', sub: 'Operator and patrol evidence' },
+        { title: 'Context', sub: 'Machine · part · operator · time' },
+        { title: 'Verdicts', sub: 'OK/NG · defect type' },
+        { title: 'Action history', sub: 'Closed early · incomplete · rejected' },
+        { title: 'Approval history', sub: 'Approver · time issued' }
+      ],
+      note: 'Data verified by photos = <k>training data you can trust</k>'
+    },
+    chain: {
+      kicker: '03 / Value Chain',
+      title: 'Five steps from capturing data to a business',
+      steps: [
+        { title: 'Data capture', sub: 'Collected live on the floor' },
+        { title: 'Internal PoC', sub: 'Proven in-house' },
+        { title: 'External PoC', sub: 'Proven with customers' },
+        { title: 'SaaS', sub: 'Offered as a service' },
+        { title: 'Data Business', sub: 'A data business' }
+      ]
+    },
+    roadmap: {
+      kicker: '04 / Roadmap',
+      title: 'Expanding step by step, proven at each stage — now at stage one',
+      here: 'Now',
+      stages: [
+        { year: '2026', title: 'Internal PoC', items: ['In-house validation', 'Data model tests', 'Operational tuning'] },
+        { year: '2027', title: 'External PoC', items: ['Validate with customers', 'Build the system', 'Field trials'] },
+        { year: '2028', title: 'SaaS product', items: ['Service launch', 'Grow the customer base', 'First revenue'] },
+        { year: '2029', title: 'Data / Credit', items: ['Data business', 'Credit system', 'Global expansion'] }
+      ],
+      proof: '<k>Q.A.C-Flow in live use on the floor (since 2026.06.01)</k> — the roadmap is under way, not just a plan'
+    },
+    asset: {
+      kicker: '05 / Data Asset',
+      title: 'What the data, once gathered, is worth',
+      items: [
+        { title: 'Defect prediction', body: 'Measurements and verdicts over time flag a defect before it happens.' },
+        { title: 'Process parameter tuning', body: 'Measurements read with their machine and part context point to better process settings.' },
+        { title: 'Data credit system', body: 'Verified quality data becomes an asset that can be traded and put to use.' },
+        { title: 'Closing the quality-data gap', body: 'Floors that struggle to build up data get verified data to work with.' }
+      ]
+    },
+    partner: {
+      kicker: '06 / Partnership',
+      title: 'Partners to build the data with us',
+      tags: ['Join the External PoC', 'Partnership'],
+      closing: 'Recorded the moment it’s captured;\nas records build up, <k>they become an industry.</k>'
+    }
   },
 
   events: {

@@ -292,26 +292,68 @@ export const ko = {
     label: '데이터 산업 진입',
     /** the step at the end of Q.A.C-Flow's last block that leads here: the label above, then this */
     bridge: '쌓인 검사 데이터가\n데이터 산업의 출발점이 됩니다',
-    eyebrow: 'Our Future — Data Industry',
-    title: '데이터 산업 진입:\n<k>검증 기반 단계적 확장 전략</k>',
-    chainLabel: '제조에서 데이터 사업까지',
-    chain: [
-      { title: '제조공정', sub: '압출, 가공, 조립' },
-      { title: '데이터 확보', sub: '실시간 수집' },
-      { title: 'Internal PoC', sub: '내부 검증' },
-      { title: 'External PoC', sub: '외부 검증' },
-      { title: 'SaaS', sub: '서비스화' },
-      { title: 'Data Business', sub: '사업 확장' }
+    eyebrow: 'Data Industry',
+    title: '검사 한 건이,\n<k>데이터 자산</k>이 됩니다',
+    lead: '데이터/AI 시장으로의 확장. Q.A.C-Flow가 데이터를 모으고, Data Industry가 그 데이터로 사업을 만듭니다.',
+    storyLabel: '데이터의 입구에서 출구까지',
+    story: [
+      { tag: 'Input', title: 'Q.A.C-Flow', body: '데이터의 입구. 촬영 한 번으로 검사 데이터를 수집' },
+      { tag: 'Asset', title: '검증된 데이터', body: '측정값 + 사진 증빙 + 판정 + 조치 이력' },
+      { tag: 'Output', title: 'Data Industry', body: '데이터의 출구. SaaS · 데이터 사업 · 크레딧' }
     ],
-    roadmap: '단계별 로드맵',
-    here: 'We are here',
-    stages: [
-      { year: '2026', title: 'Internal PoC', sub: '내부 제조 경쟁력 강화', items: ['내부 공정 검증', '데이터 모델 테스트', '제조 최적화'] },
-      { year: '2027', title: 'External PoC', sub: '구축 시작', items: ['외부 고객 검증', '시스템 구축', '실증 테스트'] },
-      { year: '2028', title: 'SaaS 제품화', sub: '상용화', items: ['서비스 출시', '고객 확대', '수익화 시작'] },
-      { year: '2029', title: 'Data/Credit', sub: '사업 본격화', items: ['데이터 사업', '크레딧 시스템', '글로벌 확장'] }
-    ],
-    closing: '제조업을 넘어 <k>데이터/AI 시장으로 확장하여 새로운 성장 동력 확보</k>'
+    why: {
+      kicker: '02 / Why us',
+      title: '우리는 데이터를 직접 ‘만드는’ 기업입니다',
+      from: '데이터는 Q.A.C-Flow에서 모입니다',
+      items: [
+        { title: '측정값', sub: 'DIM · 기준값 · 공차' },
+        { title: '측정 사진', sub: '자주 · 순회 이중 증빙' },
+        { title: '맥락 정보', sub: '설비 · 제품 · 작업자 · 시점' },
+        { title: '판정 결과', sub: 'OK/NG · 불량 유형' },
+        { title: '조치 이력', sub: '조기마감 · 미완료 · 반려' },
+        { title: '승인 이력', sub: '결재자 · 발행 시각' }
+      ],
+      note: '사진으로 검증된 데이터 = <k>신뢰할 수 있는 학습 데이터</k>'
+    },
+    chain: {
+      kicker: '03 / Value Chain',
+      title: '데이터 확보에서 사업까지 5단계',
+      steps: [
+        { title: '데이터 확보', sub: '현장 실시간 수집' },
+        { title: 'Internal PoC', sub: '내부 검증' },
+        { title: 'External PoC', sub: '외부 고객 검증' },
+        { title: 'SaaS', sub: '서비스화' },
+        { title: 'Data Business', sub: '데이터 사업' }
+      ]
+    },
+    roadmap: {
+      kicker: '04 / Roadmap',
+      title: '검증 기반 단계적 확장, 지금은 1단계',
+      here: 'Now',
+      stages: [
+        { year: '2026', title: 'Internal PoC', items: ['내부 검증', '데이터 모델 테스트', '운영 최적화'] },
+        { year: '2027', title: 'External PoC', items: ['외부 고객 검증', '시스템 구축', '실증 테스트'] },
+        { year: '2028', title: 'SaaS 제품화', items: ['서비스 출시', '고객 확대', '수익화 시작'] },
+        { year: '2029', title: 'Data / Credit', items: ['데이터 사업', '크레딧 시스템', '글로벌 확장'] }
+      ],
+      proof: '<k>Q.A.C-Flow 현장 운영 중 (2026.06.01~)</k> — 로드맵은 계획이 아니라 진행 중입니다'
+    },
+    asset: {
+      kicker: '05 / Data Asset',
+      title: '쌓인 데이터가 만드는 가치',
+      items: [
+        { title: '불량 예측 모델', body: '쌓인 측정값과 판정으로 불량이 생기기 전에 미리 알아챕니다.' },
+        { title: '공정 파라미터 최적화', body: '측정값을 설비 · 제품 맥락과 함께 보고 더 나은 공정 조건을 찾습니다.' },
+        { title: '데이터 크레딧 시스템', body: '검증된 품질 데이터가 거래하고 활용할 수 있는 자산이 됩니다.' },
+        { title: '품질 데이터 격차 해소', body: '데이터를 쌓기 어려운 제조 현장도 검증된 데이터를 쓸 수 있게 합니다.' }
+      ]
+    },
+    partner: {
+      kicker: '06 / Partnership',
+      title: '함께 데이터를 만들 파트너',
+      tags: ['External PoC 참여', '파트너십'],
+      closing: '찍는 순간 기록되고,\n기록이 쌓여 <k>산업이 됩니다.</k>'
+    }
   },
 
   events: {
