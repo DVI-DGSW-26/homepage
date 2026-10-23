@@ -96,7 +96,7 @@ function Hero() {
           {[
             <><small className="text-[.5em] text-fg-2">~</small><span data-count="98">0</span><small className="text-[.5em] text-fg-2">%</small></>,
             <span data-count="0">0</span>,
-            <>2026.04<small className="text-[.5em] text-fg-2">~</small></>
+            <>2026.06<small className="text-[.5em] text-fg-2">~</small></>
           ].map((fig, i) => (
             <li key={i} className="grid content-start gap-2 pt-4.5 pr-3 not-first:border-l not-first:border-line not-first:pl-[clamp(12px,2vw,24px)]">
               <b className={cn('num flex items-baseline gap-0.5 whitespace-nowrap font-display text-stat leading-display font-extrabold', i === 0 && 'text-qf-ink')}>{fig}</b>
