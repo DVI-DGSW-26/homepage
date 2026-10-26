@@ -255,7 +255,7 @@ export const en: Messages = {
       lead: 'Every measurement lands on the shop-floor monitor as it is taken:\nprogress by machine, each value against its tolerance,\ndefects and actions, and alerts for late inspections.',
       tabsAria: 'Monitor screens',
       tabs: ['Measurement detail', 'Status board', 'Defects & actions'],
-      note: 'Screens from our in-house deployment, Korean UI. Customer names hidden.'
+      note: 'Screens from our in-house deployment. Customer names hidden.'
     },
     trace: {
       kicker: '05 / Traceability',

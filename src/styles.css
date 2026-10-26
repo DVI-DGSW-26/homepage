@@ -79,4 +79,9 @@
 
   /* characters GSAP SplitText cuts the hero headlines into (charsClass in src/components/Hero.tsx) */
   .split-char { display: inline-block }
+
+  /* the light app captures in the device mockups (src/components/Device.tsx, the browser window in
+     QacFlow.tsx), dimmed a little on the dark page so their white doesn't glare; the colours and
+     photos stay true, which an inverted "dark" capture couldn't keep */
+  html:not([data-mode="light"]) .app-screen { filter: brightness(.86) }
 }

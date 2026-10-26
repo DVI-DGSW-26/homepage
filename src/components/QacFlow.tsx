@@ -5,14 +5,25 @@
 //
 // The screens come from the in-house deployment. Customer and personal names are masked in the
 // image files themselves (public/assets/img/qacflow/), and the phone captures have the status and
-// navigation bars cropped off so they sit in the CSS iPhone (src/components/Device.tsx).
+// navigation bars cropped off so they sit in the CSS iPhone (src/components/Device.tsx). Most are
+// captured again in English (qacflow/en/, see EN below) and shown when the page is read in English.
 import { useState, type KeyboardEvent, type ReactNode } from 'react';
-import { lines, useT } from '../i18n';
+import { lines, useLang, useT } from '../i18n';
 import { Band, Eyebrow, H2, Lead, LineIcon as Icon, cn } from './ui';
 import { Img } from './Img';
 import { Monitor, Phone } from './Device';
 
 const IMG = 'assets/img/qacflow/';
+/** the screens captured again in English, under en/ as WebP; any other shows its Korean capture in English too */
+const EN = new Set(['capture', 'ocr-input', 'crop', 'mobile-compare', 'mobile-photo-compare', 'measurement-detail', 'status-board', 'defect-actions', 'web-approval', 'report-summary']);
+/** a screen's path in the language being read */
+function useScreen() {
+  const en = useLang() === 'en';
+  return (src: string) => {
+    const name = src.replace(/\.\w+$/, '');
+    return IMG + (en && EN.has(name) ? `en/${name}.webp` : src);
+  };
+}
 const MONITOR = ['measurement-detail.webp', 'status-board.webp', 'defect-actions.webp'] as const;
 
 // line icons, 24×24, drawn with the current colour
@@ -40,20 +51,22 @@ const PAIR_SIZES = '(max-width: 599px) 70vw, 350px';
 
 /** two phones turned in toward each other, the front one lower-left over the back one */
 function PhonePair({ back, front, className }: { back: Screen; front: Screen; className?: string }) {
+  const screen = useScreen();
   return (
     <div className={cn('relative mx-auto grid w-full max-w-115 grid-cols-12 items-start', className)}>
-      <Phone {...back} src={IMG + back.src} sizes={PAIR_SIZES} view="left" className="col-[4/13] row-start-1" />
-      <Phone {...front} src={IMG + front.src} sizes={PAIR_SIZES} view="right" className="z-1 col-[1/10] row-start-1 mt-[14%]" />
+      <Phone {...back} src={screen(back.src)} sizes={PAIR_SIZES} view="left" className="col-[4/13] row-start-1" />
+      <Phone {...front} src={screen(front.src)} sizes={PAIR_SIZES} view="right" className="z-1 col-[1/10] row-start-1 mt-[14%]" />
     </div>
   );
 }
 
 /** a browser window around a web screen; no address bar, so no internal URL */
 function Browser({ src, alt, sizes, caption, className }: { src: string; alt: string; sizes: string; caption?: ReactNode; className?: string }) {
+  const screen = useScreen();
   return (
     <figure className={cn('m-0 overflow-hidden rounded-[10px] border border-line-2 bg-card', className)}>
       <div aria-hidden="true" className="flex gap-1.5 border-b border-line px-3 py-2.5">{[0, 1, 2].map(i => <i key={i} className="size-2 rounded-full bg-line-2" />)}</div>
-      <Img src={IMG + src} alt={alt} sizes={sizes} className="h-auto w-full bg-plate" />
+      <Img src={screen(src)} alt={alt} sizes={sizes} className="app-screen h-auto w-full bg-plate" />
       {caption && <figcaption className="mono border-t border-line px-3.5 py-2.5 text-mute">{caption}</figcaption>}
     </figure>
   );
@@ -145,6 +158,7 @@ function Problem() {
 
 function How() {
   const m = useT().qf;
+  const screen = useScreen();
   const h = m.how;
   return (
     <div>
@@ -152,7 +166,7 @@ function How() {
       {/* the three screens in step, each over its column of the steps below */}
       <div data-batch className="mx-auto grid max-w-300 grid-cols-3 gap-[clamp(12px,4vw,64px)]">
         {([['capture.webp', m.alt.capture, true], ['crop.webp', m.alt.crop], ['ocr-input.webp', m.alt.ocr]] as const).map(([src, alt, dark]) => (
-          <Phone key={src} src={IMG + src} alt={alt} dark={dark} sizes="(max-width: 1200px) 32vw, 390px" className="rv mx-auto w-full max-w-97.5" />
+          <Phone key={src} src={screen(src)} alt={alt} dark={dark} sizes="(max-width: 1200px) 32vw, 390px" className="rv mx-auto w-full max-w-97.5" />
         ))}
       </div>
       <ol data-batch className="m-0 mx-auto mt-10 grid max-w-300 list-none gap-5.5 p-0 sm:grid-cols-3 sm:gap-[clamp(20px,4vw,64px)]">
@@ -196,6 +210,7 @@ function Workflow() {
 
 function Live() {
   const m = useT().qf;
+  const screen = useScreen();
   const l = m.live;
   const [tab, setTab] = useState(0);
   const onKey = (e: KeyboardEvent<HTMLButtonElement>) => {
@@ -219,7 +234,7 @@ function Live() {
       <Monitor className="rv mx-auto mb-8 max-w-300">
         {MONITOR.map((src, i) => (
           <div key={src} role="tabpanel" id={`qf-panel-${i}`} aria-labelledby={`qf-tab-${i}`} hidden={tab !== i} className="size-full">
-            <Img src={IMG + src} alt={m.alt.monitor[i]} sizes="(max-width: 1260px) 96vw, 1200px" className="size-full object-cover object-top-left" />
+            <Img src={screen(src)} alt={m.alt.monitor[i]} sizes="(max-width: 1260px) 96vw, 1200px" className="size-full object-cover object-top-left" />
           </div>
         ))}
       </Monitor>

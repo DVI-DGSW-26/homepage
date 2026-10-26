@@ -57,7 +57,7 @@ pnpm coast      # 지도 해안선 데이터 다시 만들기 (결과는 커밋�
 | `src/components/Equipment.tsx` | 설비, 시험장비 표, 설비 사진 |
 | `src/components/Rnd.tsx` | R&D, 텔레메트리, ESG, 인증서 마키 |
 | `src/components/Global.tsx` | 글로벌 거점 지도와 거점 목록, 연혁(History) |
-| `src/components/QacFlow.tsx` | Q.A.C-Flow 품질검사 솔루션 페이지(`/qac-flow`). 화면 캡처는 `public/assets/img/qacflow/` (고객사명, 작업자 실명은 이미지에서 가림). 제품색 마젠타는 `qf-*` 토큰으로 이 섹션에서만 씀. CES QR 코드 `/?lang=en#qac-flow` 는 이 페이지로 이동 |
+| `src/components/QacFlow.tsx` | Q.A.C-Flow 품질검사 솔루션 페이지(`/qac-flow`). 화면 캡처는 `public/assets/img/qacflow/` (고객사명, 작업자 실명은 이미지에서 가림), 영어판 캡처는 `qacflow/en/` 에 같은 이름의 WebP 로 두고 `EN` 목록에 올리면 영어 모드에서 그걸 씀(없으면 한국어 캡처). 제품색 마젠타는 `qf-*` 토큰으로 이 섹션에서만 씀. CES QR 코드 `/?lang=en#qac-flow` 는 이 페이지로 이동 |
 | `src/components/Future.tsx` | 데이터 산업 페이지(`/data`): 제조에서 데이터 사업까지의 흐름, 2026–2029 로드맵 |
 | `src/components/Events.tsx` | 행사 목록과 상세 (지금은 어느 페이지에도 없음) |
 | `src/components/Contact.tsx` | 문의, 푸터(모든 페이지), 커뮤니티(지금은 어느 페이지에도 없음) |

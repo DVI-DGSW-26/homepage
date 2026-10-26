@@ -93,7 +93,7 @@ export function Phone({ src, alt, sizes, dark, view = 'front', className }: { sr
           <div className={cn('relative bg-linear-135 from-titanium-hi via-titanium to-titanium-hi', !turn && 'shadow-device')}
             style={{ aspectRatio: `${BODY.w} / ${BODY.h}`, borderRadius: mm(r) }}>
             <div className="absolute bg-glass ring-1 ring-white/10" style={{ inset: mm(GLASS), borderRadius: mm(r - GLASS) }}>
-              <div className={cn('absolute flex flex-col overflow-hidden', dark ? 'bg-glass text-on-photo' : 'bg-plate text-glass')}
+              <div className={cn('app-screen absolute flex flex-col overflow-hidden', dark ? 'bg-glass text-on-photo' : 'bg-plate text-glass')}
                 style={{ '--pt': mm((BODY.w - 2 * DISPLAY) / 440), inset: mm(DISPLAY - GLASS), borderRadius: mm(RADIUS) } as CSSProperties}>
                 <div aria-hidden="true" className="relative grid h-[calc(var(--pt)*62)] flex-none grid-cols-[1fr_calc(var(--pt)*126)_1fr] items-center pt-[calc(var(--pt)*4)]">
                   <span className="num justify-self-center pl-[calc(var(--pt)*10)] text-[calc(var(--pt)*17)] leading-none font-semibold tracking-tight">9:41</span>
@@ -123,7 +123,7 @@ export function Monitor({ children, className }: { children: ReactNode; classNam
       <div className="relative z-1 rounded-[1.5cqw] bg-linear-to-b from-alu-hi via-alu to-alu-lo p-[.18cqw] shadow-device">
         <div className="relative rounded-[1.35cqw] bg-glass p-[1.6cqw]">
           <i aria-hidden="true" className="absolute top-[.6cqw] left-1/2 size-[.45cqw] -translate-x-1/2 rounded-full bg-titanium ring-[.12cqw] ring-white/5" />
-          <div className="relative aspect-1600/876 overflow-hidden rounded-[.3cqw] bg-plate">
+          <div className="app-screen relative aspect-1600/876 overflow-hidden rounded-[.3cqw] bg-plate">
             {children}
             {/* a faint reflection across the glass */}
             <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-linear-115 from-white/12 via-white/0 via-35% to-transparent mix-blend-soft-light" />
