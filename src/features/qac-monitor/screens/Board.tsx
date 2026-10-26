@@ -32,11 +32,14 @@ export function Board({ onOpen }: { onOpen: (line: number) => void }) {
         </div>
         <div className={cn(CARD, 'px-4 py-3')}>
           <span className={KPI_LABEL}><Kind patrol />{c.queue}</span>
-          {/* the breakdown goes under the figure where the card is too narrow for it (the iPad, in English) */}
+          {/* the breakdown goes under the figure where the card is too narrow for it (the iPad, in English),
+              and breaks between its parts if still too wide; each part's rule is clipped where it starts a line */}
           <span className="flex flex-wrap items-baseline gap-x-3">
             <b className={cn(FIGURE, 'text-m-rov')}>{QUEUED[0] + QUEUED[1] + QUEUED[2]}</b>
-            <span className="text-m-2xs font-medium tracking-caption whitespace-nowrap text-m-fg2">
-              {c.queueSub.map((t, i) => <span key={t} className={cn(i > 0 && 'ml-2 border-l border-m-line pl-2', i === 2 && 'text-m-ng')}>{t} {QUEUED[i]}</span>)}
+            <span className="overflow-hidden text-m-2xs font-medium tracking-caption text-m-fg2">
+              <span className="-ml-4.25 flex flex-wrap">
+                {c.queueSub.map((t, i) => <span key={t} className={cn('ml-2 border-l border-m-line pl-2 whitespace-nowrap', i === 2 && 'text-m-ng')}>{t} {QUEUED[i]}</span>)}
+              </span>
             </span>
           </span>
         </div>
@@ -100,8 +103,8 @@ function LineRow({ l, onOpen }: { l: Line; onOpen: () => void }) {
         {SLOTS.map((_, i) => {
           const [s, by] = l.patrol[i] ?? ['none'], glyph = PATROL_GLYPH[s];
           return (
-            <span key={i} className={cn('flex h-5.5 items-center justify-center gap-1 rounded-md text-m-xs leading-none font-semibold tracking-caption', PATROL_CELL[s])}>
-              {s === 'queue' ? <Glyph n="clock" className="size-3" /> : by != null ? <>{glyph && <Glyph n={glyph} className="size-2.5" />}{tr(PATROL[by])}</> : '–'}
+            <span key={i} className={cn('flex h-5.5 min-w-0 items-center justify-center gap-1 rounded-md px-1 text-m-xs leading-none font-semibold tracking-caption', PATROL_CELL[s])}>
+              {s === 'queue' ? <Glyph n="clock" className="size-3" /> : by != null ? <>{glyph && <Glyph n={glyph} className="size-2.5 flex-none" />}<span className="truncate">{tr(PATROL[by])}</span></> : '–'}
             </span>
           );
         })}

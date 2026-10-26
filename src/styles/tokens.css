@@ -43,10 +43,11 @@
 
   /* ---- type scale ----
      No size carries a paired line-height (--text-*--line-height): text-* sets the size only,
-     and leading comes from leading-* or the inherited body leading. */
-  --text-tag: .66rem;          /* badges, tiny counters */
-  --text-micro: .7rem;         /* mono labels on photos and cards */
-  --text-label: .74rem;        /* mono labels and values */
+     and leading comes from leading-* or the inherited body leading.
+     Nothing goes under .75rem (12px): smaller, the Plex faces blur on Windows. */
+  --text-tag: .75rem;          /* badges, tiny counters */
+  --text-micro: .75rem;        /* mono labels on photos and cards */
+  --text-label: .78rem;        /* mono labels and values */
   --text-mono-sm: .78rem;      /* step numbers */
   --text-mono: .8rem;          /* the mono utility */
   --text-caption: .84rem;
@@ -119,8 +120,10 @@
 
   /* ---- the floor monitor (src/features/qac-monitor) ----
      Drawn at the floor screen's own 1600 × 876 and zoomed to fit, so its sizes are pixels of that
-     screen, not rem. Set in a Mac app's system type, tracked as macOS does. */
-  --font-mac: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Apple SD Gothic Neo', var(--font-sans);
+     screen, not rem. Set in a Mac app's system type, tracked as macOS does. Zoomed down, its 12–15px
+     land near 9–11px, where the Plex webfont blurs on Windows; there the system UI faces stand in. */
+  --font-mac: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Apple SD Gothic Neo',
+    'Segoe UI Variable Text', 'Segoe UI', 'Malgun Gothic', var(--font-sans);
   --tracking-mac: -.005em;
   --tracking-caption: .01em;     /* small medium-weight captions */
   --text-m-2xs: 12px;            /* counts, tolerance labels */
