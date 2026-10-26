@@ -49,9 +49,18 @@
 @utility mono { font-family: var(--font-mono); font-size: var(--text-mono); letter-spacing: var(--tracking-widest); text-transform: uppercase; font-weight: 500 }
 @utility num { font-variant-numeric: tabular-nums }
 
+/* ---- decorations behind a band, in the quiet deco colour ---------------- */
+@utility deco-dots { background-image: radial-gradient(var(--color-deco) 1.2px, transparent 1.2px); background-size: 22px 22px }
+@utility deco-grid {
+  background-image: linear-gradient(var(--color-deco) 1px, transparent 1px), linear-gradient(90deg, var(--color-deco) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+/* outlined display type: hollow-deco, hollow-qf-line, … (any colour token) */
+@utility hollow-* { color: transparent; -webkit-text-stroke: 1.5px --value(--color-*) }
+
 @layer components {
   /* the light app captures in the phone mockups (src/components/Device.tsx, the browser window in
-     QacFlow.tsx), dimmed a little on the dark page so their white doesn't glare; the colours and
+     src/pages/qac-flow/parts.tsx), dimmed a little on the dark page so their white doesn't glare; the colours and
      photos stay true, which an inverted "dark" capture couldn't keep */
   html:not([data-mode="light"]) .app-screen { filter: brightness(.86) }
 }

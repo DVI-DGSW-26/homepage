@@ -15,13 +15,14 @@ export const cn = extendTailwindMerge({
   extend: {
     theme: {
       text: ['tag', 'micro', 'label', 'mono-sm', 'mono', 'caption', 'small', 'body-sm', 'body', 'body-lg', 'page', 'title-xs', 'title', 'title-lg',
-        'menu', 'h2', 'h2-lg', 'wordmark', 'stat', 'milestone',
+        'unit', 'unit-lg', 'menu', 'h2', 'h2-lg', 'wordmark', 'stat', 'milestone', 'mark',
         'm-2xs', 'm-xs', 'm-sm', 'm-base', 'm-md', 'm-lg', 'm-xl', 'm-2xl', 'm-3xl', 'm-4xl', 'm-5xl', 'm-6xl'],
       tracking: ['heading', 'heading-sm', 'mac', 'caption'],
       leading: ['display', 'h2', 'title', 'caption', 'copy', 'page'],
-      spacing: ['gutter', 'wrap', 'section', 'sec-head', 'stack-sm', 'panel-pad', 'nav-gap', 'nav-gap-tight', 'logo', 'hinge', 'hinge-gap'],
+      spacing: ['gutter', 'wrap', 'section', 'sec-head', 'stack-sm', 'split-gap', 'block-gap', 'col-gap', 'phone-gap', 'step-gap', 'stat-gap',
+        'panel-pad', 'nav-gap', 'nav-gap-tight', 'logo', 'glow', 'hinge', 'hinge-gap'],
       container: ['page', 'lead'],
-      radius: ['card', 'pill', 'm-card'],
+      radius: ['card', 'window', 'pill', 'm-card'],
       breakpoint: ['2xs', 'sm', 'md', 'lg', 'xl'],
       ease: ['out', 'theme', 'm-spring'],
       shadow: ['device', 'm-card', 'm-icon', 'm-thumb', 'm-swatch', 'm-alert', 'm-halo']
@@ -38,13 +39,13 @@ export const cn = extendTailwindMerge({
 export function Band({ alt, cover, mark, className, children, ...rest }: ComponentProps<'section'> & { alt?: boolean; cover?: boolean; mark?: string }) {
   return (
     <section className={cn('relative isolate overflow-hidden border-t border-line py-section first:border-t-0', alt && 'bg-bg-2', cover && 'grid min-h-svh content-center', className)} {...rest}>
-      {alt && <div aria-hidden="true" className="absolute inset-0 -z-1 bg-[radial-gradient(var(--color-deco)_1.2px,transparent_1.2px)] bg-size-[22px_22px] mask-[radial-gradient(ellipse_80%_70%_at_50%_40%,#000,transparent)]" />}
+      {alt && <div aria-hidden="true" className="absolute inset-0 -z-1 deco-dots mask-[radial-gradient(ellipse_80%_70%_at_50%_40%,#000,transparent)]" />}
       {cover && <>
-        <div aria-hidden="true" className="absolute inset-0 -z-1 bg-[linear-gradient(var(--color-deco)_1px,transparent_1px),linear-gradient(90deg,var(--color-deco)_1px,transparent_1px)] bg-size-[64px_64px] mask-[radial-gradient(ellipse_70%_60%_at_60%_45%,#000,transparent)]" />
-        <div aria-hidden="true" className="absolute top-[10%] right-[-10%] -z-1 size-[min(70vw,760px)] rounded-full bg-[radial-gradient(circle,var(--color-acc-glow),transparent_65%)] blur-2xl" />
+        <div aria-hidden="true" className="absolute inset-0 -z-1 deco-grid mask-[radial-gradient(ellipse_70%_60%_at_60%_45%,#000,transparent)]" />
+        <div aria-hidden="true" className="absolute top-1/10 -right-1/10 -z-1 size-glow rounded-full bg-radial/srgb from-acc-glow to-transparent to-65% blur-2xl" />
       </>}
       <div className="wrap relative">
-        {mark && <span aria-hidden="true" className="pointer-events-none absolute -top-4 right-0 -z-1 font-display text-[clamp(7rem,16vw,15rem)] leading-none font-extrabold text-transparent select-none [-webkit-text-stroke:1.5px_var(--color-deco)] max-sm:hidden">{mark}</span>}
+        {mark && <span aria-hidden="true" className="pointer-events-none absolute -top-4 right-0 -z-1 font-display text-mark leading-none font-extrabold select-none hollow-deco max-sm:hidden">{mark}</span>}
         {children}
       </div>
     </section>
@@ -55,6 +56,11 @@ export function Eyebrow({ className, ...rest }: ComponentProps<'div'>) {
   return <div className={cn("mono flex items-center gap-3.5 text-fg-2 before:h-px before:w-8.5 before:bg-line-2", className)} {...rest} />;
 }
 
+/** a block's kicker: mono caps after a short green rule; `center` rules it on both sides */
+export function Kicker({ center, className, ...rest }: ComponentProps<'p'> & { center?: boolean }) {
+  return <p className={cn('mono m-0 flex items-center gap-3 text-qf-ink before:h-0.5 before:w-6 before:rounded-full before:bg-qf', center && 'after:h-0.5 after:w-6 after:rounded-full after:bg-qf', className)} {...rest} />;
+}
+
 export function H2({ className, ...rest }: ComponentProps<'h2'>) {
   return <h2 className={cn('m-0 text-h2 leading-h2 font-semibold tracking-tight text-balance', className)} {...rest} />;
 }
@@ -63,7 +69,7 @@ export function Lead({ className, ...rest }: ComponentProps<'p'>) {
   return <p className={cn('m-0 max-w-lead text-fg-2', className)} {...rest} />;
 }
 
-/** a 24×24 line icon drawn with the current colour; `d` is the path (Q.A.C-Flow, the data-industry roadmap) */
+/** a 24×24 line icon drawn with the current colour; `d` is its path (ICON in ./icons) */
 export function LineIcon({ d, className }: { d: string; className?: string }) {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" className={cn('fill-none stroke-current stroke-[1.5] [stroke-linecap:round] [stroke-linejoin:round]', className)}>

@@ -6,17 +6,17 @@ import { bootReady } from './lib/boot';
 import { followLinks, usePage, type Page } from './lib/router';
 import { useLang } from './i18n';
 import { Nav } from './components/Nav';
-import { Launch, QacFlow } from './components/QacFlow';
-import { Future } from './components/Future';
+import { Launch } from './components/Launch';
+import { QacFlowPage } from './pages/qac-flow/QacFlowPage';
+import { DataPage } from './pages/data/DataPage';
 
 /** the sections of each page; every page ends in the launch date */
 const VIEWS: Record<Page, () => ReactNode> = {
-  '/qac-flow': () => <QacFlow />,
-  '/data': () => <Future />
+  '/qac-flow': () => <QacFlowPage />,
+  '/data': () => <DataPage />
 };
 
 export default function App() {
-  // the whole tree re-renders on a language switch, so every t() answers in the new language
   const lang = useLang(), page = usePage();
   useEffect(smoothAnchors, []);
   useEffect(followLinks, []);

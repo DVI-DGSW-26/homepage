@@ -58,6 +58,9 @@
   --text-title-xs: 1.15rem;
   --text-title: 1.25rem;
   --text-title-lg: 1.35rem;
+  /* units and signs set beside a figure, sized against it */
+  --text-unit: .5em;
+  --text-unit-lg: .7em;        /* a date among the figures */
   /* fluid display sizes */
   --text-menu: clamp(1.9rem, 6vw, 3rem);        /* the links in the menu sheet */
   --text-h2: clamp(1.85rem, 3.9vw, 3.5rem);
@@ -65,6 +68,7 @@
   --text-wordmark: clamp(3.6rem, 9vw, 8rem);    /* the Q.A.C-Flow name */
   --text-stat: clamp(2rem, 4.2vw, 3.4rem);      /* Q.A.C-Flow figures */
   --text-milestone: clamp(2rem, 3.6vw, 3rem);   /* data-industry roadmap years */
+  --text-mark: clamp(7rem, 16vw, 15rem);        /* the outlined chapter mark ("01") behind a band */
 
   /* ---- letter-spacing (.1em is Tailwind's tracking-widest, -.025em its tracking-tight) ---- */
   --tracking-heading: -.02em;
@@ -84,11 +88,18 @@
   --spacing-section: clamp(80px, 9vw, 136px);   /* vertical rhythm of a section */
   --spacing-sec-head: clamp(48px, 6vw, 88px);   /* under a section heading */
   --spacing-stack-sm: clamp(40px, 5vw, 72px);
+  --spacing-split-gap: clamp(32px, 4vw, 56px);  /* between a screen and its steps, side by side */
+  --spacing-block-gap: clamp(28px, 3vw, 40px);  /* between blocks stacked in a column */
+  --spacing-col-gap: clamp(20px, 4vw, 64px);    /* between the columns of a row of steps */
+  --spacing-phone-gap: clamp(12px, 4vw, 64px);  /* between phones in a row; they stay three across on a phone */
+  --spacing-step-gap: clamp(16px, 2vw, 32px);   /* between the five workflow steps */
+  --spacing-stat-gap: clamp(12px, 2vw, 24px);   /* inside a figure's rule in the hero strip */
   --spacing-panel-pad: clamp(16px, 2vw, 24px);
   --spacing-nav-gap: clamp(18px, 3vw, 40px);
   --spacing-nav-gap-tight: clamp(12px, 1.6vw, 24px);
   /* fluid widths */
   --spacing-logo: clamp(110px, 9vw, 136px);
+  --spacing-glow: min(70vw, 760px);             /* the accent glow behind an opening band */
   /* the hinge of a dual-screen device spanned side by side (0 anywhere else), and a column gap
      that clears it with a gutter on either side (the spanned: variant) */
   --spacing-hinge: max(0px, env(viewport-segment-left 1 0, 0px) - env(viewport-segment-right 0 0, 0px));
@@ -101,6 +112,7 @@
   --ease-out: cubic-bezier(.16, 1, .3, 1);
   --ease-theme: cubic-bezier(.45, 0, .2, 1);   /* the colour-mode crossfade */
   --radius-card: 8px;
+  --radius-window: 10px; /* a browser window around a web capture */
   --radius-pill: 40px;   /* a length, not 9999px, so the header's bar-to-pill change can animate */
 
   /* a device standing off the page: a long soft fall and a tighter contact shadow */

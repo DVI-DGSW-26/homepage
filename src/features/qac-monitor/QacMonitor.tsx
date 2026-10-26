@@ -1,4 +1,4 @@
-// The Q.A.C-Flow floor monitor, rebuilt in React for the live-monitoring block (QacFlow.tsx, Live):
+// The Q.A.C-Flow floor monitor, rebuilt in React for the live-monitoring block (src/pages/qac-flow/sections/Live.tsx):
 // the three screens of the in-house app as one app the visitor can work, switched from its own
 // toolbar as on the floor.
 //
