@@ -10,12 +10,12 @@ const dist = path.join(root, 'dist');
 const pub = path.join(root, 'public');
 const mime = { '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.svg': 'image/svg+xml', '.webp': 'image/webp', '.ico': 'image/x-icon' };
 
-// The site splits the WebGL scenes (and three.js) into chunks it loads on demand; a single file has
-// nowhere to load them from, so it gets its own build with every dynamic import folded into one script.
+// A chunk loaded on demand (a dynamic import) would have nowhere to load from in a single file, so it
+// gets its own build with code splitting off: everything in one script.
 const out = path.join(root, 'node_modules/.cache/dv-single');
 await build({
   root, logLevel: 'warn', configFile: path.join(root, 'vite.config.ts'),
-  build: { outDir: out, emptyOutDir: true, copyPublicDir: false, chunkSizeWarningLimit: 1300, rolldownOptions: { output: { inlineDynamicImports: true } } }
+  build: { outDir: out, emptyOutDir: true, copyPublicDir: false, chunkSizeWarningLimit: 1300, rolldownOptions: { output: { codeSplitting: false } } }
 });
 
 const html = await fs.readFile(path.join(out, 'index.html'), 'utf8');

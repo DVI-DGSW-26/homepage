@@ -6,7 +6,7 @@
    Every design value is a token in token.css; animation has its own file,
    animation.css. Layout and type live in the components as utilities. What
    stays here is what utilities can't say: base element styles, the shared
-   type utilities, range-slider thumbs, and the nodes GSAP SplitText creates.
+   type utilities and the floor monitor's palette.
    ============================================================ */
 /* classes are collected from src/ only — the repo also holds docs and agent skills full of example markup */
 @import "tailwindcss" source(".");
@@ -17,21 +17,9 @@
 @custom-variant light (&:where([data-mode="light"] *));
 /* until the hero entrance starts (html[data-ready] is set by src/components/Hero.tsx) */
 @custom-variant booting (&:where(html:not([data-ready]) *));
-/* ---- screen shape and posture (the widths are the breakpoints in token.css; keep src/lib/env.ts in step) ----
-   narrow: one column, a phone or any tablet held upright; wide: everything else (the exact complement) */
-@custom-variant narrow { @media (width < 600px), (width < 1200px) and (orientation: portrait) { @slot; } }
-@custom-variant wide { @media (width >= 1200px), (width >= 600px) and (orientation: landscape) { @slot; } }
-/* a phone on its side: too low for anything sized to the height of the screen */
-@custom-variant low (@media (orientation: landscape) and (max-height: 540px));
-/* tall enough for a panel that sticks beside a list */
-@custom-variant tall (@media (min-height: 700px));
-/* short screens (a landscape laptop with the browser chrome showing): the profile lab drops its long copy */
-@custom-variant short (@media (max-height: 780px));
 /* a dual-screen device spanned side by side (Surface Duo, a foldable reporting its fold): a hinge runs
-   down the middle, so two-column blocks put one column on each screen (hinge-cols) */
+   down the middle, so grids open their column gap over it (gap-x-hinge) */
 @custom-variant spanned (@media (horizontal-viewport-segments: 2));
-/* ...spanned one screen above the other: the hinge runs across the middle */
-@custom-variant spanned-y (@media (vertical-viewport-segments: 2));
 
 @layer base {
   /* the page background, per mode; a switch crossfades it (animation.css) */
@@ -59,28 +47,9 @@
 /* for full-bleed blocks: padding that lines the content up with the wrap column */
 @utility pad-wrap { padding-inline: calc((100% - var(--spacing-wrap)) / 2) }
 @utility mono { font-family: var(--font-mono); font-size: var(--text-mono); letter-spacing: var(--tracking-widest); text-transform: uppercase; font-weight: 500 }
-@utility disp { font-family: var(--font-display); font-weight: 800; text-transform: uppercase; line-height: var(--leading-display); letter-spacing: var(--tracking-display); text-wrap: balance }
 @utility num { font-variant-numeric: tabular-nums }
-/* two equal columns either side of a spanned device's hinge (the wrap column is centred, so the gap lands on it) */
-@utility hinge-cols { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--spacing-hinge-gap) }
-@utility text-stroke { color: transparent; -webkit-text-stroke: 1px var(--fg-2) }
-/* liquid glass: a frosted pane over a scene, with a sheen across one corner and a lit top edge */
-@utility glass {
-  background: linear-gradient(135deg, var(--glass-sheen), transparent 40%), var(--glass);
-  backdrop-filter: blur(20px) saturate(1.6);
-  border: 1px solid var(--glass-edge);
-  box-shadow: inset 0 1px 0 var(--glass-hi), inset 0 0 24px -12px var(--glass-hi), var(--glass-drop);
-}
 
 @layer components {
-  /* configurator sliders: the thumb only exists as a vendor pseudo-element */
-  .range { appearance: none; width: 100%; height: 24px; background: linear-gradient(var(--line-2), var(--line-2)) center / 100% 2px no-repeat; outline: 0; margin: -4px 0 -6px; cursor: pointer }
-  .range::-webkit-slider-thumb { appearance: none; width: 16px; height: 16px; border-radius: 50%; background: var(--fg); border: 3px solid var(--bg); box-shadow: 0 0 0 1px var(--fg); cursor: pointer }
-  .range::-moz-range-thumb { width: 12px; height: 12px; border-radius: 50%; background: var(--fg); border: 2px solid var(--bg); cursor: pointer }
-
-  /* characters GSAP SplitText cuts the hero headlines into (charsClass in src/components/Hero.tsx) */
-  .split-char { display: inline-block }
-
   /* the light app captures in the phone mockups (src/components/Device.tsx, the browser window in
      QacFlow.tsx), dimmed a little on the dark page so their white doesn't glare; the colours and
      photos stay true, which an inverted "dark" capture couldn't keep */

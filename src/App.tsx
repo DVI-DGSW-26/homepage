@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, type ReactNode } from 'react';
-import { gsap, ScrollTrigger, useGSAP } from './lib/gsap';
+import { ScrollTrigger, useGSAP } from './lib/gsap';
 import { landOnHash, releasePosition, scroll, smoothAnchors } from './lib/scroll';
 import { setupReveals } from './lib/reveals';
 import { bootReady } from './lib/boot';
@@ -43,8 +43,6 @@ export default function App() {
     // one refresh now puts them right. (ScrollTrigger refreshes again by itself on window load.)
     ScrollTrigger.refresh();
     landOnHash();
-    // debug handle (harmless in production)
-    Object.assign(window, { __dv: { gsap, ScrollTrigger, scroll } });
   }, { dependencies: [page], revertOnUpdate: true });
 
   const View = VIEWS[page];
