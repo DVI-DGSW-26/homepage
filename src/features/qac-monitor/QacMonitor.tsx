@@ -15,7 +15,7 @@ import { setLang, useLang, useT } from '../../i18n';
 import { useInterval } from '../../lib/useInterval';
 import { cn } from '../../lib/cn';
 import { DEFECTS, LINES, QUEUE } from './data';
-import { Fit } from './Fit';
+import { Fit, type Form } from './Fit';
 import { Glyph } from './Glyph';
 import { Clock, TOOL, TOOL_ON } from './parts';
 import { Board } from './screens/Board';
@@ -25,21 +25,22 @@ import { Defects } from './screens/Defects';
 /** the screens, in the order of the page's tabs */
 export const SCREENS = ['detail', 'board', 'defects'] as const;
 export type MonitorScreen = (typeof SCREENS)[number];
-/** the order of the app's own toolbar tabs */
-const NAV: readonly MonitorScreen[] = ['board', 'detail', 'defects'];
+/** the order of the app's own toolbar tabs (the phone's tab bar too) */
+export const NAV: readonly MonitorScreen[] = ['board', 'detail', 'defects'];
 /** the count beside a toolbar tab */
-const COUNTS: Partial<Record<MonitorScreen, number>> = { detail: LINES.length, defects: DEFECTS.length };
+export const COUNTS: Partial<Record<MonitorScreen, number>> = { detail: LINES.length, defects: DEFECTS.length };
 const TOOLBAR_BTN = cn(TOOL, 'flex h-8 gap-1.5 px-2.5 text-m-xs font-medium');
 
-/** `screen` is the one showing, and `onScreen` asks for another */
-export function QacMonitor({ screen, onScreen }: { screen: MonitorScreen; onScreen: (s: MonitorScreen) => void }) {
+/** `screen` is the one showing, and `onScreen` asks for another; `form` is the screen it is drawn for
+ * (the floor's display, or an iPad on its side: the same layout, taller) */
+export function QacMonitor({ screen, onScreen, form = 'monitor' }: { screen: MonitorScreen; onScreen: (s: MonitorScreen) => void; form?: Exclude<Form, 'phone'> }) {
   const lang = useLang(), c = useT().monitor;
   const [cycling, setCycling] = useState(false);
   const [picked, setPicked] = useState(0);
   // cycling, it moves on to the next toolbar screen every 8 s, as the floor monitor does on its own
   useInterval(cycling, () => onScreen(NAV[(NAV.indexOf(screen) + 1) % NAV.length]), 8000);
   return (
-    <Fit>
+    <Fit form={form}>
       <div lang={lang} className="qac-monitor relative flex size-full flex-col bg-m-bg font-mac text-m-base tracking-mac text-m-fg">
         {/* the toolbar: the Mac's toolbar tone, solid, since nothing scrolls under it here (a
             backdrop blur would only put it on its own layer and soften its text) */}
@@ -73,7 +74,7 @@ export function QacMonitor({ screen, onScreen }: { screen: MonitorScreen; onScre
         <div key={screen} className="m-in min-h-0 flex-1 px-4 pt-18 pb-4">
           {screen === 'board' && <Board onOpen={line => { setPicked(QUEUE.indexOf(line)); onScreen('detail'); }} />}
           {screen === 'detail' && <Detail picked={picked} onPick={setPicked} />}
-          {screen === 'defects' && <Defects />}
+          {screen === 'defects' && <Defects form={form} />}
         </div>
       </div>
     </Fit>

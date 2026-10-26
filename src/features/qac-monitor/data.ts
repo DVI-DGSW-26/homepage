@@ -130,3 +130,26 @@ export const ACTIONS: Action[] = [
   { kind: 'stop', line: 7, hours: 5, why: ['치수 이탈 3회 연속', 'Out of spec three times in a row'], state: 'report' },
   { kind: 'open', line: 8, hours: 6, why: ['측정기 교정 중', 'Gauge being calibrated'], state: 'ok' }
 ];
+
+// ---- figures derived from the sample, counted once (it never changes) ----
+const SELF_ALL = LINES.flatMap(l => l.self), PATROL_ALL = LINES.flatMap(l => l.patrol);
+const nSelf = (s: Self) => SELF_ALL.filter(x => x[0] === s).length;
+const nPatrol = (s: Patrol) => PATROL_ALL.filter(x => x[0] === s).length;
+/** self-inspection slots completed, in progress, skipped, remaining */
+export const SELF_COUNTS = [nSelf('done') + nSelf('ok'), nSelf('run'), nSelf('skip'), nSelf('idle')];
+/** self-inspection slots past their time */
+export const LATE = SELF_ALL.filter(x => x[1]).length;
+/** the patrol queue: drafting, awaiting, rejected */
+export const QUEUED = [nPatrol('run'), nPatrol('queue'), nPatrol('reject')];
+export const BY_KIND = Object.fromEntries(KINDS.map(k => [k, DEFECTS.filter(d => d.kind === k).length])) as Record<DefectKind, number>;
+export const STOPPED = ACTIONS.filter(a => a.kind === 'stop').length;
+/** the day's inspections: run, completed (and the share), with a defect (and the defect rate) */
+export const TODAY = { run: 46, done: 28, donePct: 61, ng: 8, ngRate: '17.4' };
+
+/** a value's verdict: a judgement as given, a measurement against its limits (none until measured) */
+export const verdictOf = (v: Value | undefined, x: Item) =>
+  v == null ? null : typeof v === 'string' ? v : v > x.nom! + x.up! + 1e-9 || v < x.nom! - x.lo! - 1e-9 ? 'ng' : 'ok';
+/** decimals to show a value in: as many as it or its spec has */
+export const digits = (x: Item, v: number) => Math.max(...[v, x.nom!, x.up!, x.lo!].map(n => (String(n).split('.')[1] ?? '').length));
+/** an item's spec as the floor writes it: 10 ±0.1, 48 +0.1/-0.2, or none for an OK/NG judgement */
+export const specOf = (x: Item) => x.nom == null ? null : x.up === x.lo ? `${x.nom} ±${x.up}` : `${x.nom} +${x.up}/-${x.lo}`;

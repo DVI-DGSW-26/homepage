@@ -6,10 +6,13 @@
 //              buttons and Camera Control, the Dynamic Island, an HTML status bar (9:41, so the capture
 //              needs none of its own) and the home indicator; face on, or turned in CSS 3D with its
 //              side showing its true thickness
-//   <Monitor>  a Studio Display: black glass bezel with the camera, aluminum edge, stand and foot;
-//              its screen is the floor app in React (src/features/qac-monitor), themed with the page, so not dimmed
+//              or around an HTML screen of its own (children) in place of a capture
+//   <Tablet>   an iPad Pro 13" on its side: aluminum edge, an even black bezel, the camera on the long edge
+//   <Monitor>  a Studio Display: black glass bezel with the camera, aluminum edge, stand and foot
 //
-// Both are container-query sized (@container, cqw units), so they keep their proportions however wide
+// The tablet and the monitor, and the phone given children, show the floor app in React
+// (src/features/qac-monitor), themed with the page, so not dimmed as the captures are.
+// All are container-query sized (@container, cqw units), so they keep their proportions however wide
 // they are drawn.
 import type { CSSProperties, ReactNode } from 'react';
 import { Img } from './Img';
@@ -58,11 +61,17 @@ export type PhoneView = keyof typeof VIEWS;
 const SLICES = 16;
 const METAL = 'bg-linear-to-r from-titanium via-titanium-hi to-titanium';
 
+type PhoneScreen =
+  | { src: string; alt: string; sizes: string; dark?: boolean; children?: never; screenClassName?: never }
+  | { children: ReactNode; screenClassName?: string; src?: never; alt?: never; sizes?: never; dark?: never };
+
 /** an iPhone around a phone capture (865 × 1672, with its status and navigation bars cropped off),
  * seen from `view` (face on, or turned left or right); `dark` for a screen that runs black to its
- * edges (the camera), so the bars turn white */
-export function Phone({ src, alt, sizes, dark, view = 'front', className }: { src: string; alt: string; sizes: string; dark?: boolean; view?: PhoneView; className?: string }) {
+ * edges (the camera), so the bars turn white. Or, given `children`, around a screen of its own: it
+ * fills the display below the status bar (440 × 894 pt), and `screenClassName` colours the display. */
+export function Phone({ src, alt, sizes, dark, children, screenClassName, view = 'front', className }: PhoneScreen & { view?: PhoneView; className?: string }) {
   const turn = VIEWS[view];
+  const own = children != null;
   const r = RADIUS + DISPLAY;
   return (
     // turned, the phone is a 3D scene on its own compositor layers, and Chrome treats everything
@@ -98,21 +107,48 @@ export function Phone({ src, alt, sizes, dark, view = 'front', className }: { sr
           <div className={cn('relative bg-linear-135 from-titanium-hi via-titanium to-titanium-hi', !turn && 'shadow-device')}
             style={{ aspectRatio: `${BODY.w} / ${BODY.h}`, borderRadius: mm(r) }}>
             <div className="absolute bg-glass ring-1 ring-white/10" style={{ inset: mm(GLASS), borderRadius: mm(r - GLASS) }}>
-              <div className={cn('app-screen absolute flex flex-col overflow-hidden', dark ? 'bg-glass text-on-photo' : 'bg-plate text-glass')}
+              <div className={cn('absolute flex flex-col overflow-hidden', own ? screenClassName : cn('app-screen', dark ? 'bg-glass text-on-photo' : 'bg-plate text-glass'))}
                 style={{ '--pt': mm((BODY.w - 2 * DISPLAY) / 440), inset: mm(DISPLAY - GLASS), borderRadius: mm(RADIUS) } as CSSProperties}>
                 <div aria-hidden="true" className="relative grid h-[calc(var(--pt)*62)] flex-none grid-cols-[1fr_calc(var(--pt)*126)_1fr] items-center pt-[calc(var(--pt)*4)]">
                   <span className="num justify-self-center pl-[calc(var(--pt)*10)] text-[calc(var(--pt)*17)] leading-none font-semibold tracking-tight">9:41</span>
                   <span className="absolute left-1/2 -translate-x-1/2 rounded-full bg-glass" style={{ top: mm(ISLAND.top), width: mm(ISLAND.w), height: mm(ISLAND.h) }} />
                   <span className="col-start-3 justify-self-center pr-[calc(var(--pt)*4)]"><StatusIcons /></span>
                 </div>
-                <Img src={src} alt={alt} sizes={sizes} className="block aspect-865/1672 h-auto w-full flex-none" />
-                <div aria-hidden="true" className="relative flex-1">
-                  <span className={cn('absolute bottom-[calc(var(--pt)*8)] left-1/2 h-[calc(var(--pt)*5)] w-[calc(var(--pt)*139)] -translate-x-1/2 rounded-full', dark ? 'bg-on-photo' : 'bg-glass')} />
+                {!own && <Img src={src!} alt={alt!} sizes={sizes!} className="block aspect-865/1672 h-auto w-full flex-none" />}
+                <div className="relative flex-1">
+                  {children}
+                  <span aria-hidden="true" className={cn('pointer-events-none absolute bottom-[calc(var(--pt)*8)] left-1/2 h-[calc(var(--pt)*5)] w-[calc(var(--pt)*139)] -translate-x-1/2 rounded-full', own ? 'bg-current' : dark ? 'bg-on-photo' : 'bg-glass')} />
                 </div>
                 {/* the glass catches a little light across its face */}
                 <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-linear-120 from-white/14 via-white/0 via-40% to-transparent mix-blend-soft-light" />
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </figure>
+  );
+}
+
+// The iPad Pro 13" (M4) in millimetres: Apple's published 281.6 × 215.5 and a 13" 4:3 display
+// (1376 × 1032 pt), which leaves an even 8.7 bezel; the corner radius is approximate
+const IPAD = { w: 281.6, h: 215.5, bezel: 8.7, radius: 18 };
+// (the aluminum edge, .18cqw, takes about .5 of those millimetres)
+/** millimetres as cqw of the iPad's width */
+const imm = (v: number) => `${+(v * 100 / IPAD.w).toFixed(3)}cqw`;
+
+/** an iPad Pro 13" held on its side; `children` is its screen, 1376 × 1032 */
+export function Tablet({ children, className }: { children: ReactNode; className?: string }) {
+  return (
+    <figure className={cn('@container m-0', className)}>
+      {/* the aluminum edge shows as a hairline around the glass */}
+      <div className="relative bg-linear-to-b from-alu-hi via-alu to-alu-lo p-[.18cqw] shadow-device" style={{ aspectRatio: `${IPAD.w} / ${IPAD.h}`, borderRadius: imm(IPAD.radius) }}>
+        <div className="relative size-full bg-glass" style={{ borderRadius: imm(IPAD.radius - .5) }}>
+          {/* the front camera, on the long edge as it is since the M4 */}
+          <i aria-hidden="true" className="absolute left-1/2 size-[.5cqw] -translate-1/2 rounded-full bg-titanium ring-[.12cqw] ring-white/5" style={{ top: imm(IPAD.bezel / 2) }} />
+          <div className="absolute overflow-hidden bg-glass" style={{ inset: imm(IPAD.bezel - .5), borderRadius: imm(IPAD.radius - IPAD.bezel) }}>
+            {children}
+            <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-linear-115 from-white/5 via-white/0 via-30% to-transparent" />
           </div>
         </div>
       </div>

@@ -45,13 +45,14 @@ src/
     qac-flow/                  /qac-flow — QacFlowPage.tsx 가 섹션을 나열, sections/ 에 블록 하나씩, parts.tsx 는 공용 조각
     data/                      /data — 같은 구성 (Vision, WhyUs, Chain, Roadmap, Asset, Partner)
   features/
-    qac-monitor/               실시간 모니터링의 현장 모니터를 React 로 다시 만든 것 (현황판·검사 상세·품질 불량 세 화면)
+    qac-monitor/               실시간 모니터링의 현장 앱을 React 로 다시 만든 것 (현황판·검사 상세·품질 불량). 데스크톱은 모니터,
+                               태블릿은 가로 iPad(같은 레이아웃을 4:3 으로), 폰은 아이폰에 폰 전용 레이아웃(QacPhone, phone/)
   components/
     layout/Nav.tsx             헤더: 떠 있는 알약, 페이지 메뉴, KOR / ENG, 테마 버튼. 1200px 미만은 메뉴가 <dialog> 시트로
     layout/Launch.tsx          모든 페이지 끝의 출시일 푸터
     ui.tsx                     공용 조각: Band, Eyebrow, Kicker, H2, Lead, LineIcon (리빌 마커 설명도 여기)
     icons.ts                   LineIcon 이 그리는 SVG 경로 사전
-    Device.tsx                 화면을 담는 CSS 목업: 아이폰 16 Pro Max(정면 / 3D 회전), Studio Display
+    Device.tsx                 화면을 담는 CSS 목업: 아이폰 16 Pro Max(정면 / 3D 회전, 캡처 또는 HTML 화면), iPad Pro 13", Studio Display
     Img.tsx                    모든 사진·로고를 그리는 <Img> (AVIF/WebP srcset, 크기, 플레이스홀더, priority)
   i18n/                        KOR / ENG: locales/ko.ts(원본)·en.ts 문구 사전, store.ts 언어 상태, rich.tsx, meta.ts
   lib/

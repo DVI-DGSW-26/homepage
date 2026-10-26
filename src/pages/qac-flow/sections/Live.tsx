@@ -1,17 +1,24 @@
 import { useState, type KeyboardEvent } from 'react';
 import { useT } from '../../../i18n';
-import { Monitor } from '../../../components/Device';
+import { Monitor, Phone, Tablet } from '../../../components/Device';
 import { Band } from '../../../components/ui';
 import { cn } from '../../../lib/cn';
-import { QacMonitor, SCREENS } from '../../../features/qac-monitor/QacMonitor';
+import { LG, SM } from '../../../lib/env';
+import { useMedia } from '../../../lib/useMedia';
+import { QacMonitor, SCREENS, type MonitorScreen } from '../../../features/qac-monitor/QacMonitor';
+import { QacPhone } from '../../../features/qac-monitor/QacPhone';
 import { Head } from '../parts';
 
 const N = SCREENS.length;
 
-/** the floor monitor, worked by hand: tabs above it, and its own toolbar switches screens too */
+/** the floor app, worked by hand: tabs above it, and its own toolbar switches screens too. It comes
+ * in the screen the visitor holds: the floor's monitor on a desktop, an iPad on a tablet, and on a
+ * phone an iPhone with the app's phone layout */
 export function Live() {
   const l = useT().qf.live;
   const [tab, setTab] = useState(0);
+  const lg = useMedia(LG), sm = useMedia(SM);
+  const app = { screen: SCREENS[tab], onScreen: (s: MonitorScreen) => setTab(SCREENS.indexOf(s)) };
   // the tablist's keys, as the ARIA pattern has them: arrows wrap around, Home and End jump
   const onKey = (e: KeyboardEvent<HTMLButtonElement>) => {
     const next = e.key === 'ArrowRight' ? (tab + 1) % N : e.key === 'ArrowLeft' ? (tab + N - 1) % N : e.key === 'Home' ? 0 : e.key === 'End' ? N - 1 : -1;
@@ -30,11 +37,12 @@ export function Live() {
               tab === i ? 'border-qf bg-qf text-on-acc' : 'border-line text-fg-2 hover:border-line-2 hover:text-fg')}>{label}</button>
         ))}
       </div>
-      <Monitor className="rv mx-auto mb-8 max-w-300">
-        <div role="tabpanel" id={`qf-panel-${tab}`} aria-labelledby={`qf-tab-${tab}`} className="size-full">
-          <QacMonitor screen={SCREENS[tab]} onScreen={s => setTab(SCREENS.indexOf(s))} />
-        </div>
-      </Monitor>
+      {/* the reveal is on the wrapper, which stays put when a resize swaps the device inside */}
+      <div role="tabpanel" id={`qf-panel-${tab}`} aria-labelledby={`qf-tab-${tab}`} className="rv mb-8">
+        {lg ? <Monitor className="mx-auto max-w-300"><QacMonitor {...app} /></Monitor>
+          : sm ? <Tablet className="mx-auto max-w-240"><QacMonitor {...app} form="tablet" /></Tablet>
+          : <Phone screenClassName="qac-monitor bg-m-bg text-m-fg" className="mx-auto w-full max-w-85"><QacPhone {...app} /></Phone>}
+      </div>
       <p className="mono m-0 text-micro text-mute">{l.note}</p>
     </Band>
   );

@@ -1,20 +1,10 @@
 // Status board: every line's self- and patrol-inspection slots, with the day's totals above.
 import { useT } from '../../../i18n';
 import { cn } from '../../../lib/cn';
-import { LINES, PATROL, SLOTS, type Line, type Patrol, type Self } from '../data';
+import { LATE, LINES, PATROL, QUEUED, SELF_COUNTS, SLOTS, type Line } from '../data';
 import { useTr } from '../tr';
-import { Glyph, type GlyphName } from '../Glyph';
-import { Avatar, CARD, Kind, PILL } from '../parts';
-
-// The totals, counted once: the sample never changes.
-const SELF = LINES.flatMap(l => l.self), PATROLS = LINES.flatMap(l => l.patrol);
-const nSelf = (s: Self) => SELF.filter(x => x[0] === s).length;
-const nPatrol = (s: Patrol) => PATROLS.filter(x => x[0] === s).length;
-/** completed, in progress, skipped, remaining: each with the colour of its figure */
-const KPIS = [[nSelf('done') + nSelf('ok'), 'text-m-ok'], [nSelf('run'), 'text-m-brand'], [nSelf('skip'), 'text-m-fg2'], [nSelf('idle'), '']] as const;
-const LATE = SELF.filter(x => x[1]).length;
-/** the patrol queue: drafting, awaiting, rejected */
-const QUEUED = [nPatrol('run'), nPatrol('queue'), nPatrol('reject')];
+import { Glyph } from '../Glyph';
+import { Avatar, CARD, KPI_TONE, Kind, PATROL_CELL, PATROL_GLYPH, PILL, SELF_CELL, SELF_GLYPH } from '../parts';
 
 /** the legend's swatches, in the order of the copy's legendSelf / legendPatrol */
 const LEGEND_SELF = ['bg-m-done', 'bg-m-run', 'bg-m-fg/12', 'bg-m-miss-fill', 'bg-m-done/20', 'bg-m-idle', 'ring-2 ring-inset ring-m-late'];
@@ -24,27 +14,16 @@ const LEGEND = 'flex items-center gap-1.5 text-m-2xs font-medium tracking-captio
 const FIGURE = 'mt-1 block text-m-5xl leading-tight font-semibold tracking-heading tabular-nums';
 const KPI_LABEL = 'flex items-center gap-2 text-m-sm text-m-fg2';
 
-const SELF_CELL: Record<Self, string> = {
-  done: 'bg-m-done text-white', ok: 'bg-m-done/20 text-m-ok', run: 'bg-m-run text-white',
-  miss: 'bg-m-miss-fill text-white', skip: 'bg-m-fg/12 text-m-fg2', idle: 'bg-m-idle text-m-fg2 font-medium'
-};
-const SELF_GLYPH: Partial<Record<Self, GlyphName>> = { done: 'check', ok: 'check', run: 'play', miss: 'bang', skip: 'ban' };
-const PATROL_CELL: Record<Patrol, string> = {
-  done: 'bg-m-done text-white', run: 'bg-m-run text-white', queue: 'bg-m-rov/14 text-m-rov',
-  reject: 'text-m-ng ring-2 ring-inset ring-m-ng', none: 'bg-m-idle/60 text-m-mute'
-};
-const PATROL_GLYPH: Partial<Record<Patrol, GlyphName>> = { done: 'check', run: 'play', reject: 'ban' };
-
 /** `onOpen` opens a line's inspection (its index into LINES) */
 export function Board({ onOpen }: { onOpen: (line: number) => void }) {
   const c = useT().monitor;
   return (
     <div className="flex h-full flex-col gap-3">
       <div className="grid flex-none grid-cols-6 gap-3">
-        {KPIS.map(([v, color], i) => (
+        {SELF_COUNTS.map((v, i) => (
           <div key={i} className={cn(CARD, 'px-4 py-3')}>
             <span className={KPI_LABEL}><Kind />{c.kpi[i]}</span>
-            <b className={cn(FIGURE, color)}>{v}</b>
+            <b className={cn(FIGURE, KPI_TONE[i])}>{v}</b>
           </div>
         ))}
         <div className={cn(CARD, 'px-4 py-3')}>
@@ -53,7 +32,8 @@ export function Board({ onOpen }: { onOpen: (line: number) => void }) {
         </div>
         <div className={cn(CARD, 'px-4 py-3')}>
           <span className={KPI_LABEL}><Kind patrol />{c.queue}</span>
-          <span className="flex items-baseline gap-3">
+          {/* the breakdown goes under the figure where the card is too narrow for it (the iPad, in English) */}
+          <span className="flex flex-wrap items-baseline gap-x-3">
             <b className={cn(FIGURE, 'text-m-rov')}>{QUEUED[0] + QUEUED[1] + QUEUED[2]}</b>
             <span className="text-m-2xs font-medium tracking-caption whitespace-nowrap text-m-fg2">
               {c.queueSub.map((t, i) => <span key={t} className={cn(i > 0 && 'ml-2 border-l border-m-line pl-2', i === 2 && 'text-m-ng')}>{t} {QUEUED[i]}</span>)}

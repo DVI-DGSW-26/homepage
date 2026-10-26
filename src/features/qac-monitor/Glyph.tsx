@@ -5,7 +5,9 @@ const GLYPHS = {
   check: 'M3 8.5l3 3 7-7', play: 'M5 3l8 5-8 5z', pause: 'M4 3h3v10H4zM9 3h3v10H9z', bang: 'M8 3v6M8 12v1',
   clock: `${RING}M8 5v3l2 1.5`, ban: `${RING}M4 12l8-8`, prev: 'M10 3L5 8l5 5', next: 'M6 3l5 5-5 5', warn: 'M8 1.5l7 12.5H1z',
   spec: 'M1.5 8h13M4.5 5L1.5 8l3 3M11.5 5l3 3-3 3', visual: `${RING}M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z`, judge: 'M4 4l8 8M12 4l-8 8',
-  globe: `${RING}M2 8h12M8 2c2.2 2 2.2 10 0 12M8 2c-2.2 2-2.2 10 0 12`
+  globe: `${RING}M2 8h12M8 2c2.2 2 2.2 10 0 12M8 2c-2.2 2-2.2 10 0 12`,
+  // the phone's tab bar: the status board's grid, the inspection's list of items
+  grid: 'M2.5 2.5h4v4h-4zM9.5 2.5h4v4h-4zM2.5 9.5h4v4h-4zM9.5 9.5h4v4h-4z', list: 'M6.5 4H14M6.5 8H14M6.5 12H14M2.5 4h0M2.5 8h0M2.5 12h0'
 };
 export type GlyphName = keyof typeof GLYPHS;
 const FILLED = new Set<GlyphName>(['play', 'pause', 'warn']);

@@ -4,17 +4,11 @@ import { useState } from 'react';
 import { useT } from '../../../i18n';
 import { useInterval } from '../../../lib/useInterval';
 import { cn } from '../../../lib/cn';
-import { LINES, QUEUE, SLOTS, type Item, type Value } from '../data';
+import { LINES, QUEUE, SLOTS, digits, specOf, verdictOf } from '../data';
 import { useTr } from '../tr';
 import { Glyph } from '../Glyph';
 import { Tolerance } from '../Tolerance';
-import { Avatar, CARD, COUNT, PILL, Pager } from '../parts';
-
-/** a value's verdict: a judgement as given, a measurement against its limits (none until measured) */
-const verdictOf = (v: Value | undefined, x: Item) =>
-  v == null ? null : typeof v === 'string' ? v : v > x.nom! + x.up! + 1e-9 || v < x.nom! - x.lo! - 1e-9 ? 'ng' : 'ok';
-/** decimals to show a value in: as many as it or its spec has */
-const digits = (x: Item, v: number) => Math.max(...[v, x.nom!, x.up!, x.lo!].map(n => (String(n).split('.')[1] ?? '').length));
+import { Avatar, CARD, COUNT, PILL, Pager, VERDICT } from '../parts';
 /** the item table's columns: no., item, spec, value, tolerance bar, verdict */
 const COLS = 'grid-cols-[52px_250px_160px_140px_1fr_84px]';
 const STAT = 'grid text-m-xs font-medium tracking-caption text-m-fg2';
@@ -87,7 +81,7 @@ export function Detail({ picked, onPick }: { picked: number; onPick: (i: number)
                 <li key={i} className={cn('relative grid max-h-15.5 flex-1 items-center border-b border-m-line last:border-0', COLS, r === 'ng' && 'before:absolute before:inset-y-1.5 before:-left-3 before:w-0.75 before:rounded-full before:bg-m-ng')}>
                   <span className="grid size-6.5 place-items-center rounded-full bg-m-idle text-m-2xs font-medium tracking-caption text-m-fg2 tabular-nums">{i + 1}</span>
                   <b className="text-m-lg font-semibold">{tr(x.name)}</b>
-                  <span className="text-m-sm text-m-fg2 tabular-nums">{x.nom == null ? c.judgeSpec : x.up === x.lo ? `${x.nom} ±${x.up}` : `${x.nom} +${x.up}/-${x.lo}`}</span>
+                  <span className="text-m-sm text-m-fg2 tabular-nums">{specOf(x) ?? c.judgeSpec}</span>
                   <span className="leading-none tabular-nums">
                     {num != null ? <>
                       <b className={cn('block text-m-3xl font-semibold tracking-heading', r === 'ng' && 'text-m-ng')}>{num.toFixed(digits(x, num))}</b>
@@ -97,7 +91,7 @@ export function Detail({ picked, onPick }: { picked: number; onPick: (i: number)
                   {x.nom == null ? <span className="text-m-sm text-m-fg2">{c.judgeHint}</span>
                     : <Tolerance className="mr-6 mb-5 h-3" lo={x.nom - x.lo!} hi={x.nom + x.up!} nom={x.nom} value={num} labels />}
                   <span className="justify-self-end">
-                    {r ? <b className={cn(PILL, 'text-m-sm', r === 'ng' ? 'bg-m-ng-fill text-white' : 'bg-m-ok/14 text-m-ok')}>{r.toUpperCase()}</b>
+                    {r ? <b className={cn(PILL, 'text-m-sm', VERDICT[r])}>{r.toUpperCase()}</b>
                       : <span className={cn(PILL, 'bg-m-idle font-medium text-m-fg2')}>{c.pending}</span>}
                   </span>
                 </li>

@@ -5,7 +5,8 @@ import { useT } from '../../i18n';
 import { pad2 } from '../../lib/env';
 import { useInterval } from '../../lib/useInterval';
 import { cn } from '../../lib/cn';
-import { Glyph } from './Glyph';
+import { Glyph, type GlyphName } from './Glyph';
+import type { Action, Patrol, Self } from './data';
 
 /** a grouped card */
 export const CARD = 'rounded-m-card bg-m-card shadow-m-card';
@@ -18,6 +19,25 @@ export const TOOL = 'grid cursor-pointer place-items-center rounded-md text-m-fg
 /** a toolbar button switched on: the brand tint */
 export const TOOL_ON = 'bg-m-brand/14 text-m-brand hover:bg-m-brand/20 hover:text-m-brand';
 
+/** the colour of each status-board figure: completed, in progress, skipped, remaining */
+export const KPI_TONE = ['text-m-ok', 'text-m-brand', 'text-m-fg2', ''];
+/** a self-inspection slot, by state: its cell and its glyph */
+export const SELF_CELL: Record<Self, string> = {
+  done: 'bg-m-done text-white', ok: 'bg-m-done/20 text-m-ok', run: 'bg-m-run text-white',
+  miss: 'bg-m-miss-fill text-white', skip: 'bg-m-fg/12 text-m-fg2', idle: 'bg-m-idle text-m-fg2 font-medium'
+};
+export const SELF_GLYPH: Partial<Record<Self, GlyphName>> = { done: 'check', ok: 'check', run: 'play', miss: 'bang', skip: 'ban' };
+/** a patrol slot, by state: its cell and its glyph */
+export const PATROL_CELL: Record<Patrol, string> = {
+  done: 'bg-m-done text-white', run: 'bg-m-run text-white', queue: 'bg-m-rov/14 text-m-rov',
+  reject: 'text-m-ng ring-2 ring-inset ring-m-ng', none: 'bg-m-idle/60 text-m-mute'
+};
+export const PATROL_GLYPH: Partial<Record<Patrol, GlyphName>> = { done: 'check', run: 'play', reject: 'ban' };
+/** where an action stands, as a colour */
+export const STATE_TONE: Record<Action['state'], string> = { report: 'text-m-ng', wait: 'text-m-miss', ok: 'text-m-ok' };
+/** a verdict capsule: OK, NG, or still to come */
+export const VERDICT = { ok: 'bg-m-ok/14 text-m-ok', ng: 'bg-m-ng-fill text-white' } as const;
+
 /** the moment the sample was taken (10:18:35), in seconds */
 const TAKEN = 10 * 3600 + 18 * 60 + 35;
 
@@ -29,17 +49,19 @@ export function Clock() {
   return <time className="text-m-2xl leading-none font-semibold tracking-heading tabular-nums">{pad2(Math.floor(t / 3600) % 24)}:{pad2(Math.floor(t / 60) % 60)}:{pad2(t % 60)}</time>;
 }
 
-/** ‹ page / pages › and the auto-advance switch */
-export function Pager({ page, pages, onPage, auto, onAuto }: { page: number; pages: number; onPage: (p: number) => void; auto: boolean; onAuto: () => void }) {
+/** ‹ page / pages ›, and the auto-advance switch when given `onAuto` */
+export function Pager({ page, pages, onPage, auto, onAuto }: { page: number; pages: number; onPage: (p: number) => void; auto?: boolean; onAuto?: () => void }) {
   const c = useT().monitor;
   return (
     <span className="flex items-center gap-0.5 text-m-xs text-m-fg2">
       <button type="button" aria-label={c.prev} className={cn(TOOL, 'size-7')} onClick={() => onPage((page + pages - 1) % pages)}><Glyph n="prev" className="size-3.5" /></button>
       <span className="min-w-10 text-center tabular-nums">{page + 1} / {pages}</span>
       <button type="button" aria-label={c.next} className={cn(TOOL, 'size-7')} onClick={() => onPage((page + 1) % pages)}><Glyph n="next" className="size-3.5" /></button>
-      <button type="button" aria-pressed={auto} onClick={onAuto} className={cn(TOOL, 'ml-1 flex h-7 gap-1.5 px-2.5', auto && TOOL_ON)}>
-        <Glyph n={auto ? 'pause' : 'play'} className="size-3" />{c.auto}
-      </button>
+      {onAuto && (
+        <button type="button" aria-pressed={auto} onClick={onAuto} className={cn(TOOL, 'ml-1 flex h-7 gap-1.5 px-2.5', auto && TOOL_ON)}>
+          <Glyph n={auto ? 'pause' : 'play'} className="size-3" />{c.auto}
+        </button>
+      )}
     </span>
   );
 }
