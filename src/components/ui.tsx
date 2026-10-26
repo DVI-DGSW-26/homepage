@@ -15,15 +15,16 @@ export const cn = extendTailwindMerge({
   extend: {
     theme: {
       text: ['tag', 'micro', 'label', 'mono-sm', 'mono', 'caption', 'small', 'body-sm', 'body', 'body-lg', 'page', 'title-xs', 'title', 'title-lg',
-        'menu', 'h2', 'h2-lg', 'wordmark', 'stat', 'milestone'],
-      tracking: ['heading', 'heading-sm'],
+        'menu', 'h2', 'h2-lg', 'wordmark', 'stat', 'milestone',
+        'm-2xs', 'm-xs', 'm-sm', 'm-base', 'm-md', 'm-lg', 'm-xl', 'm-2xl', 'm-3xl', 'm-4xl', 'm-5xl', 'm-6xl'],
+      tracking: ['heading', 'heading-sm', 'mac', 'caption'],
       leading: ['display', 'h2', 'title', 'caption', 'copy', 'page'],
       spacing: ['gutter', 'wrap', 'section', 'sec-head', 'stack-sm', 'panel-pad', 'nav-gap', 'nav-gap-tight', 'logo', 'hinge', 'hinge-gap'],
       container: ['page', 'lead'],
-      radius: ['card', 'pill'],
+      radius: ['card', 'pill', 'm-card'],
       breakpoint: ['2xs', 'sm', 'md', 'lg', 'xl'],
-      ease: ['out', 'theme'],
-      shadow: ['device']
+      ease: ['out', 'theme', 'm-spring'],
+      shadow: ['device', 'm-card', 'm-icon', 'm-thumb', 'm-swatch', 'm-alert', 'm-halo']
     }
   }
 });

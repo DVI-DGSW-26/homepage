@@ -6,7 +6,7 @@
    Every design value is a token in token.css; animation has its own file,
    animation.css. Layout and type live in the components as utilities. What
    stays here is what utilities can't say: base element styles, the shared
-   type utilities and the floor monitor's palette.
+   type utilities and the dimming of the app captures.
    ============================================================ */
 /* classes are collected from src/ only — the repo also holds docs and agent skills full of example markup */
 @import "tailwindcss" source(".");
@@ -54,37 +54,5 @@
      QacFlow.tsx), dimmed a little on the dark page so their white doesn't glare; the colours and
      photos stay true, which an inverted "dark" capture couldn't keep */
   html:not([data-mode="light"]) .app-screen { filter: brightness(.86) }
-
-  /* the floor monitor rebuilt in React (src/components/QacMonitor.tsx), in macOS's system colours:
-     the dark appearance on the dark page, the light one on the light page, so it sits in the Studio
-     Display as a native app would. Each hue comes twice, measured for its job in each theme (WCAG
-     4.5:1 for text, 3:1 for a meaningful edge):
-       ink   --m-ok / -brand / -ng / -rov / -miss   text, and text on its own 14% tint (a capsule)
-       fill  --m-done / -run / -ng-fill / -miss-fill   a solid block with white text on it
-     --m-warn is the late capsule (dark text on it), --m-late its ring on a slot */
-  .qac-monitor {
-    /* SF on a Mac; elsewhere the site's IBM Plex Sans KR, which Google Fonts serves hinted to Windows.
-       Tracking stays at 0: the app is shown at about 70% of its size, where 12px type is under 9px,
-       so the small type opens up a little (+.01em, medium weight) and only the big figures tighten */
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Apple SD Gothic Neo', var(--font-sans);
-    --m-bg: #1C1C1E; --m-card: #2A2A2D; --m-raise: #505055; --m-bar: #252528;
-    --m-line: rgb(255 255 255 / .11); --m-fg: #F5F5F7; --m-fg2: rgb(235 235 245 / .7); --m-mute: rgb(235 235 245 / .6); --m-idle: rgb(118 118 128 / .26);
-    --m-brand: #DAA6FF; --m-ok: #3BDC64; --m-ng: #FF7B73; --m-rov: #7DBDFF; --m-miss: #FFA866;
-    --m-done: #1D7A35; --m-run: #8A3FC0; --m-ng-fill: #D12C24; --m-miss-fill: #B0520A; --m-warn: #FF9F0A; --m-late: #FFA31A;
-    --m-shadow: inset 0 0 0 .5px rgb(255 255 255 / .08);
-  }
-  [data-mode="light"] .qac-monitor {
-    --m-bg: #F2F2F7; --m-card: #fff; --m-raise: #fff; --m-bar: #F7F7F9;
-    --m-line: rgb(60 60 67 / .17); --m-fg: #1D1D1F; --m-fg2: rgb(60 60 67 / .8); --m-mute: rgb(60 60 67 / .72); --m-idle: rgb(118 118 128 / .23);
-    --m-brand: #7E3A9F; --m-ok: #1B7332; --m-ng: #C2000F; --m-rov: #0055B3; --m-miss: #A82D00;
-    --m-done: #22813A; --m-run: #9142BF; --m-ng-fill: #D70015; --m-miss-fill: #C23A00; --m-warn: #FF9500; --m-late: #C46F00;
-    --m-shadow: 0 0 0 .5px rgb(0 0 0 / .06), 0 1px 3px rgb(0 0 0 / .06);
-  }
-  /* a screen or a page of a list arriving: a short settle up into place (a fade alone when motion
-     is reduced). No fill mode, so the element leaves the compositor, and its text ClearType, once in */
-  .qm-in { animation: qm-in .32s cubic-bezier(.32, .72, 0, 1) }
-  @media (prefers-reduced-motion: reduce) { .qm-in { animation-name: qm-fade } }
 }
 
-@keyframes qm-in { from { opacity: 0; translate: 0 6px } }
-@keyframes qm-fade { from { opacity: 0 } }

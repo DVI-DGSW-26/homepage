@@ -5,6 +5,9 @@
 // (between sentences or phrases) and is rendered with lines(); it is a hint, not a forced break.
 // Copy that varies with a number is a function.
 
+/** a span of minutes as hours and minutes: 186 → "3시간 6분" */
+const dur = (m: number) => `${m >= 60 ? `${Math.floor(m / 60)}시간 ` : ''}${m % 60}분`;
+
 export const ko = {
   /** the wordmark's alt text */
   brand: 'DVISION',
@@ -174,6 +177,25 @@ export const ko = {
       tags: ['External PoC 참여', '파트너십'],
       closing: '찍는 순간 기록되고,\n기록이 쌓여 <k>산업이 됩니다.</k>'
     }
+  },
+
+  /** the floor monitor rebuilt in React (src/features/qac-monitor); its sample data carries its own ko/en names */
+  monitor: {
+    app: '검사 진행 현황', titles: { board: '현황판', detail: '검사 상세', defects: '품질·불량' }, date: '10월 2일 (금)',
+    fixed: '고정', cycling: '순환', otherLang: 'EN', live: '실시간', updated: '마지막 변경', prev: '이전', next: '다음',
+    self: '자주', patrol: '순회', line: (n: number) => `${n}호기`,
+    kpi: ['완료', '진행중', '건너뜀', '남은 시점', '지연'], over: ['칸', '시각 경과'],
+    queue: '순회 대기', queueSub: ['작성중', '승인대기', '반려'],
+    progress: '시점별 진행도', legendSelf: ['완료', '진행중', '건너뜀', '미완료', '미완료 승인', '미시작', '지연'], legendPatrol: ['완료', '작성중', '대기', '반려'],
+    due: (t: string, m: number) => `${t}까지 ${dur(m)}`, late: (m: number) => `지연 ${dur(m)}`,
+    dueToday: '오늘 마감 1줄', dueName: '배준호', dueLine: '10호기',
+    inProgress: '진행중 검사', stages: ['초물', '중물', '종물'], ago: (m: number) => m >= 60 ? `${Math.floor(m / 60)}시간 전` : `${m}분 전`,
+    running: '진행중', refreshed: (m: number) => `${m}분 전 갱신`, visual: '외관', defectItems: '불량 항목', measured: '측정 진행',
+    items: '측정 항목', cols: ['No', '항목', '기준 · 공차', '측정값', '허용 범위', '판정'], judgeSpec: 'OK/NG 판정 항목', judgeHint: '작업자가 OK/NG를 고르는 항목', pending: '대기', auto: '자동',
+    today: '오늘 검사', done: '검사 완료', cases: '불량 검사', stopped: '조기종료', unit: '건', risk: (r: string) => `불량률 ${r}% · 위험`, stopSub: '품질 문제로 중단',
+    defectList: '불량 항목', includes: '결재 전 진행중 검사도 포함', kinds: { spec: '치수 이탈', visual: '외관 NG', judge: 'OK/NG' },
+    valueLabel: '측정', specLabel: '허용', visualNg: '외관 판정에서 NG', judgeNg: 'OK/NG 항목에서 NG',
+    types: '불량 유형', actions: '조치 현황', actionKinds: { stop: '조기종료', open: '미완료' }, states: { report: '보고서 발행 · 재검사 시작', wait: '결재 대기', ok: '승인 완료' }, hoursAgo: (h: number) => `${h}시간 전`
   }
 };
 

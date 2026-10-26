@@ -7,7 +7,7 @@
 //              needs none of its own) and the home indicator; face on, or turned in CSS 3D with its
 //              side showing its true thickness
 //   <Monitor>  a Studio Display: black glass bezel with the camera, aluminum edge, stand and foot;
-//              its screen is the floor app in React (QacMonitor.tsx), themed with the page, so not dimmed
+//              its screen is the floor app in React (src/features/qac-monitor), themed with the page, so not dimmed
 //
 // Both are container-query sized (@container, cqw units), so they keep their proportions however wide
 // they are drawn.

@@ -10,6 +10,7 @@
    - @theme inline   mode colours: utilities that resolve through the mode set
    - :root           the mode set (dark default, light on html[data-mode="light"])
                      and the motion timings
+   - .qac-monitor    the floor monitor's own mode set (macOS system colours)
 
    Fixed pixel spacing uses Tailwind's own 4px scale (gap-4.5 = 18px, size-18 = 72px);
    the tokens below are for what that scale can't say: fluid clamp() steps and names.
@@ -104,6 +105,29 @@
 
   /* a device standing off the page: a long soft fall and a tighter contact shadow */
   --shadow-device: 0 48px 80px -36px rgb(0 0 0 / .7), 0 16px 32px -20px rgb(0 0 0 / .5);
+
+  /* ---- the floor monitor (src/features/qac-monitor) ----
+     Drawn at the floor screen's own 1600 × 876 and zoomed to fit, so its sizes are pixels of that
+     screen, not rem. Set in a Mac app's system type, tracked as macOS does. */
+  --font-mac: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Apple SD Gothic Neo', var(--font-sans);
+  --tracking-mac: -.005em;
+  --tracking-caption: .01em;     /* small medium-weight captions */
+  --text-m-2xs: 12px;            /* counts, tolerance labels */
+  --text-m-xs: 13px;             /* captions, capsules, the segmented control */
+  --text-m-sm: 14px;             /* secondary lines, KPI labels */
+  --text-m-base: 15px;           /* the app's body */
+  --text-m-md: 16px;
+  --text-m-lg: 17px;             /* window title, item names */
+  --text-m-xl: 20px;             /* card headings */
+  --text-m-2xl: 22px;            /* the clock */
+  --text-m-3xl: 26px;            /* measured values */
+  --text-m-4xl: 30px;            /* the inspection's title and figures */
+  --text-m-5xl: 34px;            /* KPI figures */
+  --text-m-6xl: 40px;            /* the large KPI figures of quality · defects */
+  --radius-m-card: 14px;
+  --ease-m-spring: cubic-bezier(.32, .72, 0, 1);  /* a Mac control settling */
+  --shadow-m-icon: inset 0 .5px 0 rgb(255 255 255 / .35), 0 1px 2px rgb(0 0 0 / .2);
+  --shadow-m-thumb: 0 1px 3px rgb(0 0 0 / .12), 0 0 0 .5px rgb(0 0 0 / .05);
 }
 
 @theme static {
@@ -133,6 +157,10 @@
   --color-alu: #B9BEC5;
   --color-alu-hi: #ECEEF1;
   --color-alu-lo: #858B93;
+  /* the floor monitor: its app icon's purple, and the dark type on the amber "late" capsule */
+  --color-m-icon-hi: #C66BE8;
+  --color-m-icon-lo: #8A35B8;
+  --color-m-on-warn: #1D1D1F;
 }
 
 /* mode-dependent colours resolve through the mode set, so `bg-bg`, `text-fg-2`, `border-line`
@@ -155,6 +183,33 @@
   --color-qf-line: var(--qf-line);
   /* the decorations behind the bands: dot grid, line grid, the outlined chapter marks */
   --color-deco: var(--deco);
+
+  /* the floor monitor, through its mode set (.qac-monitor below); shadows that mix in one of its
+     colours are inlined here too, so they resolve inside the monitor rather than on :root */
+  --color-m-bg: var(--m-bg);
+  --color-m-card: var(--m-card);
+  --color-m-raise: var(--m-raise);
+  --color-m-bar: var(--m-bar);
+  --color-m-line: var(--m-line);
+  --color-m-fg: var(--m-fg);
+  --color-m-fg2: var(--m-fg2);
+  --color-m-mute: var(--m-mute);
+  --color-m-idle: var(--m-idle);
+  --color-m-brand: var(--m-brand);
+  --color-m-ok: var(--m-ok);
+  --color-m-ng: var(--m-ng);
+  --color-m-rov: var(--m-rov);
+  --color-m-miss: var(--m-miss);
+  --color-m-done: var(--m-done);
+  --color-m-run: var(--m-run);
+  --color-m-ng-fill: var(--m-ng-fill);
+  --color-m-miss-fill: var(--m-miss-fill);
+  --color-m-warn: var(--m-warn);
+  --color-m-late: var(--m-late);
+  --shadow-m-card: var(--m-shadow);
+  --shadow-m-swatch: inset 0 0 0 .5px color-mix(in srgb, var(--m-fg) 18%, transparent);
+  --shadow-m-alert: inset 0 0 0 1px color-mix(in srgb, var(--m-ng) 40%, transparent);
+  --shadow-m-halo: 0 0 0 3px color-mix(in srgb, currentColor 22%, transparent);
 }
 
 @layer base {
@@ -186,5 +241,27 @@
     --nav-bg: color-mix(in srgb, var(--color-paper) 95%, transparent);
     --deco: rgb(42 45 51 / .09);
     --qf-ink: #157A57; --qf-soft: color-mix(in srgb, var(--color-qf) 14%, transparent); --qf-line: color-mix(in srgb, #157A57 40%, transparent);
+  }
+
+  /* ---- the floor monitor's mode set ----
+     macOS's system colours: the dark appearance on the dark page, the light one on the light page, so
+     it sits in the Studio Display as a native app would. Each hue comes twice, measured for its job in
+     each theme (WCAG 4.5:1 for text, 3:1 for a meaningful edge):
+       ink   --m-ok / -brand / -ng / -rov / -miss       text, and text on its own 14% tint (a capsule)
+       fill  --m-done / -run / -ng-fill / -miss-fill    a solid block with white text on it
+     --m-warn is the late capsule (dark text on it), --m-late its ring on a slot */
+  .qac-monitor {
+    --m-bg: #1C1C1E; --m-card: #2A2A2D; --m-raise: #505055; --m-bar: #252528;
+    --m-line: rgb(255 255 255 / .11); --m-fg: #F5F5F7; --m-fg2: rgb(235 235 245 / .7); --m-mute: rgb(235 235 245 / .6); --m-idle: rgb(118 118 128 / .26);
+    --m-brand: #DAA6FF; --m-ok: #3BDC64; --m-ng: #FF7B73; --m-rov: #7DBDFF; --m-miss: #FFA866;
+    --m-done: #1D7A35; --m-run: #8A3FC0; --m-ng-fill: #D12C24; --m-miss-fill: #B0520A; --m-warn: #FF9F0A; --m-late: #FFA31A;
+    --m-shadow: inset 0 0 0 .5px rgb(255 255 255 / .08);
+  }
+  [data-mode="light"] .qac-monitor {
+    --m-bg: #F2F2F7; --m-card: #fff; --m-raise: #fff; --m-bar: #F7F7F9;
+    --m-line: rgb(60 60 67 / .17); --m-fg: #1D1D1F; --m-fg2: rgb(60 60 67 / .8); --m-mute: rgb(60 60 67 / .72); --m-idle: rgb(118 118 128 / .23);
+    --m-brand: #7E3A9F; --m-ok: #1B7332; --m-ng: #C2000F; --m-rov: #0055B3; --m-miss: #A82D00;
+    --m-done: #22813A; --m-run: #9142BF; --m-ng-fill: #D70015; --m-miss-fill: #C23A00; --m-warn: #FF9500; --m-late: #C46F00;
+    --m-shadow: 0 0 0 .5px rgb(0 0 0 / .06), 0 1px 3px rgb(0 0 0 / .06);
   }
 }

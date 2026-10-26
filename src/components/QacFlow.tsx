@@ -7,13 +7,13 @@
 // image files themselves (public/assets/img/qacflow/), and the phone captures have the status and
 // navigation bars cropped off so they sit in the CSS iPhone (src/components/Device.tsx). Most are
 // captured again in English (qacflow/en/, see EN below) and shown when the page is read in English.
-// The live monitor is the floor app rebuilt in React, to be worked by hand (src/components/QacMonitor.tsx).
+// The live monitor is the floor app rebuilt in React, to be worked by hand (src/features/qac-monitor).
 import { useState, type KeyboardEvent, type ReactNode } from 'react';
 import { lines, useLang, useT } from '../i18n';
 import { Band, Eyebrow, H2, Lead, LineIcon as Icon, cn } from './ui';
 import { Img } from './Img';
 import { Monitor, Phone } from './Device';
-import { QacMonitor, SCREENS } from './QacMonitor';
+import { QacMonitor, SCREENS } from '../features/qac-monitor/QacMonitor';
 
 const IMG = 'assets/img/qacflow/';
 /** the screens captured again in English, under en/ as WebP; any other shows its Korean capture in English too */

@@ -12,6 +12,7 @@
   @keyframes fade-out { to { opacity: 0 } }
   @keyframes fade-in { from { opacity: 0 } }
 }
+@keyframes m-in { from { opacity: 0; translate: 0 6px } }
 
 @layer components {
   /* Header: a full-width bar over the hero that draws in to the floating pill once the hero is
@@ -19,6 +20,16 @@
   .nav-morph {
     transition: width var(--duration-morph) var(--ease-out), margin-top var(--duration-morph) var(--ease-out), padding var(--duration-morph) var(--ease-out),
       border-radius var(--duration-morph) var(--ease-out), background-color var(--duration-fade), border-color var(--duration-fade);
+  }
+
+  /* The floor monitor (src/features/qac-monitor): a screen or a page of a list arriving settles up
+     into place. No fill mode, so the element leaves the compositor, and its text ClearType, once in */
+  .m-in { animation: m-in .32s var(--ease-m-spring) }
+
+  /* in this layer, not in base: a base rule never wins over a component one, whatever its media */
+  @media (prefers-reduced-motion: reduce) {
+    .nav-morph { transition: none }
+    .m-in { animation-name: fade-in }
   }
 }
 
@@ -41,6 +52,5 @@
 
   @media (prefers-reduced-motion: reduce) {
     .menu-sheet[open] { animation: none }
-    .nav-morph { transition: none }
   }
 }

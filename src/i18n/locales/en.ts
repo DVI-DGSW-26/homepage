@@ -1,6 +1,9 @@
 // English copy. Typed as Messages, so a key missing here (or one ko.ts doesn't have) fails the build.
 import type { Messages } from './ko';
 
+/** a span of minutes as hours and minutes: 186 → "3h 6m" */
+const dur = (m: number) => `${m >= 60 ? `${Math.floor(m / 60)}h ` : ''}${m % 60}m`;
+
 export const en: Messages = {
   /** the wordmark's alt text */
   brand: 'DVISION',
@@ -169,5 +172,23 @@ export const en: Messages = {
       tags: ['Join the External PoC', 'Partnership'],
       closing: 'Recorded the moment it’s captured;\nas records build up, <k>they become an industry.</k>'
     }
+  },
+
+  monitor: {
+    app: 'Inspection Status', titles: { board: 'Dashboard', detail: 'Inspection Details', defects: 'Quality · Defects' }, date: 'Oct 2 (Fri)',
+    fixed: 'Fixed', cycling: 'Cycling', otherLang: 'KO', live: 'Real-time', updated: 'Last updated', prev: 'Previous', next: 'Next',
+    self: 'Self', patrol: 'Patrol', line: (n: number) => `Line ${n}`,
+    kpi: ['Completed', 'In Progress', 'Skipped', 'Remaining Slots', 'Delayed'], over: ['slots', 'over time'],
+    queue: 'Patrol Queue', queueSub: ['Drafting', 'Awaiting', 'Rejected'],
+    progress: 'Progress by Time Slot', legendSelf: ['Completed', 'In Progress', 'Skipped', 'Incomplete', 'Incomplete Approved', 'Not Started', 'Late'], legendPatrol: ['Completed', 'Drafting', 'Queue', 'Rejected'],
+    due: (t: string, m: number) => `${t} deadline ${dur(m)}`, late: (m: number) => `Delayed ${dur(m)}`,
+    dueToday: '1 line due today', dueName: 'Bae Jun-ho', dueLine: 'Line 10',
+    inProgress: 'In-Progress Inspections', stages: ['Initial', 'Mid', 'Final'], ago: (m: number) => m >= 60 ? `${Math.floor(m / 60)} hour${m >= 120 ? 's' : ''} ago` : `${m} min ago`,
+    running: 'In Progress', refreshed: (m: number) => `Updated ${m} min ago`, visual: 'Visual', defectItems: 'Defect Items', measured: 'Measurement Progress',
+    items: 'Measurement Items', cols: ['No', 'Item', 'Spec / Tolerance', 'Measured Value', 'Tolerance Range', 'Result'], judgeSpec: 'OK/NG judgement item', judgeHint: 'Operator selects OK/NG', pending: 'Pending', auto: 'Auto',
+    today: "Today's Inspections", done: 'Completed', cases: 'Defect Cases', stopped: 'Early Stop', unit: 'cases', risk: (r: string) => `Defect Rate ${r}% · At Risk`, stopSub: 'Stopped for quality issues',
+    defectList: 'Defect Items', includes: 'Includes in-progress inspections before approval', kinds: { spec: 'Out of Spec', visual: 'Visual NG', judge: 'OK/NG' },
+    valueLabel: 'Measured', specLabel: 'Spec', visualNg: 'NG in visual inspection', judgeNg: 'NG in OK/NG item',
+    types: 'Defect Types', actions: 'Action Status', actionKinds: { stop: 'Early Stop', open: 'Incomplete' }, states: { report: 'Report issued · Reinspection started', wait: 'Awaiting approval', ok: 'Approved' }, hoursAgo: (h: number) => `${h} hour${h > 1 ? 's' : ''} ago`
   }
 };
