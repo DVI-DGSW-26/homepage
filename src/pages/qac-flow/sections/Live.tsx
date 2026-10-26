@@ -1,7 +1,8 @@
 import { useState, type KeyboardEvent } from 'react';
 import { useT } from '../../../i18n';
 import { Monitor } from '../../../components/Device';
-import { Band, cn } from '../../../components/ui';
+import { Band } from '../../../components/ui';
+import { cn } from '../../../lib/cn';
 import { QacMonitor, SCREENS } from '../../../features/qac-monitor/QacMonitor';
 import { Head } from '../parts';
 

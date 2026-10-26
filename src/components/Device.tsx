@@ -13,7 +13,7 @@
 // they are drawn.
 import type { CSSProperties, ReactNode } from 'react';
 import { Img } from './Img';
-import { cn } from './ui';
+import { cn } from '../lib/cn';
 
 /** status bar glyphs, drawn with the current colour; sized in points of the display (--pt) */
 function StatusIcons() {

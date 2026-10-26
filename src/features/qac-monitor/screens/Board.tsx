@@ -1,6 +1,6 @@
 // Status board: every line's self- and patrol-inspection slots, with the day's totals above.
 import { useT } from '../../../i18n';
-import { cn } from '../../../components/ui';
+import { cn } from '../../../lib/cn';
 import { LINES, PATROL, SLOTS, type Line, type Patrol, type Self } from '../data';
 import { useTr } from '../tr';
 import { Glyph, type GlyphName } from '../Glyph';

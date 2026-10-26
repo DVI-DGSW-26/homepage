@@ -1,6 +1,7 @@
 import { useT } from '../../../i18n';
 import { ICON } from '../../../components/icons';
-import { Band, LineIcon, cn } from '../../../components/ui';
+import { Band, LineIcon } from '../../../components/ui';
+import { cn } from '../../../lib/cn';
 import { Head } from '../parts';
 
 /** the value chain's five steps; the roadmap's four stages are the last four */

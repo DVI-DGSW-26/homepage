@@ -1,7 +1,8 @@
 import { lines, useT } from '../../../i18n';
 import { pad2 } from '../../../lib/env';
 import { ICON } from '../../../components/icons';
-import { Band, LineIcon, cn } from '../../../components/ui';
+import { Band, LineIcon } from '../../../components/ui';
+import { cn } from '../../../lib/cn';
 import { Browser, Head, StepText } from '../parts';
 
 const STEP = 'rv relative grid grid-cols-[44px_1fr] gap-x-4';

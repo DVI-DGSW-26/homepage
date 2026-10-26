@@ -1,5 +1,6 @@
 import { lines, useT } from '../../../i18n';
-import { Band, Eyebrow, H2, Lead, cn } from '../../../components/ui';
+import { Band, Eyebrow, H2, Lead } from '../../../components/ui';
+import { cn } from '../../../lib/cn';
 import { PhonePair } from '../parts';
 
 const UNIT = 'text-unit text-fg-2';

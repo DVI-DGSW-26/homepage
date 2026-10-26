@@ -1,0 +1,48 @@
+/* ============================================================
+   DVISION homepage — animation
+   Everything that moves in CSS is defined here: keyframes, the theme crossfade,
+   the floor monitor's screen changes, and what each of them does under
+   prefers-reduced-motion.
+
+   Scripted entrances (GSAP's once-per-view reveals) live in src/lib/reveals.ts.
+   Hover transitions are utilities on the element itself.
+   ============================================================ */
+
+@theme {
+  @keyframes fade-out { to { opacity: 0 } }
+  @keyframes fade-in { from { opacity: 0 } }
+}
+@keyframes m-in { from { opacity: 0; translate: 0 6px } }
+
+@layer components {
+  /* The floor monitor (src/features/qac-monitor): a screen or a page of a list arriving settles up
+     into place. No fill mode, so the element leaves the compositor, and its text ClearType, once in */
+  .m-in { animation: m-in .32s var(--ease-m-spring) }
+
+  /* in this layer, not in base: a base rule never wins over a component one, whatever its media */
+  @media (prefers-reduced-motion: reduce) {
+    .m-in { animation-name: fade-in }
+  }
+}
+
+@layer base {
+  /* Theme switch: html[data-bg] turns the page background to the new mode at once, and for the
+     length of the crossfade only (html[data-fade], src/lib/theme.ts) a fixed layer of the old
+     colour fades out over it, on the compositor (no paint, no style recalculation);
+     html[data-mode] flips the colour tokens at the midpoint. The layer exists only while it fades:
+     a standing fixed layer under the page composites everything overlapping it, and composited
+     text loses its ClearType (LCD) antialiasing on Windows */
+  html[data-fade] body::after {
+    content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    animation: fade-out var(--duration-theme) var(--ease-theme) both;
+  }
+  html[data-fade="dark"] body::after { background: var(--color-ink) }
+  html[data-fade="light"] body::after { background: var(--color-paper) }
+
+  /* the menu sheet fades in over the page (src/components/Nav.tsx) */
+  .menu-sheet[open] { animation: fade-in var(--duration-fade) ease-out }
+
+  @media (prefers-reduced-motion: reduce) {
+    .menu-sheet[open] { animation: none }
+  }
+}

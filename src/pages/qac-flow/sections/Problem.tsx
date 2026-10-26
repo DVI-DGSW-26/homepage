@@ -1,6 +1,7 @@
 import { useT } from '../../../i18n';
 import { ICON } from '../../../components/icons';
-import { Band, LineIcon, cn } from '../../../components/ui';
+import { Band, LineIcon } from '../../../components/ui';
+import { cn } from '../../../lib/cn';
 import { Head } from '../parts';
 
 /** the paper way, then Q.A.C-Flow's, step by step in the order of the copy */

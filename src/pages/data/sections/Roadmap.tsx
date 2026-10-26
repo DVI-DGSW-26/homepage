@@ -1,7 +1,8 @@
 import { rich, useT } from '../../../i18n';
 import { pad2 } from '../../../lib/env';
 import { ICON } from '../../../components/icons';
-import { Band, LineIcon, cn } from '../../../components/ui';
+import { Band, LineIcon } from '../../../components/ui';
+import { cn } from '../../../lib/cn';
 import { Head } from '../parts';
 import { CHAIN } from './Chain';
 

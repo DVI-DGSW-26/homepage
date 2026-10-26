@@ -3,29 +3,28 @@
 // The inline script in index.html applies a remembered choice before the first paint, so a light
 // visitor never sees a dark flash; this module picks the state up from <html> from there on.
 // A switch is compositor-only: html[data-bg] turns the page background at once while html[data-fade]
-// fades a layer of the old colour out over it (animation.css), and html[data-mode] flips the colour
-// tokens a beat later, at the crossfade midpoint. data-fade goes when the fade ends, taking the layer
+// fades a layer of the old colour out over it (src/styles/animation.css), and html[data-mode] flips the colour
+// tokens a beat later, at the crossfade's visual midpoint. data-fade goes when the fade ends, taking the layer
 // with it, so the page is never left composited over it (which turns Windows text greyscale).
-import { useSyncExternalStore } from 'react';
 import { REDUCED } from './env';
+import { createStore, useStore } from './store';
 
 export type Theme = 'dark' | 'light';
 const STORE = 'dv-theme';
 const root = document.documentElement;
-let theme: Theme = root.dataset.mode === 'light' ? 'light' : 'dark';
+const theme = createStore<Theme>(root.dataset.mode === 'light' ? 'light' : 'dark');
 let timer = 0, fadeTimer = 0;
-/** the crossfade's length, --duration-theme in token.css */
-const FADE = 620;
+/** how far into the crossfade --ease-theme (cubic-bezier(.45, 0, .2, 1)) has the old colour half
+ * gone, so the tokens flip unseen */
+const MIDPOINT = .369;
+/** the crossfade's length in ms, read from --duration-theme so the two never disagree */
+const fadeMs = () => parseFloat(getComputedStyle(root).getPropertyValue('--duration-theme')) * 1000 || 620;
 
-const listeners = new Set<() => void>();
-export const subscribeTheme = (fn: () => void) => { listeners.add(fn); return () => { listeners.delete(fn); }; };
-export const getTheme = () => theme;
 /** The current mode; re-renders the caller when it changes. */
-export const useTheme = () => useSyncExternalStore(subscribeTheme, getTheme);
+export const useTheme = () => useStore(theme);
 
 export function setTheme(next: Theme) {
-  if (next === theme) return;
-  theme = next;
+  if (next === theme.get()) return;
   try { localStorage.setItem(STORE, next); } catch { /* private mode: the choice just won't stick */ }
   root.dataset.bg = next;
   clearTimeout(timer);
@@ -36,8 +35,9 @@ export function setTheme(next: Theme) {
     delete root.dataset.fade;
     void root.offsetWidth;
     root.dataset.fade = next === 'light' ? 'dark' : 'light';
-    timer = window.setTimeout(() => { root.dataset.mode = next; }, 229);
-    fadeTimer = window.setTimeout(() => { delete root.dataset.fade; }, FADE);
+    const fade = fadeMs();
+    timer = window.setTimeout(() => { root.dataset.mode = next; }, fade * MIDPOINT);
+    fadeTimer = window.setTimeout(() => { delete root.dataset.fade; }, fade);
   }
-  listeners.forEach(fn => fn());
+  theme.set(next);
 }

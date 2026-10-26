@@ -1,4 +1,4 @@
-import { cn } from '../../components/ui';
+import { cn } from '../../lib/cn';
 
 const RING = 'M8 2a6 6 0 1 0 0 12A6 6 0 1 0 8 2z';
 const GLYPHS = {

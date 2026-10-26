@@ -4,7 +4,8 @@ import type { ReactNode } from 'react';
 import { lines, useLang } from '../../i18n';
 import { Img } from '../../components/Img';
 import { Phone } from '../../components/Device';
-import { Kicker, Lead, cn } from '../../components/ui';
+import { Kicker, Lead } from '../../components/ui';
+import { cn } from '../../lib/cn';
 
 const IMG = 'assets/img/qacflow/';
 /** the screens captured again in English, under en/ as WebP; any other shows its Korean capture in English too */

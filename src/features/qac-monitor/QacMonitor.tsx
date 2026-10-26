@@ -9,11 +9,11 @@
 // It sits in the Studio Display (<Monitor>, Device.tsx), so it is drawn as a Mac app would be: the
 // system colours and type, a toolbar with a segmented control, tinted capsules over solid blocks, in
 // the dark appearance on the dark page and the light one on the light page (the .qac-monitor mode
-// set and the m-* tokens, src/token.css). The layout is the real app's; the data is a sample (data.ts).
+// set and the m-* tokens, src/styles/tokens.css). The layout is the real app's; the data is a sample (data.ts).
 import { useState } from 'react';
 import { setLang, useLang, useT } from '../../i18n';
 import { useInterval } from '../../lib/useInterval';
-import { cn } from '../../components/ui';
+import { cn } from '../../lib/cn';
 import { DEFECTS, LINES, QUEUE } from './data';
 import { Fit } from './Fit';
 import { Glyph } from './Glyph';

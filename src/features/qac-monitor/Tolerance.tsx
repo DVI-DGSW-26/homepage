@@ -1,4 +1,4 @@
-import { cn } from '../../components/ui';
+import { cn } from '../../lib/cn';
 
 /** where a value sits on the bar: the limits at 15% and 85%, clamped to the ends */
 const place = (v: number, lo: number, hi: number) => Math.min(100, Math.max(0, 15 + 70 * (v - lo) / (hi - lo)));

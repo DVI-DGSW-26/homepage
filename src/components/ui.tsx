@@ -5,30 +5,7 @@
 //   [data-batch]  its .rv children reveal together, staggered
 //   [data-count]  a number that counts up from 0
 import type { ComponentProps } from 'react';
-import { extendTailwindMerge } from 'tailwind-merge';
-
-// Tailwind-merge needs the token names from src/token.css, or it reads an unknown text-* as a
-// colour and drops the real colour next to it. None of the text sizes carries a line-height, so a
-// size must not knock out a leading-* either (tailwind-merge assumes it does, as text-lg would).
-export const cn = extendTailwindMerge({
-  override: { conflictingClassGroups: { 'font-size': [] } },
-  extend: {
-    theme: {
-      text: ['tag', 'micro', 'label', 'mono-sm', 'mono', 'caption', 'small', 'body-sm', 'body', 'body-lg', 'page', 'title-xs', 'title', 'title-lg',
-        'unit', 'unit-lg', 'menu', 'h2', 'h2-lg', 'wordmark', 'stat', 'milestone', 'mark',
-        'm-2xs', 'm-xs', 'm-sm', 'm-base', 'm-md', 'm-lg', 'm-xl', 'm-2xl', 'm-3xl', 'm-4xl', 'm-5xl', 'm-6xl'],
-      tracking: ['heading', 'heading-sm', 'mac', 'caption'],
-      leading: ['display', 'h2', 'title', 'caption', 'copy', 'page'],
-      spacing: ['gutter', 'wrap', 'section', 'sec-head', 'stack-sm', 'split-gap', 'block-gap', 'col-gap', 'phone-gap', 'step-gap', 'stat-gap',
-        'panel-pad', 'nav-gap', 'nav-gap-tight', 'logo', 'glow', 'hinge', 'hinge-gap'],
-      container: ['page', 'lead'],
-      radius: ['card', 'window', 'pill', 'm-card'],
-      breakpoint: ['2xs', 'sm', 'md', 'lg', 'xl'],
-      ease: ['out', 'theme', 'm-spring'],
-      shadow: ['device', 'm-card', 'm-icon', 'm-thumb', 'm-swatch', 'm-alert', 'm-halo']
-    }
-  }
-});
+import { cn } from '../lib/cn';
 
 /** One chapter of a page: a full-width band with its own rule, every other one on the second surface,
  * so the chapters read as separate pages-within-the-page rather than one long column.

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useT } from '../../i18n';
 import { pad2 } from '../../lib/env';
 import { useInterval } from '../../lib/useInterval';
-import { cn } from '../../components/ui';
+import { cn } from '../../lib/cn';
 import { Glyph } from './Glyph';
 
 /** a grouped card */

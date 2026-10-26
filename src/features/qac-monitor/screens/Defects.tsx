@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useT } from '../../../i18n';
 import { useInterval } from '../../../lib/useInterval';
-import { cn } from '../../../components/ui';
+import { cn } from '../../../lib/cn';
 import { ACTIONS, DEFECTS, KINDS, LINES, type Action, type DefectKind } from '../data';
 import { useTr } from '../tr';
 import { Glyph } from '../Glyph';

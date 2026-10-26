@@ -1,6 +1,7 @@
 import { useT } from '../../../i18n';
 import { ICON } from '../../../components/icons';
-import { Band, Kicker, Lead, LineIcon, cn } from '../../../components/ui';
+import { Band, Kicker, Lead, LineIcon } from '../../../components/ui';
+import { cn } from '../../../lib/cn';
 import { RichLines } from '../parts';
 
 /** data in, verified data, data out */

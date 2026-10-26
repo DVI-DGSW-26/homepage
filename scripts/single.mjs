@@ -33,7 +33,7 @@ const dataUri = async (rel) => {
   cache.set(rel, uri); return uri;
 };
 
-// Image paths are assembled at runtime ('assets/img/products/' + p.img, `assets/img/${src}.jpg`), so no
+// Image paths are assembled at runtime (IMG + `en/${name}.webp` in src/pages/qac-flow/parts.tsx), so no
 // regex can find them in the bundle. Instead every image the code could reach is shipped in a map and
 // swapped in by a tiny observer: an image counts when the source mentions its file name, the folder the
 // code joins names onto, or its path below assets/img/ without the extension. (The source, not the
@@ -51,9 +51,7 @@ for (const file of await walk(path.join(pub, 'assets/img'))) {
   map[rel] = await dataUri(rel);
 }
 
-// the artifact viewer blocks downloads, so the single file opens the catalog PDF in a new tab instead
-const CATALOG = 'https://dvi-ind.com/img/dvision/catalog.pdf';
-const swapper = `<script>window.__ASSETS__=${JSON.stringify(map)};(function(){var M=window.__ASSETS__;function fix(el){if(!el||!el.getAttribute)return;var s=el.getAttribute('src');if(s&&M[s])el.src=M[s];if(el.tagName==='A'&&el.hasAttribute('download')){el.removeAttribute('download');el.target='_blank';el.rel='noopener';}}function scan(r){if(r.querySelectorAll)r.querySelectorAll('img[src^="assets/"],a[download]').forEach(fix);}var o=new MutationObserver(function(ms){ms.forEach(function(m){if(m.type==='attributes')fix(m.target);m.addedNodes&&m.addedNodes.forEach(function(n){if(n.nodeType===1){fix(n);scan(n);}});});});o.observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['src','download']});document.addEventListener('DOMContentLoaded',function(){scan(document);});scan(document);})();</script>`;
+const swapper = `<script>window.__ASSETS__=${JSON.stringify(map)};(function(){var M=window.__ASSETS__;function fix(el){if(!el||!el.getAttribute)return;var s=el.getAttribute('src');if(s&&M[s])el.src=M[s];}function scan(r){if(r.querySelectorAll)r.querySelectorAll('img[src^="assets/"]').forEach(fix);}var o=new MutationObserver(function(ms){ms.forEach(function(m){if(m.type==='attributes')fix(m.target);m.addedNodes&&m.addedNodes.forEach(function(n){if(n.nodeType===1){fix(n);scan(n);}});});});o.observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['src']});document.addEventListener('DOMContentLoaded',function(){scan(document);});scan(document);})();</script>`;
 
 const title = (html.match(/<title>(.*?)<\/title>/) || [, 'DVISION'])[1];
 // the pre-paint theme script (index.html), so a remembered light mode applies here too
@@ -61,7 +59,7 @@ const themeScript = (html.match(/<script id="dv-theme">.*?<\/script>/) || [''])[
 const fonts = (html.match(/<link[^>]+fonts\.googleapis[^>]*>/g) || []).join('\n');
 // the head isn't carried over wholesale, so the tab icon is inlined explicitly
 const icon = `<link rel="icon" type="image/png" href="${await dataUri('assets/img/favicon-32.png')}">`;
-const app = js.split('assets/docs/DVISION-catalog.pdf').join(CATALOG).replace(/<\/script/gi, '<\\/script');
+const app = js.replace(/<\/script/gi, '<\\/script');
 // declared explicitly: opened from disk with no charset, the Korean copy in the bundle decodes as garbage
 const single = `<meta charset="utf-8">\n<title>${title}</title>\n${icon}\n${themeScript}\n${fonts}\n<style>\n${css}\n</style>\n${swapper}\n<div id="root"></div>\n<script type="module">\n${app}\n</script>\n`;
 await fs.writeFile(path.join(dist, 'dvision-single.html'), single);

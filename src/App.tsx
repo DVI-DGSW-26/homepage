@@ -2,11 +2,10 @@ import { useEffect, useLayoutEffect, useRef, type ReactNode } from 'react';
 import { ScrollTrigger, useGSAP } from './lib/gsap';
 import { landOnHash, releasePosition, scroll, smoothAnchors } from './lib/scroll';
 import { setupReveals } from './lib/reveals';
-import { bootReady } from './lib/boot';
 import { followLinks, usePage, type Page } from './lib/router';
 import { useLang } from './i18n';
-import { Nav } from './components/Nav';
-import { Launch } from './components/Launch';
+import { Nav } from './components/layout/Nav';
+import { Launch } from './components/layout/Launch';
 import { QacFlowPage } from './pages/qac-flow/QacFlowPage';
 import { DataPage } from './pages/data/DataPage';
 
@@ -36,8 +35,6 @@ export default function App() {
     // a switch starts the new page at its top (or its #anchor, below); the first load keeps the browser's place
     if (arrived.current) scroll.scrollTo(0, { immediate: true });
     arrived.current = true;
-    // the hero lifts the boot veil when its entrance starts; a page without it just waits for the fonts
-    if (!document.getElementById('hero')) bootReady.then(() => document.documentElement.toggleAttribute('data-ready', true));
     setupReveals();
     // Triggers created before the process section set its pinned height measured a shorter page;
     // one refresh now puts them right. (ScrollTrigger refreshes again by itself on window load.)

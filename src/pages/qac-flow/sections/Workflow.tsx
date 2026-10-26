@@ -1,6 +1,7 @@
 import { useT } from '../../../i18n';
 import { ICON } from '../../../components/icons';
-import { Band, LineIcon, cn } from '../../../components/ui';
+import { Band, LineIcon } from '../../../components/ui';
+import { cn } from '../../../lib/cn';
 import { Head, StepText } from '../parts';
 
 /** order, self-inspection, patrol, approval, report */
