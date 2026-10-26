@@ -207,7 +207,7 @@ export const en: Messages = {
     alt: {
       capture: 'Smartphone camera framing the display of a digital caliper reading 30.00 mm',
       ocr: 'App screen: the caliper reading is filled in by OCR and judged as a pass against the tolerance',
-      trio: 'Three smartphone screens in sequence: photographing a caliper display, cropping to the reading, and the value filled in by OCR with a pass result',
+      crop: 'App screen: dragging the corner handles of a box to crop the photo down to the caliper reading',
       monitor: ['Measurement detail screen: each measured value plotted against its tolerance band, with the out-of-tolerance value flagged NG in red', 'Status board by machine: self-inspection and patrol inspection progress per time slot, with delays highlighted', 'Defects and actions dashboard: defect counts by type and the status of each corrective action'],
       compare: 'Mobile patrol inspection screen comparing self-inspection and patrol inspection values per dimension, with a mismatch marked as fail',
       photos: 'Side-by-side photos of the same caliper reading taken at self-inspection and at patrol inspection',

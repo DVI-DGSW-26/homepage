@@ -71,6 +71,7 @@ pnpm coast      # 지도 해안선 데이터 다시 만들기 (결과는 커밋�
 | `src/three/parts.ts` | 부품 형상(Brake Hat, Yoke, Inner Pipe 등) 절차적 지오메트리와 HUD 라벨 |
 | `src/three/extrusion.ts` | 프로파일 랩: 프레스 컨테이너, 금형, 프로파일 Three.js 장면과 중량 계산 |
 | `src/canvas/map.ts`, `telemetry.ts` | 글로벌 거점 지도(태평양 중심 메르카토르, 실제 해안선), R&D 데모 파형 (Canvas 2D) |
+| `src/components/Device.tsx` | Q.A.C-Flow 화면을 담는 목업, 모두 CSS. 아이폰은 Apple 공식 치수 도면(iPhone 16 Pro Max Dimensional Drawings)의 비율, 버튼 위치, 화면 크기(440×956pt)대로 그리고, 화면은 HTML(상태바, 다이내믹 아일랜드, 캡처, 홈 인디케이터). `view` 로 정면 또는 좌우로 돌린 CSS 3D(옆면 두께와 버튼이 보임), 각도는 `VIEWS`. 모니터는 Studio Display |
 | `src/canvas/coast.json`, `scripts/coast.mjs` | 지도 해안선. Natural Earth 1:50m 육지(world-atlas, 공개 데이터)를 지도 범위로 잘라 단순화한 것. 범위를 바꾸면 `pnpm coast` 로 다시 만듭니다(map.ts 와 같은 LON0/LON1/LAT0) |
 | `src/data.ts` | 제품, 공정, 인증서, 연혁, 거점, 조직도, 행사 데이터와 타입. 사이트 내용 수정은 여기서 |
 | `public/assets/img/` | dvi-ind.com 에서 가져온 이미지(정리, 최적화본). 코드에서는 `assets/img/...` 로 참조 |
@@ -108,7 +109,7 @@ pnpm coast      # 지도 해안선 데이터 다시 만들기 (결과는 커밋�
 
 사진과 로고는 `<img>` 대신 `<Img>` (`src/components/Img.tsx`) 로 그립니다. next/image 와 같은 일을 빌드 시점에 해 둡니다.
 
-- `pnpm dev` / `pnpm build` 가 먼저 `scripts/images.mjs` 를 돌려 `public/assets/img/` 의 JPG/PNG 마다 AVIF·WebP 를 480 / 828 / 1200 / 1600 / 2048px(원본보다 넓은 폭은 만들지 않음)로 만들고, 목록을 `src/generated/images.json` 에 씁니다. 파일 이름에 원본 해시가 들어가 영구 캐시해도 되고, 사진을 바꾸면 주소도 바뀝니다. 4KB 미만(아이콘, 작은 로고)은 원본 그대로 씁니다.
+- `pnpm dev` / `pnpm build` 가 먼저 `scripts/images.mjs` 를 돌려 `public/assets/img/` 의 JPG/PNG/WebP 마다 AVIF·WebP 를 480 / 828 / 1200 / 1600 / 2048px(원본보다 넓은 폭은 만들지 않음)로 만들고(`qacflow/` 의 앱 화면은 글자가 뭉개지지 않게 WebP 만, 2400px 까지), 목록을 `src/generated/images.json` 에 씁니다. 파일 이름에 원본 해시가 들어가 영구 캐시해도 되고, 사진을 바꾸면 주소도 바뀝니다. 4KB 미만(아이콘, 작은 로고)은 원본 그대로 씁니다.
 - 변환 결과는 `node_modules/.cache/dv-img` 에 남아, 새로 넣거나 바꾼 사진만 다시 변환합니다(처음 약 40초, 이후 2초 안팎). 지운 원본의 사본은 다음 실행 때 지워집니다.
 - `<Img src="assets/img/..." sizes="(max-width: 859px) 50vw, 25vw" />` — `sizes` 에 화면에서 그려지는 폭을 적으면 브라우저가 맞는 파일을 고릅니다(기본 `100vw`). 첫 화면 이미지는 `priority`(즉시, 높은 우선순위). 너비·높이는 목록에서 자동으로 붙고, 불투명한 사진은 로딩 중 평균색(800px 이상은 16px 흐림 미리보기)이 깔립니다.
 - `<picture>` 는 `display: contents` 라 클래스, ref, 그리드 배치는 지금처럼 `<img>` 에 겁니다.

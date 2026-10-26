@@ -5,14 +5,15 @@
 //
 // The screens come from the in-house deployment. Customer and personal names are masked in the
 // image files themselves (public/assets/img/qacflow/), and the phone captures have the status and
-// navigation bars cropped off so they sit in the CSS phone frame.
+// navigation bars cropped off so they sit in the CSS iPhone (src/components/Device.tsx).
 import { useState, type KeyboardEvent, type ReactNode } from 'react';
 import { lines, useT } from '../i18n';
 import { Band, Eyebrow, H2, Lead, LineIcon as Icon, cn } from './ui';
 import { Img } from './Img';
+import { Monitor, Phone } from './Device';
 
 const IMG = 'assets/img/qacflow/';
-const MONITOR = ['measurement-detail', 'status-board', 'defect-actions'] as const;
+const MONITOR = ['measurement-detail.webp', 'status-board.webp', 'defect-actions.webp'] as const;
 
 // line icons, 24×24, drawn with the current colour
 const BEFORE_ICONS = ['M4 7h16v10H4z M8 11h8', 'M6 3h9l3 3v15H6z M9 10h6M9 14h6M9 18h3', 'M3 5h18v14H3z M3 10h18M9 5v14M15 5v14'];
@@ -33,25 +34,16 @@ function Head({ kicker, q, title, lead }: { kicker: string; q: string; title: st
   );
 }
 
-/** a phone in a CSS frame; the capture inside is 664×1284 */
-function Phone({ src, alt, className }: { src: string; alt: string; className?: string }) {
-  return (
-    <figure className={cn(
-      'relative m-0 rounded-[30px] border border-ink-line-2 bg-ink-deep p-1.75 shadow-[0_30px_60px_-30px_rgb(0_0_0/.7)]',
-      'before:absolute before:top-3.25 before:left-1/2 before:z-1 before:h-2.25 before:w-[22%] before:-translate-x-1/2 before:rounded-full before:bg-ink-deep',
-      className
-    )}>
-      <Img src={IMG + src} alt={alt} sizes="(max-width: 859px) 60vw, 260px" className="aspect-664/1284 h-auto w-full rounded-[23px] bg-plate" />
-    </figure>
-  );
-}
+type Screen = { src: string; alt: string; dark?: boolean };
+/** a phone in a pair is drawn at 3/4 of the pair, at most 460px wide */
+const PAIR_SIZES = '(max-width: 599px) 70vw, 350px';
 
-/** two phones, the front one lower-left over the back one */
-function PhonePair({ back, front, className }: { back: [string, string]; front: [string, string]; className?: string }) {
+/** two phones turned in toward each other, the front one lower-left over the back one */
+function PhonePair({ back, front, className }: { back: Screen; front: Screen; className?: string }) {
   return (
     <div className={cn('relative mx-auto grid w-full max-w-115 grid-cols-12 items-start', className)}>
-      <Phone src={back[0]} alt={back[1]} className="col-[6/13] row-start-1 opacity-92" />
-      <Phone src={front[0]} alt={front[1]} className="z-1 col-[1/8] row-start-1 mt-[16%]" />
+      <Phone {...back} src={IMG + back.src} sizes={PAIR_SIZES} view="left" className="col-[4/13] row-start-1" />
+      <Phone {...front} src={IMG + front.src} sizes={PAIR_SIZES} view="right" className="z-1 col-[1/10] row-start-1 mt-[14%]" />
     </div>
   );
 }
@@ -107,7 +99,7 @@ function Hero() {
         <p className="rv mono m-0 mt-4 text-mute">{m.statsNote}</p>
       </div>
       <div className="rv relative isolate before:absolute before:inset-[8%_-10%_0] before:-z-1 max-md:before:inset-[8%_0_0] before:bg-[radial-gradient(50%_50%_at_50%_50%,var(--qf-soft),transparent_70%)]">
-        <PhonePair back={['ocr-input.jpg', m.alt.ocr]} front={['capture.jpg', m.alt.capture]} />
+        <PhonePair back={{ src: 'ocr-input.webp', alt: m.alt.ocr }} front={{ src: 'capture.webp', alt: m.alt.capture, dark: true }} />
       </div>
     </div>
   );
@@ -157,8 +149,13 @@ function How() {
   return (
     <div>
       <Head kicker={h.kicker} q={h.q} title={h.title} lead={h.lead} />
-      <Img src={IMG + 'trio.png'} alt={m.alt.trio} sizes="(max-width: 1200px) 100vw, 1200px" className="rv mx-auto h-auto w-full max-w-300" />
-      <ol data-batch className="m-0 mx-auto mt-8 grid max-w-300 list-none gap-5.5 p-0 sm:grid-cols-3 sm:gap-[clamp(20px,4vw,64px)]">
+      {/* the three screens in step, each over its column of the steps below */}
+      <div data-batch className="mx-auto grid max-w-300 grid-cols-3 gap-[clamp(12px,4vw,64px)]">
+        {([['capture.webp', m.alt.capture, true], ['crop.webp', m.alt.crop], ['ocr-input.webp', m.alt.ocr]] as const).map(([src, alt, dark]) => (
+          <Phone key={src} src={IMG + src} alt={alt} dark={dark} sizes="(max-width: 1200px) 32vw, 390px" className="rv mx-auto w-full max-w-97.5" />
+        ))}
+      </div>
+      <ol data-batch className="m-0 mx-auto mt-10 grid max-w-300 list-none gap-5.5 p-0 sm:grid-cols-3 sm:gap-[clamp(20px,4vw,64px)]">
         {h.steps.map((s, i) => (
           <li key={s.title} className="rv grid grid-cols-[auto_1fr] gap-x-4 border-t border-line pt-4.5">
             <b className="row-span-2 pt-0.75 font-mono text-mono-sm text-qf-ink">{String(i + 1).padStart(2, '0')}</b>
@@ -218,20 +215,14 @@ function Live() {
               tab === i ? 'border-qf bg-qf text-on-acc' : 'border-line text-fg-2 hover:border-line-2 hover:text-fg')}>{label}</button>
         ))}
       </div>
-      {/* the monitor: a CSS bezel, neck and foot; hidden panels don't fetch their screen until opened */}
-      <div className={cn(
-        'rv relative mb-[calc(clamp(22px,3vw,40px)+14px)] rounded-[clamp(8px,1.2vw,16px)] border border-ink-line-2 bg-ink-deep p-[clamp(6px,1vw,14px)]',
-        'before:absolute before:top-full before:left-1/2 before:h-[clamp(22px,3vw,40px)] before:w-[12%] before:-translate-x-1/2 before:bg-ink-deep before:light:bg-ink-mute',
-        'after:absolute after:top-[calc(100%+clamp(22px,3vw,40px))] after:left-1/2 after:h-1.5 after:w-[28%] after:-translate-x-1/2 after:rounded-full after:bg-ink-line-2 after:light:bg-ink-mute'
-      )}>
-        <div className="aspect-1600/876 overflow-hidden rounded-[4px] bg-plate">
-          {MONITOR.map((src, i) => (
-            <div key={src} role="tabpanel" id={`qf-panel-${i}`} aria-labelledby={`qf-tab-${i}`} hidden={tab !== i} className="size-full">
-              <Img src={`${IMG}${src}.jpg`} alt={m.alt.monitor[i]} sizes="(max-width: 1480px) 100vw, 1480px" className="size-full object-cover object-top-left" />
-            </div>
-          ))}
-        </div>
-      </div>
+      {/* hidden panels don't fetch their screen until opened */}
+      <Monitor className="rv mx-auto mb-8 max-w-300">
+        {MONITOR.map((src, i) => (
+          <div key={src} role="tabpanel" id={`qf-panel-${i}`} aria-labelledby={`qf-tab-${i}`} hidden={tab !== i} className="size-full">
+            <Img src={IMG + src} alt={m.alt.monitor[i]} sizes="(max-width: 1260px) 96vw, 1200px" className="size-full object-cover object-top-left" />
+          </div>
+        ))}
+      </Monitor>
       <p className="mono m-0 text-micro text-mute">{l.note}</p>
     </div>
   );
@@ -244,7 +235,7 @@ function Trace() {
     <div>
       <Head kicker={t.kicker} q={t.q} title={t.title} lead={t.lead} />
       <div className="grid items-center gap-stack-sm md:grid-cols-[minmax(0,.8fr)_minmax(0,1.2fr)]">
-        <PhonePair className="rv max-w-105" back={['mobile-compare.jpg', m.alt.compare]} front={['mobile-photo-compare.jpg', m.alt.photos]} />
+        <PhonePair className="rv max-w-105" back={{ src: 'mobile-compare.webp', alt: m.alt.compare }} front={{ src: 'mobile-photo-compare.webp', alt: m.alt.photos }} />
         <div className="grid gap-[clamp(28px,3vw,40px)]">
           <ul data-batch className="m-0 grid list-none gap-4.5 p-0">
             {t.points.map(x => (

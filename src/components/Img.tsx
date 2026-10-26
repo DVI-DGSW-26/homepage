@@ -3,6 +3,7 @@
 // scripts/images.mjs writes AVIF / WebP copies of every picture at several widths plus a manifest;
 // this component reads it and renders
 //   <picture> <source avif srcset> <source webp srcset> <img original> </picture>
+// (app screens get the WebP source only; see SCREENS in scripts/images.mjs)
 // so the browser picks the smallest file that fills the box (`sizes` says how wide the box is),
 // with intrinsic width/height (no layout shift), lazy loading, and the picture's average colour or
 // a 16px blurred preview showing until it arrives. `priority` is for the first screen: eager, high
@@ -14,7 +15,9 @@
 import type { ComponentProps, CSSProperties } from 'react';
 import data from '../generated/images.json';
 
-type Meta = { w: number; h: number; v: string; ws: number[]; c?: string; b?: string };
+/** f: the formats of the copies, when not the default AVIF + WebP (app screens are WebP only) */
+type Meta = { w: number; h: number; v: string; ws: number[]; f?: string[]; c?: string; b?: string };
+const FORMATS = ['avif', 'webp'];
 const IMAGES = data as Record<string, Meta>;
 const INLINE = typeof window !== 'undefined' && '__ASSETS__' in window;
 
@@ -46,8 +49,7 @@ export function Img({ src, sizes = '100vw', priority = false, alt = '', loading,
     : { backgroundColor: m.c };
   return (
     <picture className="contents">
-      <source type="image/avif" srcSet={srcSet(src, m, 'avif')} sizes={sizes} />
-      <source type="image/webp" srcSet={srcSet(src, m, 'webp')} sizes={sizes} />
+      {(m.f ?? FORMATS).map(fmt => <source key={fmt} type={`image/${fmt}`} srcSet={srcSet(src, m, fmt)} sizes={sizes} />)}
       <img {...base} sizes={sizes} style={placeholder ? { ...placeholder, ...style } : style} />
     </picture>
   );

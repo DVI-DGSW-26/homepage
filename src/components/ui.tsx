@@ -31,6 +31,7 @@ export const cn = extendTailwindMerge({
       breakpoint: ['2xs', 'sm', 'md', 'lg', 'xl'],
       ease: ['out', 'theme'],
       'text-shadow': ['photo', 'photo-sm'],
+      shadow: ['device'],
       'drop-shadow': ['medal', 'medal-sm']
     }
   }

@@ -1,7 +1,7 @@
 // Responsive images, generated before dev and build (the job next/image does at request time).
 //
-// For every photo and logo under public/assets/img/ this writes AVIF and WebP copies at the widths a
-// screen might ask for (never wider than the source) to public/assets/opt/, and a manifest,
+// For every photo and logo under public/assets/img/ (JPEG, PNG or WebP) this writes AVIF and WebP
+// copies at the widths a screen might ask for (never wider than the source) to public/assets/opt/, and a manifest,
 // src/generated/images.json, that <Img> (src/components/Img.tsx) turns into srcset/sizes, intrinsic
 // width/height and a placeholder. File names carry a hash of the source, so they can be cached
 // forever and a replaced photo gets new URLs.
@@ -23,6 +23,11 @@ const MANIFEST = path.join(root, 'src/generated/images.json');
 /** widths offered to srcset; a source narrower than one of these also gets its own width */
 const WIDTHS = [480, 828, 1200, 1600, 2048];
 const FORMATS = { avif: { quality: 52, effort: 4 }, webp: { quality: 76, effort: 4 } };
+/** app screens are small type on flat colour, which AVIF at photo quality smears: WebP only, near lossless */
+const SCREENS = /^qacflow\//;
+const SCREEN_FORMATS = { webp: { quality: 90, smartSubsample: true, effort: 5 } };
+/** ...and one width more, so the monitor (1200px at most) stays sharp on a 2× screen */
+const SCREEN_WIDTHS = [...WIDTHS, 2400];
 /** tab icons and the like are not shown through <img> */
 const SKIP = /^(favicon|apple-touch-icon)/;
 /** below this the original is already as small as AVIF gets (icons, small logos): no copies */
@@ -39,7 +44,7 @@ const walk = async (dir, acc = []) => {
 const exists = p => fs.access(p).then(() => true, () => false);
 const t0 = Date.now();
 
-const files = (await walk(SRC)).filter(f => /\.(jpe?g|png)$/i.test(f) && !SKIP.test(path.basename(f))).sort();
+const files = (await walk(SRC)).filter(f => /\.(jpe?g|png|webp)$/i.test(f) && !SKIP.test(path.basename(f))).sort();
 const manifest = {};
 const wanted = new Set();
 let encoded = 0;
@@ -51,10 +56,12 @@ async function one(file) {
   const img = sharp(buf);
   const { width: w, height: h } = await img.metadata();
   const { isOpaque, dominant } = await img.stats();
-  const widths = buf.length < TINY ? [] : [...new Set([...WIDTHS.filter(x => x < w), Math.min(w, WIDTHS.at(-1))])];
+  const screen = SCREENS.test(rel);
+  const ladder = screen ? SCREEN_WIDTHS : WIDTHS, formats = screen ? SCREEN_FORMATS : FORMATS;
+  const widths = buf.length < TINY ? [] : [...new Set([...ladder.filter(x => x < w), Math.min(w, ladder.at(-1))])];
   const stem = rel.replace(/\.[^.]+$/, '');
   for (const width of widths) {
-    for (const [fmt, opts] of Object.entries(FORMATS)) {
+    for (const [fmt, opts] of Object.entries(formats)) {
       const name = `${stem}.${hash}-${width}.${fmt}`;
       wanted.add(name);
       const cached = path.join(CACHE, name), out = path.join(OUT, name);
@@ -67,6 +74,7 @@ async function one(file) {
     }
   }
   const entry = { w, h, v: hash, ws: widths };   // ws empty: the original is served as is
+  if (formats !== FORMATS) entry.f = Object.keys(formats);   // the copies' formats, when not AVIF + WebP
   // opaque pictures get a placeholder: the average colour, and for photos big enough to be seen
   // loading, a 16px blurred preview
   if (isOpaque) {

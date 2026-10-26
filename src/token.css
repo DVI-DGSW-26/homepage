@@ -187,6 +187,9 @@
   --text-shadow-photo-sm: 0 1px 4px rgb(0 0 0 / .6);
   --drop-shadow-medal: 0 4px 10px rgb(0 0 0 / .55);
   --drop-shadow-medal-sm: 0 2px 5px rgb(0 0 0 / .6);
+
+  /* a device standing off the page: a long soft fall and a tighter contact shadow */
+  --shadow-device: 0 48px 80px -36px rgb(0 0 0 / .7), 0 16px 32px -20px rgb(0 0 0 / .5);
 }
 
 @theme static {
@@ -212,6 +215,14 @@
   --color-plate: #fff;
   /* the mint green that marks Q.A.C-Flow and the whole page now (one accent) */
   --color-qf: #3CCB9A;
+  /* device mockups (src/components/Device.tsx): the black glass of a screen, a phone's titanium
+     band and where it catches the light, and the anodized aluminum of a display's edge and stand */
+  --color-glass: #07080A;
+  --color-titanium: #3E4248;
+  --color-titanium-hi: #8A9099;
+  --color-alu: #B9BEC5;
+  --color-alu-hi: #ECEEF1;
+  --color-alu-lo: #858B93;
 }
 
 /* mode-dependent colours resolve through the mode set, so `bg-bg`, `text-fg-2`, `border-line`
