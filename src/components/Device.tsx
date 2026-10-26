@@ -6,7 +6,8 @@
 //              buttons and Camera Control, the Dynamic Island, an HTML status bar (9:41, so the capture
 //              needs none of its own) and the home indicator; face on, or turned in CSS 3D with its
 //              side showing its true thickness
-//   <Monitor>  a Studio Display: black glass bezel with the camera, aluminum edge, stand and foot
+//   <Monitor>  a Studio Display: black glass bezel with the camera, aluminum edge, stand and foot;
+//              its screen is the floor app in React (QacMonitor.tsx), themed with the page, so not dimmed
 //
 // Both are container-query sized (@container, cqw units), so they keep their proportions however wide
 // they are drawn.
@@ -64,9 +65,13 @@ export function Phone({ src, alt, sizes, dark, view = 'front', className }: { sr
   const turn = VIEWS[view];
   const r = RADIUS + DISPLAY;
   return (
-    <figure className={cn('@container relative m-0', className)}>
+    // turned, the phone is a 3D scene on its own compositor layers, and Chrome treats everything
+    // painted after a 3D layer as overlapping it, compositing the rest of the page and drawing its text
+    // greyscale on Windows instead of ClearType; paint containment bounds the scene to the figure (the
+    // clip margin keeps the shadow and buttons whole)
+    <figure className={cn('@container relative m-0', turn !== 0 && '[contain:paint] [overflow-clip-margin:120px]', className)}>
       <div style={turn ? { perspective: mm(600) } : undefined}>
-        <div className="relative transform-3d" style={turn ? { transform: `rotateY(${turn}deg) rotateZ(${-turn / 7}deg)` } : undefined}>
+        <div className={cn('relative', turn !== 0 && 'transform-3d')} style={turn ? { transform: `rotateY(${turn}deg) rotateZ(${-turn / 7}deg)` } : undefined}>
           {/* the body behind the face: brushed titanium, lightest across the middle of the side, the back slice casting the shadow */}
           {turn !== 0 && Array.from({ length: SLICES }, (_, i) => {
             const t = (i + 1) / SLICES;
@@ -123,10 +128,10 @@ export function Monitor({ children, className }: { children: ReactNode; classNam
       <div className="relative z-1 rounded-[1.5cqw] bg-linear-to-b from-alu-hi via-alu to-alu-lo p-[.18cqw] shadow-device">
         <div className="relative rounded-[1.35cqw] bg-glass p-[1.6cqw]">
           <i aria-hidden="true" className="absolute top-[.6cqw] left-1/2 size-[.45cqw] -translate-x-1/2 rounded-full bg-titanium ring-[.12cqw] ring-white/5" />
-          <div className="app-screen relative aspect-1600/876 overflow-hidden rounded-[.3cqw] bg-plate">
+          <div className="relative aspect-1600/876 overflow-hidden rounded-[.3cqw] bg-glass">
             {children}
             {/* a faint reflection across the glass */}
-            <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-linear-115 from-white/12 via-white/0 via-35% to-transparent mix-blend-soft-light" />
+            <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-linear-115 from-white/5 via-white/0 via-30% to-transparent" />
           </div>
         </div>
       </div>

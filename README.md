@@ -71,6 +71,7 @@ pnpm coast      # 지도 해안선 데이터 다시 만들기 (결과는 커밋�
 | `src/three/parts.ts` | 부품 형상(Brake Hat, Yoke, Inner Pipe 등) 절차적 지오메트리와 HUD 라벨 |
 | `src/three/extrusion.ts` | 프로파일 랩: 프레스 컨테이너, 금형, 프로파일 Three.js 장면과 중량 계산 |
 | `src/canvas/map.ts`, `telemetry.ts` | 글로벌 거점 지도(태평양 중심 메르카토르, 실제 해안선), R&D 데모 파형 (Canvas 2D) |
+| `src/components/QacMonitor.tsx` | 04 실시간 모니터링의 현장 모니터를 React 로 다시 만든 것. 현황판, 검사 상세, 품질·불량 세 화면을 앱 헤더 탭으로 오가고, 호기를 누르면 그 검사 상세로, 불량 유형을 누르면 목록이 걸러짐. 데이터는 예시(`LINES`, `DEFECTS`, `ACTIONS`), 1600×876 으로 그려 `<Monitor>` 폭에 맞춰 축소. 모니터(Studio Display) 안에 맞게 macOS 앱처럼 그림: 시스템 색과 글꼴, 반투명 툴바와 세그먼트 컨트롤, 사이트 다크/라이트 모드를 따라감(팔레트는 `styles.css` 의 `.qac-monitor`) |
 | `src/components/Device.tsx` | Q.A.C-Flow 화면을 담는 목업, 모두 CSS. 아이폰은 Apple 공식 치수 도면(iPhone 16 Pro Max Dimensional Drawings)의 비율, 버튼 위치, 화면 크기(440×956pt)대로 그리고, 화면은 HTML(상태바, 다이내믹 아일랜드, 캡처, 홈 인디케이터). `view` 로 정면 또는 좌우로 돌린 CSS 3D(옆면 두께와 버튼이 보임), 각도는 `VIEWS`. 모니터는 Studio Display |
 | `src/canvas/coast.json`, `scripts/coast.mjs` | 지도 해안선. Natural Earth 1:50m 육지(world-atlas, 공개 데이터)를 지도 범위로 잘라 단순화한 것. 범위를 바꾸면 `pnpm coast` 로 다시 만듭니다(map.ts 와 같은 LON0/LON1/LAT0) |
 | `src/data.ts` | 제품, 공정, 인증서, 연혁, 거점, 조직도, 행사 데이터와 타입. 사이트 내용 수정은 여기서 |

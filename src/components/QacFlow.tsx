@@ -7,15 +7,17 @@
 // image files themselves (public/assets/img/qacflow/), and the phone captures have the status and
 // navigation bars cropped off so they sit in the CSS iPhone (src/components/Device.tsx). Most are
 // captured again in English (qacflow/en/, see EN below) and shown when the page is read in English.
+// The live monitor is the floor app rebuilt in React, to be worked by hand (src/components/QacMonitor.tsx).
 import { useState, type KeyboardEvent, type ReactNode } from 'react';
 import { lines, useLang, useT } from '../i18n';
 import { Band, Eyebrow, H2, Lead, LineIcon as Icon, cn } from './ui';
 import { Img } from './Img';
 import { Monitor, Phone } from './Device';
+import { QacMonitor, SCREENS } from './QacMonitor';
 
 const IMG = 'assets/img/qacflow/';
 /** the screens captured again in English, under en/ as WebP; any other shows its Korean capture in English too */
-const EN = new Set(['capture', 'ocr-input', 'crop', 'mobile-compare', 'mobile-photo-compare', 'measurement-detail', 'status-board', 'defect-actions', 'web-approval', 'report-summary']);
+const EN = new Set(['capture', 'ocr-input', 'crop', 'mobile-compare', 'mobile-photo-compare', 'web-approval', 'report-summary']);
 /** a screen's path in the language being read */
 function useScreen() {
   const en = useLang() === 'en';
@@ -24,7 +26,6 @@ function useScreen() {
     return IMG + (en && EN.has(name) ? `en/${name}.webp` : src);
   };
 }
-const MONITOR = ['measurement-detail.webp', 'status-board.webp', 'defect-actions.webp'] as const;
 
 // line icons, 24×24, drawn with the current colour
 const BEFORE_ICONS = ['M4 7h16v10H4z M8 11h8', 'M6 3h9l3 3v15H6z M9 10h6M9 14h6M9 18h3', 'M3 5h18v14H3z M3 10h18M9 5v14M15 5v14'];
@@ -210,7 +211,6 @@ function Workflow() {
 
 function Live() {
   const m = useT().qf;
-  const screen = useScreen();
   const l = m.live;
   const [tab, setTab] = useState(0);
   const onKey = (e: KeyboardEvent<HTMLButtonElement>) => {
@@ -230,13 +230,11 @@ function Live() {
               tab === i ? 'border-qf bg-qf text-on-acc' : 'border-line text-fg-2 hover:border-line-2 hover:text-fg')}>{label}</button>
         ))}
       </div>
-      {/* hidden panels don't fetch their screen until opened */}
+      {/* the app's own toolbar switches screens too, and the tabs follow it */}
       <Monitor className="rv mx-auto mb-8 max-w-300">
-        {MONITOR.map((src, i) => (
-          <div key={src} role="tabpanel" id={`qf-panel-${i}`} aria-labelledby={`qf-tab-${i}`} hidden={tab !== i} className="size-full">
-            <Img src={screen(src)} alt={m.alt.monitor[i]} sizes="(max-width: 1260px) 96vw, 1200px" className="size-full object-cover object-top-left" />
-          </div>
-        ))}
+        <div role="tabpanel" id={`qf-panel-${tab}`} aria-labelledby={`qf-tab-${tab}`} className="size-full">
+          <QacMonitor screen={SCREENS[tab]} onScreen={s => setTab(SCREENS.indexOf(s))} />
+        </div>
       </Monitor>
       <p className="mono m-0 text-micro text-mute">{l.note}</p>
     </div>

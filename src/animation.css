@@ -15,6 +15,7 @@
   @keyframes cue { 0% { top: -100% } 60% { top: 100% } 100% { top: 100% } }
   @keyframes marquee { to { transform: translateX(-100%) } }
   @keyframes dialog-in { from { opacity: 0; transform: translateY(16px) scale(.98) } }
+  @keyframes fade-out { to { opacity: 0 } }
   @keyframes fade-in { from { opacity: 0 } }
 }
 
@@ -47,14 +48,18 @@
 }
 
 @layer base {
-  /* Theme switch: the page background is two fixed layers and only the light one's opacity
-     animates (no paint, no style recalculation); html[data-mode] flips the colour tokens once at
-     the midpoint (src/lib/theme.ts) */
-  body::after {
-    content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; will-change: opacity;
-    background: var(--color-paper); opacity: 0; transition: opacity var(--duration-theme) var(--ease-theme);
+  /* Theme switch: html[data-bg] turns the page background to the new mode at once, and for the
+     length of the crossfade only (html[data-fade], src/lib/theme.ts) a fixed layer of the old
+     colour fades out over it, on the compositor (no paint, no style recalculation);
+     html[data-mode] flips the colour tokens at the midpoint. The layer exists only while it fades:
+     a standing fixed layer under the page composites everything overlapping it, and composited
+     text loses its ClearType (LCD) antialiasing on Windows */
+  html[data-fade] body::after {
+    content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    animation: fade-out var(--duration-theme) var(--ease-theme) both;
   }
-  html[data-bg="light"] body::after { opacity: 1 }
+  html[data-fade="dark"] body::after { background: var(--color-ink) }
+  html[data-fade="light"] body::after { background: var(--color-paper) }
 
   /* the video modal rises in over a fading backdrop (closing is instant) */
   .video-dialog[open] { animation: dialog-in var(--duration-morph) var(--ease-out) }
@@ -63,7 +68,6 @@
   .menu-sheet[open] { animation: fade-in var(--duration-fade) ease-out }
 
   @media (prefers-reduced-motion: reduce) {
-    body::after { transition: none }
     .video-dialog[open], .video-dialog[open]::backdrop, .menu-sheet[open] { animation: none }
     .marquee { animation: none }
     .nav-morph { transition: none }

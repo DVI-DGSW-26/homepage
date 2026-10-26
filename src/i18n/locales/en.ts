@@ -208,7 +208,6 @@ export const en: Messages = {
       capture: 'Smartphone camera framing the display of a digital caliper reading 30.00 mm',
       ocr: 'App screen: the caliper reading is filled in by OCR and judged as a pass against the tolerance',
       crop: 'App screen: dragging the corner handles of a box to crop the photo down to the caliper reading',
-      monitor: ['Measurement detail screen: each measured value plotted against its tolerance band, with the out-of-tolerance value flagged NG in red', 'Status board by machine: self-inspection and patrol inspection progress per time slot, with delays highlighted', 'Defects and actions dashboard: defect counts by type and the status of each corrective action'],
       compare: 'Mobile patrol inspection screen comparing self-inspection and patrol inspection values per dimension, with a mismatch marked as fail',
       photos: 'Side-by-side photos of the same caliper reading taken at self-inspection and at patrol inspection',
       approval: 'PC web approval screen: self-inspection and patrol inspection results compared, with an Approve and issue report button',
@@ -255,7 +254,7 @@ export const en: Messages = {
       lead: 'Every measurement lands on the shop-floor monitor as it is taken:\nprogress by machine, each value against its tolerance,\ndefects and actions, and alerts for late inspections.',
       tabsAria: 'Monitor screens',
       tabs: ['Measurement detail', 'Status board', 'Defects & actions'],
-      note: 'Screens from our in-house deployment. Customer names hidden.'
+      note: 'A working copy of the floor screens: click the tabs, a line or a defect type. Sample data.'
     },
     trace: {
       kicker: '05 / Traceability',
