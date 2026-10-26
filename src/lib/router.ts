@@ -32,10 +32,11 @@ const page = createStore<Page>(arrival());
 /** The page being shown; re-renders the caller when it changes. */
 export const usePage = () => useStore(page);
 
-/** Shows the page at `href` ("/data", "/company#history"). */
+/** Shows the page at `href` ("/data", "/data#future-roadmap"). */
 export function navigate(href: string) {
-  const url = new URL(href, location.href);
-  // opened from disk (the single-file build) the address can't change; the page still does
+  // Opened from disk (the single-file build) the address can't change; the page still does. There
+  // "/data" would resolve against the drive (file:///C:/data on Windows), so it is read on its own.
+  const url = new URL(href, location.protocol === 'file:' ? 'http://local/' : location.href);
   try { history.pushState(null, '', url.pathname + location.search + url.hash); } catch { /* file:// */ }
   const next = toPage(url.pathname);
   // already on it: just glide to the anchor, or back to the top
