@@ -5,6 +5,6 @@ import { twTokens } from './scripts/tw-tokens.ts';
 
 export default defineConfig({
   plugins: [react(), tailwindcss(), twTokens()],
-  server: { host: '127.0.0.1', port: 5173 },
-  preview: { host: '127.0.0.1', port: 4173 }
+  server: { port: 5174 },
+  preview: { port: 4174 }
 });
