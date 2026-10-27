@@ -10,8 +10,9 @@ import { useTr } from '../tr';
 import { Tolerance } from '../Tolerance';
 import { Avatar, Badge, Card, Count, HEAD, Meter, Pager, SUB, VERDICT } from '../parts';
 
-/** the item table's columns: no., item, spec, value, tolerance bar, verdict */
-const COLS = 'grid-cols-[44px_220px_150px_130px_1fr_84px]';
+/** the item table's columns: no., item, spec, value, tolerance bar, verdict; the middle four share what
+ * the screen leaves, so the table fits the monitor and the narrower iPad alike */
+const COLS = 'grid-cols-[44px_minmax(0,1.3fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,2.4fr)_84px]';
 /** a figure in the inspection's head: its label above, the figure or badge below */
 const STAT = 'grid content-start gap-1.5 text-m-label font-medium text-m-fg2';
 

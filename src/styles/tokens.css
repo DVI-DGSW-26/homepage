@@ -119,7 +119,7 @@
   --shadow-device: 0 48px 80px -36px rgb(0 0 0 / .7), 0 16px 32px -20px rgb(0 0 0 / .5);
 
   /* ---- the floor monitor (src/features/qac-monitor) ----
-     Drawn at 1376 × 753 (the iPad's width, src/features/qac-monitor/Fit.tsx) and zoomed to fit, so
+     Drawn at 1376 × 753 (src/features/qac-monitor/Fit.tsx) and zoomed to fit, so
      its sizes are pixels of that screen, not rem. Set in a Mac app's system type, tracked as macOS
      does. Zoomed into a laptop's column, its 12–15px land near 10–14px, where the Plex webfont blurs
      on Windows; there the system UI faces stand in. */

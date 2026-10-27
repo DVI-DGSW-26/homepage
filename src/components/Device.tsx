@@ -7,7 +7,7 @@
 //              needs none of its own) and the home indicator; face on, or turned in CSS 3D with its
 //              side showing its true thickness
 //              or around an HTML screen of its own (children) in place of a capture
-//   <Tablet>   an iPad Pro 13" on its side: aluminum edge, an even black bezel, the camera on the long edge
+//   <Tablet>   an iPad Pro 11" on its side: aluminum edge, an even black bezel, the camera on the long edge
 //   <Monitor>  a Studio Display: black glass bezel with the camera, aluminum edge, stand and foot
 //
 // The tablet and the monitor, and the phone given children, show the floor app in React
@@ -130,14 +130,14 @@ export function Phone({ src, alt, sizes, dark, children, screenClassName, view =
   );
 }
 
-// The iPad Pro 13" (M4) in millimetres: Apple's published 281.6 × 215.5 and a 13" 4:3 display
-// (1376 × 1032 pt), which leaves an even 8.7 bezel; the corner radius is approximate
-const IPAD = { w: 281.6, h: 215.5, bezel: 8.7, radius: 18 };
+// The iPad Pro 11" (M5) in millimetres: Apple's published 249.7 × 177.5 and its 2420 × 1668 display at
+// 264 ppi (232.8 × 160.5, 1210 × 834 pt), which leaves an even 8.5 bezel; the corner radius is approximate
+const IPAD = { w: 249.7, h: 177.5, bezel: 8.5, radius: 18 };
 // (the aluminum edge, .18cqw, takes about .5 of those millimetres)
 /** millimetres as cqw of the iPad's width */
 const imm = (v: number) => `${+(v * 100 / IPAD.w).toFixed(3)}cqw`;
 
-/** an iPad Pro 13" held on its side; `children` is its screen, 1376 × 1032 */
+/** an iPad Pro 11" held on its side; `children` is its screen, 1210 × 834 */
 export function Tablet({ children, className }: { children: ReactNode; className?: string }) {
   return (
     <figure className={cn('@container m-0', className)}>

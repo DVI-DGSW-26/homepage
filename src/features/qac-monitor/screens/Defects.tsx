@@ -12,15 +12,18 @@ import { Badge, Card, KIND_ICON, Meter, Pager, STATE_TONE, Stats, SUB } from '..
 
 /** the defect list's page, on the monitor and on the taller iPad */
 const PER_PAGE = { monitor: 8, tablet: 10 }, ACTIONS_PER_PAGE = 3;
-/** the columns (the monitor and the iPad are the same width): the list beside the side column, and a
+/** the columns, on the monitor and on the narrower iPad: the list beside the side column, and a
  * defect's product, slot, kind, item, value, time */
-const MAIN = 'grid-cols-[1fr_440px]', ROW = 'grid-cols-[190px_64px_120px_100px_1fr_72px]';
+const COLS = {
+  monitor: { main: 'grid-cols-[1fr_440px]', row: 'grid-cols-[190px_64px_120px_100px_1fr_72px]' },
+  tablet: { main: 'grid-cols-[1fr_360px]', row: 'grid-cols-[170px_56px_112px_84px_1fr_64px]' }
+};
 const ACTION_PAGES = Math.ceil(ACTIONS.length / ACTIONS_PER_PAGE);
 
 /** `form` is the screen it is drawn for */
 export function Defects({ form }: { form: 'monitor' | 'tablet' }) {
   const c = useT().monitor, tr = useTr();
-  const perPage = PER_PAGE[form];
+  const perPage = PER_PAGE[form], cols = COLS[form];
   const [kind, setKind] = useState<DefectKind | null>(null);
   const [page, setPage] = useState(0), [aPage, setAPage] = useState(0);
   const [auto, setAuto] = useState(false), [aAuto, setAAuto] = useState(false);
@@ -38,7 +41,7 @@ export function Defects({ form }: { form: 'monitor' | 'tablet' }) {
         { label: c.cases, value: TODAY.ng, unit: c.unit, tone: 'text-m-ng', sub: c.risk(TODAY.ngRate), alert: true },
         { label: c.stopped, value: STOPPED, unit: c.unit, tone: 'text-m-miss', sub: c.stopSub }
       ]} />
-      <div className={cn('grid min-h-0 flex-1 gap-3', MAIN)}>
+      <div className={cn('grid min-h-0 flex-1 gap-3', cols.main)}>
         <Card title={c.defectList} count={list.length}
           actions={<>
             {kind && <button type="button" onClick={() => filter(null)} className="cursor-pointer transition-[scale] active:scale-95"><Badge tone="ng" icon={KIND_ICON[kind]}>{c.kinds[kind]}<X className="ml-0.5 size-3.5 opacity-70" /></Badge></button>}
@@ -49,7 +52,7 @@ export function Defects({ form }: { form: 'monitor' | 'tablet' }) {
             {list.slice(page * perPage, (page + 1) * perPage).map((d, i) => {
               const l = LINES[d.line];
               return (
-                <li key={i} className={cn('grid max-h-19.5 min-h-0 flex-1 items-center gap-2 border-b border-m-line last:border-0', ROW)}>
+                <li key={i} className={cn('grid max-h-19.5 min-h-0 flex-1 items-center gap-2 border-b border-m-line last:border-0', cols.row)}>
                   <span className="min-w-0 leading-snug"><b className="block truncate text-m-body font-semibold">{tr(l.product)}</b><span className={SUB}>{c.line(l.no)}-1 · {tr(l.operator)}</span></span>
                   <Badge className="justify-self-start rounded-m-ctl font-medium">{stage(d.slot)}</Badge>
                   <Badge tone="ng" icon={KIND_ICON[d.kind]} className="justify-self-start">{c.kinds[d.kind]}</Badge>

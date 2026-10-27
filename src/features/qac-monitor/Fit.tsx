@@ -1,9 +1,9 @@
 import { useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 
-/** the screens the app is drawn for, in CSS px: the floor's Studio Display (the iPad's width at the
- * display's proportions, so zoomed into the page column the type lands near its own size), an iPad Pro
- * 13" on its side (1376 × 1032 pt), and an iPhone 16 Pro Max's display below its status bar (440 × 956 pt, less 62) */
-export const SCREENS_PX = { monitor: [1376, 753], tablet: [1376, 1032], phone: [440, 894] } as const;
+/** the screens the app is drawn for, in CSS px: the floor's Studio Display (at the display's proportions,
+ * narrow enough that zoomed into the page column the type lands near its own size), an iPad Pro 11" on
+ * its side (1210 × 834 pt), and an iPhone 16 Pro Max's display below its status bar (440 × 956 pt, less 62) */
+export const SCREENS_PX = { monitor: [1376, 753], tablet: [1210, 834], phone: [440, 894] } as const;
 export type Form = keyof typeof SCREENS_PX;
 
 /** The app at a screen's own size, scaled to fill the box it is in. With zoom, not a scale
