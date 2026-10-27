@@ -11,7 +11,7 @@ const LEGEND_SELF = ['bg-m-done', 'bg-m-run', 'bg-m-fg/12', 'bg-m-miss-fill', 'b
 const LEGEND_PATROL = ['bg-m-done', 'bg-m-run', 'bg-m-rov/14', 'ring-2 ring-inset ring-m-ng'];
 const SWATCH = 'size-2.5 rounded-sm shadow-m-swatch';
 const LEGEND = 'flex items-center gap-1.5 text-m-2xs font-medium tracking-caption text-m-fg2';
-const FIGURE = 'mt-1 block text-m-5xl leading-tight font-semibold tracking-heading tabular-nums';
+const FIGURE = 'mt-1.5 block text-m-5xl leading-none font-semibold tracking-heading tabular-nums';
 const KPI_LABEL = 'flex items-center gap-2 text-m-sm text-m-fg2';
 
 /** `onOpen` opens a line's inspection (its index into LINES) */
@@ -21,16 +21,16 @@ export function Board({ onOpen }: { onOpen: (line: number) => void }) {
     <div className="flex h-full flex-col gap-3">
       <div className="grid flex-none grid-cols-6 gap-3">
         {SELF_COUNTS.map((v, i) => (
-          <div key={i} className={cn(CARD, 'px-4 py-3')}>
+          <div key={i} className={cn(CARD, 'px-4 py-2.5')}>
             <span className={KPI_LABEL}><Kind />{c.kpi[i]}</span>
             <b className={cn(FIGURE, KPI_TONE[i])}>{v}</b>
           </div>
         ))}
-        <div className={cn(CARD, 'px-4 py-3')}>
+        <div className={cn(CARD, 'px-4 py-2.5')}>
           <span className={KPI_LABEL}><Kind />{c.kpi[4]}</span>
           <span className="flex items-baseline gap-1.5 text-m-lg font-semibold text-m-miss"><b className={FIGURE}>{LATE}</b>{c.over[0]}<span className="ml-1 font-medium">{c.over[1]}</span></span>
         </div>
-        <div className={cn(CARD, 'px-4 py-3')}>
+        <div className={cn(CARD, 'px-4 py-2.5')}>
           <span className={KPI_LABEL}><Kind patrol />{c.queue}</span>
           {/* the breakdown goes under the figure where the card is too narrow for it (the iPad, in English),
               and breaks between its parts if still too wide; each part's rule is clipped where it starts a line */}
@@ -55,7 +55,7 @@ export function Board({ onOpen }: { onOpen: (line: number) => void }) {
         <div className="mt-2 grid min-h-0 flex-1 grid-cols-2 grid-rows-5 gap-x-6">
           {LINES.map((l, i) => <LineRow key={l.no} l={l} onOpen={() => onOpen(i)} />)}
         </div>
-        <div className="-mx-5 flex flex-none items-center gap-4 border-t border-m-line bg-m-idle/50 px-5 py-2.5 text-m-sm">
+        <div className="-mx-5 flex flex-none items-center gap-4 border-t border-m-line bg-m-idle/50 px-5 py-2 text-m-sm">
           <span className="text-m-fg2">{c.dueToday}</span>
           <span className="flex items-center gap-2 rounded-full bg-m-card px-3 py-1 shadow-m-card">
             <i className="size-1.5 rounded-full bg-m-ok" /><b className="font-semibold">{c.dueName}</b><span className="text-m-fg2">{c.dueLine}</span>
@@ -75,7 +75,7 @@ function LineRow({ l, onOpen }: { l: Line; onOpen: () => void }) {
   return (
     <button type="button" onClick={onOpen}
       className="group -mx-2 grid cursor-pointer grid-cols-[60px_1fr] content-center gap-x-2 gap-y-1 rounded-lg border-b border-m-line px-2 text-left transition-[background-color] duration-150 last:border-0 hover:bg-m-idle/70 active:bg-m-idle">
-      <span className="col-span-2 mb-0.5 flex items-center gap-2.5 text-m-base">
+      <span className="col-span-2 mb-0.5 flex items-center gap-2.5 text-m-base leading-snug">
         <b className="font-semibold">{c.line(l.no)}</b>
         <span className="text-m-fg2 transition-colors group-hover:text-m-brand">{tr(l.product)}</span>
         <Avatar name={tr(l.operator)} /><span className="text-m-fg2">{tr(l.operator)}</span>

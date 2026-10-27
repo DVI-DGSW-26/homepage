@@ -34,11 +34,11 @@ export function Detail({ picked, onPick }: { picked: number; onPick: (i: number)
             return (
               <li key={li}>
                 <button type="button" aria-current={on || undefined} onClick={() => onPick(i)}
-                  className={cn('grid w-full cursor-pointer grid-cols-[40px_1fr] items-center gap-2.5 rounded-lg px-2 py-1.75 text-left transition-[background-color] duration-150 hover:bg-m-idle active:bg-m-fg/10', on && 'bg-m-brand/14 hover:bg-m-brand/14')}>
+                  className={cn('grid w-full cursor-pointer grid-cols-[40px_1fr] items-center gap-2.5 rounded-lg px-2 py-1.5 text-left transition-[background-color] duration-150 hover:bg-m-idle active:bg-m-fg/10', on && 'bg-m-brand/14 hover:bg-m-brand/14')}>
                   <span className={cn('grid size-9 place-items-center rounded-full text-m-2xs font-semibold tracking-caption transition-colors', on ? 'bg-m-brand text-white' : 'bg-m-brand/14 text-m-brand')}>{c.stages[x.stage]}</span>
                   <span className="min-w-0">
-                    <span className="flex items-center gap-2 text-m-base font-semibold"><span className="truncate">{tr(x.product)}</span>{slot >= 0 && <span className="flex-none text-m-xs font-medium tracking-caption text-m-fg2 tabular-nums">{SLOTS[slot]}</span>}</span>
-                    <span className="block truncate text-m-xs font-medium tracking-caption text-m-fg2">{c.line(x.no)} · {tr(x.operator)} · {c.ago(x.ago)}</span>
+                    <span className="flex items-center gap-2 text-m-base leading-snug font-semibold"><span className="truncate">{tr(x.product)}</span>{slot >= 0 && <span className="flex-none text-m-xs font-medium tracking-caption text-m-fg2 tabular-nums">{SLOTS[slot]}</span>}</span>
+                    <span className="block truncate text-m-xs leading-snug font-medium tracking-caption text-m-fg2">{c.line(x.no)} · {tr(x.operator)} · {c.ago(x.ago)}</span>
                   </span>
                 </button>
               </li>

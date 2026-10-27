@@ -119,9 +119,10 @@
   --shadow-device: 0 48px 80px -36px rgb(0 0 0 / .7), 0 16px 32px -20px rgb(0 0 0 / .5);
 
   /* ---- the floor monitor (src/features/qac-monitor) ----
-     Drawn at the floor screen's own 1600 × 876 and zoomed to fit, so its sizes are pixels of that
-     screen, not rem. Set in a Mac app's system type, tracked as macOS does. Zoomed down, its 12–15px
-     land near 9–11px, where the Plex webfont blurs on Windows; there the system UI faces stand in. */
+     Drawn at 1376 × 753 (the iPad's width, src/features/qac-monitor/Fit.tsx) and zoomed to fit, so
+     its sizes are pixels of that screen, not rem. Set in a Mac app's system type, tracked as macOS
+     does. Zoomed into a laptop's column, its 12–15px land near 10–14px, where the Plex webfont blurs
+     on Windows; there the system UI faces stand in. */
   --font-mac: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Apple SD Gothic Neo',
     'Segoe UI Variable Text', 'Segoe UI', 'Malgun Gothic', var(--font-sans);
   --tracking-mac: -.005em;
@@ -265,14 +266,14 @@
      --m-warn is the late capsule (dark text on it), --m-late its ring on a slot */
   .qac-monitor {
     --m-bg: #1C1C1E; --m-card: #2A2A2D; --m-raise: #505055; --m-bar: #252528;
-    --m-line: rgb(255 255 255 / .11); --m-fg: #F5F5F7; --m-fg2: rgb(235 235 245 / .7); --m-mute: rgb(235 235 245 / .6); --m-idle: rgb(118 118 128 / .26);
+    --m-line: rgb(255 255 255 / .11); --m-fg: #F5F5F7; --m-fg2: rgb(235 235 245 / .82); --m-mute: rgb(235 235 245 / .7); --m-idle: rgb(118 118 128 / .26);
     --m-brand: #DAA6FF; --m-ok: #3BDC64; --m-ng: #FF7B73; --m-rov: #7DBDFF; --m-miss: #FFA866;
     --m-done: #1D7A35; --m-run: #8A3FC0; --m-ng-fill: #D12C24; --m-miss-fill: #B0520A; --m-warn: #FF9F0A; --m-late: #FFA31A;
     --m-shadow: inset 0 0 0 .5px rgb(255 255 255 / .08);
   }
   [data-mode="light"] .qac-monitor {
     --m-bg: #F2F2F7; --m-card: #fff; --m-raise: #fff; --m-bar: #F7F7F9;
-    --m-line: rgb(60 60 67 / .17); --m-fg: #1D1D1F; --m-fg2: rgb(60 60 67 / .8); --m-mute: rgb(60 60 67 / .72); --m-idle: rgb(118 118 128 / .23);
+    --m-line: rgb(60 60 67 / .17); --m-fg: #1D1D1F; --m-fg2: rgb(60 60 67 / .9); --m-mute: rgb(60 60 67 / .8); --m-idle: rgb(118 118 128 / .23);
     --m-brand: #7E3A9F; --m-ok: #1B7332; --m-ng: #C2000F; --m-rov: #0055B3; --m-miss: #A82D00;
     --m-done: #22813A; --m-run: #9142BF; --m-ng-fill: #D70015; --m-miss-fill: #C23A00; --m-warn: #FF9500; --m-late: #C46F00;
     --m-shadow: 0 0 0 .5px rgb(0 0 0 / .06), 0 1px 3px rgb(0 0 0 / .06);

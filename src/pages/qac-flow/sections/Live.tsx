@@ -39,7 +39,7 @@ export function Live() {
       </div>
       {/* the reveal is on the wrapper, which stays put when a resize swaps the device inside */}
       <div role="tabpanel" id={`qf-panel-${tab}`} aria-labelledby={`qf-tab-${tab}`} className="rv mb-8">
-        {lg ? <Monitor className="mx-auto max-w-300"><QacMonitor {...app} /></Monitor>
+        {lg ? <Monitor><QacMonitor {...app} /></Monitor>
           : sm ? <Tablet className="mx-auto max-w-240"><QacMonitor {...app} form="tablet" /></Tablet>
           : <Phone screenClassName="qac-monitor bg-m-bg text-m-fg" className="mx-auto w-full max-w-85"><QacPhone {...app} /></Phone>}
       </div>

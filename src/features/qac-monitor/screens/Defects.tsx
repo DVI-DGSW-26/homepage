@@ -12,12 +12,9 @@ import { CARD, COUNT, PILL, Pager, STATE_TONE } from '../parts';
 
 /** the defect list's page, on the monitor and on the taller iPad */
 const PER_PAGE = { monitor: 8, tablet: 10 }, ACTIONS_PER_PAGE = 3;
-/** the columns, on the monitor and on the narrower iPad: the list beside the side column, and a
+/** the columns (the monitor and the iPad are the same width): the list beside the side column, and a
  * defect's product, slot, kind, item, value, time */
-const COLS = {
-  monitor: { main: 'grid-cols-[1fr_500px]', row: 'grid-cols-[250px_70px_130px_150px_1fr_80px]' },
-  tablet: { main: 'grid-cols-[1fr_440px]', row: 'grid-cols-[190px_60px_120px_100px_1fr_72px]' }
-};
+const MAIN = 'grid-cols-[1fr_440px]', ROW = 'grid-cols-[190px_60px_120px_100px_1fr_72px]';
 const ACTION_PAGES = Math.ceil(ACTIONS.length / ACTIONS_PER_PAGE);
 const CAPTION = 'text-m-xs font-medium tracking-caption text-m-fg2';
 const HEADING = 'm-0 flex items-center gap-2 text-m-base font-semibold';
@@ -25,7 +22,7 @@ const HEADING = 'm-0 flex items-center gap-2 text-m-base font-semibold';
 /** `form` is the screen it is drawn for */
 export function Defects({ form }: { form: 'monitor' | 'tablet' }) {
   const c = useT().monitor, tr = useTr();
-  const perPage = PER_PAGE[form], cols = COLS[form];
+  const perPage = PER_PAGE[form];
   const [kind, setKind] = useState<DefectKind | null>(null);
   const [page, setPage] = useState(0), [aPage, setAPage] = useState(0);
   const [auto, setAuto] = useState(false), [aAuto, setAAuto] = useState(false);
@@ -50,7 +47,7 @@ export function Defects({ form }: { form: 'monitor' | 'tablet' }) {
           </div>
         ))}
       </div>
-      <div className={cn('grid min-h-0 flex-1 gap-3', cols.main)}>
+      <div className={cn('grid min-h-0 flex-1 gap-3', MAIN)}>
         <section className={cn(CARD, 'flex min-h-0 flex-col px-5 py-3')}>
           <div className="flex flex-none items-center gap-3 border-b border-m-line pb-2.5">
             <h3 className={HEADING}>{c.defectList}<span className={COUNT}>{list.length}</span></h3>
@@ -62,7 +59,7 @@ export function Defects({ form }: { form: 'monitor' | 'tablet' }) {
             {list.slice(page * perPage, (page + 1) * perPage).map((d, i) => {
               const l = LINES[d.line];
               return (
-                <li key={i} className={cn('grid max-h-19.5 flex-1 items-center gap-2 border-b border-m-line last:border-0', cols.row)}>
+                <li key={i} className={cn('grid max-h-19.5 flex-1 items-center gap-2 border-b border-m-line last:border-0', ROW)}>
                   <span><b className="block text-m-md font-semibold">{tr(l.product)}</b><span className={CAPTION}>{c.line(l.no)}-1 · {tr(l.operator)}</span></span>
                   <span className={cn(PILL, 'justify-self-start rounded-md bg-m-idle font-medium text-m-fg2 tabular-nums')}>{stage(d.slot)}</span>
                   <span className={cn(PILL, 'justify-self-start bg-m-ng/14 text-m-ng')}><Glyph n={d.kind} className="size-3" />{c.kinds[d.kind]}</span>

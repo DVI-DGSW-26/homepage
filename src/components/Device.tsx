@@ -156,7 +156,7 @@ export function Tablet({ children, className }: { children: ReactNode; className
   );
 }
 
-/** a Studio Display; `children` is its screen, 1600 × 876 */
+/** a Studio Display; `children` is its screen, 1376 × 753 */
 export function Monitor({ children, className }: { children: ReactNode; className?: string }) {
   return (
     <figure className={cn('@container m-0', className)}>
@@ -164,7 +164,7 @@ export function Monitor({ children, className }: { children: ReactNode; classNam
       <div className="relative z-1 rounded-[1.5cqw] bg-linear-to-b from-alu-hi via-alu to-alu-lo p-[.18cqw] shadow-device">
         <div className="relative rounded-[1.35cqw] bg-glass p-[1.6cqw]">
           <i aria-hidden="true" className="absolute top-[.6cqw] left-1/2 size-[.45cqw] -translate-x-1/2 rounded-full bg-titanium ring-[.12cqw] ring-white/5" />
-          <div className="relative aspect-1600/876 overflow-hidden rounded-[.3cqw] bg-glass">
+          <div className="relative aspect-1376/753 overflow-hidden rounded-[.3cqw] bg-glass">
             {children}
             {/* a faint reflection across the glass */}
             <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-linear-115 from-white/5 via-white/0 via-30% to-transparent" />
