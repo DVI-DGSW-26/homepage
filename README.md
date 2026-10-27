@@ -46,7 +46,9 @@ src/
     data/                      /data — 같은 구성 (Vision, WhyUs, Chain, Roadmap, Asset, Partner)
   features/
     qac-monitor/               실시간 모니터링의 현장 앱을 React 로 다시 만든 것 (현황판·검사 상세·품질 불량). 데스크톱은 모니터,
-                               태블릿은 가로 iPad(같은 레이아웃을 4:3 으로), 폰은 아이폰에 폰 전용 레이아웃(QacPhone, phone/)
+                               태블릿은 가로 iPad(같은 레이아웃을 4:3 으로), 폰은 아이폰에 폰 전용 레이아웃(QacPhone, phone/).
+                               화면은 모두 parts.tsx 의 Card·Stats·Badge·Pager 로 짓고, 글자는 text-m-caption … text-m-figure
+                               여섯 크기, 아이콘은 lucide-react
   components/
     layout/Nav.tsx             헤더: 떠 있는 알약, 페이지 메뉴, KOR / ENG, 테마 버튼. 1200px 미만은 메뉴가 <dialog> 시트로
     layout/Launch.tsx          모든 페이지 끝의 출시일 푸터

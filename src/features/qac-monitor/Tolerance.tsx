@@ -21,8 +21,8 @@ export function Tolerance({ value, lo, hi, nom = (lo + hi) / 2, labels, classNam
         </span>
       )}
       {labels && <>
-        {[lo, hi].map(v => <span key={v} className="absolute top-full mt-1 -translate-x-1/2 text-m-2xs font-medium text-m-fg2 tabular-nums" style={{ left: `${at(v)}%` }}>{trim(v)}</span>)}
-        {value != null && <span className={cn('absolute top-full mt-1 -translate-x-1/2 text-m-xs font-semibold tabular-nums', out ? 'text-m-ng' : 'text-m-ok')} style={{ left: `${out ? Math.min(at(value), 96) : at(value)}%` }}>{trim(value)}</span>}
+        {[lo, hi].map(v => <span key={v} className="absolute top-full mt-1 -translate-x-1/2 text-m-caption font-medium text-m-fg2 tabular-nums" style={{ left: `${at(v)}%` }}>{trim(v)}</span>)}
+        {value != null && <span className={cn('absolute top-full mt-1 -translate-x-1/2 text-m-caption font-semibold tabular-nums', out ? 'text-m-ng' : 'text-m-ok')} style={{ left: `${out ? Math.min(at(value), 96) : at(value)}%` }}>{trim(value)}</span>}
       </>}
     </span>
   );

@@ -186,7 +186,7 @@ export const ko = {
     self: '자주', patrol: '순회', line: (n: number) => `${n}호기`,
     kpi: ['완료', '진행중', '건너뜀', '남은 시점', '지연'], over: ['칸', '시각 경과'],
     queue: '순회 대기', queueSub: ['작성중', '승인대기', '반려'],
-    progress: '시점별 진행도', legendSelf: ['완료', '진행중', '건너뜀', '미완료', '미완료 승인', '미시작', '지연'], legendPatrol: ['완료', '작성중', '대기', '반려'],
+    progress: '시점별 진행도', boardCols: ['라인', '상태', '진행'], legendSelf: ['완료', '진행중', '건너뜀', '미완료', '미완료 승인', '미시작', '지연'], legendPatrol: ['완료', '작성중', '대기', '반려'],
     due: (t: string, m: number) => `${t}까지 ${dur(m)}`, late: (m: number) => `지연 ${dur(m)}`,
     dueToday: '오늘 마감 1줄', dueName: '배준호', dueLine: '10호기',
     inProgress: '진행중 검사', stages: ['초물', '중물', '종물'], ago: (m: number) => m >= 60 ? `${Math.floor(m / 60)}시간 전` : `${m}분 전`,

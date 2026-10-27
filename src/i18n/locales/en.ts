@@ -180,7 +180,7 @@ export const en: Messages = {
     self: 'Self', patrol: 'Patrol', line: (n: number) => `Line ${n}`,
     kpi: ['Completed', 'In Progress', 'Skipped', 'Remaining Slots', 'Delayed'], over: ['slots', 'over time'],
     queue: 'Patrol Queue', queueSub: ['Drafting', 'Awaiting', 'Rejected'],
-    progress: 'Progress by Time Slot', legendSelf: ['Completed', 'In Progress', 'Skipped', 'Incomplete', 'Incomplete Approved', 'Not Started', 'Late'], legendPatrol: ['Completed', 'Drafting', 'Queue', 'Rejected'],
+    progress: 'Progress by Time Slot', boardCols: ['Line', 'Status', 'Progress'], legendSelf: ['Completed', 'In Progress', 'Skipped', 'Incomplete', 'Incomplete Approved', 'Not Started', 'Late'], legendPatrol: ['Completed', 'Drafting', 'Queue', 'Rejected'],
     due: (t: string, m: number) => `${t} deadline ${dur(m)}`, late: (m: number) => `Delayed ${dur(m)}`,
     dueToday: '1 line due today', dueName: 'Bae Jun-ho', dueLine: 'Line 10',
     inProgress: 'In-Progress Inspections', stages: ['Initial', 'Mid', 'Final'], ago: (m: number) => m >= 60 ? `${Math.floor(m / 60)} hour${m >= 120 ? 's' : ''} ago` : `${m} min ago`,

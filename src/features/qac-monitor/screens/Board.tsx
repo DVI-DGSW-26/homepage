@@ -1,114 +1,115 @@
-// Status board: every line's self- and patrol-inspection slots, with the day's totals above.
+// Status board: the day's figures in a strip, then every line in one table, its five time slots as
+// columns, so a slot reads straight down across the lines. A slot's cell is its self-inspection,
+// with the patrol-inspection as a line of text beneath. What is going to plan stays quiet (a green
+// tint, a check); what needs a hand is solid or ringed (in progress, incomplete, past its time).
+import { TriangleAlert } from 'lucide-react';
 import { useT } from '../../../i18n';
 import { cn } from '../../../lib/cn';
-import { LATE, LINES, PATROL, QUEUED, SELF_COUNTS, SLOTS, type Line } from '../data';
+import { LATE, LINES, PATROL, QUEUED, SELF_COUNTS, SLOTS, type Line, type Patrol, type Self } from '../data';
 import { useTr } from '../tr';
-import { Glyph } from '../Glyph';
-import { Avatar, CARD, KPI_TONE, Kind, PATROL_CELL, PATROL_GLYPH, PILL, SELF_CELL, SELF_GLYPH } from '../parts';
+import { Avatar, Badge, Card, FILLED, HEAD, LATE_RING, Meter, PATROL_ICON, PATROL_TONE, SELF_ICON, SELF_TILE, Stats, SUB } from '../parts';
 
-/** the legend's swatches, in the order of the copy's legendSelf / legendPatrol */
-const LEGEND_SELF = ['bg-m-done', 'bg-m-run', 'bg-m-fg/12', 'bg-m-miss-fill', 'bg-m-done/20', 'bg-m-idle', 'ring-2 ring-inset ring-m-late'];
-const LEGEND_PATROL = ['bg-m-done', 'bg-m-run', 'bg-m-rov/14', 'ring-2 ring-inset ring-m-ng'];
-const SWATCH = 'size-2.5 rounded-sm shadow-m-swatch';
-const LEGEND = 'flex items-center gap-1.5 text-m-2xs font-medium tracking-caption text-m-fg2';
-const FIGURE = 'mt-1.5 block text-m-5xl leading-none font-semibold tracking-heading tabular-nums';
-const KPI_LABEL = 'flex items-center gap-2 text-m-sm text-m-fg2';
+/** the order of the copy's legendSelf / legendPatrol (legendSelf's last is "late") */
+const SELF_ORDER: Self[] = ['done', 'run', 'skip', 'miss', 'ok', 'idle'];
+const PATROL_ORDER: Patrol[] = ['done', 'run', 'queue', 'reject'];
+/** the table's columns: line, status, the five slots, progress */
+const COLS = 'grid-cols-[236px_164px_repeat(5,minmax(0,1fr))_128px] gap-x-2';
+const PATROL_DONE = (l: Line) => l.patrol.filter(s => s[0] === 'done').length;
 
 /** `onOpen` opens a line's inspection (its index into LINES) */
 export function Board({ onOpen }: { onOpen: (line: number) => void }) {
   const c = useT().monitor;
+  const tones = ['text-m-ok', 'text-m-brand', 'text-m-fg2', ''];
   return (
     <div className="flex h-full flex-col gap-3">
-      <div className="grid flex-none grid-cols-6 gap-3">
-        {SELF_COUNTS.map((v, i) => (
-          <div key={i} className={cn(CARD, 'px-4 py-2.5')}>
-            <span className={KPI_LABEL}><Kind />{c.kpi[i]}</span>
-            <b className={cn(FIGURE, KPI_TONE[i])}>{v}</b>
-          </div>
-        ))}
-        <div className={cn(CARD, 'px-4 py-2.5')}>
-          <span className={KPI_LABEL}><Kind />{c.kpi[4]}</span>
-          <span className="flex items-baseline gap-1.5 text-m-lg font-semibold text-m-miss"><b className={FIGURE}>{LATE}</b>{c.over[0]}<span className="ml-1 font-medium">{c.over[1]}</span></span>
+      <Stats items={[
+        ...SELF_COUNTS.map((v, i) => ({ label: c.kpi[i], value: v, tone: tones[i] })),
+        { label: c.kpi[4], value: LATE, unit: c.over[0], tone: 'text-m-miss' },
+        { label: c.queue, value: QUEUED[0] + QUEUED[1] + QUEUED[2], tone: 'text-m-rov', sub: <span className="text-m-caption">{c.queueSub.map((t, i) => `${t} ${QUEUED[i]}`).join(' · ')}</span> }
+      ]} />
+      <Card title={c.progress} flush className="flex-1"
+        actions={<span className={cn(SUB, 'flex items-center gap-2')}>{c.dueToday}<Badge><i className="size-1.5 rounded-full bg-m-ok" />{c.dueName} <span className="font-normal">{c.dueLine}</span></Badge></span>}>
+        <div aria-hidden="true" className={cn('grid flex-none border-y border-m-line bg-m-idle/40 px-5 py-1.5', HEAD, COLS)}>
+          <span>{c.boardCols[0]}</span><span>{c.boardCols[1]}</span>
+          {SLOTS.map(t => <span key={t} className="text-center tabular-nums">{t}</span>)}
+          <span>{c.boardCols[2]}</span>
         </div>
-        <div className={cn(CARD, 'px-4 py-2.5')}>
-          <span className={KPI_LABEL}><Kind patrol />{c.queue}</span>
-          {/* the breakdown goes under the figure where the card is too narrow for it (the iPad, in English),
-              and breaks between its parts if still too wide; each part's rule is clipped where it starts a line */}
-          <span className="flex flex-wrap items-baseline gap-x-3">
-            <b className={cn(FIGURE, 'text-m-rov')}>{QUEUED[0] + QUEUED[1] + QUEUED[2]}</b>
-            <span className="overflow-hidden text-m-2xs font-medium tracking-caption text-m-fg2">
-              <span className="-ml-4.25 flex flex-wrap">
-                {c.queueSub.map((t, i) => <span key={t} className={cn('ml-2 border-l border-m-line pl-2 whitespace-nowrap', i === 2 && 'text-m-ng')}>{t} {QUEUED[i]}</span>)}
-              </span>
-            </span>
-          </span>
-        </div>
-      </div>
-      <section className={cn(CARD, 'flex min-h-0 flex-1 flex-col overflow-hidden px-5 pt-3.5')}>
-        <div className="flex flex-none items-center gap-3">
-          <h3 className="m-0 mr-auto text-m-xl font-semibold tracking-heading-sm">{c.progress}</h3>
-          <Kind />
-          {c.legendSelf.map((t, i) => <span key={t} className={LEGEND}><i className={cn(SWATCH, LEGEND_SELF[i])} />{t}</span>)}
-          <span className="ml-2" /><Kind patrol />
-          {c.legendPatrol.map((t, i) => <span key={t} className={LEGEND}><i className={cn(SWATCH, LEGEND_PATROL[i])} />{t}</span>)}
-        </div>
-        <div className="mt-2 grid min-h-0 flex-1 grid-cols-2 grid-rows-5 gap-x-6">
-          {LINES.map((l, i) => <LineRow key={l.no} l={l} onOpen={() => onOpen(i)} />)}
-        </div>
-        <div className="-mx-5 flex flex-none items-center gap-4 border-t border-m-line bg-m-idle/50 px-5 py-2 text-m-sm">
-          <span className="text-m-fg2">{c.dueToday}</span>
-          <span className="flex items-center gap-2 rounded-full bg-m-card px-3 py-1 shadow-m-card">
-            <i className="size-1.5 rounded-full bg-m-ok" /><b className="font-semibold">{c.dueName}</b><span className="text-m-fg2">{c.dueLine}</span>
-            <span className="border-l border-m-line pl-2">{c.self} 5</span><span className="text-m-rov">{c.patrol} 5</span>
-          </span>
-        </div>
-      </section>
+        <ol className="m-0 flex min-h-0 flex-1 list-none flex-col p-0">
+          {LINES.map((l, i) => <Row key={l.no} l={l} onOpen={() => onOpen(i)} />)}
+        </ol>
+        <Legend />
+      </Card>
     </div>
   );
 }
 
-/** one line on the status board: what it makes and who, then its self and patrol slots; opens its inspection */
-function LineRow({ l, onOpen }: { l: Line; onOpen: () => void }) {
+/** one line: what it makes and who, where it stands, its slots, how far along; opens its inspection */
+function Row({ l, onOpen }: { l: Line; onOpen: () => void }) {
   const c = useT().monitor, tr = useTr();
   const done = l.self.filter(s => s[0] === 'done' || s[0] === 'ok').length;
-  const patrol = l.patrol.filter(s => s[0] !== 'none');
+  const patrol = l.patrol.filter(s => s[0] !== 'none').length;
   return (
-    <button type="button" onClick={onOpen}
-      className="group -mx-2 grid cursor-pointer grid-cols-[60px_1fr] content-center gap-x-2 gap-y-1 rounded-lg border-b border-m-line px-2 text-left transition-[background-color] duration-150 last:border-0 hover:bg-m-idle/70 active:bg-m-idle">
-      <span className="col-span-2 mb-0.5 flex items-center gap-2.5 text-m-base leading-snug">
-        <b className="font-semibold">{c.line(l.no)}</b>
-        <span className="text-m-fg2 transition-colors group-hover:text-m-brand">{tr(l.product)}</span>
-        <Avatar name={tr(l.operator)} /><span className="text-m-fg2">{tr(l.operator)}</span>
-        <span className="ml-auto" />
-        {l.late ? <span className={cn(PILL, 'bg-m-warn text-m-on-warn')}><Glyph n="warn" className="size-3" />{c.late(l.late)}</span>
-          : l.due && <span className={cn(PILL, 'bg-m-idle font-medium text-m-fg2')}>{c.due(...l.due)}</span>}
-        <span className="text-m-xs text-m-fg2">{c.self} <b className="text-m-fg">{done}</b> / 5</span>
-        <span className="text-m-xs text-m-rov">{c.patrol} {patrol.length ? <><b>{patrol.filter(s => s[0] === 'done').length}</b> / {patrol.length}</> : '–'}</span>
+    <li className="flex min-h-0 flex-1 border-b border-m-line last:border-0">
+      <button type="button" onClick={onOpen}
+        className={cn('group grid w-full cursor-pointer items-center px-5 text-left transition-[background-color] duration-150 hover:bg-m-idle/60 active:bg-m-idle', COLS)}>
+        <span className="flex min-w-0 items-center gap-2.5">
+          <Avatar name={tr(l.operator)} />
+          <span className="min-w-0 leading-snug">
+            <span className="flex gap-2 text-m-body"><b className="flex-none font-semibold">{c.line(l.no)}</b><span className="truncate transition-colors group-hover:text-m-brand">{tr(l.product)}</span></span>
+            <span className={cn(SUB, 'block truncate')}>{tr(l.operator)}</span>
+          </span>
+        </span>
+        <span>
+          {l.late ? <Badge tone="warn" icon={TriangleAlert}>{c.late(l.late)}</Badge>
+            : l.due && <Badge className="font-medium">{c.due(...l.due)}</Badge>}
+        </span>
+        {SLOTS.map((_, k) => <Slot key={k} l={l} k={k} />)}
+        <span className="grid gap-1">
+          <span className="flex items-center gap-2.5"><Meter pct={done * 20} tone="bg-m-ok" className="flex-1" /><b className="text-m-body leading-none font-semibold tabular-nums">{done}<span className="text-m-label font-normal text-m-mute"> / 5</span></b></span>
+          <span className="text-m-caption leading-none text-m-rov">{c.patrol} <span className="tabular-nums">{patrol ? `${PATROL_DONE(l)} / ${patrol}` : '–'}</span></span>
+        </span>
+      </button>
+    </li>
+  );
+}
+
+/** a slot: its self-inspection as a cell (an icon, and a word where it isn't just done), its patrol beneath */
+function Slot({ l, k }: { l: Line; k: number }) {
+  const c = useT().monitor, tr = useTr();
+  const [s, late, note] = l.self[k];
+  const [p, by] = l.patrol[k] ?? ['none'];
+  const Icon = SELF_ICON[s], PIcon = PATROL_ICON[p];
+  const word = note ? tr(note) : s === 'done' || s === 'ok' ? null : s === 'idle' ? (late ? c.legendSelf[6] : null) : c.legendSelf[SELF_ORDER.indexOf(s)];
+  return (
+    <span className="grid min-w-0 gap-0.5">
+      <span title={note ? tr(note) : undefined} className={cn('flex h-6.5 min-w-0 items-center justify-center gap-1.5 rounded-m-ctl border px-2 text-m-label font-semibold', SELF_TILE[s], late && LATE_RING, late && s === 'idle' && 'text-m-late')}>
+        {Icon && <Icon className={cn('size-3.5 flex-none', s === 'run' && FILLED)} strokeWidth={2.5} />}
+        {word && <span className="truncate">{word}</span>}
       </span>
-      <span className="self-center text-m-xs text-m-fg2">{c.self}</span>
-      <span className="grid grid-cols-5 gap-0.75">
-        {l.self.map(([s, late, note], i) => {
-          const glyph = SELF_GLYPH[s];
-          return (
-            <span key={i} className={cn('relative flex h-7 flex-col items-center justify-center rounded-md text-m-sm leading-none font-semibold tabular-nums', SELF_CELL[s], late && 'ring-2 ring-inset ring-m-late')}>
-              <span className="flex items-center gap-1.5">{glyph && <Glyph n={glyph} className="size-3" />}{SLOTS[i]}</span>
-              {note && <small className="mt-0.5 max-w-full truncate px-1 text-m-2xs font-normal tracking-caption">{tr(note)}</small>}
-              {late && <i className="absolute top-0 right-0 size-2.5 rounded-tr-md bg-m-late [clip-path:polygon(0_0,100%_0,100%_100%)]" />}
-            </span>
-          );
-        })}
+      <span className={cn('flex h-3.5 min-w-0 items-center justify-center gap-1 text-m-caption leading-none font-medium', PATROL_TONE[p])}>
+        {PIcon && <PIcon className="size-3 flex-none" strokeWidth={2.5} />}
+        <span className="truncate">{p === 'none' ? '' : p === 'queue' ? c.legendPatrol[2] : by != null ? tr(PATROL[by]) : ''}</span>
       </span>
-      <span className="self-center text-m-xs text-m-rov">{c.patrol}</span>
-      <span className="grid grid-cols-5 gap-0.75">
-        {SLOTS.map((_, i) => {
-          const [s, by] = l.patrol[i] ?? ['none'], glyph = PATROL_GLYPH[s];
-          return (
-            <span key={i} className={cn('flex h-5.5 min-w-0 items-center justify-center gap-1 rounded-md px-1 text-m-xs leading-none font-semibold tracking-caption', PATROL_CELL[s])}>
-              {s === 'queue' ? <Glyph n="clock" className="size-3" /> : by != null ? <>{glyph && <Glyph n={glyph} className="size-2.5 flex-none" />}<span className="truncate">{tr(PATROL[by])}</span></> : '–'}
-            </span>
-          );
-        })}
-      </span>
-    </button>
+    </span>
+  );
+}
+
+/** what each cell means: the self cells as they are drawn, then the patrol lines */
+function Legend() {
+  const c = useT().monitor;
+  return (
+    <div className="flex flex-none flex-wrap items-center gap-x-4 gap-y-1 border-t border-m-line px-5 py-2 text-m-caption font-medium text-m-fg2">
+      <b className="font-semibold text-m-fg">{c.self}</b>
+      {SELF_ORDER.map((s, i) => {
+        const Icon = SELF_ICON[s];
+        return <span key={s} className="flex items-center gap-1.5"><i className={cn('grid size-4 place-items-center rounded border', SELF_TILE[s])}>{Icon && <Icon className={cn('size-2.5', s === 'run' && FILLED)} strokeWidth={3} />}</i>{c.legendSelf[i]}</span>;
+      })}
+      <span className="flex items-center gap-1.5"><i className={cn('size-4 rounded border border-transparent', LATE_RING)} />{c.legendSelf[6]}</span>
+      <b className="ml-3 font-semibold text-m-fg">{c.patrol}</b>
+      {PATROL_ORDER.map((p, i) => {
+        const Icon = PATROL_ICON[p]!;
+        return <span key={p} className={cn('flex items-center gap-1', PATROL_TONE[p])}><Icon className="size-3" strokeWidth={2.5} />{c.legendPatrol[i]}</span>;
+      })}
+    </div>
   );
 }

@@ -127,19 +127,17 @@
     'Segoe UI Variable Text', 'Segoe UI', 'Malgun Gothic', var(--font-sans);
   --tracking-mac: -.005em;
   --tracking-caption: .01em;     /* small medium-weight captions */
-  --text-m-2xs: 12px;            /* counts, tolerance labels */
-  --text-m-xs: 13px;             /* captions, capsules, the segmented control */
-  --text-m-sm: 14px;             /* secondary lines, KPI labels */
-  --text-m-base: 15px;           /* the app's body */
-  --text-m-md: 16px;
-  --text-m-lg: 17px;             /* window title, item names */
-  --text-m-xl: 20px;             /* card headings */
-  --text-m-2xl: 22px;            /* the clock */
-  --text-m-3xl: 26px;            /* measured values */
-  --text-m-4xl: 30px;            /* the inspection's title and figures */
-  --text-m-5xl: 34px;            /* KPI figures */
-  --text-m-6xl: 40px;            /* the large KPI figures of quality · defects */
+  /* Six sizes, one per role, and three weights: regular for reading, medium for labels and
+     captions, semibold for names, titles and figures. The phone uses the same six, a step up. */
+  --text-m-caption: 12px;        /* timestamps, tolerance limits, counts */
+  --text-m-label: 13px;          /* secondary lines, column heads, badges, buttons */
+  --text-m-body: 15px;           /* the app's body: names in a list */
+  --text-m-title: 17px;          /* card and window titles */
+  --text-m-value: 24px;          /* a value in a row, the clock */
+  --text-m-figure: 34px;         /* KPI figures, the inspection's name */
+  /* corners: a card, a control or a cell inside it, and a badge (rounded-full) */
   --radius-m-card: 14px;
+  --radius-m-ctl: 8px;
   --ease-m-spring: cubic-bezier(.32, .72, 0, 1);  /* a Mac control settling */
   --shadow-m-icon: inset 0 .5px 0 rgb(255 255 255 / .35), 0 1px 2px rgb(0 0 0 / .2);
   --shadow-m-thumb: 0 1px 3px rgb(0 0 0 / .12), 0 0 0 .5px rgb(0 0 0 / .05);
