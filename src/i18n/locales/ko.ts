@@ -221,8 +221,8 @@ export const ko = {
     title: '데모 신청·문의',
     lead: '현장에 맞는 적용 방법을 안내해 드립니다.',
     close: '닫기',
-    booth: (n: string) => `CES 2027 · Eureka Park · Booth ${n}`,
-    show: '2027. 1. 6.~9. · 라스베이거스 Venetian Expo Hall G',
+    booth: (n: string) => `CES 2027 ·\nEureka Park ·\nBooth ${n}`,
+    show: '2027. 1. 6.~9. ·\n라스베이거스 Venetian Expo Hall G',
     fields: { name: '이름', email: '회사 이메일', company: '회사명' },
     placeholders: { name: '홍길동', email: 'name@company.com', company: '(주)회사명' },
     /** how the form's data is handled, above the button: no consent is asked (see privacy.ko.ts) */

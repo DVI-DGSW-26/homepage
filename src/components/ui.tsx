@@ -11,11 +11,12 @@ import { cn } from '../lib/cn';
  * so the chapters read as separate pages-within-the-page rather than one long column.
  * Behind the content, kept quiet so they fill the space without competing with it:
  * - alt: a dot grid, fading out toward the edges
- * - cover: the screen's height, a line grid and a green glow (a page's opening band)
+ * - cover: the screen's height, a line grid and a green glow (a page's opening band); on a phone, where the
+ *   section padding is at its smallest, it starts further down, clear of the floating header
  * - mark: a large outlined chapter mark ("01") at the top right */
 export function Band({ alt, cover, mark, className, children, ...rest }: ComponentProps<'section'> & { alt?: boolean; cover?: boolean; mark?: string }) {
   return (
-    <section className={cn('relative isolate overflow-hidden border-t border-line py-section first:border-t-0', alt && 'bg-bg-2', cover && 'grid min-h-svh content-center', className)} {...rest}>
+    <section className={cn('relative isolate overflow-hidden border-t border-line py-section first:border-t-0', alt && 'bg-bg-2', cover && 'grid min-h-svh content-center max-sm:pt-30', className)} {...rest}>
       {alt && <div aria-hidden="true" className="absolute inset-0 -z-1 deco-dots mask-[radial-gradient(ellipse_80%_70%_at_50%_40%,#000,transparent)]" />}
       {cover && <>
         <div aria-hidden="true" className="absolute inset-0 -z-1 deco-grid mask-[radial-gradient(ellipse_70%_60%_at_60%_45%,#000,transparent)]" />

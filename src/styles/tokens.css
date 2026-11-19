@@ -39,7 +39,9 @@
 
   --font-display: 'Big Shoulders Display', 'Archivo Narrow', 'Arial Narrow', Impact, sans-serif;
   --font-sans: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Consolas, monospace;
+  /* Plex Mono has no Hangul: Korean in a mono line takes Plex Sans KR rather than the system's monospace
+     CJK face, whose full-width cells spread the syllables apart */
+  --font-mono: 'IBM Plex Mono', 'IBM Plex Sans KR', ui-monospace, SFMono-Regular, Consolas, monospace;
 
   /* ---- type scale ----
      No size carries a paired line-height (--text-*--line-height): text-* sets the size only,

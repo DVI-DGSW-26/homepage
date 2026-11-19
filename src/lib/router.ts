@@ -8,6 +8,7 @@
 // query and the hash, before anything renders.
 import { createStore, useStore } from './store';
 import { scroll } from './scroll';
+import { onDialogEntry } from './history';
 
 export const PAGES = ['/qac-flow', '/data', '/privacy'] as const;
 export type Page = (typeof PAGES)[number];
@@ -45,7 +46,8 @@ export function navigate(href: string) {
   // Opened from disk (the single-file build) the address can't change; the page still does. There
   // "/data" would resolve against the drive (file:///C:/data on Windows), so it is read on its own.
   const url = new URL(href, location.protocol === 'file:' ? 'http://local/' : location.href);
-  try { history.pushState(null, '', url.pathname + location.search + url.hash); } catch { /* file:// */ }
+  // from inside a dialog (the menu sheet) the new page takes the dialog's history entry (./history)
+  try { history[onDialogEntry() ? 'replaceState' : 'pushState'](null, '', url.pathname + location.search + url.hash); } catch { /* file:// */ }
   const next = toPage(url.pathname);
   // already on it: just glide to the anchor, or back to the top
   if (next === page.get()) scroll.scrollTo(url.hash.length > 1 ? url.hash : 0);

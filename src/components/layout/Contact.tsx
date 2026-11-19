@@ -2,7 +2,7 @@
 // and the PDFs to take away (DOWNLOADS, once there are any) beside the form. The demo buttons higher up
 // open the same form in a dialog (InquiryDialog).
 import { Download } from 'lucide-react';
-import { useLang, useT } from '../../i18n';
+import { lines, useLang, useT } from '../../i18n';
 import { DOWNLOADS } from '../../lib/media';
 import { BOOTH } from '../../lib/site';
 import { Band, H2, Kicker, Lead } from '../ui';
@@ -19,8 +19,8 @@ export function Contact() {
           <H2 className="rv mt-3.5">{c.title}</H2>
           <Lead className="rv mt-5">{c.lead}</Lead>
           <p className="rv m-0 mt-8 grid gap-1 border-l-2 border-qf pl-4">
-            <b className="mono text-qf-ink">{c.booth(BOOTH)}</b>
-            <span className="text-body-sm text-fg-2">{c.show}</span>
+            <b className="mono text-qf-ink">{lines(c.booth(BOOTH))}</b>
+            <span className="text-body-sm text-fg-2">{lines(c.show)}</span>
           </p>
           {files.length > 0 && (
             <div className="rv mt-8">

@@ -1,9 +1,11 @@
 // A modal <dialog> for the media viewers (the zoomed capture, the demo video), as InquiryDialog is: open
-// while `open`, focus kept inside, Esc closes it, the page holds still behind it (index.css). A click on
-// the backdrop closes it, but not a drag that starts inside and ends there. The content mounts only while open.
+// while `open`, focus kept inside, Esc and the back button close it (useBackToClose), the page holds still
+// behind it (index.css). A click on the backdrop closes it, but not a drag that starts inside and ends
+// there. The content mounts only while open.
 import { useEffect, useRef, type ComponentProps, type MouseEvent } from 'react';
 import { X } from 'lucide-react';
 import { cn } from '../lib/cn';
+import { useBackToClose } from '../lib/history';
 
 type Props = Omit<ComponentProps<'dialog'>, 'open' | 'onClose'> & {
   open: boolean;
@@ -15,6 +17,7 @@ type Props = Omit<ComponentProps<'dialog'>, 'open' | 'onClose'> & {
 export function Modal({ open, onClose, closeLabel, className, children, ...rest }: Props) {
   const ref = useRef<HTMLDialogElement>(null);
   const pressed = useRef<EventTarget | null>(null);
+  useBackToClose(open, onClose);
 
   useEffect(() => {
     const d = ref.current; if (!d) return;

@@ -48,7 +48,12 @@
 @utility wrap { width: var(--spacing-wrap); margin-inline: auto }
 /* for full-bleed blocks: padding that lines the content up with the wrap column */
 @utility pad-wrap { padding-inline: calc((100% - var(--spacing-wrap)) / 2) }
-@utility mono { font-family: var(--font-mono); font-size: var(--text-mono); letter-spacing: var(--tracking-widest); text-transform: uppercase; font-weight: 500 }
+/* the caps tracking is for Latin: Korean in it (a note, a caption, a tab) tracks only a little, or its
+   syllables fall apart into single letters */
+@utility mono {
+  font-family: var(--font-mono); font-size: var(--text-mono); letter-spacing: var(--tracking-widest); text-transform: uppercase; font-weight: 500;
+  &:lang(ko) { letter-spacing: .04em }
+}
 @utility num { font-variant-numeric: tabular-nums }
 
 /* ---- decorations behind a band, in the quiet deco colour ---------------- */

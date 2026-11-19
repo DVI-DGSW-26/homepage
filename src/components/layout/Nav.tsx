@@ -1,7 +1,7 @@
 // The header: a pill floating over the top of the page, the width of the content column. The menu
 // links to the pages, the current one lit.
 // Below 1200px (tablets, phones, a spanned dual-screen device) the menu moves into a sheet behind a button.
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { House } from 'lucide-react';
 import type { Page } from '../../lib/router';
 import { SITES } from '../../lib/site';
@@ -10,6 +10,7 @@ import { holdPosition } from '../../lib/scroll';
 import { setTheme, useTheme } from '../../lib/theme';
 import { LG, pad2 } from '../../lib/env';
 import { cn } from '../../lib/cn';
+import { useBackToClose } from '../../lib/history';
 import { Img } from '../Img';
 
 const LINKS = ['/qac-flow', '/data'] as const satisfies readonly Page[];
@@ -19,6 +20,7 @@ const ROUND_BTN = 'relative grid size-9 flex-none cursor-pointer place-items-cen
 
 export function Nav({ page }: { page: Page }) {
   const sheet = useRef<HTMLDialogElement>(null);
+  const [sheetOpen, setSheetOpen] = useState(false);
   const lang = useLang(), theme = useTheme(), t = useT(), m = t.nav;
   // turned to a desktop width with the sheet open (a tablet rotated, a window widened): the bar has the menu again
   useEffect(() => {
@@ -27,6 +29,7 @@ export function Nav({ page }: { page: Page }) {
     return () => lg.removeEventListener('change', close);
   }, []);
   const closeSheet = () => sheet.current?.close();
+  useBackToClose(sheetOpen, closeSheet);
   return (
     <>
     <header id="nav" className="fixed inset-x-0 top-0 z-100 booting:opacity-0">
@@ -70,15 +73,15 @@ export function Nav({ page }: { page: Page }) {
             <SunIcon className="col-start-1 row-start-1 transition-[opacity,rotate] duration-500 ease-out light:-rotate-90 light:opacity-0" />
             <MoonIcon className="col-start-1 row-start-1 rotate-90 opacity-0 transition-[opacity,rotate] duration-500 ease-out light:rotate-0 light:opacity-100" />
           </button>
-          <button type="button" onClick={() => sheet.current?.showModal()} aria-label={m.open} aria-haspopup="dialog" className={cn(ROUND_BTN, 'lg:hidden')}>
+          <button type="button" onClick={() => { sheet.current?.showModal(); setSheetOpen(true); }} aria-label={m.open} aria-haspopup="dialog" className={cn(ROUND_BTN, 'lg:hidden')}>
             <MenuIcon />
           </button>
         </div>
       </div>
     </header>
     {/* The sheet: the whole screen, the links large and numbered. A modal <dialog>, so focus stays inside, Esc
-        closes it and the page holds still behind it; a link closes it and opens its page. */}
-    <dialog ref={sheet} aria-label={m.menu} className="menu-sheet m-0 h-dvh max-h-none w-full max-w-none overflow-y-auto border-0 bg-bg p-0 text-fg backdrop:bg-transparent">
+        and the back button close it and the page holds still behind it; a link closes it and opens its page. */}
+    <dialog ref={sheet} aria-label={m.menu} onClose={() => setSheetOpen(false)} className="menu-sheet m-0 h-dvh max-h-none w-full max-w-none overflow-y-auto border-0 bg-bg p-0 text-fg backdrop:bg-transparent">
       <div className="wrap flex min-h-full flex-col pt-4 pb-8">
         <div className="flex items-center justify-between py-2.5">
           <span className="mono text-mute">{m.menu}</span>

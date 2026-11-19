@@ -30,7 +30,7 @@ export function Live() {
   return (
     <Band id="qf-live" mark="04">
       <Head kicker={l.kicker} q={l.q} title={l.title} lead={l.lead} />
-      <div role="tablist" aria-label={l.tabsAria} className="mono mb-4.5 flex gap-1.5 overflow-x-auto [scrollbar-width:none]">
+      <div role="tablist" aria-label={l.tabsAria} className="mono mb-4.5 flex gap-1.5 overflow-x-auto [scrollbar-width:none] max-sm:flex-wrap">
         {l.tabs.map((label, i) => (
           <button key={label} id={`qf-tab-${i}`} type="button" role="tab" aria-selected={tab === i} aria-controls={`qf-panel-${i}`} tabIndex={tab === i ? 0 : -1}
             onClick={() => setTab(i)} onKeyDown={onKey}

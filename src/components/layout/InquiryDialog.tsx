@@ -1,12 +1,13 @@
 // The demo request dialog: every "demo" button on the pages opens it (openInquiry, src/lib/inquiry.ts), so
 // the visitor fills the form where they are instead of being sent to the end of the page. A modal <dialog>:
-// focus stays inside, Esc closes it, the page holds still behind it (index.css). The close button or a
+// focus stays inside, Esc and the back button close it, the page holds still behind it (index.css). The close button or a
 // click on the backdrop closes it too; a drag that starts inside (selecting a field's text) and ends
 // outside does not. The form is mounted only while it is open, so each opening starts empty, and it keeps
 // one height whatever it shows (InquiryForm), so the dialog never jumps.
 import { useEffect, useId, useRef, type MouseEvent } from 'react';
 import { X } from 'lucide-react';
-import { useT } from '../../i18n';
+import { lines, useT } from '../../i18n';
+import { useBackToClose } from '../../lib/history';
 import { closeInquiry, useInquiryDialog } from '../../lib/inquiry';
 import { BOOTH } from '../../lib/site';
 import { Kicker } from '../ui';
@@ -17,6 +18,7 @@ export function InquiryDialog() {
   const ref = useRef<HTMLDialogElement>(null);
   const pressed = useRef<EventTarget | null>(null);
   const c = useT().contact, titleId = useId();
+  useBackToClose(source != null, closeInquiry);
 
   useEffect(() => {
     const d = ref.current; if (!d) return;
@@ -43,7 +45,7 @@ export function InquiryDialog() {
           </div>
           <h2 id={titleId} className="m-0 mt-4 text-h2 leading-h2 font-semibold tracking-tight">{c.title}</h2>
           <p className="m-0 mt-2 text-body text-fg-2">{c.lead}</p>
-          <p className="mono m-0 mt-4 text-qf-ink">{c.booth(BOOTH)}</p>
+          <p className="mono m-0 mt-4 text-qf-ink">{lines(c.booth(BOOTH))}</p>
           <InquiryForm source={source} onDone={closeInquiry} className="mt-7 border-t border-line bg-bg-2 pt-7" />
         </div>
       )}
