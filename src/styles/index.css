@@ -38,7 +38,9 @@
   html { text-wrap-style: pretty }
   ::selection { background: var(--acc); color: var(--color-on-acc) }
   :focus-visible { outline: 2px solid var(--acc-2); outline-offset: 4px }
-  /* the page stays put behind an open modal */
+  /* the page stays put behind an open modal: no scrolling, and the scrollbar's room is kept so nothing
+     shifts sideways when it goes */
+  html { scrollbar-gutter: stable }
   html:has(dialog[open]) { overflow: hidden }
 }
 

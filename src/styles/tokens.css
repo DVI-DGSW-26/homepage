@@ -66,8 +66,8 @@
   --text-menu: clamp(1.9rem, 6vw, 3rem);        /* the links in the menu sheet */
   --text-h2: clamp(1.85rem, 3.9vw, 3.5rem);
   --text-h2-lg: clamp(2.2rem, 4.6vw, 4.2rem);   /* the data page's opening headline */
-  --text-wordmark: clamp(3.6rem, 9vw, 8rem);    /* the Q.A.C-Flow name */
-  --text-stat: clamp(2rem, 4.2vw, 3.4rem);      /* Q.A.C-Flow figures */
+  --text-wordmark: clamp(3.6rem, 9vw, 8rem);    /* the QAC FLOW name */
+  --text-stat: clamp(2rem, 4.2vw, 3.4rem);      /* QAC FLOW figures */
   --text-milestone: clamp(2rem, 3.6vw, 3rem);   /* data-industry roadmap years */
   --text-mark: clamp(7rem, 16vw, 15rem);        /* the outlined chapter mark ("01") behind a band */
 
@@ -160,7 +160,7 @@
   --color-on-acc: #2A2D33;
   /* the white backing behind the app captures */
   --color-plate: #fff;
-  /* the mint green that marks Q.A.C-Flow and the whole page now (one accent) */
+  /* the mint green that marks QAC FLOW and the whole page now (one accent) */
   --color-qf: #3CCB9A;
   /* device mockups (src/components/Device.tsx): the black glass of a screen, a phone's titanium
      band and where it catches the light, and the anodized aluminum of a display's edge and stand */
@@ -194,6 +194,8 @@
   --color-qf-ink: var(--qf-ink);
   --color-qf-soft: var(--qf-soft);
   --color-qf-line: var(--qf-line);
+  /* a form's error: the field's edge and its message */
+  --color-err: var(--err);
   /* the decorations behind the bands: dot grid, line grid, the outlined chapter marks */
   --color-deco: var(--deco);
 
@@ -235,8 +237,9 @@
     --acc: #3CCB9A; --acc-2: #74DDB9; --acc-ink: var(--color-ink-acc); --acc-glow: rgb(60 203 154 / .28);
     --nav-bg: color-mix(in srgb, var(--color-ink) 94%, transparent);
     --deco: rgb(230 233 236 / .07);
-    /* Q.A.C-Flow green: for type, a tint and a hairline */
+    /* QAC FLOW green: for type, a tint and a hairline */
     --qf-ink: #3CCB9A; --qf-soft: color-mix(in srgb, var(--color-qf) 12%, transparent); --qf-line: rgb(60 203 154 / .4);
+    --err: #FF7B73;
 
     /* ---- motion (animation.css) ---- */
     --duration-theme: .62s;      /* colour-mode crossfade; src/lib/theme.ts reads it, flipping the tokens at its eased midpoint */
@@ -253,6 +256,7 @@
     --nav-bg: color-mix(in srgb, var(--color-paper) 95%, transparent);
     --deco: rgb(42 45 51 / .09);
     --qf-ink: #157A57; --qf-soft: color-mix(in srgb, var(--color-qf) 14%, transparent); --qf-line: color-mix(in srgb, #157A57 40%, transparent);
+    --err: #C2000F;
   }
 
   /* ---- the floor monitor's mode set ----

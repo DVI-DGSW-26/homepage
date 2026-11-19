@@ -4,7 +4,7 @@ export const ICON = {
   arrow: 'M5 12h14m-5-5l5 5-5 5',
   checkCircle: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z M8 12l3 3 5-6',
 
-  // inspection: the paper way, then Q.A.C-Flow's
+  // inspection: the paper way, then QAC FLOW's
   gauge: 'M4 7h16v10H4z M8 11h8',
   paper: 'M6 3h9l3 3v15H6z M9 10h6M9 14h6M9 18h3',
   spreadsheet: 'M3 5h18v14H3z M3 10h18M9 5v14M15 5v14',

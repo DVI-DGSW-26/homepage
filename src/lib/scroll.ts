@@ -15,6 +15,7 @@ export const scroll = {
 /** In-page #anchor links glide to their section. Returns the teardown. */
 export function smoothAnchors() {
   const onClick = (e: MouseEvent) => {
+    if (e.defaultPrevented) return; // handled already (a demo button opens the dialog instead)
     const a = (e.target as Element).closest('a[href^="#"]'); if (!a) return;
     const id = a.getAttribute('href')!; if (id.length > 1 && document.querySelector(id)) { e.preventDefault(); scroll.scrollTo(id); }
   };

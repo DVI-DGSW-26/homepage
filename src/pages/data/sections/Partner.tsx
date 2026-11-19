@@ -1,5 +1,6 @@
 import { lines, useT } from '../../../i18n';
-import { Band, H2, Kicker } from '../../../components/ui';
+import { Band, H2, Kicker, Pill } from '../../../components/ui';
+import { openInquiry } from '../../../lib/inquiry';
 import { RichLines } from '../parts';
 
 /** 06 the partnership, and the page's one line, over a soft green light */
@@ -12,7 +13,8 @@ export function Partner() {
         <H2 className="rv max-w-240"><RichLines src={p.closing} /></H2>
         <p className="rv m-0 mt-8 text-title-xs font-semibold text-fg-2">{lines(p.title)}</p>
         <ul className="rv m-0 mt-4 flex list-none flex-wrap justify-center gap-2.5 p-0">
-          {p.tags.map(x => <li key={x} className="mono rounded-full border border-qf-line px-4 py-2 text-tag text-qf-ink">{x}</li>)}
+          {/* each one opens the demo request / contact form at the foot of the page */}
+          {p.tags.map(x => <li key={x}><Pill quiet href="#contact" aria-haspopup="dialog" onClick={openInquiry('partner')}>{x}</Pill></li>)}
         </ul>
       </div>
     </Band>

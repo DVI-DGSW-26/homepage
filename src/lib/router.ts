@@ -1,6 +1,7 @@
 // Pages. The site is one bundle with a page per path, switched in place: a click on a same-site
 // link (href="/data") swaps the page without a reload, and back / forward work as usual.
-// Every other path ("/", a typo, the single-file build opened from disk) shows Q.A.C-Flow.
+// Every other path ("/", a typo, the single-file build opened from disk) shows QAC FLOW; a typo is also
+// put back to "/" in the address bar (vercel.json redirects such paths before they reach the page).
 //
 // The site used to be one long page, so links into it are #anchors on "/" (the CES QR code opens
 // /?lang=en#qac-flow). Such a link is moved to the page that section now lives on, keeping the
@@ -8,7 +9,7 @@
 import { createStore, useStore } from './store';
 import { scroll } from './scroll';
 
-export const PAGES = ['/qac-flow', '/data'] as const;
+export const PAGES = ['/qac-flow', '/data', '/privacy'] as const;
 export type Page = (typeof PAGES)[number];
 
 /** the old one-page sections, by id, and the page each is on now */
@@ -21,8 +22,13 @@ const toPage = (path: string): Page => {
 };
 
 const arrival = (): Page => {
-  const moved = clean(location.pathname) === '/' ? MOVED[decodeURIComponent(location.hash.slice(1))] : undefined;
-  if (!moved) return toPage(location.pathname);
+  const path = clean(location.pathname);
+  const moved = path === '/' ? MOVED[decodeURIComponent(location.hash.slice(1))] : undefined;
+  if (!moved) {
+    const known = path === '/' || (PAGES as readonly string[]).includes(path);
+    if (!known && location.protocol !== 'file:') history.replaceState(history.state, '', '/' + location.search + location.hash);
+    return toPage(path);
+  }
   try { history.replaceState(history.state, '', moved + location.search + location.hash); } catch { /* file:// */ }
   return moved;
 };
@@ -31,6 +37,8 @@ const page = createStore<Page>(arrival());
 
 /** The page being shown; re-renders the caller when it changes. */
 export const usePage = () => useStore(page);
+/** The page being shown, outside React (the document metadata follows it). */
+export const currentPage = page;
 
 /** Shows the page at `href` ("/data", "/data#future-roadmap"). */
 export function navigate(href: string) {

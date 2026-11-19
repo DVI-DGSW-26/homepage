@@ -3,8 +3,20 @@
   "installCommand": "pnpm install",
   "buildCommand": "pnpm build",
   "outputDirectory": "dist",
-  "cleanUrls": true,
-  "rewrites": [{ "source": "/(.*)", "destination": "/" }],
+  "redirects": [
+    { "source": "/en", "destination": "/?lang=en", "permanent": false },
+    { "source": "/en/:path*", "destination": "/?lang=en", "permanent": false },
+    {
+      "source": "/((?!api/|assets/|og/|_seo/|qac-flow$|data$|privacy$|index\\.html$|dvision-single\\.html$|favicon\\.ico$).+)",
+      "destination": "/",
+      "permanent": false
+    }
+  ],
+  "rewrites": [
+    { "source": "/qac-flow", "destination": "/index.html" },
+    { "source": "/data", "destination": "/_seo/data.ko.html" },
+    { "source": "/privacy", "destination": "/_seo/privacy.ko.html" }
+  ],
   "headers": [
     {
       "source": "/assets/(.*)",

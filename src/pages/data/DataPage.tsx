@@ -1,7 +1,7 @@
 // The data industry page, following the homepage plan: the vision (inspection data in, a data
-// business out), why us (the six kinds of data Q.A.C-Flow gathers every day), the value chain in five
+// business out), why us (the six kinds of data QAC FLOW gathers every day), the value chain in five
 // steps, the 2026–2029 roadmap with where we are lit, what the data is worth, and the partnership the
-// page ends on. Q.A.C-Flow's last block links here (src/pages/qac-flow), and Why us links back.
+// page ends on. QAC FLOW's last block links here (src/pages/qac-flow), and Why us links back.
 import { useT } from '../../i18n';
 import { Vision } from './sections/Vision';
 import { WhyUs } from './sections/WhyUs';

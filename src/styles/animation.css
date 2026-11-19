@@ -41,8 +41,11 @@
 
   /* the menu sheet fades in over the page (src/components/Nav.tsx) */
   .menu-sheet[open] { animation: fade-in var(--duration-fade) ease-out }
+  /* the demo request dialog rises a little as it fades in, its backdrop just fades (src/components/layout/InquiryDialog.tsx) */
+  .inquiry-dialog[open] { animation: m-in var(--duration-fade) ease-out }
+  .inquiry-dialog[open]::backdrop { animation: fade-in var(--duration-fade) ease-out }
 
   @media (prefers-reduced-motion: reduce) {
-    .menu-sheet[open] { animation: none }
+    .menu-sheet[open], .inquiry-dialog[open], .inquiry-dialog[open]::backdrop { animation: none }
   }
 }

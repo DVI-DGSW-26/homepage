@@ -1,4 +1,4 @@
-// Pieces the Q.A.C-Flow sections share: the question-and-answer head of each block, and the device
+// Pieces the QAC FLOW sections share: the question-and-answer head of each block, and the device
 // frames the in-house app's screens sit in.
 import type { ReactNode } from 'react';
 import { lines, useLang } from '../../i18n';

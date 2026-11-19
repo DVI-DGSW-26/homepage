@@ -1,0 +1,21 @@
+// Facts about the company and its sites that don't change with the language (the copy that does is in
+// src/i18n/locales). The SEO head (scripts/seo.ts) reads ORIGIN too.
+import type { Lang } from '../i18n/store.ts';
+
+/** this site, as search engines and link previews should name it (no trailing slash) */
+export const ORIGIN = 'https://solution.dvi-ind.com';
+
+/** where inquiries go; api/inquiry.ts sends to the same address unless INQUIRY_MAIL_TO says otherwise */
+export const SALES_EMAIL = 'sales@dvi-ind.com';
+export const TEL = '+82-53-710-1022';
+export const TEL_HREF = 'tel:+82537101022';
+
+/** the CES 2027 booth the contact block names */
+export const BOOTH = '62401';
+
+/** DVISION's other sites, in the language being read: the gateway (dvi-ind.com, "제조 / 솔루션") and the
+ * manufacturing site, both of which keep the language in the path (/en, /en/home) */
+export const SITES = {
+  gateway: (lang: Lang) => (lang === 'en' ? 'https://dvi-ind.com/en' : 'https://dvi-ind.com'),
+  manufacturing: (lang: Lang) => (lang === 'en' ? 'https://www.dvi-ind.com/en/home' : 'https://www.dvi-ind.com/home')
+};

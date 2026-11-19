@@ -4,6 +4,7 @@
 // e.g. the manifesto's highlighted words. A "\n" marks where a wrapping line had better break
 // (between sentences or phrases) and is rendered with lines(); it is a hint, not a forced break.
 // Copy that varies with a number is a function.
+import { privacyKo } from './privacy.ko.ts';
 
 /** a span of minutes as hours and minutes: 186 → "3시간 6분" */
 const dur = (m: number) => `${m >= 60 ? `${Math.floor(m / 60)}시간 ` : ''}${m % 60}분`;
@@ -12,29 +13,50 @@ export const ko = {
   /** the wordmark's alt text */
   brand: 'DVISION',
 
+  /** each page's browser tab, search result and link preview (the SEO head in scripts/seo.ts reads these too);
+   * a link preview drops the " | DVISION" */
   meta: {
-    title: 'DVISION Remake',
-    description: '디비전(DVISION)은 알루미늄 압출과 정밀 가공으로 자동차, 산업용, 건축, 항공우주방산 부품을 공급하는 대구의 소재부품 전문기업입니다.'
+    '/qac-flow': {
+      title: 'QAC FLOW – 종이 검사표 없는 품질검사 | DVISION',
+      description: '스마트폰으로 측정기를 찍으면 OCR이 값을 읽어 공차 판정과 검사보고서 발행까지 이어집니다.'
+    },
+    '/data': {
+      title: 'QAC FLOW 데이터 산업 – 검사 한 건이 데이터 자산으로 | DVISION',
+      description: 'QAC FLOW가 현장에서 사진 증빙과 함께 모은 검사 데이터로 데이터 사업을 만듭니다. 2026–2029 로드맵과 파트너십.'
+    },
+    '/privacy': {
+      title: '개인정보처리방침 | DVISION',
+      description: '(주)디비전 솔루션 홈페이지(solution.dvi-ind.com)의 개인정보처리방침입니다.'
+    },
+    /** the link preview image's alt text */
+    image: 'QAC FLOW 첫 화면: 종이 검사표 없는 품질검사, 스마트폰으로 측정기를 촬영하는 앱 화면'
   },
 
   nav: {
-    home: 'DVISION 홈',
+    home: 'QAC FLOW 처음으로',
     menu: '주요 메뉴',
-    links: { '/qac-flow': 'Q.A.C-Flow', '/data': 'Data Industry' },
+    links: { '/qac-flow': 'QAC FLOW', '/data': 'Data Industry' },
+    /** DVISION's sites: the gateway (dvi-ind.com), manufacturing, and this one */
+    sites: { label: 'DVISION 사이트', gateway: 'DVISION 첫 화면', manufacturing: '제조', solution: '솔루션' },
     langs: { ko: 'KOR', en: 'ENG' },
     theme: { toLight: '라이트 모드로 전환', toDark: '다크 모드로 전환' },
     open: '메뉴 열기',
     close: '메뉴 닫기'
   },
 
+  /** the tag on what is still a plan (defect prediction, process tuning) */
+  planned: '계획',
+
   qf: {
-    launch: 'Q.A.C-Flow 출시일',
-    label: 'Q.A.C-Flow 품질검사 솔루션',
+    label: 'QAC FLOW 품질검사 솔루션',
     expand: 'Quality · Analysis · Control',
     title: '종이 검사표 없는 품질검사',
     lead: '스마트폰 하나로 측정, 판정, 보고서 발행까지.\n디비전 공장에서 직접 만들고 검증했습니다.',
-    stats: ['OCR 인식률', '추가 하드웨어', '대구 본사 공장 실운영'],
+    /** the figures up front: what it doesn't need, and since when it runs in our own plant */
+    stats: ['전용 측정 장비·센서 공사 불필요', '자사 공장 운영 시작'],
     statsNote: '대구 본사 공장 사내 검증 · IATF 16949',
+    /** the buttons that lead to the demo request form (#contact) */
+    cta: { demo: '데모 신청', apply: '우리 현장에 적용 문의' },
     alt: {
       capture: '스마트폰 카메라로 디지털 캘리퍼스 화면을 촬영하는 장면',
       ocr: '측정값이 OCR로 자동 입력되고 합격으로 판정된 화면',
@@ -46,10 +68,10 @@ export const ko = {
     },
     problem: {
       kicker: '01 / Problem',
-      q: '왜 Q.A.C-Flow가 필요한가요?',
+      q: '왜 QAC FLOW가 필요한가요?',
       title: '숫자를 두 번 옮겨 적는 순간, 데이터는 신뢰를 잃습니다.',
       before: '기존 방식',
-      after: 'Q.A.C-Flow',
+      after: 'QAC FLOW',
       beforeSteps: ['측정기 읽기', '종이에 기록', '엑셀에 재입력'],
       pains: ['같은 숫자를 다시 옮기는 시간', '입력 오류', '주간 집계가 끝나야 보이는 품질 상태'],
       afterSteps: ['측정기 화면 촬영', 'OCR 자동 인식', '공차 기준 즉시 합격, 불합격 판정', '승인과 동시에 보고서 발행']
@@ -106,28 +128,28 @@ export const ko = {
       steps: [
         { title: '검사마다 한 장의 보고서', body: '측정값, 공차, 사진, 결재가 한 기록에 담깁니다.' },
         { title: '보고서가 쌓여 데이터로', body: '품목, 설비, 검사 시점별로 매일 쌓입니다.' },
-        { title: '학습 자산', body: '불량 예측과 공정 최적화를 위한 바탕이 됩니다.' }
+        { title: '학습 자산', body: '불량 예측과 공정 최적화를 위한 바탕이 됩니다.', plan: true }
       ]
     }
   },
 
   future: {
     label: '데이터 산업 진입',
-    /** the step at the end of Q.A.C-Flow's last block that leads here: the label above, then this */
+    /** the step at the end of QAC FLOW's last block that leads here: the label above, then this */
     bridge: '쌓인 검사 데이터가\n데이터 산업의 출발점이 됩니다',
     eyebrow: 'Data Industry',
     title: '검사 한 건이,\n<k>데이터 자산</k>이 됩니다',
-    lead: '데이터/AI 시장으로의 확장. Q.A.C-Flow가 데이터를 모으고, Data Industry가 그 데이터로 사업을 만듭니다.',
+    lead: '데이터/AI 시장으로의 확장. QAC FLOW가 데이터를 모으고, Data Industry가 그 데이터로 사업을 만듭니다.',
     storyLabel: '데이터의 입구에서 출구까지',
     story: [
-      { tag: 'Input', title: 'Q.A.C-Flow', body: '데이터의 입구. 촬영 한 번으로 검사 데이터를 수집' },
+      { tag: 'Input', title: 'QAC FLOW', body: '데이터의 입구. 촬영 한 번으로 검사 데이터를 수집' },
       { tag: 'Asset', title: '검증된 데이터', body: '측정값 + 사진 증빙 + 판정 + 조치 이력' },
       { tag: 'Output', title: 'Data Industry', body: '데이터의 출구. SaaS · 데이터 사업 · 크레딧' }
     ],
     why: {
       kicker: '02 / Why us',
       title: '우리는 데이터를 직접 ‘만드는’ 기업입니다',
-      from: '데이터는 Q.A.C-Flow에서 모입니다',
+      from: '데이터는 QAC FLOW에서 모입니다',
       items: [
         { title: '측정값', sub: 'DIM · 기준값 · 공차' },
         { title: '측정 사진', sub: '자주 · 순회 이중 증빙' },
@@ -159,14 +181,14 @@ export const ko = {
         { year: '2028', title: 'SaaS 제품화', items: ['서비스 출시', '고객 확대', '수익화 시작'] },
         { year: '2029', title: 'Data / Credit', items: ['데이터 사업', '크레딧 시스템', '글로벌 확장'] }
       ],
-      proof: '<k>Q.A.C-Flow 현장 운영 중 (2026.06.01~)</k> — 로드맵은 계획이 아니라 진행 중입니다'
+      proof: '<k>QAC FLOW 자사 공장 운영 중 (2026.06~)</k> — 로드맵은 계획이 아니라 진행 중입니다'
     },
     asset: {
       kicker: '05 / Data Asset',
       title: '쌓인 데이터가 만드는 가치',
       items: [
-        { title: '불량 예측 모델', body: '쌓인 측정값과 판정으로 불량이 생기기 전에 미리 알아챕니다.' },
-        { title: '공정 파라미터 최적화', body: '측정값을 설비 · 제품 맥락과 함께 보고 더 나은 공정 조건을 찾습니다.' },
+        { title: '불량 예측 모델', body: '쌓인 측정값과 판정으로 불량이 생기기 전에 미리 알아챕니다.', plan: true },
+        { title: '공정 파라미터 최적화', body: '측정값을 설비 · 제품 맥락과 함께 보고 더 나은 공정 조건을 찾습니다.', plan: true },
         { title: '데이터 크레딧 시스템', body: '검증된 품질 데이터가 거래하고 활용할 수 있는 자산이 됩니다.' },
         { title: '품질 데이터 격차 해소', body: '데이터를 쌓기 어려운 제조 현장도 검증된 데이터를 쓸 수 있게 합니다.' }
       ]
@@ -178,6 +200,47 @@ export const ko = {
       closing: '찍는 순간 기록되고,\n기록이 쌓여 <k>산업이 됩니다.</k>'
     }
   },
+
+  /** the demo request form at the end of every page (#contact); api/inquiry.ts mails it to sales */
+  contact: {
+    kicker: 'Demo / Contact',
+    title: '데모 신청·문의',
+    lead: '현장에 맞는 적용 방법을 안내해 드립니다.',
+    close: '닫기',
+    booth: (n: string) => `CES 2027 · Eureka Park · Booth ${n}`,
+    show: '2027. 1. 6.~9. · 라스베이거스 Venetian Expo Hall G',
+    fields: { name: '이름', email: '회사 이메일', company: '회사명' },
+    placeholders: { name: '홍길동', email: 'name@company.com', company: '(주)회사명' },
+    /** how the form's data is handled, above the button: no consent is asked (see privacy.ko.ts) */
+    notice: '데모 신청 응대와 후속 상담을 위해 이름·회사 이메일·회사명을 받아 상담 종료 후 1년간 보관한 뒤 파기합니다. 접수·발송 과정에서 미국의 Vercel·Resend를 거쳐 회사 메일(Google Workspace)로 전달됩니다.',
+    policy: '개인정보처리방침',
+    submit: '데모 신청',
+    sending: '보내는 중…',
+    /** after sending: the page-end form starts a new one, a failed one goes back to the filled form */
+    again: '새로 작성',
+    retry: '다시 시도',
+    sent: '접수되었습니다. 담당자가 회사 이메일로 연락드리겠습니다.',
+    failed: '보내지 못했습니다. 잠시 후 다시 시도하시거나 아래 주소로 메일을 보내 주세요.',
+    invalid: {
+      name: '이름을 입력해 주세요.',
+      email: '회사 이메일 주소를 확인해 주세요.',
+      company: '회사명을 입력해 주세요.'
+    },
+    /** the subject of the mail a visitor writes when the form fails */
+    mailSubject: 'QAC FLOW 데모 신청'
+  },
+
+  footer: {
+    company: '(주)디비전',
+    address: '대구광역시 달성군 구지면 국가산단대로33길 237',
+    email: '문의',
+    sites: 'DVISION 사이트',
+    links: { gateway: 'DVISION 첫 화면', manufacturing: '제조 홈페이지', solution: 'QAC FLOW 솔루션' },
+    privacy: '개인정보처리방침',
+    copyright: '© 2026 DVISION Co., Ltd. All rights reserved.'
+  },
+
+  privacy: privacyKo,
 
   /** the floor monitor rebuilt in React (src/features/qac-monitor); its sample data carries its own ko/en names */
   monitor: {

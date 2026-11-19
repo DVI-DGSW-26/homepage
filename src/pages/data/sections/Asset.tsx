@@ -1,6 +1,6 @@
 import { useT } from '../../../i18n';
 import { ICON } from '../../../components/icons';
-import { Band, LineIcon } from '../../../components/ui';
+import { Band, LineIcon, PlanTag } from '../../../components/ui';
 import { Head } from '../parts';
 
 /** defect prediction, process tuning, data credits, closing the gap */
@@ -8,7 +8,7 @@ const WORTH = [ICON.bolt, ICON.sliders, ICON.coin, ICON.people];
 
 /** 05 what the data is worth */
 export function Asset() {
-  const a = useT().future.asset;
+  const t = useT(), a = t.future.asset;
   return (
     <Band id="future-asset" mark="05">
       <Head kicker={a.kicker} title={a.title} />
@@ -16,7 +16,7 @@ export function Asset() {
         {a.items.map((x, i) => (
           <li key={x.title} className="rv grid content-start gap-3 rounded-card border border-line bg-card p-panel-pad">
             <LineIcon d={WORTH[i]} className="size-11 rounded-card bg-qf-soft p-2.5 text-qf-ink" />
-            <h3 className="m-0 mt-2 text-title-xs leading-tight font-semibold">{x.title}</h3>
+            <h3 className="m-0 mt-2 text-title-xs leading-tight font-semibold">{x.title}{x.plan && <PlanTag>{t.planned}</PlanTag>}</h3>
             <p className="m-0 text-body-sm leading-copy text-fg-2">{x.body}</p>
           </li>
         ))}

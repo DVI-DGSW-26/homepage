@@ -2,7 +2,9 @@
 // links to the pages, the current one lit.
 // Below 1200px (tablets, phones, a spanned dual-screen device) the menu moves into a sheet behind a button.
 import { useEffect, useRef } from 'react';
+import { House } from 'lucide-react';
 import type { Page } from '../../lib/router';
+import { SITES } from '../../lib/site';
 import { setLang, useLang, useT, type Lang } from '../../i18n';
 import { holdPosition } from '../../lib/scroll';
 import { setTheme, useTheme } from '../../lib/theme';
@@ -48,6 +50,13 @@ export function Nav({ page }: { page: Page }) {
           </ul>
         </nav>
         <div className="flex items-center gap-3.5 max-sm:gap-2">
+          {/* DVISION's other sites: the start page (dvi-ind.com), and manufacturing | solutions, this one lit; in the sheet below 1200px */}
+          <nav aria-label={m.sites.label} className="mono flex items-center gap-2.5 border-r border-line pr-3.5 text-mute max-lg:hidden">
+            <a href={SITES.gateway(lang)} aria-label={m.sites.gateway} title={m.sites.gateway} className="-m-1 p-1 transition-colors duration-300 hover:text-fg"><House className="size-4" strokeWidth={1.6} aria-hidden="true" /></a>
+            <a href={SITES.manufacturing(lang)} className="transition-colors duration-300 hover:text-fg">{m.sites.manufacturing}</a>
+            <i aria-hidden="true" className="not-italic opacity-50">|</i>
+            <span aria-current="page" className="font-medium text-fg">{m.sites.solution}</span>
+          </nav>
           <span className="mono flex gap-0.5 text-mute max-sm:text-micro">
             {LANGS.map((l, i) => (
               <span key={l} className="contents">
@@ -85,6 +94,15 @@ export function Nav({ page }: { page: Page }) {
                 </a>
               </li>
             ))}
+          </ul>
+        </nav>
+        <nav aria-label={m.sites.label} className="mt-auto pt-10">
+          <span className="mono text-mute">{m.sites.label}</span>
+          <ul className="m-0 mt-3 flex list-none flex-wrap gap-2 p-0">
+            {[{ href: SITES.gateway(lang), label: m.sites.gateway }, { href: SITES.manufacturing(lang), label: m.sites.manufacturing }].map(s => (
+              <li key={s.label}><a href={s.href} className="inline-flex min-h-11 items-center rounded-full border border-line px-4.5 text-body-sm text-fg-2 transition-colors duration-300 hover:border-line-2 hover:text-fg">{s.label}</a></li>
+            ))}
+            <li><span aria-current="page" className="inline-flex min-h-11 items-center rounded-full border border-qf-line bg-qf-soft px-4.5 text-body-sm font-semibold text-qf-ink">{m.sites.solution}</span></li>
           </ul>
         </nav>
       </div>

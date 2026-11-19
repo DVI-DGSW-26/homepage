@@ -1,6 +1,6 @@
 # DVISION homepage
 
-dvi-ind.com 리메이크 중 Q.A.C-Flow 와 데이터 산업 페이지. React 19 + Vite + Tailwind CSS v4 + TypeScript 정적 사이트이며 서버 없이 배포됩니다. 패키지 매니저는 pnpm 입니다.
+솔루션 사이트(solution.dvi-ind.com): QAC FLOW 와 데이터 산업 페이지, 개인정보처리방침. React 19 + Vite + Tailwind CSS v4 + TypeScript 정적 사이트이고, 서버 코드는 데모 신청 메일 함수(`api/inquiry.ts`)와 영문 head 를 고르는 미들웨어(`middleware.ts`) 둘뿐입니다. 패키지 매니저는 pnpm 입니다.
 
 - 전에 있던 JS 로 만든 homepage 는 [main-old](https://github.com/DVI-DGSW-26/homepage/tree/main-old) 브런치로 옮겼습니다.
 - [feature/Separation](https://github.com/DVI-DGSW-26/homepage/tree/main) 은 페이지 스크롤을 많이 해야 하는 문제를 줄인 브런치입니다. 다른 브런치와 push, merge, pull 로 관여하지 않습니다.
@@ -9,8 +9,10 @@ dvi-ind.com 리메이크 중 Q.A.C-Flow 와 데이터 산업 페이지. React 19
 
 ```bash
 pnpm install
-pnpm dev        # http://127.0.0.1:5173
+pnpm dev        # http://localhost:5174
 ```
+
+데모 신청 폼을 로컬에서 실제로 보내려면 `.env.example` 을 `.env.local` 로 복사해 Resend 키와 발신 주소를 채웁니다. `INQUIRY_MAIL_TO_DEV` 를 적으면 개발 중에는 그 주소로만 갑니다.
 
 개발 서버는 `<StrictMode>` 로 돌기 때문에 모든 effect 가 마운트 직후 한 번 정리되고 다시 실행됩니다. GSAP 연출과 구독은 이 정리를 견디도록 만들어져 있습니다(아래 "애니메이션 규칙").
 
@@ -23,17 +25,24 @@ pnpm typecheck  # 타입 검사만
 pnpm images     # 이미지 변환만 (dev / build 가 자동으로 먼저 실행)
 ```
 
-- `dist/` 에 배포용 정적 파일이 생깁니다. Vercel 은 `vercel.json` 대로 `pnpm build` 후 `dist/` 를 배포하고, `/data` 같은 페이지 경로는 `index.html` 로 보냅니다(rewrites).
+- `dist/` 에 배포용 정적 파일이 생깁니다. Vercel 은 `vercel.json` 대로 `pnpm build` 후 `dist/` 를 배포합니다.
+- 페이지마다 언어별 head(제목, 설명, canonical, hreflang, Open Graph)가 따로 있습니다. `scripts/seo.ts` 가 `index.html`(QAC FLOW 국문)과 `dist/_seo/{qac-flow,data,privacy}.{ko,en}.html` 을 만들고, `vercel.json` 이 `/data` `/privacy` 를 국문 파일로, `middleware.ts` 가 `?lang=en` 요청을 영문 파일로 보냅니다(Vercel 은 rewrite 보다 기존 파일을 먼저 내보내서 `/?lang=en` 은 미들웨어가 필요). 공유 이미지는 `public/og/qac-flow-{ko,en}.png`(1200×630, 지금은 첫 화면 캡처).
+- 없는 경로는 `/` 로, `/en`·`/en/...` 은 `/?lang=en` 으로 보냅니다(`vercel.json` redirects).
+- Vercel 환경 변수: `RESEND_API_KEY`, `INQUIRY_MAIL_FROM`(Resend 에 인증된 dvi-ind.com 주소), `INQUIRY_MAIL_TO`(기본 sales@dvi-ind.com). 없으면 폼이 실패를 알리고 메일 주소를 보여 줍니다.
 - `dist/dvision-single.html` 은 이미지, 스크립트, 스타일을 모두 인라인한 단일 파일(공유, 시안 검토용)입니다. `scripts/single.mjs` 가 코드 분할을 끈 별도 빌드로 만듭니다.
 
 ## 구조
 
 ```
-index.html                     진입점: 폰트, meta, 저장된 라이트 모드를 첫 페인트 전에 적용하는 인라인 스크립트
+index.html                     진입점: 폰트, <!--seo--> 자리, 저장된 라이트 모드를 첫 페인트 전에 적용하는 인라인 스크립트
+api/inquiry.ts                 데모 신청 폼 → Resend 메일 (Vercel Function, pnpm dev 에서는 vite.config.ts 의 apiDev)
+middleware.ts                  ?lang=en 요청에 영문 head 파일을 내보내는 Vercel Routing Middleware
 scripts/
   images.mjs                   빌드 전 이미지 변환 (아래 "이미지")
+  seo.ts                       Vite 플러그인: 페이지 × 언어별 head (위 "빌드")
   single.mjs                   단일 파일 빌드
   tw-tokens.ts                 Vite 플러그인: tokens.css 의 토큰 이름을 cn() 에 넘김 (virtual:tw-tokens)
+public/og/                     링크 공유 이미지 (국문, 영문)
 src/
   main.tsx                     meta 동기화, 부팅 베일, <App> 렌더
   App.tsx                      페이지 전환(VIEWS), 앵커 스크롤, 페이지마다 리빌 설정
@@ -44,21 +53,25 @@ src/
   pages/
     qac-flow/                  /qac-flow — QacFlowPage.tsx 가 섹션을 나열, sections/ 에 블록 하나씩, parts.tsx 는 공용 조각
     data/                      /data — 같은 구성 (Vision, WhyUs, Chain, Roadmap, Asset, Partner)
+    privacy/                   /privacy — 개인정보처리방침 (문구는 i18n/locales/privacy.{ko,en}.ts)
   features/
     qac-monitor/               실시간 모니터링의 현장 앱을 React 로 다시 만든 것 (현황판·검사 상세·품질 불량). 데스크톱은 모니터,
                                태블릿은 가로 iPad(같은 레이아웃을 4:3 으로), 폰은 아이폰에 폰 전용 레이아웃(QacPhone, phone/).
                                화면은 모두 parts.tsx 의 Card·Stats·Badge·Pager 로 짓고, 글자는 text-m-caption … text-m-figure
                                여섯 크기, 아이콘은 lucide-react
   components/
-    layout/Nav.tsx             헤더: 떠 있는 알약, 페이지 메뉴, KOR / ENG, 테마 버튼. 1200px 미만은 메뉴가 <dialog> 시트로
-    layout/Launch.tsx          모든 페이지 끝의 출시일 푸터
-    ui.tsx                     공용 조각: Band, Eyebrow, Kicker, H2, Lead, LineIcon (리빌 마커 설명도 여기)
+    layout/Nav.tsx             헤더: 떠 있는 알약, 페이지 메뉴, 첫 화면 · 제조 | 솔루션 전환, KOR / ENG, 테마 버튼. 1200px 미만은 <dialog> 시트로
+    layout/Contact.tsx         두 제품 페이지 끝의 데모 신청 폼 (#contact) — 페이지의 "데모 신청" 버튼이 모두 여기로
+    layout/Footer.tsx          모든 페이지 끝: 회사, 문의 메일, DVISION 사이트 세 곳, 개인정보처리방침
+    ui.tsx                     공용 조각: Band, Eyebrow, Kicker, H2, Lead, Pill, PlanTag, LineIcon (리빌 마커 설명도 여기)
     icons.ts                   LineIcon 이 그리는 SVG 경로 사전
     Device.tsx                 화면을 담는 CSS 목업: 아이폰 16 Pro Max(정면 / 3D 회전, 캡처 또는 HTML 화면), iPad Pro 13", Studio Display
     Img.tsx                    모든 사진·로고를 그리는 <Img> (AVIF/WebP srcset, 크기, 플레이스홀더, priority)
   i18n/                        KOR / ENG: locales/ko.ts(원본)·en.ts 문구 사전, store.ts 언어 상태, rich.tsx, meta.ts
   lib/
     store.ts                   createStore / useStore — 페이지·테마·언어 상태가 모두 이걸로
+    site.ts                    언어와 무관한 사실: 사이트 주소, 영업 메일, 부스 번호, 다른 DVISION 사이트 링크
+    inquiry.ts                 데모 신청 폼 전송 (api/inquiry.ts 로)
     router.ts                  페이지 경로와 새로고침 없는 이동, 옛 /#섹션 링크 이전
     theme.ts                   다크 / 라이트 상태와 크로스페이드
     cn.ts                      클래스 병합 (tailwind-merge + 토큰 이름)

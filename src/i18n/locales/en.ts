@@ -1,5 +1,6 @@
 // English copy. Typed as Messages, so a key missing here (or one ko.ts doesn't have) fails the build.
-import type { Messages } from './ko';
+import type { Messages } from './ko.ts';
+import { privacyEn } from './privacy.en.ts';
 
 /** a span of minutes as hours and minutes: 186 → "3h 6m" */
 const dur = (m: number) => `${m >= 60 ? `${Math.floor(m / 60)}h ` : ''}${m % 60}m`;
@@ -9,28 +10,42 @@ export const en: Messages = {
   brand: 'DVISION',
 
   meta: {
-    title: 'DVISION — Precision Aluminum',
-    description: 'DVISION supplies automotive, industrial, architectural and aerospace & defense components through aluminum extrusion and precision machining, from Daegu, Korea.'
+    '/qac-flow': {
+      title: 'QAC FLOW – Paperless quality inspection from a phone',
+      description: 'Photograph the gauge with a smartphone: OCR reads the value, judges it against the tolerance and carries it through to the inspection report.'
+    },
+    '/data': {
+      title: 'QAC FLOW Data Industry – Every inspection becomes a data asset | DVISION',
+      description: 'The photo-verified inspection data QAC FLOW gathers on the floor, turned into a data business. Our 2026–2029 roadmap and partnerships.'
+    },
+    '/privacy': {
+      title: 'Privacy Policy | DVISION',
+      description: 'Privacy policy of the DVISION solutions website (solution.dvi-ind.com).'
+    },
+    image: 'QAC FLOW: paperless quality inspection, with the app photographing a caliper on a smartphone'
   },
 
   nav: {
-    home: 'DVISION home',
+    home: 'QAC FLOW home',
     menu: 'Main menu',
-    links: { '/qac-flow': 'Q.A.C-Flow', '/data': 'Data Industry' },
+    links: { '/qac-flow': 'QAC FLOW', '/data': 'Data Industry' },
+    sites: { label: 'DVISION sites', gateway: 'DVISION start page', manufacturing: 'Manufacturing', solution: 'Solutions' },
     langs: { ko: 'KOR', en: 'ENG' },
     theme: { toLight: 'Switch to light mode', toDark: 'Switch to dark mode' },
     open: 'Open menu',
     close: 'Close menu'
   },
 
+  planned: 'Planned',
+
   qf: {
-    launch: 'Q.A.C-Flow launch date',
-    label: 'Q.A.C-Flow quality inspection solution',
+    label: 'QAC FLOW quality inspection solution',
     expand: 'Quality · Analysis · Control',
     title: 'Quality inspection without paper check sheets.',
     lead: 'Measure, judge and issue the report, all from one smartphone.\nBuilt and proven in DVISION\'s own factory.',
-    stats: ['OCR recognition rate', 'New hardware', 'In use at our Daegu HQ plant'],
+    stats: ['No dedicated gauges or sensor installation', 'Started running in our own plant'],
     statsNote: 'In-house validation at our Daegu HQ plant · IATF 16949',
+    cta: { demo: 'Request a demo', apply: 'Ask about your floor' },
     alt: {
       capture: 'Smartphone camera framing the display of a digital caliper reading 30.00 mm',
       ocr: 'App screen: the caliper reading is filled in by OCR and judged as a pass against the tolerance',
@@ -42,10 +57,10 @@ export const en: Messages = {
     },
     problem: {
       kicker: '01 / Problem',
-      q: 'Why does the shop floor need Q.A.C-Flow?',
+      q: 'Why does the shop floor need QAC FLOW?',
       title: 'Writing a number twice is where data loses trust.',
       before: 'Before',
-      after: 'With Q.A.C-Flow',
+      after: 'With QAC FLOW',
       beforeSteps: ['Read the gauge', 'Write it on paper', 'Re-type it into Excel'],
       pains: ['Time spent copying the same number again', 'Typing errors creep in', 'Quality status is known only after the weekly tally'],
       afterSteps: ['Photograph the gauge', 'OCR reads the value', 'Pass / fail against tolerance, instantly', 'Report issued on approval']
@@ -102,7 +117,7 @@ export const en: Messages = {
       steps: [
         { title: 'One report per inspection', body: 'Values, tolerances, photos and approval in one record.' },
         { title: 'Reports pile up as data', body: 'By part, machine and inspection slot, day after day.' },
-        { title: 'A learning asset', body: 'The groundwork for defect prediction and process optimization.' }
+        { title: 'A learning asset', body: 'The groundwork for defect prediction and process optimization.', plan: true }
       ]
     }
   },
@@ -112,17 +127,17 @@ export const en: Messages = {
     bridge: 'The inspection data piling up\nis where the data business begins',
     eyebrow: 'Data Industry',
     title: 'Every inspection\nbecomes a <k>data asset</k>',
-    lead: 'Expanding into the data and AI market. Q.A.C-Flow gathers the data; Data Industry builds a business on it.',
+    lead: 'Expanding into the data and AI market. QAC FLOW gathers the data; Data Industry builds a business on it.',
     storyLabel: 'From where data comes in to where it goes out',
     story: [
-      { tag: 'Input', title: 'Q.A.C-Flow', body: 'Where data comes in. One photo captures the inspection data' },
+      { tag: 'Input', title: 'QAC FLOW', body: 'Where data comes in. One photo captures the inspection data' },
       { tag: 'Asset', title: 'Verified data', body: 'Measurements + photo evidence + verdicts + action history' },
       { tag: 'Output', title: 'Data Industry', body: 'Where data goes out. SaaS · data business · credits' }
     ],
     why: {
       kicker: '02 / Why us',
       title: 'We don’t buy data. We make it.',
-      from: 'The data is gathered by Q.A.C-Flow',
+      from: 'The data is gathered by QAC FLOW',
       items: [
         { title: 'Measurements', sub: 'DIM · nominal · tolerance' },
         { title: 'Measurement photos', sub: 'Operator and patrol evidence' },
@@ -154,14 +169,14 @@ export const en: Messages = {
         { year: '2028', title: 'SaaS product', items: ['Service launch', 'Grow the customer base', 'First revenue'] },
         { year: '2029', title: 'Data / Credit', items: ['Data business', 'Credit system', 'Global expansion'] }
       ],
-      proof: '<k>Q.A.C-Flow in live use on the floor (since 2026.06.01)</k> — the roadmap is under way, not just a plan'
+      proof: '<k>QAC FLOW running in our own plant (since 2026.06)</k> — the roadmap is under way, not just a plan'
     },
     asset: {
       kicker: '05 / Data Asset',
       title: 'What the data, once gathered, is worth',
       items: [
-        { title: 'Defect prediction', body: 'Measurements and verdicts over time flag a defect before it happens.' },
-        { title: 'Process parameter tuning', body: 'Measurements read with their machine and part context point to better process settings.' },
+        { title: 'Defect prediction', body: 'Measurements and verdicts over time flag a defect before it happens.', plan: true },
+        { title: 'Process parameter tuning', body: 'Measurements read with their machine and part context point to better process settings.', plan: true },
         { title: 'Data credit system', body: 'Verified quality data becomes an asset that can be traded and put to use.' },
         { title: 'Closing the quality-data gap', body: 'Floors that struggle to build up data get verified data to work with.' }
       ]
@@ -173,6 +188,43 @@ export const en: Messages = {
       closing: 'Recorded the moment it’s captured;\nas records build up, <k>they become an industry.</k>'
     }
   },
+
+  contact: {
+    kicker: 'Demo / Contact',
+    title: 'Request a demo',
+    lead: 'We will show you how it fits your floor.',
+    close: 'Close',
+    booth: (n: string) => `CES 2027 · Eureka Park · Booth ${n}`,
+    show: 'Jan 6–9, 2027 · Las Vegas, Venetian Expo Hall G',
+    fields: { name: 'Name', email: 'Work email', company: 'Company' },
+    placeholders: { name: 'Jane Doe', email: 'name@company.com', company: 'Company Inc.' },
+    notice: 'We use your name, work email and company to answer your request and follow up, and delete them one year after your inquiry is closed. On the way to our mailbox (Google Workspace) they pass through Vercel and Resend in the U.S.',
+    policy: 'Privacy Policy',
+    submit: 'Request a demo',
+    sending: 'Sending…',
+    again: 'New request',
+    retry: 'Try again',
+    sent: 'Thank you. We will get back to you at your work email.',
+    failed: 'Your request could not be sent. Please try again in a moment, or email us at the address below.',
+    invalid: {
+      name: 'Please enter your name.',
+      email: 'Please check your work email address.',
+      company: 'Please enter your company name.'
+    },
+    mailSubject: 'QAC FLOW demo request'
+  },
+
+  footer: {
+    company: 'DVISION Co., Ltd.',
+    address: '237, Gukgasandan-daero 33-gil, Gugi-myeon, Dalseong-gun, Daegu, Republic of Korea',
+    email: 'Contact',
+    sites: 'DVISION sites',
+    links: { gateway: 'DVISION start page', manufacturing: 'Manufacturing', solution: 'QAC FLOW solutions' },
+    privacy: 'Privacy Policy',
+    copyright: '© 2026 DVISION Co., Ltd. All rights reserved.'
+  },
+
+  privacy: privacyEn,
 
   monitor: {
     app: 'Inspection Status', titles: { board: 'Dashboard', detail: 'Inspection Details', defects: 'Quality · Defects' }, date: 'Oct 2 (Fri)',

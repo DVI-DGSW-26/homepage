@@ -1,7 +1,7 @@
 import { lines, useT } from '../../../i18n';
 import { pad2 } from '../../../lib/env';
 import { ICON } from '../../../components/icons';
-import { Band, LineIcon } from '../../../components/ui';
+import { Band, LineIcon, PlanTag } from '../../../components/ui';
 import { cn } from '../../../lib/cn';
 import { Browser, Head, StepText } from '../parts';
 
@@ -24,7 +24,7 @@ export function Data() {
                 // out of the last step the line runs on, as a gradient, into the link to the data page
                 last && 'before:w-px before:border-l-0 before:bg-linear-to-b/srgb before:from-qf-line before:to-acc')}>
                 <b className={cn(DOT, 'border-qf-line font-mono text-label text-qf-ink', last && 'border-qf bg-qf text-on-acc')}>{pad2(i + 1)}</b>
-                <StepText title={s.title} body={s.body} className="mt-2.5" />
+                <StepText title={<>{s.title}{s.plan && <PlanTag>{t.planned}</PlanTag>}</>} body={s.body} className="mt-2.5" />
               </li>
             );
           })}

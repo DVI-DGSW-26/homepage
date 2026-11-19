@@ -19,9 +19,9 @@ export function Chain() {
             <LineIcon d={CHAIN[i]} className={cn('row-span-2 size-10 flex-none rounded-full border p-2.25', i === 0 ? 'border-qf bg-qf text-on-acc sm:row-span-3' : 'border-qf-line text-qf-ink')} />
             <b className="text-body leading-tight font-semibold">{s.title}</b>
             <span className="text-caption leading-caption text-mute">{s.sub}</span>
-            {/* data capture is Q.A.C-Flow's: its name under the sub-line, and under the icon too on a phone,
+            {/* data capture is QAC FLOW's: its name under the sub-line, and under the icon too on a phone,
                 where the text column is narrower than the name */}
-            {i === 0 && <span className="mono mt-1 justify-self-start rounded-full border border-qf-line px-1.5 py-px text-tag leading-normal whitespace-nowrap text-qf-ink max-sm:col-span-2">Q.A.C-Flow</span>}
+            {i === 0 && <span className="mono mt-1 justify-self-start rounded-full border border-qf-line px-1.5 py-px text-tag leading-normal whitespace-nowrap text-qf-ink max-sm:col-span-2">QAC FLOW</span>}
             {i < c.steps.length - 1 && <LineIcon d={ICON.arrow} className="absolute top-1/2 -right-7 size-4 -translate-y-1/2 text-mute max-lg:hidden" />}
           </li>
         ))}

@@ -1,4 +1,4 @@
-// Device mockups the Q.A.C-Flow screens sit in, drawn in CSS rather than baked into the captures:
+// Device mockups the QAC FLOW screens sit in, drawn in CSS rather than baked into the captures:
 // a screen swaps (another language, a sharper capture) without touching the frame, and the frame
 // stays sharp at any size and pixel density.
 //

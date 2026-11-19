@@ -23,7 +23,9 @@ const ref = (re, what) => { const m = html.match(re); if (!m) throw new Error(`s
 const jsPath = ref(/<script[^>]+src="\/?([^"]+\.js)"/, 'module script');
 const cssPath = ref(/<link[^>]+rel="stylesheet"[^>]+href="\/?(assets\/[^"]+\.css)"/, 'stylesheet');
 const js = await fs.readFile(path.join(out, jsPath), 'utf8');
-const css = await fs.readFile(path.join(out, cssPath), 'utf8');
+// the site serves its webfonts itself (src/main.tsx), files a single file can't carry; this file loads the
+// same faces from Google Fonts instead (below), so its CSS drops the self-hosted @font-face rules
+const css = (await fs.readFile(path.join(out, cssPath), 'utf8')).replace(/@font-face\s*\{[^}]*\}/g, '');
 
 const cache = new Map();
 const dataUri = async (rel) => {
@@ -56,7 +58,7 @@ const swapper = `<script>window.__ASSETS__=${JSON.stringify(map)};(function(){va
 const title = (html.match(/<title>(.*?)<\/title>/) || [, 'DVISION'])[1];
 // the pre-paint theme script (index.html), so a remembered light mode applies here too
 const themeScript = (html.match(/<script id="dv-theme">.*?<\/script>/) || [''])[0];
-const fonts = (html.match(/<link[^>]+fonts\.googleapis[^>]*>/g) || []).join('\n');
+const fonts = '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">';
 // the head isn't carried over wholesale, so the tab icon is inlined explicitly
 const icon = `<link rel="icon" type="image/png" href="${await dataUri('assets/img/favicon-32.png')}">`;
 const app = js.replace(/<\/script/gi, '<\\/script');

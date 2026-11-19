@@ -6,7 +6,7 @@ import { Head, em } from '../parts';
 /** measurements, photos, context, verdicts, actions, approvals: in the order of the copy */
 const KINDS = [ICON.ruler, ICON.camera, ICON.layers, ICON.checkCircle, ICON.history, ICON.signed];
 
-/** 02 why us: the six kinds of data Q.A.C-Flow gathers, and a link back to it */
+/** 02 why us: the six kinds of data QAC FLOW gathers, and a link back to it */
 export function WhyUs() {
   const w = useT().future.why;
   return (

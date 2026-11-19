@@ -1,12 +1,13 @@
 import { useState, type KeyboardEvent } from 'react';
 import { useT } from '../../../i18n';
 import { Monitor, Phone, Tablet } from '../../../components/Device';
-import { Band } from '../../../components/ui';
+import { Band, Pill } from '../../../components/ui';
 import { cn } from '../../../lib/cn';
 import { LG, SM } from '../../../lib/env';
 import { useMedia } from '../../../lib/useMedia';
 import { QacMonitor, SCREENS, type MonitorScreen } from '../../../features/qac-monitor/QacMonitor';
 import { QacPhone } from '../../../features/qac-monitor/QacPhone';
+import { openInquiry } from '../../../lib/inquiry';
 import { Head } from '../parts';
 
 const N = SCREENS.length;
@@ -15,7 +16,7 @@ const N = SCREENS.length;
  * in the screen the visitor holds: the floor's monitor on a desktop, an iPad on a tablet, and on a
  * phone an iPhone with the app's phone layout */
 export function Live() {
-  const l = useT().qf.live;
+  const { live: l, cta } = useT().qf;
   const [tab, setTab] = useState(0);
   const lg = useMedia(LG), sm = useMedia(SM);
   const app = { screen: SCREENS[tab], onScreen: (s: MonitorScreen) => setTab(SCREENS.indexOf(s)) };
@@ -43,7 +44,10 @@ export function Live() {
           : sm ? <Tablet className="mx-auto max-w-240"><QacMonitor {...app} form="tablet" /></Tablet>
           : <Phone screenClassName="qac-monitor bg-m-bg text-m-fg" className="mx-auto w-full max-w-85"><QacPhone {...app} /></Phone>}
       </div>
-      <p className="mono m-0 text-micro text-mute">{l.note}</p>
+      <div className="flex flex-wrap items-center justify-between gap-x-8 gap-y-4">
+        <p className="mono m-0 text-micro text-mute">{l.note}</p>
+        <Pill quiet href="#contact" aria-haspopup="dialog" onClick={openInquiry('live')} className="flex-none">{cta.apply}</Pill>
+      </div>
     </Band>
   );
 }

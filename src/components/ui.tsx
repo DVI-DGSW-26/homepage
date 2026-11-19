@@ -46,6 +46,17 @@ export function Lead({ className, ...rest }: ComponentProps<'p'>) {
   return <p className={cn('m-0 max-w-lead text-fg-2', className)} {...rest} />;
 }
 
+/** a pill link: solid green for the page's call to action (the demo request), `quiet` outlined */
+export function Pill({ quiet, className, ...rest }: ComponentProps<'a'> & { quiet?: boolean }) {
+  return <a className={cn('inline-flex min-h-11 items-center gap-2 rounded-full border px-5.5 py-2.5 text-body-sm font-semibold transition-[color,border-color,filter] duration-300',
+    quiet ? 'border-qf-line text-qf-ink hover:border-qf hover:text-fg' : 'border-qf bg-qf text-on-acc hover:brightness-110', className)} {...rest} />;
+}
+
+/** a small tag after a title, for what is still a plan */
+export function PlanTag({ className, ...rest }: ComponentProps<'span'>) {
+  return <span className={cn('mono ml-2 inline-block rounded-full border border-line-2 px-2 py-px align-middle text-tag leading-normal text-mute', className)} {...rest} />;
+}
+
 /** a 24×24 line icon drawn with the current colour; `d` is its path (ICON in ./icons) */
 export function LineIcon({ d, className }: { d: string; className?: string }) {
   return (

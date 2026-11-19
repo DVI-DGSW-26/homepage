@@ -3,3 +3,6 @@ declare module 'virtual:tw-tokens' {
   const TOKENS: Record<'text' | 'tracking' | 'leading' | 'spacing' | 'container' | 'radius' | 'breakpoint' | 'ease' | 'shadow', string[]>;
   export default TOKENS;
 }
+
+/** the self-hosted webfonts (src/main.tsx): "@fontsource/<family>/<weight>" is a CSS file through the package's exports */
+declare module '@fontsource/*';

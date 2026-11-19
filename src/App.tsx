@@ -5,14 +5,18 @@ import { setupReveals } from './lib/reveals';
 import { followLinks, usePage, type Page } from './lib/router';
 import { useLang } from './i18n';
 import { Nav } from './components/layout/Nav';
-import { Launch } from './components/layout/Launch';
+import { Contact } from './components/layout/Contact';
+import { Footer } from './components/layout/Footer';
+import { InquiryDialog } from './components/layout/InquiryDialog';
 import { QacFlowPage } from './pages/qac-flow/QacFlowPage';
 import { DataPage } from './pages/data/DataPage';
+import { PrivacyPage } from './pages/privacy/PrivacyPage';
 
-/** the sections of each page; every page ends in the launch date */
+/** the sections of each page: the two product pages end in the demo request form; every page has the footer */
 const VIEWS: Record<Page, () => ReactNode> = {
-  '/qac-flow': () => <QacFlowPage />,
-  '/data': () => <DataPage />
+  '/qac-flow': () => <><QacFlowPage /><Contact /></>,
+  '/data': () => <><DataPage /><Contact /></>,
+  '/privacy': () => <PrivacyPage />
 };
 
 export default function App() {
@@ -48,8 +52,9 @@ export default function App() {
       <Nav page={page} />
       <main id="top" key={page}>
         <View />
-        <Launch />
       </main>
+      <Footer />
+      <InquiryDialog />
     </>
   );
 }

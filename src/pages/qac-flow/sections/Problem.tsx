@@ -4,11 +4,11 @@ import { Band, LineIcon } from '../../../components/ui';
 import { cn } from '../../../lib/cn';
 import { Head } from '../parts';
 
-/** the paper way, then Q.A.C-Flow's, step by step in the order of the copy */
+/** the paper way, then QAC FLOW's, step by step in the order of the copy */
 const BEFORE = [ICON.gauge, ICON.paper, ICON.spreadsheet];
 const AFTER = [ICON.camera, ICON.scan, ICON.checkCircle, ICON.docCheck];
 
-/** a chain of steps joined by a line: dashed and quiet for the paper way, green for Q.A.C-Flow */
+/** a chain of steps joined by a line: dashed and quiet for the paper way, green for QAC FLOW */
 function Flow({ labels, icons, after }: { labels: readonly string[]; icons: string[]; after?: boolean }) {
   return (
     <ol className="m-0 grid list-none gap-3 p-0">
@@ -26,7 +26,7 @@ function Flow({ labels, icons, after }: { labels: readonly string[]; icons: stri
   );
 }
 
-/** why paper fails: the same reading written twice, beside the way Q.A.C-Flow takes it once */
+/** why paper fails: the same reading written twice, beside the way QAC FLOW takes it once */
 export function Problem() {
   const p = useT().qf.problem;
   return (
