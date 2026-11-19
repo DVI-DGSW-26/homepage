@@ -4,7 +4,7 @@
    the floor monitor's screen changes, and what each of them does under
    prefers-reduced-motion.
 
-   Scripted entrances (GSAP's once-per-view reveals) live in src/lib/reveals.ts.
+   Scripted entrances (the once-per-view reveals) live in src/lib/reveals.ts.
    Hover transitions are utilities on the element itself.
    ============================================================ */
 

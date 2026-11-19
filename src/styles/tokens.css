@@ -38,10 +38,12 @@
   --breakpoint-xl: 1280px;
 
   --font-display: 'Big Shoulders Display', 'Archivo Narrow', 'Arial Narrow', Impact, sans-serif;
-  --font-sans: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif;
+  /* Plex Sans KR twice: first cut down to the site's own characters (scripts/fonts.mjs), then in full for
+     anything outside the cut, such as a name typed into the demo request form (src/lib/fonts.ts) */
+  --font-sans: 'Plex Sans KR Site', 'IBM Plex Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif;
   /* Plex Mono has no Hangul: Korean in a mono line takes Plex Sans KR rather than the system's monospace
      CJK face, whose full-width cells spread the syllables apart */
-  --font-mono: 'IBM Plex Mono', 'IBM Plex Sans KR', ui-monospace, SFMono-Regular, Consolas, monospace;
+  --font-mono: 'IBM Plex Mono', 'Plex Sans KR Site', 'IBM Plex Sans KR', ui-monospace, SFMono-Regular, Consolas, monospace;
 
   /* ---- type scale ----
      No size carries a paired line-height (--text-*--line-height): text-* sets the size only,

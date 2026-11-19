@@ -67,8 +67,8 @@ const METAL = 'bg-linear-to-r from-titanium via-titanium-hi to-titanium';
 export type Loop = { mp4: string; webm?: string };
 
 type PhoneScreen =
-  | { src: string; alt: string; sizes: string; dark?: boolean; loop?: Loop; children?: never; screenClassName?: never }
-  | { children: ReactNode; screenClassName?: string; src?: never; alt?: never; sizes?: never; dark?: never; loop?: never };
+  | { src: string; alt: string; sizes: string; dark?: boolean; loop?: Loop; priority?: boolean; children?: never; screenClassName?: never }
+  | { children: ReactNode; screenClassName?: string; src?: never; alt?: never; sizes?: never; dark?: never; loop?: never; priority?: never };
 
 /** The loop over the capture, which stays underneath as its poster and its description: it fades in
  * once it actually plays, so a slow or failed load just leaves the still. Not for prefers-reduced-motion.
@@ -90,10 +90,10 @@ function LoopVideo({ mp4, webm }: Loop) {
 
 /** an iPhone around a phone capture (865 × 1672, with its status and navigation bars cropped off),
  * seen from `view` (face on, or turned left or right); `dark` for a screen that runs black to its
- * edges (the camera), so the bars turn white; `loop` plays a silent film over it. The capture opens
- * full size on a click (Zoomable). Or, given `children`, around a screen of its own: it
+ * edges (the camera), so the bars turn white; `loop` plays a silent film over it; `priority` for the
+ * first screen (<Img priority>). The capture opens full size on a click (Zoomable). Or, given `children`, around a screen of its own: it
  * fills the display below the status bar (440 × 894 pt), and `screenClassName` colours the display. */
-export function Phone({ src, alt, sizes, dark, loop, children, screenClassName, view = 'front', className }: PhoneScreen & { view?: PhoneView; className?: string }) {
+export function Phone({ src, alt, sizes, dark, loop, priority, children, screenClassName, view = 'front', className }: PhoneScreen & { view?: PhoneView; className?: string }) {
   const turn = VIEWS[view];
   const own = children != null;
   const r = RADIUS + DISPLAY;
@@ -140,7 +140,7 @@ export function Phone({ src, alt, sizes, dark, loop, children, screenClassName, 
                 </div>
                 {!own && (
                   <Zoomable src={src!} alt={alt!} className="flex-none">
-                    <Img src={src!} alt={alt!} sizes={sizes!} className="block aspect-865/1672 h-auto w-full" />
+                    <Img src={src!} alt={alt!} sizes={sizes!} priority={priority} className="block aspect-865/1672 h-auto w-full" />
                     {loop && <LoopVideo {...loop} />}
                   </Zoomable>
                 )}

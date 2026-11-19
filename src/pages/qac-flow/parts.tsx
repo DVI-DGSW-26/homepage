@@ -39,13 +39,13 @@ export type Capture = { src: string; alt: string; dark?: boolean; loop?: Loop };
 /** a phone in a pair is drawn at 3/4 of the pair, at most 460px wide */
 const PAIR_SIZES = '(max-width: 599px) 70vw, 350px';
 
-/** two phones turned in toward each other, the front one lower-left over the back one */
-export function PhonePair({ back, front, className }: { back: Capture; front: Capture; className?: string }) {
+/** two phones turned in toward each other, the front one lower-left over the back one; `priority` on the first screen */
+export function PhonePair({ back, front, priority, className }: { back: Capture; front: Capture; priority?: boolean; className?: string }) {
   const capture = useCapture();
   return (
     <div className={cn('relative mx-auto grid w-full max-w-115 grid-cols-12 items-start', className)}>
-      <Phone {...back} src={capture(back.src)} sizes={PAIR_SIZES} view="left" className="col-[4/13] row-start-1" />
-      <Phone {...front} src={capture(front.src)} sizes={PAIR_SIZES} view="right" className="z-1 col-[1/10] row-start-1 mt-[14%]" />
+      <Phone {...back} src={capture(back.src)} sizes={PAIR_SIZES} priority={priority} view="left" className="col-[4/13] row-start-1" />
+      <Phone {...front} src={capture(front.src)} sizes={PAIR_SIZES} priority={priority} view="right" className="z-1 col-[1/10] row-start-1 mt-[14%]" />
     </div>
   );
 }

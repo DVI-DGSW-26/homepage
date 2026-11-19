@@ -38,7 +38,7 @@ export function Intro() {
         </div>
         {/* a soft green light behind the phones */}
         <div className="rv relative isolate before:absolute before:inset-[8%_-10%_0] before:-z-1 before:bg-radial-[closest-side] before:from-qf-soft before:to-transparent before:to-70% max-md:before:inset-[8%_0_0]">
-          <PhonePair back={{ src: 'ocr-input.webp', alt: m.alt.ocr }} front={{ src: 'capture.webp', alt: m.alt.capture, dark: true, loop: HERO_LOOP ?? undefined }} />
+          <PhonePair priority back={{ src: 'ocr-input.webp', alt: m.alt.ocr }} front={{ src: 'capture.webp', alt: m.alt.capture, dark: true, loop: HERO_LOOP ?? undefined }} />
         </div>
       </div>
     </Band>

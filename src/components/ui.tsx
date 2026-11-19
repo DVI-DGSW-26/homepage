@@ -3,7 +3,6 @@
 // Marker classes / attributes read by the scroll reveals in src/lib/reveals.ts (they carry no styles):
 //   .rv           fades up once as it scrolls in
 //   [data-batch]  its .rv children reveal together, staggered
-//   [data-count]  a number that counts up from 0
 import type { ComponentProps } from 'react';
 import { cn } from '../lib/cn';
 
