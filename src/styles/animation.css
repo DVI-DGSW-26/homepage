@@ -44,8 +44,10 @@
   /* the demo request dialog rises a little as it fades in, its backdrop just fades (src/components/layout/InquiryDialog.tsx) */
   .inquiry-dialog[open] { animation: m-in var(--duration-fade) ease-out }
   .inquiry-dialog[open]::backdrop { animation: fade-in var(--duration-fade) ease-out }
+  /* a zoomed capture and the demo video just fade in, backdrop and all (src/components/Modal.tsx) */
+  .media-dialog[open], .media-dialog[open]::backdrop { animation: fade-in var(--duration-fade) ease-out }
 
   @media (prefers-reduced-motion: reduce) {
-    .menu-sheet[open], .inquiry-dialog[open], .inquiry-dialog[open]::backdrop { animation: none }
+    .menu-sheet[open], .inquiry-dialog[open], .inquiry-dialog[open]::backdrop, .media-dialog[open], .media-dialog[open]::backdrop { animation: none }
   }
 }

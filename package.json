@@ -10,7 +10,8 @@
     "build": "node scripts/images.mjs && tsc --noEmit && vite build && node scripts/single.mjs",
     "preview": "vite preview",
     "typecheck": "node scripts/images.mjs && tsc --noEmit",
-    "images": "node scripts/images.mjs"
+    "images": "node scripts/images.mjs",
+    "capture": "node scripts/capture-demo.mjs"
   },
   "dependencies": {
     "@fontsource/big-shoulders-display": "5.3.0",

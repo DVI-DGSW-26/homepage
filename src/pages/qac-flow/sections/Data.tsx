@@ -15,7 +15,7 @@ export function Data() {
     <Band id="qf-data" mark="06">
       <Head kicker={d.kicker} q={d.q} title={d.title} />
       <div className="grid items-center gap-split-gap lg:grid-cols-[minmax(0,1.45fr)_minmax(0,.55fr)] lg:items-end">
-        <Browser className="rv" src="report-summary.jpg" alt={m.alt.report} sizes="(max-width: 1000px) 100vw, 1000px" caption={d.caption} />
+        <Browser className="rv" src="report-summary.webp" alt={m.alt.report} sizes="(max-width: 1000px) 100vw, 1000px" caption={d.caption} />
         <ol data-batch className="m-0 grid list-none p-0">
           {d.steps.map((s, i) => {
             const last = i === d.steps.length - 1;

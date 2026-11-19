@@ -38,6 +38,19 @@ export const en: Messages = {
 
   planned: 'Planned',
 
+  media: {
+    zoom: 'View full size',
+    zoomIn: 'Zoom in',
+    zoomOut: 'Zoom out',
+    fit: 'Fit to screen',
+    close: 'Close',
+    watch: (s: number) => `Watch the ${s}-second demo`,
+    title: 'QAC FLOW demo video',
+    downloads: 'Downloads',
+    kinds: { catalog: 'Catalog', leaflet: 'Leaflet' },
+    file: (mb: number) => `PDF · ${mb} MB`
+  },
+
   qf: {
     label: 'QAC FLOW quality inspection solution',
     expand: 'Quality · Analysis · Control',
@@ -53,7 +66,7 @@ export const en: Messages = {
       compare: 'Mobile patrol inspection screen comparing self-inspection and patrol inspection values per dimension, with a mismatch marked as fail',
       photos: 'Side-by-side photos of the same caliper reading taken at self-inspection and at patrol inspection',
       approval: 'PC web approval screen: self-inspection and patrol inspection results compared, with an Approve and issue report button',
-      report: 'Approved inspection report summary listing process, machine and each inspection slot with self-inspection and patrol inspection results'
+      report: 'Fully approved inspection report: basic information such as process and machine, the prepared, reviewed and approved signatures, and self and patrol inspection results for each round'
     },
     problem: {
       kicker: '01 / Problem',

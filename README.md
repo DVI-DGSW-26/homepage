@@ -23,6 +23,7 @@ pnpm build      # 이미지 변환 → 타입 검사 → vite build → 단일 �
 pnpm preview    # dist/ 를 http://127.0.0.1:4173 에서 확인
 pnpm typecheck  # 타입 검사만
 pnpm images     # 이미지 변환만 (dev / build 가 자동으로 먼저 실행)
+pnpm capture    # QAC FLOW 시연에서 앱 캡처를 2배로 다시 찍기 (아래 "영상과 자료")
 ```
 
 - `dist/` 에 배포용 정적 파일이 생깁니다. Vercel 은 `vercel.json` 대로 `pnpm build` 후 `dist/` 를 배포합니다.
@@ -39,6 +40,7 @@ api/inquiry.ts                 데모 신청 폼 → Resend 메일 (Vercel Funct
 middleware.ts                  ?lang=en 요청에 영문 head 파일을 내보내는 Vercel Routing Middleware
 scripts/
   images.mjs                   빌드 전 이미지 변환 (아래 "이미지")
+  capture-demo.mjs             QAC FLOW 시연(가짜 서버)에서 앱 캡처를 2배로 찍어 public/assets/img/qacflow/ 에 저장
   seo.ts                       Vite 플러그인: 페이지 × 언어별 head (위 "빌드")
   single.mjs                   단일 파일 빌드
   tw-tokens.ts                 Vite 플러그인: tokens.css 의 토큰 이름을 cn() 에 넘김 (virtual:tw-tokens)
@@ -67,11 +69,14 @@ src/
     icons.ts                   LineIcon 이 그리는 SVG 경로 사전
     Device.tsx                 화면을 담는 CSS 목업: 아이폰 16 Pro Max(정면 / 3D 회전, 캡처 또는 HTML 화면), iPad Pro 13", Studio Display
     Img.tsx                    모든 사진·로고를 그리는 <Img> (AVIF/WebP srcset, 크기, 플레이스홀더, priority)
+    Zoom.tsx, Modal.tsx        앱 캡처를 눌러 크게 보는 대화상자와, 그것과 데모 영상 대화상자가 함께 쓰는 <dialog>
+    layout/VideoDialog.tsx     데모 영상(YouTube) 대화상자 — 열 때만 플레이어를 불러옴
   i18n/                        KOR / ENG: locales/ko.ts(원본)·en.ts 문구 사전, store.ts 언어 상태, rich.tsx, meta.ts
   lib/
     store.ts                   createStore / useStore — 페이지·테마·언어 상태가 모두 이걸로
     site.ts                    언어와 무관한 사실: 사이트 주소, 영업 메일, 부스 번호, 다른 DVISION 사이트 링크
     inquiry.ts                 데모 신청 폼 전송 (api/inquiry.ts 로)
+    media.ts                   첫 화면 반복 영상, 데모 영상, 자료 PDF 설정 (아래 "영상과 자료")
     router.ts                  페이지 경로와 새로고침 없는 이동, 옛 /#섹션 링크 이전
     theme.ts                   다크 / 라이트 상태와 크로스페이드
     cn.ts                      클래스 병합 (tailwind-merge + 토큰 이름)
@@ -122,6 +127,17 @@ public/assets/img/             사진·로고·파비콘. 코드에서는 assets
 - `scripts/images.mjs` 가 `public/assets/img/` 의 JPG/PNG/WebP 마다 AVIF·WebP 를 여러 폭(원본보다 넓은 폭은 만들지 않음, `qacflow/` 앱 화면은 WebP 만)으로 `public/assets/opt/` 에 만들고 목록을 `src/generated/images.json` 에 씁니다(둘 다 git 제외). 파일 이름에 원본 해시가 들어가 영구 캐시해도 됩니다. 변환 결과는 `node_modules/.cache/dv-img` 에 남아 바뀐 사진만 다시 변환합니다.
 - `<Img src="assets/img/..." sizes="(max-width: 859px) 50vw, 25vw" />` — `sizes` 에 그려지는 폭을 적으면 브라우저가 맞는 파일을 고릅니다. 첫 화면 이미지는 `priority`. 목록에 없는 경로는 일반 `<img>` 로 그려집니다.
 - 단일 파일에는 원본만 data URI 로 들어가고, `<Img>` 가 이를 알아채 일반 `<img>` 를 그립니다.
+
+## 영상과 자료
+
+CES 콘텐츠 규격(이미지·영상)에 맞춘 자리는 `src/lib/media.ts` 의 값만 채우면 나타납니다. 비어 있으면 화면에 아무것도 그리지 않습니다.
+
+- `HERO_LOOP`: 첫 화면 앞쪽 폰에서 캡처 위에 재생하는 반복 영상. 8~12초, 무음, 2MB 이하, 865 × 1672 세로 화면 녹화(상태·내비게이션 바 없이). `public/assets/video/` 에 두고 경로를 적습니다. 캡처는 그대로 포스터·대체 이미지로 남고, 동작 줄이기 설정에서는 재생하지 않습니다.
+- `DEMO_VIDEO`: 60~90초 데모 영상의 YouTube id 와 길이. 첫 화면과 "측정은 어떻게 하나요?" 아래에 "N초 영상 보기" 버튼이 생기고, 누를 때만 youtube-nocookie.com 플레이어를 불러옵니다(자막 켬, 영문 자막은 YouTube 에 올림).
+- `DOWNLOADS`: 문의 폼 옆 "자료 내려받기"(카탈로그, 영문 리플릿). `public/assets/docs/` 에 두고 `lang` 으로 한 언어에만 보일 수 있습니다.
+- 앱 캡처(폰, 브라우저 창)는 모두 눌러서 크게 볼 수 있습니다(`Zoomable`). 캡처는 그려지는 폭의 2배가 기준(폰 740px, 결재 화면 1720px, 보고서 2000px)이고, 모자란 파일은 `pnpm images` 가 매번 목록으로 알려 줍니다(지금은 `en/mobile-compare` 하나, 사진 대조 화면과 짝이라 실제 사진이 있는 데이터로 둘을 함께 다시 찍을 예정).
+- 앱 캡처는 `pnpm capture` 로 다시 찍습니다. QAC FLOW 저장소에서 `npx vite --mode demo-offline --port 5190` 으로 시연(예시 데이터, 가짜 서버)을 띄운 뒤 실행하면, 헤드리스 Chrome 이 시연 관리자로 국문·영문 각각 2배 배율로 찍어 WebP 로 저장합니다(지금은 검사보고서 `report`). 새 화면은 `scripts/capture-demo.mjs` 의 `SHOTS` 에 더합니다.
+- 본문 글자는 14px(.875rem) 아래로 내려가지 않습니다(`tokens.css` 글자 크기). 회색 보조 글자(`text-mute`)와 라이트 모드 초록 글자는 배경 대비 4.5:1 이상입니다.
 
 ## 애니메이션 규칙
 

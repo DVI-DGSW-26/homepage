@@ -1,12 +1,13 @@
 import { useT } from '../../../i18n';
 import { pad2 } from '../../../lib/env';
 import { Phone } from '../../../components/Device';
-import { Band } from '../../../components/ui';
+import { Band, Pill } from '../../../components/ui';
+import { DEMO_VIDEO, openVideo } from '../../../lib/media';
 import { Head, StepText, useCapture } from '../parts';
 
-/** snap, crop, OCR: the three screens in step, each over its column of the steps below */
+/** snap, crop, OCR: the three screens in step, each over its column of the steps below, then the demo film */
 export function How() {
-  const m = useT().qf, h = m.how;
+  const t = useT(), m = t.qf, h = m.how;
   const capture = useCapture();
   const screens = [{ src: 'capture.webp', alt: m.alt.capture, dark: true }, { src: 'crop.webp', alt: m.alt.crop }, { src: 'ocr-input.webp', alt: m.alt.ocr }];
   return (
@@ -25,6 +26,11 @@ export function How() {
           </li>
         ))}
       </ol>
+      {DEMO_VIDEO && (
+        <div className="rv mx-auto mt-10 max-w-300">
+          <Pill quiet href="#qf-how" aria-haspopup="dialog" onClick={e => { e.preventDefault(); openVideo(true); }}>{t.media.watch(DEMO_VIDEO.seconds)}</Pill>
+        </div>
+      )}
     </Band>
   );
 }

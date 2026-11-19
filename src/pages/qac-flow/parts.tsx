@@ -3,7 +3,8 @@
 import type { ReactNode } from 'react';
 import { lines, useLang } from '../../i18n';
 import { Img } from '../../components/Img';
-import { Phone } from '../../components/Device';
+import { Phone, type Loop } from '../../components/Device';
+import { Zoomable } from '../../components/Zoom';
 import { Kicker, Lead } from '../../components/ui';
 import { cn } from '../../lib/cn';
 
@@ -34,7 +35,7 @@ export function Head({ kicker, q, title, lead }: { kicker: string; q: string; ti
   );
 }
 
-export type Capture = { src: string; alt: string; dark?: boolean };
+export type Capture = { src: string; alt: string; dark?: boolean; loop?: Loop };
 /** a phone in a pair is drawn at 3/4 of the pair, at most 460px wide */
 const PAIR_SIZES = '(max-width: 599px) 70vw, 350px';
 
@@ -49,13 +50,15 @@ export function PhonePair({ back, front, className }: { back: Capture; front: Ca
   );
 }
 
-/** a browser window around a web screen; no address bar, so no internal URL */
+/** a browser window around a web screen; no address bar, so no internal URL. The screen opens full size on a click. */
 export function Browser({ src, alt, sizes, caption, className }: { src: string; alt: string; sizes: string; caption?: ReactNode; className?: string }) {
   const capture = useCapture();
   return (
     <figure className={cn('m-0 overflow-hidden rounded-window border border-line-2 bg-card', className)}>
       <div aria-hidden="true" className="flex gap-1.5 border-b border-line px-3 py-2.5">{[0, 1, 2].map(i => <i key={i} className="size-2 rounded-full bg-line-2" />)}</div>
-      <Img src={capture(src)} alt={alt} sizes={sizes} className="app-screen h-auto w-full bg-plate" />
+      <Zoomable src={capture(src)} alt={alt}>
+        <Img src={capture(src)} alt={alt} sizes={sizes} className="app-screen block h-auto w-full bg-plate" />
+      </Zoomable>
       {caption && <figcaption className="mono border-t border-line px-3.5 py-2.5 text-mute">{caption}</figcaption>}
     </figure>
   );

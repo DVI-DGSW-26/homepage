@@ -24,7 +24,7 @@ export function Vision() {
             <li key={s.tag} className={cn('rv relative grid content-start gap-3 rounded-card border p-panel-pad',
               out ? 'border-qf bg-qf text-on-acc' : i === 0 ? 'border-qf-line bg-qf-soft' : 'border-line bg-card')}>
               <div className="flex items-center justify-between">
-                <span className={cn('mono text-tag', out ? 'text-on-acc/70' : 'text-mute')}>{s.tag}</span>
+                <span className={cn('mono text-tag', out ? 'text-on-acc' : 'text-mute')}>{s.tag}</span>
                 <LineIcon d={STORY[i]} className={cn('size-6', out ? 'text-on-acc' : 'text-qf-ink')} />
               </div>
               <h2 className="m-0 text-title leading-tight font-semibold">{s.title}</h2>

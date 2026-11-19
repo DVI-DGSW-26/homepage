@@ -47,6 +47,20 @@ export const ko = {
   /** the tag on what is still a plan (defect prediction, process tuning) */
   planned: '계획',
 
+  /** the zoomed capture, the demo video and the downloads (src/lib/media.ts) */
+  media: {
+    zoom: '크게 보기',
+    zoomIn: '확대',
+    zoomOut: '축소',
+    fit: '화면에 맞춤',
+    close: '닫기',
+    watch: (s: number) => `${s}초 영상 보기`,
+    title: 'QAC FLOW 데모 영상',
+    downloads: '자료 내려받기',
+    kinds: { catalog: '카탈로그', leaflet: '영문 리플릿' },
+    file: (mb: number) => `PDF · ${mb}MB`
+  },
+
   qf: {
     label: 'QAC FLOW 품질검사 솔루션',
     expand: 'Quality · Analysis · Control',
@@ -64,7 +78,7 @@ export const ko = {
       compare: '모바일 순회검사 결재 화면: 치수별 자주검사와 순회검사 측정값 비교, 불일치 항목은 불합격 표시',
       photos: '자주검사와 순회검사의 측정 사진을 나란히 대조하는 화면',
       approval: 'PC 웹 결재 화면: 자주검사와 순회검사 결과 비교 후 승인, 보고서 발행 버튼',
-      report: '승인된 검사보고서 요약: 공정, 설비, 검사 차수별 자주검사와 순회검사 결과'
+      report: '결재가 끝난 검사보고서: 공정과 설비 등 기본 정보, 작성·검토·승인 서명, 차수별 자주검사와 순회검사 외관 결과'
     },
     problem: {
       kicker: '01 / Problem',

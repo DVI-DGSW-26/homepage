@@ -28,6 +28,11 @@ const SCREENS = /^qacflow\//;
 const SCREEN_FORMATS = { webp: { quality: 90, smartSubsample: true, effort: 5 } };
 /** ...and one width more, so the monitor (1200px at most) stays sharp on a 2× screen */
 const SCREEN_WIDTHS = [...WIDTHS, 2400];
+/** The CES content spec wants each app capture at twice the width it is drawn, so its type holds on a
+ * 2× screen and opened full size: the phone screens (How draws the phone at 390 px, its screen 366),
+ * the approval window (860) and the report (1000). Captures short of it are listed on every run. */
+const TWO_X = { 'web-approval': 1720, 'report-summary': 2000 };
+const PHONE_2X = 740;
 /** tab icons and the like are not shown through <img> */
 const SKIP = /^(favicon|apple-touch-icon)/;
 /** below this the original is already as small as AVIF gets (icons, small logos): no copies */
@@ -96,4 +101,9 @@ const sorted = Object.fromEntries(Object.entries(manifest).sort(([a], [b]) => a.
 const json = JSON.stringify(sorted);
 await fs.mkdir(path.dirname(MANIFEST), { recursive: true });
 if ((await fs.readFile(MANIFEST, 'utf8').catch(() => '')) !== json) await fs.writeFile(MANIFEST, json);
+const short = Object.entries(manifest).filter(([k]) => SCREENS.test(k.slice(11))).flatMap(([k, { w }]) => {
+  const need = TWO_X[path.basename(k).replace(/\.[^.]+$/, '')] ?? PHONE_2X;
+  return w < need ? [`${k.slice(11)} ${w}px (2×: ${need}px)`] : [];
+});
+if (short.length) console.warn(`images: ${short.length} app captures under 2× width, to be replaced:\n  ${short.join('\n  ')}`);
 console.log(`images: ${files.length} sources, ${wanted.size} variants (${encoded} encoded, ${removed} removed), manifest ${(json.length / 1024).toFixed(1)} KB, ${((Date.now() - t0) / 1000).toFixed(1)}s`);

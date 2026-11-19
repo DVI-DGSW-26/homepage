@@ -44,13 +44,14 @@
   /* ---- type scale ----
      No size carries a paired line-height (--text-*--line-height): text-* sets the size only,
      and leading comes from leading-* or the inherited body leading.
-     Nothing goes under .75rem (12px): smaller, the Plex faces blur on Windows. */
-  --text-tag: .75rem;          /* badges, tiny counters */
-  --text-micro: .75rem;        /* mono labels on photos and cards */
-  --text-label: .78rem;        /* mono labels and values */
-  --text-mono-sm: .78rem;      /* step numbers */
-  --text-mono: .8rem;          /* the mono utility */
-  --text-caption: .84rem;
+     Nothing on the page goes under .875rem (14px), the floor for secondary type in the CES content
+     spec (the floor monitor's sizes below are pixels of a screen drawn smaller, and exempt). */
+  --text-tag: .875rem;         /* badges, tiny counters */
+  --text-micro: .875rem;       /* mono labels on photos and cards */
+  --text-label: .875rem;       /* mono labels and values */
+  --text-mono-sm: .875rem;     /* step numbers */
+  --text-mono: .875rem;        /* the mono utility */
+  --text-caption: .875rem;
   --text-small: .9rem;
   --text-body-sm: .95rem;
   --text-body: 1rem;
@@ -148,7 +149,7 @@
   --color-ink: #2A2D33;
   --color-ink-fg: #E6E9EC;
   --color-ink-fg-2: #B6BCC4;
-  --color-ink-mute: #8C939D;
+  --color-ink-mute: #9EA5AE;
   --color-ink-line: rgb(230 233 236 / .1);
   --color-ink-line-2: rgb(230 233 236 / .24);
   /* the accent as it reads on graphite */
@@ -250,12 +251,12 @@
   html[data-mode="light"] {
     color-scheme: light;
     --bg: var(--color-paper); --bg-2: #E4E6E9; --card: #E9EBEE;
-    --fg: var(--color-ink); --fg-2: #454A52; --mute: #6B717A;
+    --fg: var(--color-ink); --fg-2: #454A52; --mute: #585E66;
     --line: color-mix(in srgb, var(--color-ink) 14%, transparent); --line-2: color-mix(in srgb, var(--color-ink) 32%, transparent);
-    --acc: #3CCB9A; --acc-2: #1E9E74; --acc-ink: #157A57; --acc-glow: rgb(60 203 154 / .3);
+    --acc: #3CCB9A; --acc-2: #1E9E74; --acc-ink: #106A4B; --acc-glow: rgb(60 203 154 / .3);
     --nav-bg: color-mix(in srgb, var(--color-paper) 95%, transparent);
     --deco: rgb(42 45 51 / .09);
-    --qf-ink: #157A57; --qf-soft: color-mix(in srgb, var(--color-qf) 14%, transparent); --qf-line: color-mix(in srgb, #157A57 40%, transparent);
+    --qf-ink: #106A4B; --qf-soft: color-mix(in srgb, var(--color-qf) 14%, transparent); --qf-line: color-mix(in srgb, #106A4B 40%, transparent);
     --err: #C2000F;
   }
 

@@ -14,9 +14,11 @@
 // (src/features/qac-monitor), themed with the page, so not dimmed as the captures are.
 // All are container-query sized (@container, cqw units), so they keep their proportions however wide
 // they are drawn.
-import type { CSSProperties, ReactNode } from 'react';
+import { useState, type CSSProperties, type ReactNode } from 'react';
 import { Img } from './Img';
+import { Zoomable } from './Zoom';
 import { cn } from '../lib/cn';
+import { useMedia } from '../lib/useMedia';
 
 /** status bar glyphs, drawn with the current colour; sized in points of the display (--pt) */
 function StatusIcons() {
@@ -61,15 +63,37 @@ export type PhoneView = keyof typeof VIEWS;
 const SLICES = 16;
 const METAL = 'bg-linear-to-r from-titanium via-titanium-hi to-titanium';
 
+/** a silent loop played over a capture (HERO_LOOP in src/lib/media.ts) */
+export type Loop = { mp4: string; webm?: string };
+
 type PhoneScreen =
-  | { src: string; alt: string; sizes: string; dark?: boolean; children?: never; screenClassName?: never }
-  | { children: ReactNode; screenClassName?: string; src?: never; alt?: never; sizes?: never; dark?: never };
+  | { src: string; alt: string; sizes: string; dark?: boolean; loop?: Loop; children?: never; screenClassName?: never }
+  | { children: ReactNode; screenClassName?: string; src?: never; alt?: never; sizes?: never; dark?: never; loop?: never };
+
+/** The loop over the capture, which stays underneath as its poster and its description: it fades in
+ * once it actually plays, so a slow or failed load just leaves the still. Not for prefers-reduced-motion.
+ * muted is set on the element as well, since React sets only the property and some browsers check the
+ * attribute before they autoplay. */
+function LoopVideo({ mp4, webm }: Loop) {
+  const reduced = useMedia('(prefers-reduced-motion: reduce)');
+  const [playing, setPlaying] = useState(false);
+  if (reduced) return null;
+  return (
+    <video autoPlay muted loop playsInline aria-hidden="true" onPlaying={() => setPlaying(true)}
+      ref={el => { if (el) el.defaultMuted = el.muted = true; }}
+      className={cn('absolute inset-0 size-full object-cover transition-opacity duration-500', !playing && 'opacity-0')}>
+      {webm && <source src={webm} type="video/webm" />}
+      <source src={mp4} type="video/mp4" />
+    </video>
+  );
+}
 
 /** an iPhone around a phone capture (865 × 1672, with its status and navigation bars cropped off),
  * seen from `view` (face on, or turned left or right); `dark` for a screen that runs black to its
- * edges (the camera), so the bars turn white. Or, given `children`, around a screen of its own: it
+ * edges (the camera), so the bars turn white; `loop` plays a silent film over it. The capture opens
+ * full size on a click (Zoomable). Or, given `children`, around a screen of its own: it
  * fills the display below the status bar (440 × 894 pt), and `screenClassName` colours the display. */
-export function Phone({ src, alt, sizes, dark, children, screenClassName, view = 'front', className }: PhoneScreen & { view?: PhoneView; className?: string }) {
+export function Phone({ src, alt, sizes, dark, loop, children, screenClassName, view = 'front', className }: PhoneScreen & { view?: PhoneView; className?: string }) {
   const turn = VIEWS[view];
   const own = children != null;
   const r = RADIUS + DISPLAY;
@@ -114,7 +138,12 @@ export function Phone({ src, alt, sizes, dark, children, screenClassName, view =
                   <span className="absolute left-1/2 -translate-x-1/2 rounded-full bg-glass" style={{ top: mm(ISLAND.top), width: mm(ISLAND.w), height: mm(ISLAND.h) }} />
                   <span className="col-start-3 justify-self-center pr-[calc(var(--pt)*4)]"><StatusIcons /></span>
                 </div>
-                {!own && <Img src={src!} alt={alt!} sizes={sizes!} className="block aspect-865/1672 h-auto w-full flex-none" />}
+                {!own && (
+                  <Zoomable src={src!} alt={alt!} className="flex-none">
+                    <Img src={src!} alt={alt!} sizes={sizes!} className="block aspect-865/1672 h-auto w-full" />
+                    {loop && <LoopVideo {...loop} />}
+                  </Zoomable>
+                )}
                 <div className="relative flex-1">
                   {children}
                   <span aria-hidden="true" className={cn('pointer-events-none absolute bottom-[calc(var(--pt)*8)] left-1/2 h-[calc(var(--pt)*5)] w-[calc(var(--pt)*139)] -translate-x-1/2 rounded-full', own ? 'bg-current' : dark ? 'bg-on-photo' : 'bg-glass')} />

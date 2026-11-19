@@ -8,6 +8,8 @@ import { Nav } from './components/layout/Nav';
 import { Contact } from './components/layout/Contact';
 import { Footer } from './components/layout/Footer';
 import { InquiryDialog } from './components/layout/InquiryDialog';
+import { VideoDialog } from './components/layout/VideoDialog';
+import { ZoomDialog } from './components/Zoom';
 import { QacFlowPage } from './pages/qac-flow/QacFlowPage';
 import { DataPage } from './pages/data/DataPage';
 import { PrivacyPage } from './pages/privacy/PrivacyPage';
@@ -55,6 +57,8 @@ export default function App() {
       </main>
       <Footer />
       <InquiryDialog />
+      <ZoomDialog />
+      <VideoDialog />
     </>
   );
 }
