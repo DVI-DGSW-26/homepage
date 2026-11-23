@@ -183,7 +183,7 @@ export const en: Messages = {
       lead: 'Approved inspection records become SPC data as they are.\nPick a product, characteristic, machine and period to view control charts and process capability.',
       /** three steps, each told beside its own screen(s) (Spc.tsx) */
       steps: [
-        { title: 'Filters · indicators · control charts', body: 'Pick a product, dimension, machine and period, and six key indicators and the Xbar-R charts appear on one screen. Anything near or beyond a control limit is flagged right away.' },
+        { title: 'Key indicators · control charts', body: 'Pick a product, dimension, machine and period, and six key indicators and the Xbar-R charts appear on one screen. Anything near or beyond a control limit is flagged right away.' },
         { title: 'Process capability', body: 'Lay the distribution of all measurements over the lower and upper spec limits, and see with Cp, Cpk, Pp and Ppk how comfortably the process fits within them.' },
         { title: 'Equipment issues and actions', body: 'An equipment issue, once reported, is recorded through action and resolution with its downtime and cost, so a shift in quality can be traced to its cause.' }
       ],
@@ -191,7 +191,7 @@ export const en: Messages = {
       captions: ['Issue reports', 'One issue, from report to close'],
       /** the labels set on each screen, in the order of its marks (Spc.tsx) */
       marks: [
-        ['Filters', 'Near-limit warning', 'Six key indicators · Cpk · Ppk · mean · std. dev. · samples · out of control', 'Xbar chart (subgroup means)', 'R chart (subgroup ranges)'],
+        ['Near-limit warning', 'Six key indicators · Cpk · Ppk · mean · std. dev. · samples · out of control', 'Xbar chart (subgroup means)', 'R chart (subgroup ranges)'],
         ['Distribution', 'Spec limits', 'Capability indices'],
         ['Filter by status', 'Downtime & cost', 'Action status'],
         ['Report → action → close', 'What was done', 'Total downtime & cost']

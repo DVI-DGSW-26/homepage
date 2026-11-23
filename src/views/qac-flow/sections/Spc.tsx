@@ -7,9 +7,8 @@ import { Annotated, Head, type Pin } from '../parts';
  * English: the two captures share their layout). Areas get a box with the label on its edge, single
  * spots a label on a stem; near an edge a label runs inward. */
 const PINS: Pin[][] = [
-  // the filters, the near-limit warning, the six indicators, the X̄ chart, the R chart
+  // the near-limit warning, the six indicators, the X̄ chart, the R chart
   [
-    { box: [2, 1, 96, 9.2], edge: 'bottom' },
     { x: 95, y: 13, side: 'end' },
     { box: [2, 18.1, 96, 14.6] },
     { box: [2, 34.2, 96, 34.9] },

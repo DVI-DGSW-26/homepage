@@ -87,7 +87,7 @@ export function Annotated({ src, alt, sizes, caption, pins, labels, className }:
           <Img src={capture(src)} alt={alt} sizes={sizes} className="app-screen block h-auto w-full bg-plate" />
           {pins.map((p, i) => 'box' in p ? (
             <span key={i} aria-hidden="true" style={{ left: `${p.box[0]}%`, top: `${p.box[1]}%`, width: `${p.box[2]}%`, height: `${p.box[3]}%` }}
-              className="pointer-events-none absolute rounded-[6px] border-2 border-qf bg-qf/5 max-sm:border-[1.5px]">
+              className="pointer-events-none absolute rounded-[6px] border-2 border-qf max-sm:border-[1.5px]">
               <b className={cn(TAG, 'absolute -translate-y-1/2 drop-shadow-[0_2px_6px_rgb(0_0_0/.25)]', p.edge === 'bottom' ? 'top-full' : 'top-0', p.align === 'right' ? 'right-3 max-sm:right-1.5' : 'left-3 max-sm:left-1.5')}>{labels[i]}</b>
             </span>
           ) : (
