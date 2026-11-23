@@ -57,6 +57,7 @@ export const en: Messages = {
     title: 'Quality inspection without paper check sheets.',
     lead: 'Measure, judge and issue the report, all from one smartphone.\nBuilt and proven in DVISION\'s own factory.',
     stats: ['No dedicated gauges or sensor installation', 'Started running in our own plant'],
+    kit: 'A smartphone, one server PC and a monitor',
     statsNote: 'In-house validation at our Daegu HQ plant · IATF 16949',
     cta: { demo: 'Request a demo', apply: 'Ask about your floor' },
     ces: {
@@ -67,13 +68,13 @@ export const en: Messages = {
       after: 'Missed us at CES 2027? Get the booth demo online'
     },
     alt: {
-      capture: 'Smartphone camera framing the display of a digital caliper reading 30.00 mm',
+      capture: 'Smartphone camera framing the display of a digital caliper reading 24.38 mm',
       ocr: 'App screen: the caliper reading is filled in by OCR and judged as a pass against the tolerance',
       crop: 'App screen: dragging the corner handles of a box to crop the photo down to the caliper reading',
       compare: 'Mobile patrol inspection screen comparing self-inspection and patrol inspection values per dimension, with a mismatch marked as fail',
       photos: 'Side-by-side photos of the same caliper reading taken at self-inspection and at patrol inspection',
-      approval: 'PC web approval screen: self-inspection and patrol inspection results compared, with an Approve and issue report button',
-      report: 'Fully approved inspection report: basic information such as process and machine, the prepared, reviewed and approved signatures, and self and patrol inspection results for each round'
+      approval: 'PC web patrol inspection approval screen: self and patrol inspection values compared per dimension, with Reject and Approve (issue report) buttons',
+      report: 'Daily quality summary report: pass rate, key Cpk, inspection count and issues, an X̄-R control chart, the prepared, reviewed and approved sign-offs and an authenticity QR code'
     },
     problem: {
       kicker: '01 / Problem',

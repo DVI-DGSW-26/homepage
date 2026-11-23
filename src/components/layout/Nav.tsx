@@ -14,6 +14,7 @@ import { setTheme, useTheme } from '../../lib/theme';
 import { LG, pad2 } from '../../lib/env';
 import { cn } from '../../lib/cn';
 import { afterDialogEntry, useBackToClose } from '../../lib/history';
+import { openInquiry } from '../../lib/inquiry';
 import { Img } from '../Img';
 
 const LINKS = ['/qac-flow', '/data'] as const satisfies readonly Page[];
@@ -33,6 +34,9 @@ export function Nav({ page }: { page: Page }) {
   const closeSheet = () => sheet.current?.close();
   useBackToClose(sheetOpen, closeSheet);
   // a page link in the sheet: the sheet closes (taking its history entry back off), then the page opens
+  // the header's demo button: down to the form at the end of the page, or, on a page without one (the
+  // privacy policy), the same form in its dialog
+  const demo = (e: MouseEvent<HTMLAnchorElement>) => { if (!document.getElementById('contact')) openInquiry('header')(e); };
   const openFromSheet = (e: MouseEvent<HTMLAnchorElement>) => {
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     e.preventDefault();
@@ -40,6 +44,26 @@ export function Nav({ page }: { page: Page }) {
     afterDialogEntry(() => router.push(href));
     closeSheet();
   };
+  // KOR / ENG: links to this page in the other language
+  const langs = (
+    <span className="mono flex gap-0.5 text-mute">
+      {LANGS.map((l, i) => (
+        <span key={l} className="contents">
+          {i > 0 && <i aria-hidden="true" className="mx-0.5 not-italic opacity-50">/</i>}
+          {l === lang
+            ? <span aria-current="true" lang={l} className="-my-2 px-1 py-2 font-medium text-fg">{m.langs[l]}</span>
+            : <a href={pathOf(page, l)} hrefLang={l} lang={l} onClick={() => noteLangPosition(page)}
+              className="-my-2 px-1 py-2 transition-colors duration-300 hover:text-fg-2">{m.langs[l]}</a>}
+        </span>
+      ))}
+    </span>
+  );
+  const themeButton = (
+    <button type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label={theme === 'dark' ? m.theme.toLight : m.theme.toDark} className={ROUND_BTN}>
+      <SunIcon className="col-start-1 row-start-1 transition-[opacity,rotate] duration-500 ease-out light:-rotate-90 light:opacity-0" />
+      <MoonIcon className="col-start-1 row-start-1 rotate-90 opacity-0 transition-[opacity,rotate] duration-500 ease-out light:rotate-0 light:opacity-100" />
+    </button>
+  );
   return (
     <>
     <header id="nav" className="fixed inset-x-0 top-0 z-100 booting:opacity-0">
@@ -70,21 +94,11 @@ export function Nav({ page }: { page: Page }) {
             <i aria-hidden="true" className="not-italic opacity-50">|</i>
             <span aria-current="page" className="font-medium text-fg">{m.sites.solution}</span>
           </nav>
-          <span className="mono flex gap-0.5 text-mute max-sm:text-micro">
-            {LANGS.map((l, i) => (
-              <span key={l} className="contents">
-                {i > 0 && <i aria-hidden="true" className="mx-0.5 not-italic opacity-50">/</i>}
-                {l === lang
-                  ? <span aria-current="true" lang={l} className="-my-2 px-1 py-2 font-medium text-fg max-2xs:px-0.5">{m.langs[l]}</span>
-                  : <a href={pathOf(page, l)} hrefLang={l} lang={l} onClick={() => noteLangPosition(page)}
-                    className="-my-2 px-1 py-2 transition-colors duration-300 hover:text-fg-2 max-2xs:px-0.5">{m.langs[l]}</a>}
-              </span>
-            ))}
-          </span>
-          <button type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label={theme === 'dark' ? m.theme.toLight : m.theme.toDark} className={ROUND_BTN}>
-            <SunIcon className="col-start-1 row-start-1 transition-[opacity,rotate] duration-500 ease-out light:-rotate-90 light:opacity-0" />
-            <MoonIcon className="col-start-1 row-start-1 rotate-90 opacity-0 transition-[opacity,rotate] duration-500 ease-out light:rotate-0 light:opacity-100" />
-          </button>
+          {/* on a phone the bar keeps the logo, the demo button and the menu; the language and the mode are in the sheet */}
+          <span className="max-sm:hidden">{langs}</span>
+          <a href="#contact" onClick={demo}
+            className="inline-flex min-h-9 flex-none items-center rounded-full border border-qf bg-qf px-4.5 text-body-sm font-semibold whitespace-nowrap text-on-acc transition-[filter] duration-300 hover:brightness-110 max-sm:min-h-8 max-sm:px-3 max-sm:text-caption">{t.qf.cta.demo}</a>
+          <span className="contents max-sm:hidden">{themeButton}</span>
           <button type="button" onClick={() => { sheet.current?.showModal(); setSheetOpen(true); }} aria-label={m.open} aria-haspopup="dialog" className={cn(ROUND_BTN, 'lg:hidden')}>
             <MenuIcon />
           </button>
@@ -111,6 +125,8 @@ export function Nav({ page }: { page: Page }) {
             ))}
           </ul>
         </nav>
+        {/* on a phone, the language and the mode the bar has no room for */}
+        <div className="mt-6 flex items-center justify-between sm:hidden">{langs}{themeButton}</div>
         <nav aria-label={m.sites.label} className="mt-auto pt-10">
           <span className="mono text-mute">{m.sites.label}</span>
           <ul className="m-0 mt-3 flex list-none flex-wrap gap-2 p-0">

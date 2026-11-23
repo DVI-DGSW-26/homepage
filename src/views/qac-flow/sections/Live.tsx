@@ -7,7 +7,6 @@ import { LG, SM } from '../../../lib/env';
 import { useMedia } from '../../../lib/useMedia';
 import { QacMonitor, SCREENS, type MonitorScreen } from '../../../features/qac-monitor/QacMonitor';
 import { QacPhone } from '../../../features/qac-monitor/QacPhone';
-import { openInquiry } from '../../../lib/inquiry';
 import { Head } from '../parts';
 
 const N = SCREENS.length;
@@ -46,7 +45,8 @@ export function Live() {
       </div>
       <div className="flex flex-wrap items-center justify-between gap-x-8 gap-y-4">
         <p className="mono m-0 text-micro text-mute">{l.note}</p>
-        <Pill quiet href="#contact" aria-haspopup="dialog" onClick={openInquiry('live')} className="flex-none">{cta.apply}</Pill>
+        {/* goes down to the demo request form at the end of the page (smoothAnchors glides there) */}
+        <Pill quiet href="#contact" className="flex-none">{cta.apply}</Pill>
       </div>
     </Band>
   );

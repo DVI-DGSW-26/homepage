@@ -20,7 +20,7 @@ export function Trace() {
               </li>
             ))}
           </ul>
-          <Browser className="rv" src="web-approval.jpg" alt={m.alt.approval} sizes="(max-width: 1000px) 100vw, 860px" />
+          <Browser className="rv" src="web-approval.webp" alt={m.alt.approval} sizes="(max-width: 1000px) 100vw, 860px" />
         </div>
       </div>
     </Band>

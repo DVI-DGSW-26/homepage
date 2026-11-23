@@ -68,6 +68,8 @@ export const ko = {
     lead: '스마트폰 하나로 측정, 판정, 보고서 발행까지.\n디비전 공장에서 직접 만들고 검증했습니다.',
     /** the figures up front: what it doesn't need, and since when it runs in our own plant */
     stats: ['전용 측정 장비·센서 공사 불필요', '자사 공장 운영 시작'],
+    /** under the first figure: what it does take */
+    kit: '스마트폰 · 서버 PC 1대 · 모니터면 충분',
     statsNote: '대구 본사 공장 사내 검증 · IATF 16949',
     /** the buttons that lead to the demo request form (#contact) */
     cta: { demo: '데모 신청', apply: '우리 현장에 적용 문의' },
@@ -85,8 +87,8 @@ export const ko = {
       crop: '촬영한 사진에서 모서리 핸들을 끌어 측정값 부위만 잘라내는 화면',
       compare: '모바일 순회검사 결재 화면: 치수별 자주검사와 순회검사 측정값 비교, 불일치 항목은 불합격 표시',
       photos: '자주검사와 순회검사의 측정 사진을 나란히 대조하는 화면',
-      approval: 'PC 웹 결재 화면: 자주검사와 순회검사 결과 비교 후 승인, 보고서 발행 버튼',
-      report: '결재가 끝난 검사보고서: 공정과 설비 등 기본 정보, 작성·검토·승인 서명, 차수별 자주검사와 순회검사 외관 결과'
+      approval: 'PC 웹 순회검사 결재 화면: 치수별 자주검사와 순회검사 측정값 비교, 반려와 승인(보고서 발행) 버튼',
+      report: '일일 품질 요약 보고서: 합격률·대표 Cpk·검사 건수·이상 발생 지표, X̄-R 관리도, 작성·검토·승인 결재와 진위 확인 QR'
     },
     problem: {
       kicker: '01 / Problem',
