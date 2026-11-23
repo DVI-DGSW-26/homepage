@@ -21,7 +21,21 @@
 @keyframes hero-c { 0%, 62% { opacity: 0; translate: 0 0 } 64%, 66% { opacity: 1; translate: 0 0 } 71%, 98% { opacity: 1; translate: 0 -23% } 100% { opacity: 0; translate: 0 -23% } }
 @keyframes hero-flash { 0%, 27% { opacity: 0 } 29% { opacity: .85 } 33%, 100% { opacity: 0 } }
 @keyframes hero-guide { 0%, 4% { opacity: 0; scale: 1.08 } 10%, 26% { opacity: 1; scale: 1 } 30%, 100% { opacity: 0; scale: 1 } }
-@keyframes hero-crop { 0%, 34% { opacity: 0; scale: 1.25 } 44%, 58% { opacity: 1; scale: 1 } 62%, 100% { opacity: 0; scale: 1 } }
+/* the crop: the app's dashed frame, from where the screen has it, dragged in to the reading. Its four
+   insets are registered so they animate (inherited by the frame, its handles and the shade around it) */
+@property --crop-t { syntax: '<percentage>'; inherits: true; initial-value: 20% }
+@property --crop-r { syntax: '<percentage>'; inherits: true; initial-value: 10% }
+@property --crop-b { syntax: '<percentage>'; inherits: true; initial-value: 20% }
+@property --crop-l { syntax: '<percentage>'; inherits: true; initial-value: 10% }
+@keyframes hero-crop {
+  0%, 36% { --crop-t: 19.7%; --crop-r: 10.1%; --crop-b: 20.1%; --crop-l: 10% }
+  /* the top and left handles first, then the bottom and right, as a hand would */
+  44% { --crop-t: 51%; --crop-r: 10.1%; --crop-b: 20.1%; --crop-l: 42.5% }
+  52%, 100% { --crop-t: 51%; --crop-r: 25%; --crop-b: 35%; --crop-l: 42.5% }
+}
+/* shown on the frame and the shade themselves, not on the group: an ancestor fading would become the
+   shade's backdrop root, and its blur would no longer reach the capture underneath */
+@keyframes hero-crop-show { 0%, 31% { opacity: 0 } 33%, 61% { opacity: 1 } 63%, 100% { opacity: 0 } }
 @keyframes hero-field { 0%, 68% { opacity: 0; scale: .96 } 72%, 94% { opacity: 1; scale: 1 } 98%, 100% { opacity: 0; scale: 1 } }
 @keyframes hero-pass { 0%, 72% { opacity: 0; scale: .6 } 76% { opacity: 1; scale: 1.15 } 79%, 94% { opacity: 1; scale: 1 } 98%, 100% { opacity: 0; scale: 1 } }
 
@@ -33,7 +47,8 @@
   .hero-c { animation: hero-c 10s var(--ease-out) infinite both }
   .hero-flash { animation: hero-flash 10s linear infinite both }
   .hero-guide { animation: hero-guide 10s var(--ease-out) infinite both }
-  .hero-crop { animation: hero-crop 10s var(--ease-out) infinite both }
+  .hero-crop { animation: hero-crop 10s cubic-bezier(.45, 0, .25, 1) infinite both }
+  .hero-crop > * { animation: hero-crop-show 10s linear infinite both }
   .hero-field { animation: hero-field 10s var(--ease-out) infinite both }
   .hero-pass { animation: hero-pass 10s var(--ease-out) infinite both }
 
