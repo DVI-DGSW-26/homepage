@@ -1,7 +1,7 @@
 /* ============================================================
    DVISION homepage — animation
    Everything that moves in CSS is defined here: keyframes, the theme crossfade,
-   the floor monitor's screen changes, and what each of them does under
+   the first screen's capture sequence, and what each of them does under
    prefers-reduced-motion.
 
    Scripted entrances (the once-per-view reveals) live in src/lib/reveals.ts.
@@ -12,16 +12,35 @@
   @keyframes fade-out { to { opacity: 0 } }
   @keyframes fade-in { from { opacity: 0 } }
 }
-@keyframes m-in { from { opacity: 0; translate: 0 6px } }
+/* The first screen's phone, while there is no screen recording (HERO_LOOP): the app's own captures
+   played as one 10 s loop (src/views/qac-flow/sections/HeroSequence.tsx). 0–3.2 s the camera framing the
+   gauge, a shutter flash; 3.2–6.4 s cropping to the reading; 6.4–10 s the screen scrolling up to the
+   value filled in by OCR, and its pass. Opacity and transform only, so it all runs on the compositor. */
+@keyframes hero-a { 0%, 30% { opacity: 1 } 32%, 98% { opacity: 0 } 100% { opacity: 1 } }
+@keyframes hero-b { 0%, 30% { opacity: 0 } 32%, 62% { opacity: 1 } 64%, 100% { opacity: 0 } }
+@keyframes hero-c { 0%, 62% { opacity: 0; translate: 0 0 } 64%, 66% { opacity: 1; translate: 0 0 } 71%, 98% { opacity: 1; translate: 0 -23% } 100% { opacity: 0; translate: 0 -23% } }
+@keyframes hero-flash { 0%, 27% { opacity: 0 } 29% { opacity: .85 } 33%, 100% { opacity: 0 } }
+@keyframes hero-guide { 0%, 4% { opacity: 0; scale: 1.08 } 10%, 26% { opacity: 1; scale: 1 } 30%, 100% { opacity: 0; scale: 1 } }
+@keyframes hero-crop { 0%, 34% { opacity: 0; scale: 1.25 } 44%, 58% { opacity: 1; scale: 1 } 62%, 100% { opacity: 0; scale: 1 } }
+@keyframes hero-field { 0%, 68% { opacity: 0; scale: .96 } 72%, 94% { opacity: 1; scale: 1 } 98%, 100% { opacity: 0; scale: 1 } }
+@keyframes hero-pass { 0%, 72% { opacity: 0; scale: .6 } 76% { opacity: 1; scale: 1.15 } 79%, 94% { opacity: 1; scale: 1 } 98%, 100% { opacity: 0; scale: 1 } }
 
 @layer components {
-  /* The floor monitor (src/features/qac-monitor): a screen or a page of a list arriving settles up
-     into place. No fill mode, so the element leaves the compositor, and its text ClearType, once in */
-  .m-in { animation: m-in .32s var(--ease-m-spring) }
+  /* each in full: a shared shorthand without a name ("animation: 10s linear infinite") is minified to
+     "animation: none", which drops the duration too */
+  .hero-a { animation: hero-a 10s linear infinite both }
+  .hero-b { animation: hero-b 10s linear infinite both }
+  .hero-c { animation: hero-c 10s var(--ease-out) infinite both }
+  .hero-flash { animation: hero-flash 10s linear infinite both }
+  .hero-guide { animation: hero-guide 10s var(--ease-out) infinite both }
+  .hero-crop { animation: hero-crop 10s var(--ease-out) infinite both }
+  .hero-field { animation: hero-field 10s var(--ease-out) infinite both }
+  .hero-pass { animation: hero-pass 10s var(--ease-out) infinite both }
 
-  /* in this layer, not in base: a base rule never wins over a component one, whatever its media */
+  /* in this layer, not in base: a base rule never wins over a component one, whatever its media.
+     Without motion the sequence is not drawn at all, and the still capture under it shows */
   @media (prefers-reduced-motion: reduce) {
-    .m-in { animation-name: fade-in }
+    .hero-sequence { display: none }
   }
 }
 

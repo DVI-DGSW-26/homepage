@@ -8,6 +8,7 @@ import { openInquiry } from '../../../lib/inquiry';
 import { DEMO_VIDEO, HERO_LOOP, openVideo } from '../../../lib/media';
 import { BOOTH, CES_END } from '../../../lib/site';
 import { useCapture } from '../parts';
+import { HeroSequence } from './HeroSequence';
 
 /** In `pnpm dev` only, the places the planned films will take are marked while their files are still to
  * come (HERO_LOOP, DEMO_VIDEO in src/lib/media.ts); the built site shows nothing for them until then. */
@@ -19,13 +20,13 @@ const SIDE_SIZES = '(max-width: 599px) 50vw, 290px';
 
 /**
  * The first screen, centred: the CES notice, the name and the promise, the way to a demo, and the app in
- * three phones rising from the bottom edge — the camera in front (playing the hero loop over its still),
+ * three phones rising from the bottom edge — the camera in front (playing the hero loop over its still, or
+ * until there is one the captures in turn, HeroSequence),
  * the OCR result and the patrol approval fanned out behind — with the claims floating beside them on a
  * desktop and in a row under the buttons below that. Concentric rings and a green light behind.
  */
 export function Intro() {
   const t = useT(), m = t.qf, capture = useCapture();
-  const pending = !HERO_LOOP && MARK_PENDING;
   return (
     <section id="qf-intro" className="relative isolate overflow-hidden pt-36 max-sm:pt-28">
       {/* rings spreading from the phones, fading out toward the edges, and a green light under them */}
@@ -60,7 +61,7 @@ export function Intro() {
         <Phone src={capture('mobile-compare.webp')} alt={m.alt.compare} sizes={SIDE_SIZES} view="left"
           className="absolute top-[12%] left-1/2 w-[min(290px,50vw)] translate-x-[18%] lg:translate-x-[34%]" />
         <Phone src={capture('capture.webp')} alt={m.alt.capture} sizes={FRONT_SIZES} priority dark loop={HERO_LOOP ?? undefined}
-          marker={pending ? <><b>반복 영상 자리</b><span>8~12초 · 무음 · 2MB 이하<br />세로 865 × 1672</span></> : undefined}
+          overlay={HERO_LOOP ? undefined : <HeroSequence />}
           className="absolute top-0 left-1/2 z-2 w-[min(340px,62vw)] -translate-x-1/2" />
 
         {/* what floats around them on a desktop: what the phones behind are doing, and the two claims */}

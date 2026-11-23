@@ -67,8 +67,8 @@ const METAL = 'bg-linear-to-r from-titanium via-titanium-hi to-titanium';
 export type Loop = { mp4: string; webm?: string };
 
 type PhoneScreen =
-  | { src: string; alt: string; sizes: string; dark?: boolean; loop?: Loop; priority?: boolean; marker?: ReactNode; children?: never; screenClassName?: never }
-  | { children: ReactNode; screenClassName?: string; src?: never; alt?: never; sizes?: never; dark?: never; loop?: never; priority?: never; marker?: never };
+  | { src: string; alt: string; sizes: string; dark?: boolean; loop?: Loop; priority?: boolean; marker?: ReactNode; overlay?: ReactNode; children?: never; screenClassName?: never }
+  | { children: ReactNode; screenClassName?: string; src?: never; alt?: never; sizes?: never; dark?: never; loop?: never; priority?: never; marker?: never; overlay?: never };
 
 /** The loop over the capture, which stays underneath as its poster and its description: it fades in
  * once it actually plays, so a slow or failed load just leaves the still. Not for prefers-reduced-motion.
@@ -93,7 +93,7 @@ function LoopVideo({ mp4, webm }: Loop) {
  * edges (the camera), so the bars turn white; `loop` plays a silent film over it; `priority` for the
  * first screen (<Img priority>). The capture opens full size on a click (Zoomable). Or, given `children`, around a screen of its own: it
  * fills the display below the status bar (440 × 894 pt), and `screenClassName` colours the display. */
-export function Phone({ src, alt, sizes, dark, loop, priority, marker, children, screenClassName, view = 'front', className }: PhoneScreen & { view?: PhoneView; className?: string }) {
+export function Phone({ src, alt, sizes, dark, loop, priority, marker, overlay, children, screenClassName, view = 'front', className }: PhoneScreen & { view?: PhoneView; className?: string }) {
   const turn = VIEWS[view];
   const own = children != null;
   const r = RADIUS + DISPLAY;
@@ -142,6 +142,8 @@ export function Phone({ src, alt, sizes, dark, loop, priority, marker, children,
                   <Zoomable src={src!} alt={alt!} className="flex-none">
                     <Img src={src!} alt={alt!} sizes={sizes!} priority={priority} className="block aspect-865/1672 h-auto w-full" />
                     {loop && <LoopVideo {...loop} />}
+                    {/* drawn over the capture, which stays underneath as its still and its description */}
+                    {overlay}
                   </Zoomable>
                 )}
                 {/* a dashed box over the screen naming what will play there (the hero loop's place while there is none, in `pnpm dev` only) */}
