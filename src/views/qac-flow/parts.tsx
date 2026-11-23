@@ -64,11 +64,16 @@ export function Browser({ src, alt, sizes, caption, className }: { src: string; 
   );
 }
 
-/** where a label points on a screen, in % of the image (the end of its stem), and which way the label
- * runs from there: centred over the spot, or starting / ending at it near an edge of the screen */
-export type Pin = { x: number; y: number; side?: 'start' | 'end' };
+/** A label on a screen, in % of the image: either a point (the end of a stem; the label centred over it,
+ * or starting / ending at it near an edge), or a box drawn round an area, its label sitting on the box's
+ * top or bottom edge, at the left or the right */
+export type Pin =
+  | { x: number; y: number; side?: 'start' | 'end' }
+  | { box: [x: number, y: number, w: number, h: number]; edge?: 'top' | 'bottom'; align?: 'left' | 'right' };
 
-/** A web screen with short labels set on it, each on a stem ending at the thing it names, so the screen
+const TAG = 'rounded-full bg-qf px-2.5 py-1 text-caption leading-none font-bold whitespace-nowrap text-on-acc ring-2 ring-white max-sm:px-1.5 max-sm:py-0.5 max-sm:text-[.625rem]';
+
+/** A web screen with short labels set on it, pointing at or boxing the thing each names, so the screen
  * explains itself; it still opens full size on a click (the labels let the click through). */
 export function Annotated({ src, alt, sizes, caption, pins, labels, className }: {
   src: string; alt: string; sizes: string; caption?: ReactNode; pins: Pin[]; labels: readonly string[]; className?: string;
@@ -80,11 +85,16 @@ export function Annotated({ src, alt, sizes, caption, pins, labels, className }:
       <Zoomable src={capture(src)} alt={alt}>
         <div className="relative">
           <Img src={capture(src)} alt={alt} sizes={sizes} className="app-screen block h-auto w-full bg-plate" />
-          {pins.map((p, i) => (
+          {pins.map((p, i) => 'box' in p ? (
+            <span key={i} aria-hidden="true" style={{ left: `${p.box[0]}%`, top: `${p.box[1]}%`, width: `${p.box[2]}%`, height: `${p.box[3]}%` }}
+              className="pointer-events-none absolute rounded-[6px] border-2 border-qf bg-qf/5 max-sm:border-[1.5px]">
+              <b className={cn(TAG, 'absolute -translate-y-1/2 drop-shadow-[0_2px_6px_rgb(0_0_0/.25)]', p.edge === 'bottom' ? 'top-full' : 'top-0', p.align === 'right' ? 'right-3 max-sm:right-1.5' : 'left-3 max-sm:left-1.5')}>{labels[i]}</b>
+            </span>
+          ) : (
             <span key={i} aria-hidden="true" style={{ left: `${p.x}%`, top: `${p.y}%` }}
               className={cn('pointer-events-none absolute grid -translate-y-full drop-shadow-[0_2px_6px_rgb(0_0_0/.3)]',
                 p.side === 'start' ? 'justify-items-start -translate-x-1.5' : p.side === 'end' ? 'justify-items-end -translate-x-[calc(100%-.375rem)]' : 'justify-items-center -translate-x-1/2')}>
-              <b className="rounded-full bg-qf px-2.5 py-1 text-caption leading-none font-bold whitespace-nowrap text-on-acc ring-2 ring-white max-sm:px-1.5 max-sm:py-0.5 max-sm:text-[.625rem]">{labels[i]}</b>
+              <b className={TAG}>{labels[i]}</b>
               {/* the stem, and a dot on the spot */}
               <i className={cn('h-3 w-0.5 bg-qf max-sm:h-1.5', p.side === 'start' ? 'ml-1' : p.side === 'end' ? 'mr-1' : '')} />
               <i className="size-2 -translate-y-px rounded-full bg-qf ring-2 ring-white max-sm:size-1.5" />

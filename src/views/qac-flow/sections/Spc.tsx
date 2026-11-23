@@ -1,12 +1,20 @@
+import type { ReactNode } from 'react';
 import { useT } from '../../../i18n';
 import { Band } from '../../../components/ui';
 import { Annotated, Head, type Pin } from '../parts';
 
-/** Where each screen's labels point, in % of the image, in the order of the copy's marks (the same in
- * Korean and English: the two captures share their layout); near an edge a label runs inward. */
+/** Each screen's labels, in % of the image, in the order of the copy's marks (the same in Korean and
+ * English: the two captures share their layout). Areas get a box with the label on its edge, single
+ * spots a label on a stem; near an edge a label runs inward. */
 const PINS: Pin[][] = [
-  // filters, the near-limit warning, Cpk and Ppk, the out-of-control point
-  [{ x: 12, y: 4.4, side: 'start' }, { x: 74, y: 12.2 }, { x: 9.5, y: 26.2, side: 'start' }, { x: 84.6, y: 49.4, side: 'end' }],
+  // the filters, the near-limit warning, the six indicators, the X̄ chart, the R chart
+  [
+    { box: [2, 1, 96, 9.2], edge: 'bottom' },
+    { x: 95, y: 13, side: 'end' },
+    { box: [2, 18.1, 96, 14.6] },
+    { box: [2, 34.2, 96, 34.9] },
+    { box: [2, 70.7, 96, 28.4] }
+  ],
   // the distribution, the spec limits, the indices
   [{ x: 41, y: 42.5 }, { x: 72.3, y: 50 }, { x: 87, y: 21, side: 'end' }],
   // the status filter, downtime and cost, the action status
@@ -15,44 +23,46 @@ const PINS: Pin[][] = [
   [{ x: 21.5, y: 34.2, side: 'start' }, { x: 61, y: 49 }, { x: 75, y: 61.9 }]
 ];
 
-/** SPC: what the approved records add up to, with the SPC screen of the app (CES final, Korean and
- * English) cut in two (the filters, indicators and X̄-R charts; capability) and the equipment issue
- * history from the app's Machine Issues menu (the list, and one issue from report to close).
- * The request doc (p.11) keeps defect prediction and Ask AI off the homepage, so the capture is cropped
- * without the forecast block and the title row that holds the AI button, and the copy has no prediction
- * or AI wording, nor a claim that new values show live until that is verified. */
+/** one step: its number, title and sentence beside (on a phone, above) its screen(s) */
+function Step({ n, title, body, children }: { n: number; title: string; body: string; children: ReactNode }) {
+  return (
+    <li className="grid gap-5 lg:grid-cols-[minmax(0,.3fr)_minmax(0,1fr)] lg:gap-8">
+      <div className="rv grid content-start gap-2 lg:sticky lg:top-28 lg:self-start">
+        <span className="mono text-micro text-qf-ink">{String(n).padStart(2, '0')}</span>
+        <h4 className="m-0 text-title leading-snug font-bold">{title}</h4>
+        <p className="m-0 text-body-sm leading-copy text-fg-2">{body}</p>
+      </div>
+      <div className="min-w-0">{children}</div>
+    </li>
+  );
+}
+
+/** SPC: what the approved records add up to, in three steps each told beside its own screens from the app
+ * (CES final, Korean and English): the filters, indicators and X̄-R charts; capability; and the equipment
+ * issue history from the Machine Issues menu (the list, and one issue from report to close). The request
+ * doc (p.11) keeps defect prediction and Ask AI off the homepage, so the SPC capture is cropped without
+ * the forecast block and the AI button, and the copy has no prediction or AI wording, nor a claim that
+ * new values show live until that is verified. */
 export function Spc() {
   const m = useT().qf, s = m.spc;
   return (
     <Band id="qf-spc" mark="06">
       <Head kicker={s.kicker} q={s.q} title={s.title} lead={s.lead} />
-      <ul data-batch className="m-0 grid list-none gap-4 p-0 sm:grid-cols-2 lg:grid-cols-4">
-        {s.features.map((f, i) => (
-          <li key={f.title} className="rv grid content-start gap-2 rounded-card border border-line bg-card/60 p-panel-pad">
-            <span className="mono text-micro text-qf-ink">{String(i + 1).padStart(2, '0')}</span>
-            <b className="text-title-xs font-semibold">{f.title}</b>
-            <span className="text-body-sm leading-copy text-fg-2">{f.body}</span>
-          </li>
-        ))}
-      </ul>
-      <div className="rv mt-6 flex flex-wrap items-center gap-x-3 gap-y-2">
-        <span className="mono text-micro text-mute">{s.metricsLabel}</span>
-        <ul className="m-0 flex list-none flex-wrap gap-1.5 p-0">
-          {s.metrics.map(x => <li key={x} className="rounded-full border border-qf-line px-3 py-1 text-caption font-semibold text-qf-ink">{x}</li>)}
-        </ul>
-      </div>
-      <div className="mt-10 grid gap-4">
-        <Annotated className="rv" src="spc-charts.webp" alt={s.alts[0]} caption={s.captions[0]} sizes="(max-width: 1440px) 100vw, 1280px" pins={PINS[0]} labels={s.marks[0]} />
-        {/* capability and the equipment issue list stacked, beside one issue followed through to its close */}
-        <div className="grid items-start gap-4 md:grid-cols-2">
-          <div className="grid gap-4">
-            <Annotated className="rv" src="spc-capability.webp" alt={s.alts[1]} caption={s.captions[1]} sizes="(max-width: 767px) 100vw, 640px" pins={PINS[1]} labels={s.marks[1]} />
-            <Annotated className="rv" src="equip-issues.webp" alt={s.alts[2]} caption={s.captions[2]} sizes="(max-width: 767px) 100vw, 640px" pins={PINS[2]} labels={s.marks[2]} />
+      <ol className="m-0 grid list-none gap-16 p-0 max-lg:gap-12">
+        <Step n={1} {...s.steps[0]}>
+          <Annotated className="rv" src="spc-charts.webp" alt={s.alts[0]} sizes="(max-width: 1023px) 100vw, 900px" pins={PINS[0]} labels={s.marks[0]} />
+        </Step>
+        <Step n={2} {...s.steps[1]}>
+          <Annotated className="rv" src="spc-capability.webp" alt={s.alts[1]} sizes="(max-width: 1023px) 100vw, 900px" pins={PINS[1]} labels={s.marks[1]} />
+        </Step>
+        <Step n={3} {...s.steps[2]}>
+          <div className="grid items-start gap-4 md:grid-cols-[minmax(0,1.25fr)_minmax(0,.75fr)]">
+            <Annotated className="rv" src="equip-issues.webp" alt={s.alts[2]} caption={s.captions[0]} sizes="(max-width: 767px) 100vw, 560px" pins={PINS[2]} labels={s.marks[2]} />
+            <Annotated className="rv" src="equip-issue-detail.webp" alt={s.alts[3]} caption={s.captions[1]} sizes="(max-width: 767px) 100vw, 340px" pins={PINS[3]} labels={s.marks[3]} />
           </div>
-          <Annotated className="rv" src="equip-issue-detail.webp" alt={s.alts[3]} caption={s.captions[3]} sizes="(max-width: 767px) 100vw, 640px" pins={PINS[3]} labels={s.marks[3]} />
-        </div>
-      </div>
-      <p className="mono m-0 mt-6 text-micro text-mute">{s.note}</p>
+        </Step>
+      </ol>
+      <p className="mono m-0 mt-10 text-micro text-mute">{s.note}</p>
     </Band>
   );
 }

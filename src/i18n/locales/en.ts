@@ -181,18 +181,17 @@ export const en: Messages = {
       q: 'What can you see in the records that pile up?',
       title: 'Each inspection becomes a report; the history becomes SPC.',
       lead: 'Approved inspection records become SPC data as they are.\nPick a product, characteristic, machine and period to view control charts and process capability.',
-      features: [
-        { title: 'Xbar-R control chart', body: 'Follow subgroup means and ranges against their control limits.' },
-        { title: 'Process capability', body: 'See how stably the process runs within tolerance with Cp, Cpk, Pp and Ppk.' },
-        { title: 'Filters', body: 'Narrow the view by product, characteristic, machine and period.' },
-        { title: 'Equipment issues and actions', body: 'Each machine\'s issue reports, corrective actions, downtime and cost stay on record, so a shift in quality can be traced to its cause.' }
+      /** three steps, each told beside its own screen(s) (Spc.tsx) */
+      steps: [
+        { title: 'Filters · indicators · control charts', body: 'Pick a product, dimension, machine and period, and six key indicators and the Xbar-R charts appear on one screen. Anything near or beyond a control limit is flagged right away.' },
+        { title: 'Process capability', body: 'Lay the distribution of all measurements over the lower and upper spec limits, and see with Cp, Cpk, Pp and Ppk how comfortably the process fits within them.' },
+        { title: 'Equipment issues and actions', body: 'An equipment issue, once reported, is recorded through action and resolution with its downtime and cost, so a shift in quality can be traced to its cause.' }
       ],
-      metricsLabel: 'Key indicators',
-      metrics: ['Cpk', 'Ppk', 'Mean', 'Std. dev.', 'Sample count', 'Out of control'],
-      captions: ['Filters · indicators · Xbar-R charts', 'Process capability', 'Equipment issue reports', 'How an issue was handled'],
-      /** the short labels set on each screen, in the order of its marks (Spc.tsx) */
+      /** under the two equipment issue screens */
+      captions: ['Issue reports', 'One issue, from report to close'],
+      /** the labels set on each screen, in the order of its marks (Spc.tsx) */
       marks: [
-        ['Filters', 'Near-limit warning', 'Meets target?', 'Out-of-control point'],
+        ['Filters', 'Near-limit warning', 'Six key indicators · Cpk · Ppk · mean · std. dev. · samples · out of control', 'Xbar chart (subgroup means)', 'R chart (subgroup ranges)'],
         ['Distribution', 'Spec limits', 'Capability indices'],
         ['Filter by status', 'Downtime & cost', 'Action status'],
         ['Report → action → close', 'What was done', 'Total downtime & cost']
