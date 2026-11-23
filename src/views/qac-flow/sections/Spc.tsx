@@ -1,12 +1,14 @@
 import { useT } from '../../../i18n';
 import { Band } from '../../../components/ui';
-import { Head, Pending } from '../parts';
+import { Browser, Head } from '../parts';
 
-/** SPC: what the approved records add up to. The request doc (p.11) has the place and the copy go up first
- * and the screens (control chart, capability, equipment history) once they pass review on 12. 2.; no
- * defect prediction or AI wording, and no claim that new values show live until that is verified. */
+/** SPC: what the approved records add up to, with the SPC screen of the app (CES final, Korean and
+ * English) cut into three: the filters, indicators and X̄-R charts; capability; the trend by machine.
+ * The request doc (p.11) keeps defect prediction and Ask AI off the homepage, so the capture is cropped
+ * without the forecast block and the title row that holds the AI button, and the copy has no prediction
+ * or AI wording, nor a claim that new values show live until that is verified. */
 export function Spc() {
-  const s = useT().qf.spc;
+  const m = useT().qf, s = m.spc;
   return (
     <Band id="qf-spc" mark="06">
       <Head kicker={s.kicker} q={s.q} title={s.title} lead={s.lead} />
@@ -25,9 +27,14 @@ export function Spc() {
           {s.metrics.map(x => <li key={x} className="rounded-full border border-qf-line px-3 py-1 text-caption font-semibold text-qf-ink">{x}</li>)}
         </ul>
       </div>
-      <div className="mt-8 grid gap-4 empty:hidden md:grid-cols-3">
-        {['관리도', '공정능력', '설비 이력'].map(x => <Pending key={x} label={`SPC 화면 자리 · ${x} (12. 2. 검수 후 캡처)`} className="aspect-video" />)}
+      <div className="mt-10 grid gap-4">
+        <Browser className="rv" src="spc-charts.webp" alt={s.alts[0]} caption={s.captions[0]} sizes="(max-width: 1440px) 100vw, 1280px" />
+        <div className="grid items-start gap-4 md:grid-cols-2">
+          <Browser className="rv" src="spc-capability.webp" alt={s.alts[1]} caption={s.captions[1]} sizes="(max-width: 767px) 100vw, 640px" />
+          <Browser className="rv" src="spc-trend.webp" alt={s.alts[2]} caption={s.captions[2]} sizes="(max-width: 767px) 100vw, 640px" />
+        </div>
       </div>
+      <p className="mono m-0 mt-6 text-micro text-mute">{s.note}</p>
     </Band>
   );
 }

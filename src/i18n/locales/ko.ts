@@ -196,10 +196,17 @@ export const ko = {
         { title: 'Xbar-R 관리도', body: '부분군 평균과 범위의 흐름을 관리 한계와 함께 봅니다.' },
         { title: '공정능력', body: 'Cp·Cpk, Pp·Ppk로 공정이 공차 안에서 얼마나 안정적인지 확인합니다.' },
         { title: '조회 조건', body: '제품, 측정 항목, 설비, 기간을 골라 원하는 범위만 봅니다.' },
-        { title: '설비 이상·조치 이력', body: '값이 변한 구간에 있었던 설비 이상과 조치 이력을 함께 열어 봅니다.' }
+        { title: '설비별 추이', body: '설비마다 측정값이 규격 범위 안에서 어떻게 움직이는지 비교합니다.' }
       ],
       metricsLabel: '한눈에 보는 지표',
-      metrics: ['Cpk', 'Ppk', '평균', '표준편차', '측정 수', '관리 이탈']
+      metrics: ['Cpk', 'Ppk', '평균', '표준편차', '측정 수', '관리 이탈'],
+      captions: ['조회 조건 · 지표 · Xbar-R 관리도', '공정능력', '설비별 추이'],
+      alts: [
+        'SPC 분석 화면: 제품·측정 항목·설비·기간 조회 조건, 관리 한계 근접 경고, Cpk·Ppk·평균·σ·측정 수·관리 이탈 지표, X̄ 관리도와 R 관리도',
+        'SPC 분석 공정능력: 전체 측정값 분포 히스토그램과 규격 하한·상한, Cp·Cpk·Pp·Ppk',
+        'SPC 분석 설비별 추이: CNC-01과 CNC-02의 측정값 흐름과 규격 범위, 설비별 평균·Cpk·측정 수'
+      ],
+      note: '실제 SPC 분석 화면입니다. 화면을 누르면 크게 볼 수 있습니다. 데이터는 예시입니다.'
     },
     /** the inspection report: the three pages one approval issues, and what its QR code and ESG line are for */
     report: {
