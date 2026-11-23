@@ -14,8 +14,7 @@ const PHOTO = {
   ko: { left: '10.17%', top: '28.83%', width: '79.77%', height: '54.43%' },
   en: { left: '10.17%', top: '26.79%', width: '79.77%', height: '54.31%' }
 };
-// the last screen sits in a box 1.3 times its height (so it can scroll up without showing what is under
-// it): its marks are in % of that box
+// the last screen sits in a box 1.3 times its height, clipped by the screen: its marks are in % of that box
 const FIELD = { left: '8.4%', top: '62.3%', width: '83.2%', height: '4.3%' };   // the OCR-filled value
 const PASS = { left: '78.8%', top: '59.9%', width: '12.8%', height: '1.6%' };   // the pass badge
 
@@ -45,8 +44,7 @@ export function HeroSequence() {
           ))}
         </span>
       </div>
-      {/* step 3: the screen scrolls up to the value OCR filled in, which lights up, and its pass (the value
-          sits low on the screen, where the first screen's bottom edge cuts the phone off) */}
+      {/* step 3: the value OCR filled in lights up, and its pass */}
       <div className="hero-c absolute inset-x-0 top-0 h-[130%] bg-plate">
         <Img src={capture('ocr-input.webp')} alt="" sizes={SIZES} loading="eager" className="absolute inset-x-0 top-0 block h-auto w-full" />
         <i className="hero-field absolute rounded-[6px] border-2 border-qf shadow-[0_0_0_6px_rgb(60_203_154/.25)]" style={FIELD} />

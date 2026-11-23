@@ -15,58 +15,66 @@ import { HeroSequence } from './HeroSequence';
 const MARK_PENDING = process.env.NODE_ENV === 'development';
 
 /** each phone drawn at most this wide: the middle one, the two behind it */
-const FRONT_SIZES = '(max-width: 849px) 40vw, 340px';
-const SIDE_SIZES = '(max-width: 1086px) 23vw, 250px';
+const FRONT_SIZES = '(max-width: 1199px) 38vw, 300px';
+const SIDE_SIZES = '(max-width: 1199px) 23vw, 180px';
 
 /**
- * The first screen, centred: the CES notice, the name and the promise, the way to a demo, then the app in
- * three phones side by side — the camera in the middle, large, playing the hero loop (or until there is
- * one the captures in turn, HeroSequence), the OCR result and the patrol approval smaller on either side —
- * and the two claims under them. Concentric rings and a green light behind the middle phone.
+ * The first screen, in two columns: on the left the CES notice, the name and the promise, the way to a
+ * demo and the two claims; on the right the app in three phones at staggered heights across the edge of a
+ * green block — the camera in the middle, the largest, playing the hero loop (or until there is one the
+ * captures in turn, HeroSequence), the OCR result and the patrol approval smaller on either side.
+ * Below a desktop the columns stack, centred, and the green block sits behind the phones.
  */
 export function Intro() {
   const t = useT(), m = t.qf, capture = useCapture();
   return (
     <section id="qf-intro" className="relative isolate overflow-hidden pt-36 pb-section max-sm:pt-28">
-      {/* rings spreading from the middle phone, fading out toward the edges, and a green light behind it */}
-      <div aria-hidden="true" className="absolute inset-0 -z-1 bg-[repeating-radial-gradient(circle_at_50%_68%,transparent_0_119px,var(--color-deco)_119px_120px)] mask-[radial-gradient(ellipse_75%_60%_at_50%_68%,#000_20%,transparent)]" />
-      <div aria-hidden="true" className="absolute top-[45%] left-1/2 -z-1 aspect-square w-[min(900px,130vw)] -translate-x-1/2 bg-radial-[closest-side] from-qf-soft to-transparent" />
+      {/* a block of green from the top of the page to the bottom of this one, the phones standing across its
+          edge: the right two fifths on a desktop, the lower part behind the phones below that */}
+      <div aria-hidden="true" className="absolute -z-1 overflow-hidden bg-qf-soft lg:inset-y-0 lg:right-0 lg:w-[40%] max-lg:inset-x-0 max-lg:bottom-0 max-lg:h-[42%]">
+        <div className="absolute inset-0 deco-grid mask-[radial-gradient(ellipse_80%_70%_at_50%_50%,#000,transparent)]" />
+      </div>
 
-      <div className="wrap grid justify-items-center text-center">
-        <CesBanner />
-        <h1 className="rv m-0 font-display text-wordmark leading-display font-extrabold tracking-heading-sm">QAC<span className="text-qf-ink"> FLOW</span></h1>
-        {/* the letters of the name spelled out, ruled on both sides; one line on the narrowest phones too */}
-        <p className="rv mono m-0 mt-3 flex items-center gap-3.5 text-fg-2 before:h-px before:w-8.5 before:bg-line-2 after:h-px after:w-8.5 after:bg-line-2 max-sm:tracking-wide max-sm:before:hidden max-sm:after:hidden">{m.expand}</p>
-        <H2 className="rv mt-6">{m.title}</H2>
-        <Lead className="rv mx-auto mt-5 max-w-160">{lines(m.lead)}</Lead>
-        <div className="rv mt-8 flex flex-wrap justify-center gap-3">
-          <Pill href="#contact" aria-haspopup="dialog" onClick={openInquiry('hero')}>{duringCes() ? m.cta.cesDemo : m.cta.demo}</Pill>
-          {DEMO_VIDEO
-            ? <Pill quiet href="#qf-how" aria-haspopup="dialog" onClick={e => { e.preventDefault(); openVideo(true); }}>{t.media.watch(DEMO_VIDEO.seconds)}</Pill>
-            : <Pill quiet href="#qf-how">{m.cta.how}<ArrowRight aria-hidden="true" className="size-4" /></Pill>}
-          {!DEMO_VIDEO && MARK_PENDING && <span aria-hidden="true" className="inline-flex min-h-11 items-center rounded-full border border-dashed border-qf-line px-5.5 py-2.5 text-body-sm text-mute">{t.media.watch(90)} · 영상 자리</span>}
+      {/* a desktop: the copy and the claims under it on the left, the phones on the right across both;
+          below that, stacked: the copy, the phones, the claims */}
+      <div className="wrap grid gap-stack-sm lg:grid-cols-[minmax(0,.92fr)_minmax(0,1.08fr)] lg:grid-rows-[auto_1fr] lg:gap-x-10 lg:gap-y-10">
+        <div className="grid justify-items-start self-end text-left max-lg:justify-items-center max-lg:text-center">
+          <CesBanner />
+          <h1 className="rv m-0 font-display text-wordmark leading-display font-extrabold tracking-heading-sm">QAC<span className="text-qf-ink"> FLOW</span></h1>
+          {/* the letters of the name spelled out after a short rule; one line on the narrowest phones too */}
+          <p className="rv mono m-0 mt-3 flex items-center gap-3.5 text-fg-2 before:h-px before:w-8.5 before:bg-line-2 max-sm:tracking-wide max-sm:before:hidden">{m.expand}</p>
+          <H2 className="rv mt-6">{m.title}</H2>
+          <Lead className="rv mt-5 max-w-140">{lines(m.lead)}</Lead>
+          <div className="rv mt-8 flex flex-wrap gap-3 max-lg:justify-center">
+            <Pill href="#contact" aria-haspopup="dialog" onClick={openInquiry('hero')}>{duringCes() ? m.cta.cesDemo : m.cta.demo}</Pill>
+            {DEMO_VIDEO
+              ? <Pill quiet href="#qf-how" aria-haspopup="dialog" onClick={e => { e.preventDefault(); openVideo(true); }}>{t.media.watch(DEMO_VIDEO.seconds)}</Pill>
+              : <Pill quiet href="#qf-how">{m.cta.how}<ArrowRight aria-hidden="true" className="size-4" /></Pill>}
+            {!DEMO_VIDEO && MARK_PENDING && <span aria-hidden="true" className="inline-flex min-h-11 items-center rounded-full border border-dashed border-qf-line px-5.5 py-2.5 text-body-sm text-mute">{t.media.watch(90)} · 영상 자리</span>}
+          </div>
         </div>
 
-        {/* The three phones side by side, whole and apart: the film in the middle, large and face on; the OCR
-            result and the patrol approval smaller on either side, turned toward it. Each with its name under it. */}
-        <ul className="rv m-0 mt-14 flex w-full list-none items-center justify-center gap-[clamp(10px,3.5vw,56px)] p-0 max-sm:mt-10">
-          <li className="grid w-[min(250px,23vw)] justify-items-center gap-4">
+        {/* The three phones side by side, at staggered heights, whole and apart: the film in the middle, the
+            largest and the highest; the OCR result and the patrol approval smaller and lower on either side,
+            turned toward it. Each with its name under it. */}
+        <ul className="rv m-0 flex w-full list-none items-start justify-center gap-[4%] self-center p-0 lg:col-start-2 lg:row-span-2 lg:row-start-1">
+          <li className="grid w-[25%] justify-items-center gap-3.5 pt-[16%]">
             <Phone src={capture('ocr-input.webp')} alt={m.alt.ocr} sizes={SIDE_SIZES} view="right" className="w-full" />
             <Caption icon={<ScanText className="size-4" />} className="max-sm:hidden">{m.problem.afterSteps[1]}</Caption>
           </li>
-          <li className="grid w-[min(340px,40vw)] justify-items-center gap-4">
+          <li className="grid w-[42%] justify-items-center gap-4">
             <Phone src={capture('capture.webp')} alt={m.alt.capture} sizes={FRONT_SIZES} priority dark loop={HERO_LOOP ?? undefined}
               overlay={HERO_LOOP ? undefined : <HeroSequence />} className="w-full" />
             <Caption strong icon={<Camera className="size-4" />}>{m.how.steps.map(x => x.title).join(' → ')}</Caption>
           </li>
-          <li className="grid w-[min(250px,23vw)] justify-items-center gap-4">
+          <li className="grid w-[25%] justify-items-center gap-3.5 pt-[30%]">
             <Phone src={capture('mobile-compare.webp')} alt={m.alt.compare} sizes={SIDE_SIZES} view="left" className="w-full" />
             <Caption icon={<FileCheck2 className="size-4" />} className="max-sm:hidden">{m.problem.afterSteps[3]}</Caption>
           </li>
         </ul>
 
-        {/* the two claims, under the phones */}
-        <ul className="rv m-0 mt-12 grid w-full max-w-200 list-none grid-cols-2 gap-3 p-0 text-left max-2xs:grid-cols-1">
+        {/* the two claims */}
+        <ul className="rv m-0 grid w-full max-w-140 list-none grid-cols-2 gap-3 self-start p-0 text-left max-lg:mx-auto lg:col-start-1 max-2xs:grid-cols-1">
           <li><Claim icon={<CircleCheck className="size-5" strokeWidth={2} />} title={m.stats[0]} sub={m.kit} /></li>
           <li><Claim figure="2026.06" title={m.stats[1]} sub={m.statsNote} /></li>
         </ul>
@@ -125,8 +133,8 @@ function CesBanner() {
       <span className="flex flex-wrap items-center gap-x-3 gap-y-1 self-center">
         <span className="inline-flex items-center gap-1.5 font-semibold"><CalendarDays aria-hidden="true" className="size-4 text-qf-ink" />{c.when}</span>
         <span className="inline-flex items-center gap-1.5 font-semibold" title={c.hall}><MapPin aria-hidden="true" className="size-4 text-qf-ink" />{c.where(BOOTH)}</span>
-        {/* on one line beside them on a desktop, under them below that */}
-        <span className="text-fg-2 max-lg:basis-full lg:border-l lg:border-qf-line lg:pl-3">{c.try}</span>
+        {/* under them, on a line of its own */}
+        <span className="basis-full text-fg-2">{c.try}</span>
       </span>
     </p>
   );
