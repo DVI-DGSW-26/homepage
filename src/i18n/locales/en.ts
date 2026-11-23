@@ -117,15 +117,20 @@ export const en: Messages = {
     },
     live: {
       kicker: '04 / Live monitoring',
-      q: 'When do you find out about a defect?',
-      title: 'Detect defects the moment they happen.',
-      lead: 'Every measurement lands on the shop-floor monitor as it is taken:\nprogress by machine, each value against its tolerance,\ndefects and actions, and alerts for late inspections.',
+      q: 'How do you see every inspection at once?',
+      title: 'Your entire floor\'s inspections, live on one monitor.',
+      lead: 'When an operator enters a result on their phone, it appears on the shop-floor monitor the moment it is saved.\nProgress, measurements and defects are visible to the whole floor in real time.',
       tabsAria: 'Monitor screens',
-      tabs: ['Status board', 'Inspection detail', 'Quality & defects'],
+      tabs: ['Inspection Status', 'Measurement Detail', 'Quality & Defects'],
+      bodies: [
+        'Track first-off, in-process and last-off self-inspections, along with patrol inspections, for every machine. See at a glance which checks are complete, which are in progress, and which are overdue or skipped.',
+        'Each measured value is shown against its nominal and tolerance, with an OK/NG result for every item. A tolerance bar marks where each value falls, so readings close to the limit stand out immediately.',
+        'Review today\'s defects by item and type, along with the defect rate. Every follow-up action is logged with its owner, the instruction given and its current status, so each issue can be followed through to resolution.'
+      ],
       alts: [
-        'Floor monitor status board: completed, in-progress and delayed counts, and self and patrol inspection progress per machine across the initial, mid and final rounds',
-        'Floor monitor inspection detail: each measurement item of a running inspection with its spec and tolerance, measured value, tolerance bar and OK result',
-        'Floor monitor quality and defects: inspections and defect cases today, out-of-tolerance items, defect types and a rejected patrol inspection being re-measured'
+        'Inspection status screen: completed, in-progress, skipped and delayed counts, and first-off, in-process and last-off self-inspection and patrol inspection progress for each machine',
+        'Measurement detail screen: each item of an inspection in progress with its nominal and tolerance, measured value, tolerance bar and OK result',
+        'Quality and defects screen: today\'s inspections and defect rate, out-of-tolerance items, defect types, and a rejected patrol inspection being re-measured by the operator'
       ],
       note: 'The actual floor monitor screens. Click a screen to see it full size. Sample data.'
     },

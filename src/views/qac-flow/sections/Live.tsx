@@ -36,6 +36,11 @@ export function Live() {
         ))}
       </div>
       <div role="tabpanel" id="qf-panel" aria-labelledby={`qf-tab-${tab}`} className="rv mb-8">
+        {/* what the screen is for, above it */}
+        <div className="mb-6 grid max-w-200 gap-2">
+          <h3 className="m-0 text-title font-bold">{l.tabs[tab]}</h3>
+          <p className="m-0 text-body text-fg-2">{l.bodies[tab]}</p>
+        </div>
         <Monitor>
           <Zoomable src={src} alt={alt} className="h-full">
             <Img key={src} src={src} alt={alt} sizes="(max-width: 1440px) 100vw, 1376px" className="app-screen block size-full object-cover object-top" />
