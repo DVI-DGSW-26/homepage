@@ -20,20 +20,15 @@ const SIDE_SIZES = '(max-width: 1199px) 23vw, 180px';
 
 /**
  * The first screen, in two columns: on the left the CES notice, the name and the promise, the way to a
- * demo and the two claims; on the right the app in three phones at staggered heights across the edge of a
- * green block — the camera in the middle, the largest, playing the hero loop (or until there is one the
- * captures in turn, HeroSequence), the OCR result and the patrol approval smaller on either side.
- * Below a desktop the columns stack, centred, and the green block sits behind the phones.
+ * demo and the two claims; on the right the app in three phones, face on, at staggered heights — the
+ * camera in the middle, the largest, playing the hero loop (or until there is one the captures in turn,
+ * HeroSequence), the OCR result and the patrol approval smaller on either side. Below a desktop the
+ * columns stack, centred: the copy, the phones, the claims.
  */
 export function Intro() {
   const t = useT(), m = t.qf, capture = useCapture();
   return (
     <section id="qf-intro" className="relative isolate overflow-hidden pt-36 pb-section max-sm:pt-28">
-      {/* a block of green from the top of the page to the bottom of this one, the phones standing across its
-          edge: the right two fifths on a desktop, the lower part behind the phones below that */}
-      <div aria-hidden="true" className="absolute -z-1 overflow-hidden bg-qf-soft lg:inset-y-0 lg:right-0 lg:w-[40%] max-lg:inset-x-0 max-lg:bottom-0 max-lg:h-[42%]">
-        <div className="absolute inset-0 deco-grid mask-[radial-gradient(ellipse_80%_70%_at_50%_50%,#000,transparent)]" />
-      </div>
 
       {/* a desktop: the copy and the claims under it on the left, the phones on the right across both;
           below that, stacked: the copy, the phones, the claims */}
@@ -54,12 +49,12 @@ export function Intro() {
           </div>
         </div>
 
-        {/* The three phones side by side, at staggered heights, whole and apart: the film in the middle, the
-            largest and the highest; the OCR result and the patrol approval smaller and lower on either side,
-            turned toward it. Each with its name under it. */}
+        {/* The three phones side by side, face on, at staggered heights, whole and apart: the film in the
+            middle, the largest and the highest; the OCR result and the patrol approval smaller and lower on
+            either side. Each with its name under it. */}
         <ul className="rv m-0 flex w-full list-none items-start justify-center gap-[4%] self-center p-0 lg:col-start-2 lg:row-span-2 lg:row-start-1">
           <li className="grid w-[25%] justify-items-center gap-3.5 pt-[16%]">
-            <Phone src={capture('ocr-input.webp')} alt={m.alt.ocr} sizes={SIDE_SIZES} view="right" className="w-full" />
+            <Phone src={capture('ocr-input.webp')} alt={m.alt.ocr} sizes={SIDE_SIZES} className="w-full" />
             <Caption icon={<ScanText className="size-4" />} className="max-sm:hidden">{m.problem.afterSteps[1]}</Caption>
           </li>
           <li className="grid w-[42%] justify-items-center gap-4">
@@ -68,7 +63,7 @@ export function Intro() {
             <Caption strong icon={<Camera className="size-4" />}>{m.how.steps.map(x => x.title).join(' → ')}</Caption>
           </li>
           <li className="grid w-[25%] justify-items-center gap-3.5 pt-[30%]">
-            <Phone src={capture('mobile-compare.webp')} alt={m.alt.compare} sizes={SIDE_SIZES} view="left" className="w-full" />
+            <Phone src={capture('mobile-compare.webp')} alt={m.alt.compare} sizes={SIDE_SIZES} className="w-full" />
             <Caption icon={<FileCheck2 className="size-4" />} className="max-sm:hidden">{m.problem.afterSteps[3]}</Caption>
           </li>
         </ul>
