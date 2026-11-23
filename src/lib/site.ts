@@ -11,7 +11,7 @@ export const TEL = '+82-53-710-1022';
 export const TEL_HREF = 'tel:+82537101022';
 
 /** the CES 2027 booth the contact block names */
-export const BOOTH = '62401';
+export const BOOTH = '62817-059';
 /** the show closes on Jan 9 in Las Vegas (PST): from then on the hero's CES banner offers the online demo instead */
 export const CES_END = Date.parse('2027-01-10T00:00:00-08:00');
 /** until the show closes the demo buttons say "CES 데모 신청" (read when a page renders) */

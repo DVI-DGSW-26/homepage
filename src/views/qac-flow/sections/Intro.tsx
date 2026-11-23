@@ -132,7 +132,7 @@ function CesBanner() {
       {tag}
       <span className="flex flex-wrap items-center gap-x-3 gap-y-1 self-center">
         <span className="inline-flex items-center gap-1.5 font-semibold"><CalendarDays aria-hidden="true" className="size-4" />{c.when}</span>
-        <span className="inline-flex items-center gap-1.5 font-semibold" title={c.hall}><MapPin aria-hidden="true" className="size-4" />{c.where(BOOTH)}</span>
+        <span className="inline-flex items-start gap-1.5 font-semibold" title={c.hall}><MapPin aria-hidden="true" className="mt-[.2em] size-4 flex-none" />{c.where(BOOTH)}</span>
         {/* under them, on a line of its own */}
         <span className="basis-full font-medium opacity-85">{c.try}</span>
       </span>
