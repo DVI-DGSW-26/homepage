@@ -9,7 +9,7 @@ export const en: Messages = {
 
   meta: {
     '/qac-flow': {
-      title: 'QAC FLOW – Paperless quality inspection from a phone',
+      title: 'QAC FLOW – Paperless quality inspection, through to reports and SPC',
       description: 'Photograph the gauge with a smartphone: OCR reads the value, judges it against the tolerance and carries it through to the inspection report.'
     },
     '/data': {
@@ -185,17 +185,18 @@ export const en: Messages = {
         { title: 'Xbar-R control chart', body: 'Follow subgroup means and ranges against their control limits.' },
         { title: 'Process capability', body: 'See how stably the process runs within tolerance with Cp, Cpk, Pp and Ppk.' },
         { title: 'Filters', body: 'Narrow the view by product, characteristic, machine and period.' },
-        { title: 'Trend by machine', body: 'Compare how each machine\'s measurements move within the spec band.' }
+        { title: 'Equipment issues and actions', body: 'Each machine\'s issue reports, corrective actions, downtime and cost stay on record, so a shift in quality can be traced to its cause.' }
       ],
       metricsLabel: 'Key indicators',
       metrics: ['Cpk', 'Ppk', 'Mean', 'Std. dev.', 'Sample count', 'Out of control'],
-      captions: ['Filters · indicators · Xbar-R charts', 'Process capability', 'Trend by machine'],
+      captions: ['Filters · indicators · Xbar-R charts', 'Process capability', 'Equipment issue reports', 'How an issue was handled'],
       alts: [
         'SPC analysis screen: product, dimension, machine and period filters, an approaching-control-limit warning, Cpk, Ppk, mean, sigma, sample count and out-of-control indicators, and the X̄ and R charts',
         'SPC process capability: a histogram of all measurements against the lower and upper spec limits, with Cp, Cpk, Pp and Ppk',
-        'SPC trend by machine: the measurements of CNC-01 and CNC-02 over time inside the spec band, with each machine\'s mean, Cpk and sample count'
+        'Equipment issue list: issues on CNC-01 and CNC-02 with the time and reporter, downtime and cost, and an in-progress or resolved status',
+        'Equipment issue detail: a CNC-01 report of the overall length drifting toward the upper limit, from report through end mill replacement and offset correction to resolution after re-measurement, with total downtime, action cost and the machine\'s other reports'
       ],
-      note: 'The actual SPC analysis screens. Click a screen to see it full size. Sample data.'
+      note: 'The actual SPC analysis and equipment issue screens in QAC FLOW. Click a screen to see it full size. Sample data.'
     },
     /** the inspection report: the three pages one approval issues, and what its QR code and ESG line are for */
     report: {

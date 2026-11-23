@@ -3,7 +3,8 @@ import { Band } from '../../../components/ui';
 import { Browser, Head } from '../parts';
 
 /** SPC: what the approved records add up to, with the SPC screen of the app (CES final, Korean and
- * English) cut into three: the filters, indicators and X̄-R charts; capability; the trend by machine.
+ * English) cut in two (the filters, indicators and X̄-R charts; capability) and the equipment issue
+ * history from the app's Machine Issues menu (the list, and one issue from report to close).
  * The request doc (p.11) keeps defect prediction and Ask AI off the homepage, so the capture is cropped
  * without the forecast block and the title row that holds the AI button, and the copy has no prediction
  * or AI wording, nor a claim that new values show live until that is verified. */
@@ -29,9 +30,13 @@ export function Spc() {
       </div>
       <div className="mt-10 grid gap-4">
         <Browser className="rv" src="spc-charts.webp" alt={s.alts[0]} caption={s.captions[0]} sizes="(max-width: 1440px) 100vw, 1280px" />
+        {/* capability and the equipment issue list stacked, beside one issue followed through to its close */}
         <div className="grid items-start gap-4 md:grid-cols-2">
-          <Browser className="rv" src="spc-capability.webp" alt={s.alts[1]} caption={s.captions[1]} sizes="(max-width: 767px) 100vw, 640px" />
-          <Browser className="rv" src="spc-trend.webp" alt={s.alts[2]} caption={s.captions[2]} sizes="(max-width: 767px) 100vw, 640px" />
+          <div className="grid gap-4">
+            <Browser className="rv" src="spc-capability.webp" alt={s.alts[1]} caption={s.captions[1]} sizes="(max-width: 767px) 100vw, 640px" />
+            <Browser className="rv" src="equip-issues.webp" alt={s.alts[2]} caption={s.captions[2]} sizes="(max-width: 767px) 100vw, 640px" />
+          </div>
+          <Browser className="rv" src="equip-issue-detail.webp" alt={s.alts[3]} caption={s.captions[3]} sizes="(max-width: 767px) 100vw, 640px" />
         </div>
       </div>
       <p className="mono m-0 mt-6 text-micro text-mute">{s.note}</p>
