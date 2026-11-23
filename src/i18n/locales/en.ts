@@ -57,7 +57,7 @@ export const en: Messages = {
     stats: ['No dedicated gauges or sensor installation', 'Started running in our own plant'],
     kit: 'A smartphone, one server PC and a monitor',
     statsNote: 'In-house validation at our Daegu HQ plant · IATF 16949',
-    cta: { demo: 'Request a demo', apply: 'Ask about your floor', how: 'See how it works' },
+    cta: { demo: 'Request a demo', cesDemo: 'Request a CES demo', apply: 'Ask about your floor', how: 'See how it works' },
     ces: {
       label: 'CES 2027',
       when: 'Jan 6–9, Las Vegas',
@@ -225,6 +225,7 @@ export const en: Messages = {
     notice: 'We use your name, work email and company to answer your request and follow up, and delete them one year after your inquiry is closed. On the way to our mailbox (Google Workspace) they pass through Vercel and Resend in the U.S.',
     policy: 'Privacy Policy',
     submit: 'Request a demo',
+    submitCes: 'Request a CES demo',
     sending: 'Sending…',
     again: 'New request',
     retry: 'Try again',

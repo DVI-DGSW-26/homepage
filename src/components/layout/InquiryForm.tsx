@@ -13,7 +13,7 @@ import { CircleAlert, CircleCheck } from 'lucide-react';
 import { useLang, usePage, useT } from '../../i18n';
 import { pathOf } from '../../lib/paths';
 import { normalizeEmail, sendInquiry, type InquirySource } from '../../lib/inquiry';
-import { SALES_EMAIL } from '../../lib/site';
+import { SALES_EMAIL, duringCes } from '../../lib/site';
 import { cn } from '../../lib/cn';
 
 /** in the order they show and are checked: name and company side by side, the email below */
@@ -93,7 +93,7 @@ export function InquiryForm({ source, className, onDone }: { source: InquirySour
         <div className="grid gap-2 sm:flex sm:items-center sm:gap-5">
           <button type="submit" disabled={status === 'sending'}
             className={cn(BUTTON, 'flex-none border border-qf bg-qf text-on-acc hover:brightness-110 disabled:cursor-wait disabled:opacity-60')}>
-            {status === 'sending' ? c.sending : c.submit}
+            {status === 'sending' ? c.sending : duringCes() ? c.submitCes : c.submit}
           </button>
           <p role="status" id={errorId} className="m-0 min-h-[2lh] text-body-sm leading-snug text-err sm:min-h-0 sm:flex-1">
             {error && c.invalid[error]}

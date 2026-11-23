@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { House } from 'lucide-react';
 import { LANGS, pathOf, type Page } from '../../lib/paths';
-import { SITES } from '../../lib/site';
+import { SITES, duringCes } from '../../lib/site';
 import { useLang, useT } from '../../i18n';
 import { noteLangPosition } from '../../lib/scroll';
 import { setTheme, useTheme } from '../../lib/theme';
@@ -97,7 +97,7 @@ export function Nav({ page }: { page: Page }) {
           {/* on a phone the bar keeps the logo, the demo button and the menu; the language and the mode are in the sheet */}
           <span className="max-sm:hidden">{langs}</span>
           <a href="#contact" onClick={demo}
-            className="inline-flex min-h-9 flex-none items-center rounded-full border border-qf bg-qf px-4.5 text-body-sm font-semibold whitespace-nowrap text-on-acc transition-[filter] duration-300 hover:brightness-110 max-sm:min-h-8 max-sm:px-3 max-sm:text-caption">{t.qf.cta.demo}</a>
+            className="inline-flex min-h-9 flex-none items-center rounded-full border border-qf bg-qf px-4.5 text-body-sm font-semibold whitespace-nowrap text-on-acc transition-[filter] duration-300 hover:brightness-110 max-sm:min-h-8 max-sm:px-3 max-sm:text-caption">{duringCes() ? t.qf.cta.cesDemo : t.qf.cta.demo}</a>
           <span className="contents max-sm:hidden">{themeButton}</span>
           <button type="button" onClick={() => { sheet.current?.showModal(); setSheetOpen(true); }} aria-label={m.open} aria-haspopup="dialog" className={cn(ROUND_BTN, 'lg:hidden')}>
             <MenuIcon />

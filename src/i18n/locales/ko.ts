@@ -70,7 +70,8 @@ export const ko = {
     kit: '스마트폰 · 서버 PC 1대 · 모니터면 충분',
     statsNote: '대구 본사 공장 사내 검증 · IATF 16949',
     /** the buttons that lead to the demo request form (#contact) */
-    cta: { demo: '데모 신청', apply: '우리 현장에 적용 문의', how: '작동 방식 보기' },
+    /** demo: the demo buttons, cesDemo in its place until CES 2027 closes (duringCes, src/lib/site.ts) */
+    cta: { demo: '데모 신청', cesDemo: 'CES 데모 신청', apply: '우리 현장에 적용 문의', how: '작동 방식 보기' },
     /** the banner above the name: the booth until the show closes (CES_END in src/lib/site.ts), then the online demo */
     ces: {
       label: 'CES 2027',
@@ -242,6 +243,7 @@ export const ko = {
     notice: '데모 신청 응대와 후속 상담을 위해 이름·회사 이메일·회사명을 받아 상담 종료 후 1년간 보관한 뒤 파기합니다. 접수·발송 과정에서 미국의 Vercel·Resend를 거쳐 회사 메일(Google Workspace)로 전달됩니다.',
     policy: '개인정보처리방침',
     submit: '데모 신청',
+    submitCes: 'CES 데모 신청',
     sending: '보내는 중…',
     /** after sending: the page-end form starts a new one, a failed one goes back to the filled form */
     again: '새로 작성',
