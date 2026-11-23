@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { ArrowRight, CalendarDays, Camera, CircleCheck, FileCheck2, MapPin, ScanText, ShieldCheck } from 'lucide-react';
 import { lines, useT } from '../../../i18n';
 import { Phone } from '../../../components/Device';
+import { Img } from '../../../components/Img';
 import { H2, Lead, Pill } from '../../../components/ui';
 import { cn } from '../../../lib/cn';
 import { openInquiry } from '../../../lib/inquiry';
@@ -35,7 +36,11 @@ export function Intro() {
       <div className="wrap grid gap-stack-sm lg:grid-cols-[minmax(0,.92fr)_minmax(0,1.08fr)] lg:grid-rows-[auto_1fr] lg:gap-x-10 lg:gap-y-10">
         <div className="grid justify-items-start self-end text-left max-lg:justify-items-center max-lg:text-center">
           <CesBanner />
-          <h1 className="rv m-0 font-display text-wordmark leading-display font-extrabold tracking-heading-sm">QAC<span className="text-qf-ink"> FLOW</span></h1>
+          {/* the product logo, its wordmark in light ink on the dark theme; the h1 reads as the name */}
+          <h1 className="rv relative m-0 w-[clamp(16rem,38vw,32rem)]">
+            <Img className="block h-auto w-full transition-opacity duration-500 light:opacity-0" src="assets/img/qacflow-logo-white.png" sizes="(max-width: 840px) 70vw, 512px" priority alt="QAC FLOW" />
+            <Img className="absolute inset-0 size-full opacity-0 transition-opacity duration-500 light:opacity-100" src="assets/img/qacflow-logo.png" sizes="(max-width: 840px) 70vw, 512px" priority alt="" />
+          </h1>
           {/* the letters of the name spelled out after a short rule; one line on the narrowest phones too */}
           <p className="rv mono m-0 mt-3 flex items-center gap-3.5 text-fg-2 before:h-px before:w-8.5 before:bg-line-2 max-sm:tracking-wide max-sm:before:hidden">{m.expand}</p>
           <H2 className="rv mt-6">{m.title}</H2>
