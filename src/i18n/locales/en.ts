@@ -1,6 +1,6 @@
 // English copy. Typed as Messages, so a key missing here (or one ko.ts doesn't have) fails the build.
-import type { Messages } from './ko.ts';
-import { privacyEn } from './privacy.en.ts';
+import type { Messages } from './ko';
+import { privacyEn } from './privacy.en';
 
 /** a span of minutes as hours and minutes: 186 → "3h 6m" */
 const dur = (m: number) => `${m >= 60 ? `${Math.floor(m / 60)}h ` : ''}${m % 60}m`;

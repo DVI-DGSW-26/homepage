@@ -1,3 +1,4 @@
+'use client';
 // The demo request block at the end of QAC FLOW and Data Industry (#contact): who to ask, the CES booth
 // and the PDFs to take away (DOWNLOADS, once there are any) beside the form. The demo buttons higher up
 // open the same form in a dialog (InquiryDialog).

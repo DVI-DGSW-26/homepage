@@ -10,8 +10,8 @@
 // fetch priority, no placeholder.
 //
 // <picture> is display: contents, so the <img> stays the box that classes, refs and grid/flex
-// placement apply to. A path with no manifest entry, and the single-file build (whose images are
-// inlined as data URIs, see scripts/single.mjs), get a plain <img>.
+// placement apply to. A path with no manifest entry gets a plain <img>. Paths are written as in the
+// manifest (assets/img/…) and served from the site root, so they resolve the same under /en/.
 import type { ComponentProps, CSSProperties } from 'react';
 import data from '../generated/images.json';
 
@@ -19,10 +19,9 @@ import data from '../generated/images.json';
 type Meta = { w: number; h: number; v: string; ws: number[]; f?: string[]; c?: string; b?: string };
 const FORMATS = ['avif', 'webp'];
 const IMAGES = data as Record<string, Meta>;
-const INLINE = typeof window !== 'undefined' && '__ASSETS__' in window;
 
 const variant = (src: string, m: Meta, w: number, fmt: string) =>
-  `${src.replace(/^assets\/img\//, 'assets/opt/').replace(/\.[^.]+$/, '')}.${m.v}-${w}.${fmt}`;
+  `/${src.replace(/^assets\/img\//, 'assets/opt/').replace(/\.[^.]+$/, '')}.${m.v}-${w}.${fmt}`;
 const srcSet = (src: string, m: Meta, fmt: string) => m.ws.map(w => `${variant(src, m, w, fmt)} ${w}w`).join(', ');
 
 export type ImgProps = Omit<ComponentProps<'img'>, 'src' | 'srcSet' | 'width' | 'height'> & {
@@ -36,13 +35,13 @@ export type ImgProps = Omit<ComponentProps<'img'>, 'src' | 'srcSet' | 'width' | 
 export function Img({ src, sizes = '100vw', priority = false, alt = '', loading, decoding = 'async', style, ...rest }: ImgProps) {
   const m = IMAGES[src];
   const base = {
-    src, alt, decoding,
+    src: '/' + src, alt, decoding,
     width: m?.w, height: m?.h,
     loading: loading ?? (priority ? 'eager' : 'lazy'),
     fetchPriority: priority ? 'high' as const : undefined,
     ...rest
   };
-  if (!m || INLINE || !m.ws.length) return <img {...base} style={style} />;
+  if (!m || !m.ws.length) return <img {...base} style={style} />;
   // an opaque image covers its own background once it has loaded
   const placeholder: CSSProperties | undefined = priority || !m.c ? undefined
     : m.b ? { backgroundColor: m.c, backgroundImage: `url("${m.b}")`, backgroundSize: 'cover', backgroundPosition: 'center' }

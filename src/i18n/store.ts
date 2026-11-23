@@ -1,41 +1,26 @@
-// Language state.
+'use client';
+// Language and page, as the address says them.
 //
 // UI copy lives in the dictionaries under ./locales (ko.ts is the source, en.ts mirrors its shape);
-// components read it with useT().
-//
-// Switching is instant: setLang() updates this store and every useT() / useLang() caller re-renders.
-// The URL never changes. The choice is remembered in localStorage, and a shared `?lang=en` link is still honoured on arrival (then dropped from the
-// address on the next switch).
-import { createStore, useStore } from '../lib/store';
+// components read it with useT(). The language is the address's (/ Korean, /en English): each page
+// (src/app/…/page.tsx) hands its language and page to <Shell>, which provides them here, so the server
+// renders every page fully in its language and the browser hydrates the same. Switching language is a
+// link to the other language's address (KOR / ENG in the header).
+import { createContext, useContext } from 'react';
+import type { Lang, Page } from '../lib/paths';
 import { ko, type Messages } from './locales/ko';
 import { en } from './locales/en';
 
-const STORE = 'dv-lang';
-const ALLOWED = ['ko', 'en'] as const;
-export type Lang = (typeof ALLOWED)[number];
-const isLang = (v: unknown): v is Lang => ALLOWED.includes(v as Lang);
-
-const stored = () => { try { return localStorage.getItem(STORE); } catch { return null; } };
-const fromUrl = () => { try { return new URL(location.href).searchParams.get('lang'); } catch { return null; } };
-const remember = (l: Lang) => { try { localStorage.setItem(STORE, l); } catch { /* private mode: the choice just won't stick */ } };
-
-const requested = fromUrl();
-if (isLang(requested)) remember(requested);
-export const lang = createStore<Lang>(isLang(requested) ? requested : (stored() === 'en' ? 'en' : 'ko'));
-
-/** The current language; re-renders the caller when it changes. */
-export const useLang = () => useStore(lang);
+export type { Lang } from '../lib/paths';
 
 const DICTS: Record<Lang, Messages> = { ko, en };
-/** The UI copy for the current language. */
-export const messages = (): Messages => DICTS[lang.get()];
-/** The UI copy for the current language; re-renders the caller when it changes. */
-export const useT = (): Messages => DICTS[useLang()];
 
-export function setLang(next: Lang) {
-  if (!isLang(next) || next === lang.get()) return;
-  remember(next);
-  // a ?lang= left in the address would contradict the page (and win on the next visit)
-  try { const url = new URL(location.href); if (url.searchParams.has('lang')) { url.searchParams.delete('lang'); history.replaceState(history.state, '', url); } } catch { /* ignore */ }
-  lang.set(next);
-}
+export const LangContext = createContext<Lang>('ko');
+export const PageContext = createContext<Page>('/qac-flow');
+
+/** The current language. */
+export const useLang = () => useContext(LangContext);
+/** The page being shown. */
+export const usePage = () => useContext(PageContext);
+/** The UI copy for the current language. */
+export const useT = (): Messages => DICTS[useLang()];

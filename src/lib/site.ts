@@ -1,11 +1,11 @@
 // Facts about the company and its sites that don't change with the language (the copy that does is in
-// src/i18n/locales). The SEO head (scripts/seo.ts) reads ORIGIN too.
-import type { Lang } from '../i18n/store.ts';
+// src/i18n/locales). The SEO head and sitemap (src/site/seo.ts) read ORIGIN too.
+import type { Lang } from './paths';
 
 /** this site, as search engines and link previews should name it (no trailing slash) */
 export const ORIGIN = 'https://solution.dvi-ind.com';
 
-/** where inquiries go; api/inquiry.ts sends to the same address unless INQUIRY_MAIL_TO says otherwise */
+/** where inquiries go; src/server/inquiry.ts sends to the same address unless INQUIRY_MAIL_TO says otherwise */
 export const SALES_EMAIL = 'sales@dvi-ind.com';
 export const TEL = '+82-53-710-1022';
 export const TEL_HREF = 'tel:+82537101022';

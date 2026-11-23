@@ -4,7 +4,7 @@
 // e.g. the manifesto's highlighted words. A "\n" marks where a wrapping line had better break
 // (between sentences or phrases) and is rendered with lines(); it is a hint, not a forced break.
 // Copy that varies with a number is a function.
-import { privacyKo } from './privacy.ko.ts';
+import { privacyKo } from './privacy.ko';
 
 /** a span of minutes as hours and minutes: 186 → "3시간 6분" */
 const dur = (m: number) => `${m >= 60 ? `${Math.floor(m / 60)}시간 ` : ''}${m % 60}분`;

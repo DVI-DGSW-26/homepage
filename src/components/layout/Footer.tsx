@@ -1,4 +1,6 @@
+import Link from 'next/link';
 import { useLang, useT } from '../../i18n';
+import { pathOf } from '../../lib/paths';
 import { SALES_EMAIL, SITES } from '../../lib/site';
 
 const LINK = 'text-fg-2 transition-colors duration-300 hover:text-fg';
@@ -9,7 +11,7 @@ export function Footer() {
   const sites = [
     { href: SITES.gateway(lang), label: f.links.gateway },
     { href: SITES.manufacturing(lang), label: f.links.manufacturing },
-    { href: '/qac-flow', label: f.links.solution }
+    { href: pathOf('/qac-flow', lang), label: f.links.solution }
   ];
   return (
     <footer id="footer" className="relative isolate overflow-hidden border-t border-line bg-bg-2 py-block-gap">
@@ -29,7 +31,7 @@ export function Footer() {
         </div>
         <div className="flex flex-wrap items-center justify-between gap-4 border-t border-line pt-6 text-caption text-mute">
           <span>{f.copyright}</span>
-          <a href="/privacy" className="font-semibold text-fg-2 transition-colors duration-300 hover:text-fg">{f.privacy}</a>
+          <Link href={pathOf('/privacy', lang)} className="font-semibold text-fg-2 transition-colors duration-300 hover:text-fg">{f.privacy}</Link>
         </div>
       </div>
     </footer>

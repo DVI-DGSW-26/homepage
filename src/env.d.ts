@@ -1,8 +1,2 @@
-/** the design tokens' names by namespace, read from src/styles/tokens.css (scripts/tw-tokens.ts) */
-declare module 'virtual:tw-tokens' {
-  const TOKENS: Record<'text' | 'tracking' | 'leading' | 'spacing' | 'container' | 'radius' | 'breakpoint' | 'ease' | 'shadow', string[]>;
-  export default TOKENS;
-}
-
-/** the self-hosted webfonts (src/main.tsx): "@fontsource/<family>/<weight>" is a CSS file through the package's exports */
+/** the self-hosted webfonts (the root layout): "@fontsource/<family>/<weight>" is a CSS file through the package's exports */
 declare module '@fontsource/*';

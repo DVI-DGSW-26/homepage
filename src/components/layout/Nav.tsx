@@ -1,27 +1,29 @@
 // The header: a pill floating over the top of the page, the width of the content column. The menu
-// links to the pages, the current one lit.
+// links to the pages in the language being read, the current one lit; KOR / ENG link to the same page
+// in the other language (/data ↔ /en/data), so search engines find both.
 // Below 1200px (tablets, phones, a spanned dual-screen device) the menu moves into a sheet behind a button.
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type MouseEvent } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { House } from 'lucide-react';
-import type { Page } from '../../lib/router';
+import { LANGS, pathOf, type Page } from '../../lib/paths';
 import { SITES } from '../../lib/site';
-import { setLang, useLang, useT, type Lang } from '../../i18n';
-import { holdPosition } from '../../lib/scroll';
+import { useLang, useT } from '../../i18n';
+import { noteLangPosition } from '../../lib/scroll';
 import { setTheme, useTheme } from '../../lib/theme';
 import { LG, pad2 } from '../../lib/env';
 import { cn } from '../../lib/cn';
-import { useBackToClose } from '../../lib/history';
+import { afterDialogEntry, useBackToClose } from '../../lib/history';
 import { Img } from '../Img';
 
 const LINKS = ['/qac-flow', '/data'] as const satisfies readonly Page[];
-const LANGS: Lang[] = ['ko', 'en'];
 
 const ROUND_BTN = 'relative grid size-9 flex-none cursor-pointer place-items-center rounded-full border border-line text-fg-2 transition-colors duration-300 hover:border-line-2 hover:text-fg max-sm:size-8';
 
 export function Nav({ page }: { page: Page }) {
   const sheet = useRef<HTMLDialogElement>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
-  const lang = useLang(), theme = useTheme(), t = useT(), m = t.nav;
+  const lang = useLang(), theme = useTheme(), t = useT(), m = t.nav, router = useRouter();
   // turned to a desktop width with the sheet open (a tablet rotated, a window widened): the bar has the menu again
   useEffect(() => {
     const lg = matchMedia(LG), close = () => { if (lg.matches) sheet.current?.close(); };
@@ -30,24 +32,32 @@ export function Nav({ page }: { page: Page }) {
   }, []);
   const closeSheet = () => sheet.current?.close();
   useBackToClose(sheetOpen, closeSheet);
+  // a page link in the sheet: the sheet closes (taking its history entry back off), then the page opens
+  const openFromSheet = (e: MouseEvent<HTMLAnchorElement>) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    e.preventDefault();
+    const href = e.currentTarget.getAttribute('href')!;
+    afterDialogEntry(() => router.push(href));
+    closeSheet();
+  };
   return (
     <>
     <header id="nav" className="fixed inset-x-0 top-0 z-100 booting:opacity-0">
       <div className="relative mx-auto mt-4 flex w-wrap items-center justify-between gap-6 rounded-full border border-line bg-nav py-2.5 pr-3 pl-5 max-sm:gap-3 max-sm:pr-2 max-sm:pl-3.5">
-        <a className="relative block aspect-800/216 w-logo flex-none max-sm:w-24 max-2xs:w-22" href="/qac-flow" aria-label={m.home}>
+        <Link className="relative block aspect-800/216 w-logo flex-none max-sm:w-24 max-2xs:w-22" href={pathOf('/qac-flow', lang)} aria-label={m.home}>
           <Img className="absolute inset-0 size-full object-contain transition-opacity duration-500 light:opacity-0" src="assets/img/logo-white.png" sizes="136px" priority={theme === 'dark'} alt={t.brand} />
           <Img className="absolute inset-0 size-full object-contain opacity-0 transition-opacity duration-500 light:opacity-100" src="assets/img/logo.png" sizes="136px" priority={theme === 'light'} alt="" />
-        </a>
+        </Link>
         {/* below 1200px the menu is in the sheet (the button at the end of the bar) */}
         <nav aria-label={m.menu} className="max-lg:hidden">
           <ul className="mono m-0 flex list-none gap-nav-gap p-0 max-xl:gap-nav-gap-tight">
             {LINKS.map(to => (
               <li key={to}>
-                <a href={to} aria-current={page === to ? 'page' : undefined} data-active={page === to || undefined} className={cn(
+                <Link href={pathOf(to, lang)} aria-current={page === to ? 'page' : undefined} data-active={page === to || undefined} className={cn(
                   'relative py-1.5 text-fg-2 transition-colors duration-300 hover:text-fg data-active:text-fg',
                   "after:absolute after:inset-x-0 after:bottom-0 after:h-px after:origin-right after:scale-x-0 after:bg-fg after:transition-transform after:duration-500 after:ease-out",
                   'hover:after:origin-left hover:after:scale-x-100 data-active:after:origin-left data-active:after:scale-x-100'
-                )}>{m.links[to]}</a>
+                )}>{m.links[to]}</Link>
               </li>
             ))}
           </ul>
@@ -64,8 +74,10 @@ export function Nav({ page }: { page: Page }) {
             {LANGS.map((l, i) => (
               <span key={l} className="contents">
                 {i > 0 && <i aria-hidden="true" className="mx-0.5 not-italic opacity-50">/</i>}
-                <button type="button" aria-pressed={l === lang} onClick={() => { if (l === lang) return; holdPosition(); setLang(l); }}
-                  className={cn('-my-2 cursor-pointer px-1 py-2 transition-colors duration-300 max-2xs:px-0.5', l === lang ? 'font-medium text-fg' : 'hover:text-fg-2')}>{m.langs[l]}</button>
+                {l === lang
+                  ? <span aria-current="true" lang={l} className="-my-2 px-1 py-2 font-medium text-fg max-2xs:px-0.5">{m.langs[l]}</span>
+                  : <a href={pathOf(page, l)} hrefLang={l} lang={l} onClick={() => noteLangPosition(page)}
+                    className="-my-2 px-1 py-2 transition-colors duration-300 hover:text-fg-2 max-2xs:px-0.5">{m.langs[l]}</a>}
               </span>
             ))}
           </span>
@@ -91,7 +103,7 @@ export function Nav({ page }: { page: Page }) {
           <ul className="m-0 grid list-none border-t border-line p-0">
             {LINKS.map((to, i) => (
               <li key={to}>
-                <a href={to} onClick={closeSheet} aria-current={page === to ? 'page' : undefined} data-active={page === to || undefined}
+                <a href={pathOf(to, lang)} onClick={openFromSheet} aria-current={page === to ? 'page' : undefined} data-active={page === to || undefined}
                   className="group/link flex items-baseline gap-4 border-b border-line py-4 text-menu leading-tight font-semibold tracking-heading text-fg-2 transition-colors duration-300 hover:text-fg data-active:text-fg max-sm:py-3.5">
                   <span className="mono w-8 flex-none text-mute group-data-active/link:text-acc-ink">{pad2(i + 1)}</span>{m.links[to]}
                 </a>

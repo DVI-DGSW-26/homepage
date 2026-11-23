@@ -1,7 +1,7 @@
 // The privacy policy (/privacy), English. Same shape and facts as privacy.ko.ts; the Korean statute's
 // items, plus what U.S. visitors expect without claiming any particular U.S. law applies: no sale or
 // sharing, rights for visitors anywhere, CalOPPA's Do Not Track disclosure, and children.
-import type { Policy } from './privacy.ko.ts';
+import type { Policy } from './privacy.ko';
 
 export const privacyEn: Policy = {
   title: 'Privacy Policy',

@@ -2,7 +2,7 @@
 // beyond stills (the hero's silent loop, the 60–90 s demo, the PDFs), each null or empty until planning
 // hands over the file, and the page draws nothing for it until then. Fill these in and the places
 // that use them appear.
-import type { Lang } from '../i18n/store.ts';
+import type { Lang } from './paths';
 import { createStore, useStore } from './store';
 
 /** The hero's loop, played in the front phone over its still (the `capture` screen, which stays as the

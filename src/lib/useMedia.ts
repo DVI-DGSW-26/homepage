@@ -7,5 +7,6 @@ export function useMedia(query: string) {
     mq.addEventListener('change', fn);
     return () => mq.removeEventListener('change', fn);
   }, [query]);
-  return useSyncExternalStore(subscribe, () => matchMedia(query).matches);
+  // on the server, and while the page hydrates, nothing matches
+  return useSyncExternalStore(subscribe, () => matchMedia(query).matches, () => false);
 }

@@ -6,12 +6,12 @@
 // Its height never changes, so the dialog around it holds still: a field error takes the space beside the
 // button (reserved under it on a phone), and the outcome
 // covers the form at the same size. A failed send keeps what was typed under that cover and offers the
-// sales address (no server, as in the single-file build, fails too). The privacy policy opens in a new tab
+// sales address. The privacy policy opens in a new tab
 // so nothing typed is lost.
 import { useEffect, useId, useRef, useState, type FormEvent } from 'react';
 import { CircleAlert, CircleCheck } from 'lucide-react';
-import { useLang, useT } from '../../i18n';
-import { usePage } from '../../lib/router';
+import { useLang, usePage, useT } from '../../i18n';
+import { pathOf } from '../../lib/paths';
 import { normalizeEmail, sendInquiry, type InquirySource } from '../../lib/inquiry';
 import { SALES_EMAIL } from '../../lib/site';
 import { cn } from '../../lib/cn';
@@ -87,7 +87,7 @@ export function InquiryForm({ source, className, onDone }: { source: InquirySour
         </div>
 
         <p className="m-0 border-t border-line pt-5 text-caption leading-caption text-fg-2">
-          {c.notice} <a href="/privacy" target="_blank" rel="noopener" className="whitespace-nowrap text-qf-ink underline underline-offset-4">{c.policy}</a>
+          {c.notice} <a href={pathOf('/privacy', lang)} target="_blank" rel="noopener" className="whitespace-nowrap text-qf-ink underline underline-offset-4">{c.policy}</a>
         </p>
 
         <div className="grid gap-2 sm:flex sm:items-center sm:gap-5">

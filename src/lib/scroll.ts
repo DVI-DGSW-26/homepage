@@ -23,7 +23,7 @@ export function smoothAnchors() {
   return () => document.removeEventListener('click', onClick);
 }
 
-/** A deep link (the CES QR code opens /?lang=en#qac-flow) lands on its section. The browser's own
+/** A deep link (the CES QR code opens /?lang=en#qac-flow, now /en#qac-flow) lands on its section. The browser's own
  * jump happens before React has rendered the target, so this runs once the page is laid out, and
  * again after load in case late fonts moved things. */
 export function landOnHash() {
@@ -34,18 +34,18 @@ export function landOnHash() {
   if (document.readyState !== 'complete') addEventListener('load', () => requestAnimationFrame(land), { once: true });
 }
 
-// Keeping the reader's place across a re-layout (a language switch rewraps every paragraph above
-// the fold): hold() notes whatever sits at the middle of the screen, release() scrolls so it is
-// back at the same height. Call release() in a layout effect, i.e. before the new layout paints.
-let held: { el: Element; top: number } | null = null;
-export function holdPosition() {
-  const el = document.elementFromPoint(innerWidth / 2, innerHeight / 2);
-  held = el ? { el, top: el.getBoundingClientRect().top } : null;
+// Keeping the reader's place across a language switch, which is a link to the other language's address
+// (/data → /en/data) and so a new page load: the link notes how far down the page the reader was, and the
+// page in the other language scrolls there once it is laid out. The copy differs in length, so the place
+// is kept as a share of the page's height rather than in pixels.
+const KEY = 'dv-lang-position';
+export function noteLangPosition(page: string) {
+  const max = document.documentElement.scrollHeight - innerHeight;
+  try { sessionStorage.setItem(KEY, JSON.stringify({ page, at: max > 0 ? scrollY / max : 0 })); } catch { /* storage off: start at the top */ }
 }
-export function releasePosition() {
-  if (!held) return;
-  const { el, top } = held; held = null;
-  if (!el.isConnected) return;
-  const d = el.getBoundingClientRect().top - top;
-  if (Math.abs(d) >= 1) window.scrollBy({ top: d, behavior: 'instant' });
+export function restoreLangPosition(page: string) {
+  let held: { page?: string; at?: number } | null = null;
+  try { held = JSON.parse(sessionStorage.getItem(KEY) ?? 'null'); sessionStorage.removeItem(KEY); } catch { return; }
+  if (!held || held.page !== page || typeof held.at !== 'number' || location.hash.length > 1) return;
+  window.scrollTo({ top: held.at * (document.documentElement.scrollHeight - innerHeight), behavior: 'instant' });
 }

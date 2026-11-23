@@ -12,7 +12,9 @@
 // set and the m-* tokens, src/styles/tokens.css). The layout is the real app's; the data is a sample (data.ts).
 import { useState } from 'react';
 import { ClipboardCheck, Globe, Pause, Play } from 'lucide-react';
-import { setLang, useLang, useT } from '../../i18n';
+import { useLang, usePage, useT } from '../../i18n';
+import { pathOf } from '../../lib/paths';
+import { noteLangPosition } from '../../lib/scroll';
 import { useInterval } from '../../lib/useInterval';
 import { cn } from '../../lib/cn';
 import { DEFECTS, LINES, QUEUE } from './data';
@@ -33,7 +35,7 @@ export const COUNTS: Partial<Record<MonitorScreen, number>> = { detail: LINES.le
 /** `screen` is the one showing, and `onScreen` asks for another; `form` is the screen it is drawn for
  * (the floor's display, or an iPad on its side: the same layout, taller) */
 export function QacMonitor({ screen, onScreen, form = 'monitor' }: { screen: MonitorScreen; onScreen: (s: MonitorScreen) => void; form?: Exclude<Form, 'phone'> }) {
-  const lang = useLang(), c = useT().monitor;
+  const lang = useLang(), page = usePage(), c = useT().monitor;
   const [cycling, setCycling] = useState(false);
   const [picked, setPicked] = useState(0);
   // cycling, it moves on to the next toolbar screen every 8 s, as the floor monitor does on its own
@@ -66,7 +68,8 @@ export function QacMonitor({ screen, onScreen, form = 'monitor' }: { screen: Mon
           <button type="button" aria-pressed={cycling} title={cycling ? c.cycling : c.fixed} onClick={() => setCycling(v => !v)} className={cn(TOOL, cycling && TOOL_ON)}>
             {cycling ? <Pause className={cn('size-3.5', FILLED)} /> : <Play className={cn('size-3.5', FILLED)} />}{cycling ? c.cycling : c.fixed}
           </button>
-          <button type="button" onClick={() => setLang(lang === 'en' ? 'ko' : 'en')} className={TOOL}><Globe className="size-4" />{c.otherLang}</button>
+          {/* the whole page in the other language, as KOR / ENG in the header */}
+          <a href={pathOf(page, lang === 'en' ? 'ko' : 'en')} hrefLang={lang === 'en' ? 'ko' : 'en'} onClick={() => noteLangPosition(page)} className={TOOL}><Globe className="size-4" />{c.otherLang}</a>
           <span className="ml-2"><Clock /></span>
         </header>
         {/* a div, not <main>: the page already has its own main landmark */}
