@@ -77,11 +77,18 @@ export const en: Messages = {
     problem: {
       kicker: '01 / Problem',
       q: 'Why does the shop floor need QAC FLOW?',
-      title: 'Writing a number twice is where data loses trust.',
+      title: 'The time spent writing on paper, taking photos and re-typing into Excel drops by 60%.',
+      lead: 'One photo of the gauge records the value, shares the photo and files it on the server at once, and the report is issued the moment it is approved.',
       before: 'Before',
       after: 'With QAC FLOW',
-      beforeSteps: ['Read the gauge', 'Write it on paper', 'Re-type it into Excel'],
-      pains: ['Time spent copying the same number again', 'Typing errors creep in', 'Quality status is known only after the weekly tally'],
+      cut: 'less inspection time',
+      totalsLabel: 'Initial, mid and final rounds combined',
+      totals: [{ item: 'Part with 5 measuring points', from: '37 min 30 s', to: '15 min' }, { item: 'Part with 10 measuring points', from: '1 h 13 min 30 s', to: '30 min' }],
+      chart: 'One inspection round · part with 5 measuring points',
+      beforeParts: ['Measure', 'Write on paper', 'Take photos', 'Send photos', 'Tidy up in Excel'],
+      afterParts: ['Measure', 'Photo, record, share and file on the server (at once)'],
+      time: (s: number) => s >= 60 ? `${Math.floor(s / 60)} min${s % 60 ? ` ${s % 60} s` : ''}` : `${s} s`,
+      note: 'Measured in-house at our Daegu HQ plant (time spent before and after QAC FLOW)',
       afterSteps: ['Photograph the gauge', 'OCR reads the value', 'Pass / fail against tolerance, instantly', 'Report issued on approval']
     },
     how: {

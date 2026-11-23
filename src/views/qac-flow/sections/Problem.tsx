@@ -1,48 +1,86 @@
 import { useT } from '../../../i18n';
-import { ICON } from '../../../components/icons';
-import { Band, LineIcon } from '../../../components/ui';
+import { Band } from '../../../components/ui';
 import { cn } from '../../../lib/cn';
 import { Head } from '../parts';
 
-/** the paper way, then QAC FLOW's, step by step in the order of the copy */
-const BEFORE = [ICON.gauge, ICON.paper, ICON.spreadsheet];
-const AFTER = [ICON.camera, ICON.scan, ICON.checkCircle, ICON.docCheck];
+/**
+ * One inspection round of a part with five measuring points, in seconds, before and after QAC FLOW, in the
+ * order of the copy's beforeParts / afterParts. Measured in our own plant (콱플로우_소모시간_비교.xlsx): the
+ * three rounds (initial, mid, final) take three times this, and a ten-point part twice that again — the
+ * totals the copy states. The share saved is the same for both: 1 − 300 / 750 = 60%.
+ */
+const BEFORE = [120, 120, 180, 30, 300];
+const AFTER = [120, 180];
+const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0);
+const BEFORE_TOTAL = sum(BEFORE), AFTER_TOTAL = sum(AFTER);
+const SAVED = Math.round((1 - AFTER_TOTAL / BEFORE_TOTAL) * 100);
 
-/** a chain of steps joined by a line: dashed and quiet for the paper way, green for QAC FLOW */
-function Flow({ labels, icons, after }: { labels: readonly string[]; icons: string[]; after?: boolean }) {
+/** One round as a bar on the scale of the paper way's, in segments joined by a 2px gap, each numbered;
+ * the steps are spelled out under it (the bar itself is decorative: the list carries the numbers). */
+function Round({ label, parts, seconds, total, after }: { label: string; parts: readonly string[]; seconds: number[]; total: string; after?: boolean }) {
+  const t = useT().qf.problem;
   return (
-    <ol className="m-0 grid list-none gap-3 p-0">
-      {labels.map((label, i) => (
-        <li key={label} className={cn(
-          'relative flex items-center gap-3.5',
-          'not-first:before:absolute not-first:before:-top-3 not-first:before:left-4.75 not-first:before:h-3 not-first:before:border-l',
-          after ? 'font-semibold text-fg not-first:before:border-qf-line' : 'text-fg-2 not-first:before:border-dashed not-first:before:border-line-2'
-        )}>
-          <LineIcon d={icons[i]} className={cn('size-10 flex-none rounded-full border p-2.25', after ? 'border-qf-line text-qf-ink' : 'border-line-2')} />
-          <span>{label}</span>
-        </li>
-      ))}
-    </ol>
+    <div className="grid gap-3">
+      <div className="flex items-baseline justify-between gap-4">
+        <span className={cn('mono text-micro', after ? 'text-qf-ink' : 'text-fg-2')}>{label}</span>
+        <b className={cn('num font-display text-title-lg leading-none font-extrabold', after ? 'text-qf-ink' : 'text-fg')}>{total}</b>
+      </div>
+      <div aria-hidden="true" className="flex gap-0.5" style={{ width: `${(sum(seconds) / BEFORE_TOTAL) * 100}%` }}>
+        {seconds.map((s, i) => (
+          <span key={i} title={`${parts[i]} · ${t.time(s)}`} style={{ flexGrow: s }}
+            className={cn('grid h-11 min-w-5 basis-0 place-items-center rounded-[4px] text-caption font-semibold',
+              after ? 'bg-qf text-on-acc' : 'bg-line-2 text-fg')}>{i + 1}</span>
+        ))}
+      </div>
+      <ol className="m-0 flex list-none flex-wrap gap-x-4 gap-y-1.5 p-0 text-caption text-fg-2">
+        {parts.map((p, i) => (
+          <li key={p} className="inline-flex items-baseline gap-1.5">
+            <span className={cn('num grid size-4.5 flex-none place-items-center self-center rounded-full text-[.7rem] font-bold', after ? 'bg-qf text-on-acc' : 'bg-line-2 text-fg')}>{i + 1}</span>
+            {p} <span className="num text-mute">{t.time(seconds[i])}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
   );
 }
 
-/** why paper fails: the same reading written twice, beside the way QAC FLOW takes it once */
+/** why paper costs time: the share of an inspection QAC FLOW saves, the totals per part, and one round
+ * before and after as two bars on one scale */
 export function Problem() {
   const p = useT().qf.problem;
   return (
     <Band id="qf-problem" alt mark="01">
-      <Head kicker={p.kicker} q={p.q} title={p.title} />
-      <div data-batch className="grid gap-4 md:grid-cols-2 md:gap-6">
-        <article className="rv grid content-start gap-6.5 rounded-card border border-dashed border-line-2 p-panel-pad text-fg-2">
-          <span className="mono justify-self-start rounded-full border border-line-2 px-3 py-1.5 text-micro">{p.before}</span>
-          <Flow labels={p.beforeSteps} icons={BEFORE} />
-          <ul className="m-0 grid list-none gap-2 border-t border-line p-0 pt-5 text-body-sm">
-            {p.pains.map(x => <li key={x} className="relative pl-5.5 before:absolute before:top-[.82em] before:left-0 before:h-px before:w-2.5 before:bg-fg-2">{x}</li>)}
-          </ul>
+      <Head kicker={p.kicker} q={p.q} title={p.title} lead={p.lead} />
+      <div data-batch className="grid gap-4 lg:grid-cols-[minmax(0,.8fr)_minmax(0,1.2fr)] lg:gap-6">
+        {/* the headline figure, and what it comes to per part */}
+        <article className="rv grid content-start gap-6 rounded-card border border-qf-line bg-linear-160 from-qf-soft to-transparent to-70% p-panel-pad">
+          <div>
+            <b className="num block font-display text-[clamp(4.5rem,11vw,8.5rem)] leading-[.9] font-extrabold text-qf-ink">{SAVED}%</b>
+            <span className="mt-2 block text-title leading-snug font-bold text-fg">{p.cut}</span>
+          </div>
+          <div className="grid gap-3 border-t border-qf-line pt-5">
+            <span className="mono text-micro text-fg-2">{p.totalsLabel}</span>
+            <dl className="m-0 grid gap-3">
+              {p.totals.map(x => (
+                <div key={x.item} className="grid gap-1">
+                  <dt className="text-caption text-fg-2">{x.item}</dt>
+                  <dd className="m-0 flex flex-wrap items-baseline gap-x-2.5 text-body">
+                    <s className="text-mute decoration-1">{x.from}</s>
+                    <span aria-hidden="true" className="text-mute">→</span>
+                    <b className="text-title leading-none font-bold text-fg">{x.to}</b>
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
         </article>
-        <article className="rv grid content-start gap-6.5 rounded-card border border-qf-line bg-linear-160 from-qf-soft to-transparent to-70% p-panel-pad">
-          <span className="mono justify-self-start rounded-full border border-qf bg-qf px-3 py-1.5 text-micro text-on-acc">{p.after}</span>
-          <Flow labels={p.afterSteps} icons={AFTER} after />
+
+        {/* one round, the paper way and QAC FLOW's, on the same scale */}
+        <article className="rv grid content-start gap-8 rounded-card border border-line bg-card/60 p-panel-pad">
+          <h4 className="m-0 text-title-xs font-semibold">{p.chart}</h4>
+          <Round label={p.before} parts={p.beforeParts} seconds={BEFORE} total={p.time(BEFORE_TOTAL)} />
+          <Round label={p.after} parts={p.afterParts} seconds={AFTER} total={p.time(AFTER_TOTAL)} after />
+          <p className="mono m-0 border-t border-line pt-4 text-micro text-mute">{p.note}</p>
         </article>
       </div>
     </Band>

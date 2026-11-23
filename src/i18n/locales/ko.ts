@@ -89,14 +89,23 @@ export const ko = {
       approval: 'PC 웹 순회검사 결재 화면: 치수별 자주검사와 순회검사 측정값 비교, 반려와 승인(보고서 발행) 버튼',
       report: '일일 품질 요약 보고서: 합격률·대표 Cpk·검사 건수·이상 발생 지표, X̄-R 관리도, 작성·검토·승인 결재와 진위 확인 QR'
     },
+    /** the time an inspection takes before and after QAC FLOW, measured in our plant (the seconds are in
+     * src/views/qac-flow/sections/Problem.tsx) */
     problem: {
       kicker: '01 / Problem',
       q: '왜 QAC FLOW가 필요한가요?',
-      title: '숫자를 두 번 옮겨 적는 순간, 데이터는 신뢰를 잃습니다.',
+      title: '종이에 적고, 사진 찍고, 엑셀로 옮기던 시간이 60% 줄어듭니다.',
+      lead: '측정기를 한 번 촬영하면 치수 기록, 사진 공유, 서버 정리가 동시에 끝나고\n결재와 동시에 보고서가 발행됩니다.',
       before: '기존 방식',
       after: 'QAC FLOW',
-      beforeSteps: ['측정기 읽기', '종이에 기록', '엑셀에 재입력'],
-      pains: ['같은 숫자를 다시 옮기는 시간', '입력 오류', '주간 집계가 끝나야 보이는 품질 상태'],
+      cut: '검사 시간 단축',
+      totalsLabel: '초품·중품·종품 3회 합계',
+      totals: [{ item: '측정부 5포인트 품목', from: '37분 30초', to: '15분' }, { item: '측정부 10포인트 품목', from: '1시간 13분 30초', to: '30분' }],
+      chart: '검사 1회 소요 시간 · 측정부 5포인트 품목',
+      beforeParts: ['치수 측정', '종이에 기록', '사진 촬영', '사진 공유 발송', '엑셀로 정리'],
+      afterParts: ['치수 측정', '촬영 · 치수 기록 · 사진 공유 · 서버 정리 (동시 진행)'],
+      time: (s: number) => s >= 60 ? `${Math.floor(s / 60)}분${s % 60 ? ` ${s % 60}초` : ''}` : `${s}초`,
+      note: '대구 본사 공장 사내 측정 기준 (QAC FLOW 도입 전후 소모시간 비교)',
       afterSteps: ['측정기 화면 촬영', 'OCR 자동 인식', '공차 기준 즉시 합격, 불합격 판정', '승인과 동시에 보고서 발행']
     },
     how: {
