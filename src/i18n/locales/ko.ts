@@ -66,7 +66,7 @@ export const ko = {
     lead: '스마트폰 하나로 측정, 판정, 보고서 발행까지.\n디비전 공장에서 직접 만들고 검증했습니다.',
     /** the figures up front: what it doesn't need, and since when it runs in our own plant */
     stats: ['전용 측정 장비·센서 공사 불필요', '자사 공장 운영 시작'],
-    /** under the first figure: what it does take */
+    /** the first claim's headline: what it takes (stats[0], what it doesn't, is the line under it) */
     kit: '스마트폰 · 서버 PC 1대 · 모니터면 충분',
     statsNote: '대구 본사 공장 사내 검증 · IATF 16949',
     /** the buttons that lead to the demo request form (#contact) */

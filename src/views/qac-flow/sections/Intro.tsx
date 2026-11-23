@@ -70,7 +70,7 @@ export function Intro() {
 
         {/* the two claims */}
         <ul className="rv m-0 grid w-full max-w-140 list-none grid-cols-2 gap-3 self-start p-0 text-left max-lg:mx-auto lg:col-start-1 max-2xs:grid-cols-1">
-          <li><Claim icon={<CircleCheck className="size-5" strokeWidth={2} />} title={m.stats[0]} sub={m.kit} /></li>
+          <li><Claim icon={<CircleCheck className="size-5" strokeWidth={2} />} title={m.kit} sub={m.stats[0]} big /></li>
           <li><Claim figure="2026.06" title={m.stats[1]} sub={m.statsNote} /></li>
         </ul>
       </div>
@@ -78,14 +78,14 @@ export function Intro() {
   );
 }
 
-/** a card with one claim: an icon or a big figure, the claim, a line under it */
-function Claim({ icon, figure, title, sub }: { icon?: ReactNode; figure?: string; title: string; sub: string }) {
+/** a card with one claim: an icon or a big figure, the claim (`big`: larger, for the one to stand out), a line under it */
+function Claim({ icon, figure, title, sub, big }: { icon?: ReactNode; figure?: string; title: string; sub: string; big?: boolean }) {
   return (
     <div className="grid h-full content-start gap-2 rounded-card border border-line bg-card/85 p-4.5 text-left shadow-device backdrop-blur-md">
       {figure
         ? <b className="num font-display text-stat leading-display font-extrabold text-fg">{figure}</b>
         : <span className="grid size-9 place-items-center rounded-full bg-qf text-on-acc">{icon}</span>}
-      <b className="text-title-xs leading-snug font-semibold text-fg">{title}</b>
+      <b className={cn('leading-snug text-fg', big ? 'text-title-lg font-bold' : 'text-title-xs font-semibold')}>{title}</b>
       <span className="inline-flex items-start gap-1.5 text-caption leading-caption text-fg-2">
         {figure && <ShieldCheck aria-hidden="true" className="mt-0.5 size-4 flex-none text-qf-ink" />}{sub}
       </span>
