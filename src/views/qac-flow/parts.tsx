@@ -64,6 +64,48 @@ export function Browser({ src, alt, sizes, caption, className }: { src: string; 
   );
 }
 
+/** where a numbered marker points on a screen, in % of the image (the tip of its tail) */
+export type Pin = { x: number; y: number };
+
+/** A web screen with numbered markers on it, the way a manual points things out, and the notes for those
+ * numbers under it. Each marker is a mint disc whose tail ends on the spot; the screen still opens full
+ * size on a click (the markers let the click through). */
+export function Annotated({ src, alt, sizes, caption, pins, notes, cols = 1, className }: {
+  src: string; alt: string; sizes: string; caption?: ReactNode; pins: Pin[];
+  notes: readonly { title: string; body: string }[]; cols?: 1 | 2 | 3; className?: string;
+}) {
+  const capture = useCapture();
+  return (
+    <figure className={cn('m-0 overflow-hidden rounded-window border border-line-2 bg-card', className)}>
+      <div aria-hidden="true" className="flex gap-1.5 border-b border-line px-3 py-2.5">{[0, 1, 2].map(i => <i key={i} className="size-2 rounded-full bg-line-2" />)}</div>
+      <Zoomable src={capture(src)} alt={alt}>
+        <div className="relative">
+          <Img src={capture(src)} alt={alt} sizes={sizes} className="app-screen block h-auto w-full bg-plate" />
+          {pins.map((p, i) => (
+            <span key={i} aria-hidden="true" style={{ left: `${p.x}%`, top: `${p.y}%` }}
+              className="pointer-events-none absolute grid -translate-x-1/2 -translate-y-full justify-items-center drop-shadow-[0_2px_4px_rgb(0_0_0/.35)]">
+              <b className="grid size-6.5 place-items-center rounded-full bg-qf text-caption leading-none font-bold text-on-acc ring-2 ring-white max-sm:size-5.5 max-sm:text-[.7rem]">{i + 1}</b>
+              {/* the tail: a short stem ending in a point on the spot */}
+              <i className="h-2.5 w-0.5 bg-qf max-sm:h-1.5" />
+              <i className="size-1.5 -translate-y-px rounded-full bg-qf ring-2 ring-white" />
+            </span>
+          ))}
+        </div>
+      </Zoomable>
+      {caption && <figcaption className="mono border-t border-line px-3.5 py-2.5 text-mute">{caption}</figcaption>}
+      <ol className={cn('m-0 grid list-none gap-x-6 gap-y-3 border-t border-line bg-bg px-4 py-4 sm:px-5', cols === 2 && 'sm:grid-cols-2', cols === 3 && 'sm:grid-cols-2 lg:grid-cols-3')}>
+        {notes.map((n, i) => (
+          <li key={n.title} className="grid grid-cols-[auto_1fr] items-start gap-x-2.5 gap-y-0.5">
+            <b className="row-span-2 mt-0.5 grid size-5.5 place-items-center rounded-full bg-qf text-[.72rem] leading-none font-bold text-on-acc">{i + 1}</b>
+            <span className="text-body-sm font-semibold">{n.title}</span>
+            <span className="text-caption leading-copy text-fg-2">{n.body}</span>
+          </li>
+        ))}
+      </ol>
+    </figure>
+  );
+}
+
 /** a step's title and body, beside its number or icon (the grid around it places them) */
 export function StepText({ title, body, className }: { title: ReactNode; body: ReactNode; className?: string }) {
   return <>

@@ -50,7 +50,7 @@ export const siteViewport: Viewport = {
   // the browser's bar in the page's own graphite (dark) or aluminum (light)
   themeColor: [
     { media: '(prefers-color-scheme: dark)', color: '#2A2D33' },
-    { media: '(prefers-color-scheme: light)', color: '#D8DBDF' }
+    { media: '(prefers-color-scheme: light)', color: '#FFFFFF' }
   ]
 };
 

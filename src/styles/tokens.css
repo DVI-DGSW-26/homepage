@@ -158,8 +158,8 @@
   --color-ink-line-2: rgb(230 233 236 / .24);
   /* the accent as it reads on graphite */
   --color-ink-acc: #3CCB9A;
-  /* anodized aluminum, the light page */
-  --color-paper: #D8DBDF;
+  /* white, the light page */
+  --color-paper: #FFFFFF;
   /* type set on photographs and on the accent fill */
   --color-on-photo: #fff;
   --color-on-acc: #2A2D33;
@@ -254,7 +254,7 @@
   /* ---- mode set: aluminum ---- */
   html[data-mode="light"] {
     color-scheme: light;
-    --bg: var(--color-paper); --bg-2: #E4E6E9; --card: #E9EBEE;
+    --bg: var(--color-paper); --bg-2: #F4F6F8; --card: #F6F7F9;
     --fg: var(--color-ink); --fg-2: #454A52; --mute: #585E66;
     --line: color-mix(in srgb, var(--color-ink) 14%, transparent); --line-2: color-mix(in srgb, var(--color-ink) 32%, transparent);
     --acc: #3CCB9A; --acc-2: #1E9E74; --acc-ink: #106A4B; --acc-glow: rgb(60 203 154 / .3);
