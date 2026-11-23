@@ -31,7 +31,7 @@ const SCREEN_WIDTHS = [...WIDTHS, 2400];
 /** The CES content spec wants each app capture at twice the width it is drawn, so its type holds on a
  * 2× screen and opened full size: the phone screens (How draws the phone at 390 px, its screen 366),
  * the approval window (860) and the report (1000). Captures short of it are listed on every run. */
-const TWO_X = { 'web-approval': 1720, 'report-summary': 2000 };
+const TWO_X = { 'web-approval': 1720, 'report-1': 2000, 'report-2': 2000, 'report-3': 2000 };
 const PHONE_2X = 740;
 /** tab icons and the like are not shown through <img> */
 const SKIP = /^(favicon|apple-touch-icon)/;

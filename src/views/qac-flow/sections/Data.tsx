@@ -5,19 +5,19 @@ import { pad2 } from '../../../lib/env';
 import { ICON } from '../../../components/icons';
 import { Band, LineIcon, PlanTag } from '../../../components/ui';
 import { cn } from '../../../lib/cn';
-import { Browser, Head, StepText } from '../parts';
+import { Head, StepText } from '../parts';
 
 const STEP = 'rv relative grid grid-cols-[44px_1fr] gap-x-4';
 const DOT = 'row-span-2 grid size-11 place-items-center rounded-full border';
 
-/** report → data, whose last step leads on to the data-industry page */
+/** reports → data, whose last step leads on to the data-industry page */
 export function Data() {
-  const t = useT(), m = t.qf, d = m.data, f = t.future, lang = useLang();
+  const t = useT(), d = t.qf.data, f = t.future, lang = useLang();
   return (
-    <Band id="qf-data" mark="06">
+    <Band id="qf-data" alt mark="07">
       <Head kicker={d.kicker} q={d.q} title={d.title} />
-      <div className="grid items-center gap-split-gap lg:grid-cols-[minmax(0,1.45fr)_minmax(0,.55fr)] lg:items-end">
-        <Browser className="rv" src="report-summary.webp" alt={m.alt.report} sizes="(max-width: 1000px) 100vw, 1000px" caption={d.caption} />
+      {/* the report itself is the block before (Report.tsx); here only where the reports lead */}
+      <div className="max-w-160">
         <ol data-batch className="m-0 grid list-none p-0">
           {d.steps.map((s, i) => {
             const last = i === d.steps.length - 1;

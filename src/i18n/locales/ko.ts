@@ -87,7 +87,11 @@ export const ko = {
       crop: '촬영한 사진에서 모서리 핸들을 끌어 측정값 부위만 잘라내는 화면',
       compare: '모바일 순회검사 결재 화면: 치수별 자주검사와 순회검사 측정값을 나란히 비교, 반려와 승인(보고서 발행) 버튼',
       approval: 'PC 웹 순회검사 결재 화면: 치수별 자주검사와 순회검사 측정값 비교, 반려와 승인(보고서 발행) 버튼',
-      report: '일일 품질 요약 보고서: 합격률·대표 Cpk·검사 건수·이상 발생 지표, X̄-R 관리도, 작성·검토·승인 결재와 진위 확인 QR'
+      reports: [
+        '검사보고서 1쪽 일일 품질 요약: 작성·검토·승인 결재 도장과 진위 확인 QR, 합격률·대표 Cpk·총 검사 건수·이상 발생 지표, X̄-R 관리도, ESG 탄소 절감량',
+        '검사보고서 2쪽 세부 품질 검사 및 공정능력 분석: 도면의 치수 위치, 항목별 Cp·Cpk와 관리 상태, 초·중·종품 자주검사와 순회검사의 OCR 촬영 사진 대조, 차수별 측정 데이터',
+        '검사보고서 3쪽 설비 조치 및 품질 추적성 로그: 설비 이상 2건의 감지·조치·재검사 승인 타임라인, 설비 조치 이력 표, 조치 건수·평균 처리 시간·미결 건수'
+      ]
     },
     /** the time an inspection takes before and after QAC FLOW, measured in our plant (the seconds are in
      * src/views/qac-flow/sections/Problem.tsx) */
@@ -162,13 +166,28 @@ export const ko = {
         { title: '한 번의 결재로 보고서 완성', body: '결재와 동시에 감사 대응용 보고서가 발행됩니다.' }
       ]
     },
+    /** the inspection report: the three pages one approval issues, and what its QR code and ESG line are for */
+    report: {
+      kicker: '06 / Inspection report',
+      q: '검사가 끝나면 무엇이 남나요?',
+      title: '결재 한 번으로, 읽는 사람에 맞춘 3쪽 보고서가 발행됩니다.',
+      lead: '경영진과 바이어는 1쪽에서 결과를, 품질 엔지니어는 2쪽에서 근거를,\n감사와 설비관리자는 3쪽에서 조치 이력을 확인합니다.',
+      pageLabel: (n: number) => `${n}쪽`,
+      pages: [
+        { title: '일일 품질 요약', reader: '경영진 · 바이어', body: '합격률, 대표 Cpk, 검사 건수, 이상 발생을 한눈에 봅니다. X̄-R 관리도와 작성·검토·승인 결재가 함께 실립니다.' },
+        { title: '세부 품질 검사 · 공정능력 분석', reader: '품질 엔지니어', body: '치수 항목별 Cp·Cpk와 관리 상태, 초·중·종품마다 자주검사와 순회검사의 OCR 촬영 사진 대조, 차수별 측정 데이터를 담습니다.' },
+        { title: '설비 조치 · 품질 추적성 로그', reader: '감사 · 설비관리자', body: '설비 이상이 감지되고 조치를 거쳐 재검사 승인까지 이어진 과정을 시간순으로 보여 주고, 조치 이력과 처리 시간, 미결 건수를 정리합니다.' }
+      ],
+      qr: { title: 'QR로 진위 확인', body: '보고서의 QR을 스캔하면 원본과 대조하고, 촬영 사진과 결재 이력을 열람할 수 있습니다.' },
+      esg: { title: 'ESG 탄소 절감', body: '종이 성적서를 대체한 양을 CO₂e로 환산해 보고서에 표시합니다.' },
+      note: '실제 발행되는 보고서 화면입니다. 쪽을 누르면 크게 볼 수 있습니다. 데이터는 예시입니다.'
+    },
     data: {
-      kicker: '06 / From report to data',
+      kicker: '07 / From report to data',
       q: '쌓인 검사 데이터는 어디에 쓰이나요?',
       title: '결재된 보고서가 쌓이면, 공장이 배우는 데이터가 됩니다.',
-      caption: '검사보고서, 결재와 동시에 발행 / PDF',
       steps: [
-        { title: '검사마다 한 장의 보고서', body: '측정값, 공차, 사진, 결재가 한 기록에 담깁니다.' },
+        { title: '검사마다 한 부의 보고서', body: '측정값, 공차, 사진, 결재가 한 기록에 담깁니다.' },
         { title: '보고서가 쌓여 데이터로', body: '품목, 설비, 검사 시점별로 매일 쌓입니다.' },
         { title: '학습 자산', body: '불량 예측과 공정 최적화를 위한 바탕이 됩니다.', plan: true }
       ]

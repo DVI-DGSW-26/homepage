@@ -72,7 +72,11 @@ export const en: Messages = {
       crop: 'App screen: dragging the corner handles of a box to crop the photo down to the caliper reading',
       compare: 'Mobile patrol inspection approval: self and patrol inspection values side by side per dimension, with Reject and Approve (issue report) buttons',
       approval: 'PC web patrol inspection approval screen: self and patrol inspection values compared per dimension, with Reject and Approve (issue report) buttons',
-      report: 'Daily quality summary report: pass rate, key Cpk, inspection count and issues, an X̄-R control chart, the prepared, reviewed and approved sign-offs and an authenticity QR code'
+      reports: [
+        'Inspection report page 1, Daily Quality Summary: prepared, reviewed and approved sign-off stamps, a QR code for verification, pass rate, headline Cpk, inspection count and issues, an X̄-R control chart and ESG carbon savings',
+        'Inspection report page 2, Detailed Inspection & SPC Analysis: dimension locations on the drawing, Cp, Cpk and control status per dimension, OCR photos of self and patrol inspections compared for the first-off, in-process and last-off rounds, and the measurements of each round',
+        'Inspection report page 3, Equipment Action & Traceability Log: detection, corrective action and re-inspection approval timelines for two equipment issues, the action history table, and action count, average response time and open items'
+      ]
     },
     problem: {
       kicker: '01 / Problem',
@@ -145,11 +149,26 @@ export const en: Messages = {
         { title: 'Approve once, report ready', body: 'Approval issues the audit-ready report at the same moment.' }
       ]
     },
+    /** the inspection report: the three pages one approval issues, and what its QR code and ESG line are for */
+    report: {
+      kicker: '06 / Inspection report',
+      q: 'What does each inspection leave behind?',
+      title: 'One approval issues a three-page report, each page written for its reader.',
+      lead: 'Management and buyers read the results on page 1, quality engineers the evidence on page 2, and auditors and maintenance teams the action history on page 3.',
+      pageLabel: (n: number) => `Page ${n}`,
+      pages: [
+        { title: 'Daily Quality Summary', reader: 'Management · Buyers', body: 'Pass rate, headline Cpk, inspection count and issues at a glance, with an X̄-R control chart and the prepared, reviewed and approved sign-offs.' },
+        { title: 'Detailed Inspection & SPC Analysis', reader: 'Quality engineers', body: 'Cp, Cpk and control status for each dimension, the OCR photos of self and patrol inspections compared round by round, and the measurements behind them.' },
+        { title: 'Equipment Action & Traceability Log', reader: 'Auditors · Maintenance', body: 'A timeline of each equipment issue from detection through corrective action to re-inspection approval, with the action history, response times and open items.' }
+      ],
+      qr: { title: 'Verify with a QR code', body: 'Scan the QR code on the report to check it against the original and view the measurement photos and approval history.' },
+      esg: { title: 'ESG carbon savings', body: 'The paper the report replaces is converted into CO₂e and shown on the report.' },
+      note: 'The actual report as issued. Click a page to see it full size. Sample data.'
+    },
     data: {
-      kicker: '06 / From report to data',
+      kicker: '07 / From report to data',
       q: 'What happens to all that inspection data?',
       title: 'Every approved report becomes data the factory can learn from.',
-      caption: 'Inspection report, issued on approval / PDF',
       steps: [
         { title: 'One report per inspection', body: 'Values, tolerances, photos and approval in one record.' },
         { title: 'Reports pile up as data', body: 'By part, machine and inspection slot, day after day.' },
