@@ -2,17 +2,17 @@ import { useT } from '../../../i18n';
 import { Band } from '../../../components/ui';
 import { Annotated, Head, type Pin } from '../parts';
 
-/** Where each screen's numbered markers point, in % of the image, in the order of the copy's guides
- * (the same in Korean and English: the two captures share their layout). */
+/** Where each screen's labels point, in % of the image, in the order of the copy's marks (the same in
+ * Korean and English: the two captures share their layout); near an edge a label runs inward. */
 const PINS: Pin[][] = [
-  // filters, the warning, Cpk, out of control, the red point, the control limits, the R chart
-  [{ x: 12, y: 4.4 }, { x: 74, y: 12.2 }, { x: 9, y: 18.6 }, { x: 90, y: 18.6 }, { x: 84.6, y: 49.4 }, { x: 92.5, y: 50.6 }, { x: 6, y: 72.6 }],
+  // filters, the near-limit warning, Cpk and Ppk, the out-of-control point
+  [{ x: 12, y: 4.4, side: 'start' }, { x: 74, y: 12.2 }, { x: 9.5, y: 26.2, side: 'start' }, { x: 84.6, y: 49.4, side: 'end' }],
   // the distribution, the spec limits, the indices
-  [{ x: 41, y: 42.5 }, { x: 72.3, y: 50 }, { x: 87, y: 21 }],
-  // the status filter, report an issue, the details, downtime and cost, the status
-  [{ x: 15, y: 5.4 }, { x: 92.6, y: 11.3 }, { x: 16, y: 25.4 }, { x: 18.5, y: 47.5 }, { x: 94.5, y: 37.2 }],
-  // the issue, the timeline, the action, the totals, the other reports
-  [{ x: 60, y: 24 }, { x: 21.5, y: 34.2 }, { x: 61, y: 49 }, { x: 75, y: 61.9 }, { x: 27, y: 79.2 }]
+  [{ x: 41, y: 42.5 }, { x: 72.3, y: 50 }, { x: 87, y: 21, side: 'end' }],
+  // the status filter, downtime and cost, the action status
+  [{ x: 15, y: 5.4, side: 'start' }, { x: 18.5, y: 47.5, side: 'start' }, { x: 94.5, y: 37.2, side: 'end' }],
+  // the timeline, the action taken, the totals
+  [{ x: 21.5, y: 34.2, side: 'start' }, { x: 61, y: 49 }, { x: 75, y: 61.9 }]
 ];
 
 /** SPC: what the approved records add up to, with the SPC screen of the app (CES final, Korean and
@@ -42,14 +42,14 @@ export function Spc() {
         </ul>
       </div>
       <div className="mt-10 grid gap-4">
-        <Annotated className="rv" src="spc-charts.webp" alt={s.alts[0]} caption={s.captions[0]} sizes="(max-width: 1440px) 100vw, 1280px" pins={PINS[0]} notes={s.guides[0]} cols={3} />
+        <Annotated className="rv" src="spc-charts.webp" alt={s.alts[0]} caption={s.captions[0]} sizes="(max-width: 1440px) 100vw, 1280px" pins={PINS[0]} labels={s.marks[0]} />
         {/* capability and the equipment issue list stacked, beside one issue followed through to its close */}
         <div className="grid items-start gap-4 md:grid-cols-2">
           <div className="grid gap-4">
-            <Annotated className="rv" src="spc-capability.webp" alt={s.alts[1]} caption={s.captions[1]} sizes="(max-width: 767px) 100vw, 640px" pins={PINS[1]} notes={s.guides[1]} />
-            <Annotated className="rv" src="equip-issues.webp" alt={s.alts[2]} caption={s.captions[2]} sizes="(max-width: 767px) 100vw, 640px" pins={PINS[2]} notes={s.guides[2]} />
+            <Annotated className="rv" src="spc-capability.webp" alt={s.alts[1]} caption={s.captions[1]} sizes="(max-width: 767px) 100vw, 640px" pins={PINS[1]} labels={s.marks[1]} />
+            <Annotated className="rv" src="equip-issues.webp" alt={s.alts[2]} caption={s.captions[2]} sizes="(max-width: 767px) 100vw, 640px" pins={PINS[2]} labels={s.marks[2]} />
           </div>
-          <Annotated className="rv" src="equip-issue-detail.webp" alt={s.alts[3]} caption={s.captions[3]} sizes="(max-width: 767px) 100vw, 640px" pins={PINS[3]} notes={s.guides[3]} />
+          <Annotated className="rv" src="equip-issue-detail.webp" alt={s.alts[3]} caption={s.captions[3]} sizes="(max-width: 767px) 100vw, 640px" pins={PINS[3]} labels={s.marks[3]} />
         </div>
       </div>
       <p className="mono m-0 mt-6 text-micro text-mute">{s.note}</p>

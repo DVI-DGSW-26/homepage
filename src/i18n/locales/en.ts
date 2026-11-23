@@ -190,36 +190,12 @@ export const en: Messages = {
       metricsLabel: 'Key indicators',
       metrics: ['Cpk', 'Ppk', 'Mean', 'Std. dev.', 'Sample count', 'Out of control'],
       captions: ['Filters · indicators · Xbar-R charts', 'Process capability', 'Equipment issue reports', 'How an issue was handled'],
-      /** the numbered notes on each screen, in the order of its markers (Spc.tsx) */
-      guides: [
-        [
-          { title: 'Filters', body: 'Choose the product, dimension, machine and period to look at.' },
-          { title: 'Control limit warning', body: 'Warns when subgroup means approach a control limit, before they go out of control.' },
-          { title: 'Capability indicators', body: 'Shows at a glance, by color, whether Cpk and Ppk meet the 1.67 target.' },
-          { title: 'Out of control', body: 'The number of subgroups beyond the control limits, and whether action is needed.' },
-          { title: 'Flagged points', body: 'Red points are subgroups beyond a control limit; orange points are near one.' },
-          { title: 'Control limits', body: 'UCL, CL and LCL are drawn with the 85%-of-tolerance lines, so the margin is easy to see.' },
-          { title: 'R chart', body: 'Tracks the spread (range) within each subgroup on its own chart.' }
-        ],
-        [
-          { title: 'Distribution', body: 'All measurements in the period as a histogram with a normal curve.' },
-          { title: 'Spec limits', body: 'The red lines are the lower (LSL) and upper (USL) spec limits; see how comfortably the distribution fits between them.' },
-          { title: 'Capability indices', body: 'Cp and Cpk use within-subgroup sigma; Pp and Ppk use overall sigma.' }
-        ],
-        [
-          { title: 'Status filter', body: 'Filter by reported, in progress and resolved.' },
-          { title: 'Report an issue', body: 'Report an equipment issue straight from the floor.' },
-          { title: 'Issue details', body: 'Which machine had what issue, and when and by whom it was reported.' },
-          { title: 'Downtime and cost', body: 'The time the machine was down and the cost of the action are recorded with it.' },
-          { title: 'Action status', body: 'See at a glance whether an issue is still being handled or resolved.' }
-        ],
-        [
-          { title: 'Issue', body: 'The machine and product, who reported it and when, and what happened.' },
-          { title: 'Handling timeline', body: 'Reported → in progress → resolved, each step with its owner and time.' },
-          { title: 'Action taken', body: 'What was done, with the downtime and cost at that step.' },
-          { title: 'Totals', body: 'Total downtime and total action cost for this issue.' },
-          { title: 'The machine\'s other reports', body: 'The same machine\'s earlier issues, one tap away.' }
-        ]
+      /** the short labels set on each screen, in the order of its marks (Spc.tsx) */
+      marks: [
+        ['Filters', 'Near-limit warning', 'Meets target?', 'Out-of-control point'],
+        ['Distribution', 'Spec limits', 'Capability indices'],
+        ['Filter by status', 'Downtime & cost', 'Action status'],
+        ['Report → action → close', 'What was done', 'Total downtime & cost']
       ],
       alts: [
         'SPC analysis screen: product, dimension, machine and period filters, an approaching-control-limit warning, Cpk, Ppk, mean, sigma, sample count and out-of-control indicators, and the X̄ and R charts',
