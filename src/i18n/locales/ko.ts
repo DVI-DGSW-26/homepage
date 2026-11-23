@@ -70,7 +70,7 @@ export const ko = {
     kit: '스마트폰 · 서버 PC 1대 · 모니터면 충분',
     statsNote: '대구 본사 공장 사내 검증 · IATF 16949',
     /** the buttons that lead to the demo request form (#contact) */
-    cta: { demo: '데모 신청', apply: '우리 현장에 적용 문의' },
+    cta: { demo: '데모 신청', apply: '우리 현장에 적용 문의', how: '작동 방식 보기' },
     /** the banner above the name: the booth until the show closes (CES_END in src/lib/site.ts), then the online demo */
     ces: {
       label: 'CES 2027',

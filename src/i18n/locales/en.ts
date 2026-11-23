@@ -57,7 +57,7 @@ export const en: Messages = {
     stats: ['No dedicated gauges or sensor installation', 'Started running in our own plant'],
     kit: 'A smartphone, one server PC and a monitor',
     statsNote: 'In-house validation at our Daegu HQ plant · IATF 16949',
-    cta: { demo: 'Request a demo', apply: 'Ask about your floor' },
+    cta: { demo: 'Request a demo', apply: 'Ask about your floor', how: 'See how it works' },
     ces: {
       label: 'CES 2027',
       when: 'Jan 6–9, Las Vegas',
