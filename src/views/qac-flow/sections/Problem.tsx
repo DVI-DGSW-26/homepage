@@ -51,6 +51,17 @@ export function Problem() {
   return (
     <Band id="qf-problem" alt mark="01">
       <Head kicker={p.kicker} q={p.q} title={p.title} lead={p.lead} />
+      {/* who it is for, and what the paper way costs them: the third is what the time chart below can't show */}
+      <p className="rv m-0 mb-5 inline-flex rounded-full border border-qf-line bg-qf-soft/50 px-4 py-2 text-body-sm font-semibold text-qf-ink">{p.audience}</p>
+      <ol data-batch className="m-0 mb-10 grid list-none gap-x-6 gap-y-5 p-0 md:grid-cols-3">
+        {p.pains.map((x, i) => (
+          <li key={x.title} className="rv grid content-start gap-1.5 border-t border-line pt-4">
+            <span className="mono text-micro text-mute">{String(i + 1).padStart(2, '0')}</span>
+            <b className="text-title-xs font-semibold">{x.title}</b>
+            <span className="text-body-sm leading-copy text-fg-2">{x.body}</span>
+          </li>
+        ))}
+      </ol>
       <div data-batch className="grid gap-4 lg:grid-cols-[minmax(0,.8fr)_minmax(0,1.2fr)] lg:gap-6">
         {/* the headline figure, and what it comes to per part */}
         <article className="rv grid content-start gap-6 rounded-card border border-qf-line bg-linear-160 from-qf-soft to-transparent to-70% p-panel-pad">

@@ -71,3 +71,10 @@ export function StepText({ title, body, className }: { title: ReactNode; body: R
     <p className="m-0 mt-1.5 text-body-sm leading-copy text-fg-2">{body}</p>
   </>;
 }
+
+/** In `pnpm dev` only, a dashed box where a screen or photo still to come will go (the built site shows
+ * nothing in its place), so the layout can be judged before the files arrive. */
+export function Pending({ label, className }: { label: string; className?: string }) {
+  if (process.env.NODE_ENV !== 'development') return null;
+  return <div aria-hidden="true" className={cn('grid place-items-center rounded-card border border-dashed border-qf-line p-4 text-center text-body-sm text-mute', className)}>{label}</div>;
+}

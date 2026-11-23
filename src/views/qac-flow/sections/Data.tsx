@@ -14,7 +14,7 @@ const DOT = 'row-span-2 grid size-11 place-items-center rounded-full border';
 export function Data() {
   const t = useT(), d = t.qf.data, f = t.future, lang = useLang();
   return (
-    <Band id="qf-data" alt mark="07">
+    <Band id="qf-data" mark="08">
       <Head kicker={d.kicker} q={d.q} title={d.title} />
       {/* the report itself is the block before (Report.tsx); here only where the reports lead */}
       <div className="max-w-160">

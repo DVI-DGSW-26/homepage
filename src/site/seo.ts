@@ -10,7 +10,7 @@ import { ORIGIN, SALES_EMAIL, SITES, TEL } from '../lib/site';
 
 const DICTS = { ko, en };
 const LOCALE = { ko: 'ko_KR', en: 'en_US' } as const;
-/** the link preview image, 1200×630, one per language (public/og/; for now the QAC FLOW hero, captured) */
+/** the link preview image, 1200×630, one per language (public/og/; the QAC FLOW hero at 1200 px, dark, the header hidden, captured from the built site) */
 const OG = { ko: '/og/qac-flow-ko.png', en: '/og/qac-flow-en.png' } as const;
 const LOGO = '/assets/img/logo.png';
 

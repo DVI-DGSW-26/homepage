@@ -14,7 +14,7 @@ export function Report() {
   const m = useT().qf, r = m.report, capture = useCapture();
   const extras = [{ icon: QrCode, ...r.qr }, { icon: Leaf, ...r.esg }];
   return (
-    <Band id="qf-report" mark="06">
+    <Band id="qf-report" alt mark="07">
       <Head kicker={r.kicker} q={r.q} title={r.title} lead={r.lead} />
       <ol data-batch className="m-0 grid list-none gap-x-6 gap-y-10 p-0 md:grid-cols-3">
         {r.pages.map((p, i) => (

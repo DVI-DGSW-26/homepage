@@ -34,6 +34,8 @@ export const ko = {
     home: 'QAC FLOW 처음으로',
     menu: '주요 메뉴',
     links: { '/qac-flow': 'QAC FLOW', '/data': 'Data Industry' },
+    /** the header menu (request doc p.10): sections of QAC FLOW, the data page, and CES until the end of January */
+    items: { product: '제품', how: '작동 방식', proof: '현장 검증', roadmap: '로드맵·파트너십', ces: 'CES 2027' },
     /** DVISION's sites: the gateway (dvi-ind.com), manufacturing, and this one */
     sites: { label: 'DVISION 사이트', gateway: 'DVISION 첫 화면', manufacturing: '제조', solution: '솔루션' },
     langs: { ko: 'KOR', en: 'ENG' },
@@ -100,6 +102,12 @@ export const ko = {
       q: '왜 QAC FLOW가 필요한가요?',
       title: '종이에 적고, 사진 찍고, 엑셀로 옮기던 시간이 60% 줄어듭니다.',
       lead: '측정기를 한 번 촬영하면 치수 기록, 사진 공유, 서버 정리가 동시에 끝나고\n결재와 동시에 보고서가 발행됩니다.',
+      audience: '종이 검사표와 엑셀로 자주검사·순회검사를 관리하는 제조 현장을 위해 만들었습니다.',
+      pains: [
+        { title: '기록은 종이에', body: '측정값은 검사표에 손으로 적고, 사진은 따로 찍어 메신저로 공유합니다.' },
+        { title: '정리는 다시 엑셀로', body: '사무실에 돌아와 종이 기록을 엑셀에 한 번 더 옮겨 적습니다.' },
+        { title: '기록은 쌓여도 분석은 별도', body: '쌓인 검사 기록을 관리도나 공정능력으로 보려면, 데이터를 따로 모아 다시 정리해야 합니다.' }
+      ],
       before: '기존 방식',
       after: 'QAC FLOW',
       cut: '검사 시간 단축',
@@ -134,7 +142,19 @@ export const ko = {
         { title: '순회검사', body: '순회검사자가 같은 항목을 다시 측정하고 사진을 대조합니다.' },
         { title: '결재', body: '품질관리자가 두 결과를 나란히 보고 결재합니다.' },
         { title: '보고서 발행', body: '검사보고서가 자동으로 발행되고 PDF로 내려받을 수 있습니다.' }
-      ]
+      ],
+      rules: {
+        title: '초품 인터락과 결재 규칙',
+        rounds: [
+          { title: '초품', body: '검사 → 완료' },
+          { title: '중품', body: '검사 → 완료' },
+          { title: '종품', body: '검사 → 결재 요청' },
+          { title: '결재', body: '품질관리자 승인 · 종품 후 1회' },
+          { title: '보고서 1부', body: '결재 1회당 1부 발행' }
+        ],
+        lock: '초품 완료 전 진입 불가',
+        reject: { title: '불합격·반려', body: '반려할 때는 사유를 반드시 입력하고, 보고서는 발행되지 않습니다. 재검사를 거쳐 승인되면 그때 발행됩니다. 건너뛴 항목은 미완료로 남고, 금형에 문제가 생기면 검사를 조기 마감할 수 있습니다.' }
+      }
     },
     live: {
       kicker: '04 / Live monitoring',
@@ -166,15 +186,30 @@ export const ko = {
         { title: '한 번의 결재로 보고서 완성', body: '결재와 동시에 감사 대응용 보고서가 발행됩니다.' }
       ]
     },
+    /** SPC (request doc p.11): the place and the copy; the screens follow once they pass review */
+    spc: {
+      kicker: '06 / SPC analysis',
+      q: '쌓인 검사 기록으로 무엇을 볼 수 있나요?',
+      title: '한 건은 보고서로, 누적 기록은 SPC로.',
+      lead: '결재된 검사 기록이 그대로 SPC 데이터가 됩니다.\n제품·측정 항목·설비·기간을 골라 관리도와 공정능력을 조회합니다.',
+      features: [
+        { title: 'Xbar-R 관리도', body: '부분군 평균과 범위의 흐름을 관리 한계와 함께 봅니다.' },
+        { title: '공정능력', body: 'Cp·Cpk, Pp·Ppk로 공정이 공차 안에서 얼마나 안정적인지 확인합니다.' },
+        { title: '조회 조건', body: '제품, 측정 항목, 설비, 기간을 골라 원하는 범위만 봅니다.' },
+        { title: '설비 이상·조치 이력', body: '값이 변한 구간에 있었던 설비 이상과 조치 이력을 함께 열어 봅니다.' }
+      ],
+      metricsLabel: '한눈에 보는 지표',
+      metrics: ['Cpk', 'Ppk', '평균', '표준편차', '측정 수', '관리 이탈']
+    },
     /** the inspection report: the three pages one approval issues, and what its QR code and ESG line are for */
     report: {
-      kicker: '06 / Inspection report',
+      kicker: '07 / Inspection report',
       q: '검사가 끝나면 무엇이 남나요?',
       title: '결재 한 번으로, 읽는 사람에 맞춘 3쪽 보고서가 발행됩니다.',
       lead: '경영진과 바이어는 1쪽에서 결과를, 품질 엔지니어는 2쪽에서 근거를,\n감사와 설비관리자는 3쪽에서 조치 이력을 확인합니다.',
       pageLabel: (n: number) => `${n}쪽`,
       pages: [
-        { title: '일일 품질 요약', reader: '경영진 · 바이어', body: '합격률, 대표 Cpk, 검사 건수, 이상 발생을 한눈에 봅니다. X̄-R 관리도와 작성·검토·승인 결재가 함께 실립니다.' },
+        { title: '일일 품질 요약', reader: '경영진 · 바이어', body: '합격률, 대표 Cpk, 검사 건수, 이상 발생을 한눈에 봅니다. Xbar-R 관리도와 작성·검토·승인 결재가 함께 실립니다.' },
         { title: '세부 품질 검사 · 공정능력 분석', reader: '품질 엔지니어', body: '치수 항목별 Cp·Cpk와 관리 상태, 초·중·종품마다 자주검사와 순회검사의 OCR 촬영 사진 대조, 차수별 측정 데이터를 담습니다.' },
         { title: '설비 조치 · 품질 추적성 로그', reader: '감사 · 설비관리자', body: '설비 이상이 감지되고 조치를 거쳐 재검사 승인까지 이어진 과정을 시간순으로 보여 주고, 조치 이력과 처리 시간, 미결 건수를 정리합니다.' }
       ],
@@ -183,13 +218,49 @@ export const ko = {
       note: '실제 발행되는 보고서 화면입니다. 쪽을 누르면 크게 볼 수 있습니다. 데이터는 예시입니다.'
     },
     data: {
-      kicker: '07 / From report to data',
+      kicker: '08 / From report to data',
       q: '쌓인 검사 데이터는 어디에 쓰이나요?',
       title: '결재된 보고서가 쌓이면, 공장이 배우는 데이터가 됩니다.',
       steps: [
         { title: '검사마다 한 부의 보고서', body: '측정값, 공차, 사진, 결재가 한 기록에 담깁니다.' },
         { title: '보고서가 쌓여 데이터로', body: '품목, 설비, 검사 시점별로 매일 쌓입니다.' },
         { title: '학습 자산', body: '불량 예측과 공정 최적화를 위한 바탕이 됩니다.', plan: true }
+      ]
+    },
+    /** field proof (request doc p.14): what can be said now; photos and figures follow from planning */
+    proof: {
+      kicker: '09 / Field proof',
+      q: '실제 현장에서 쓰고 있나요?',
+      title: '디비전 공장에서 먼저 쓰고 있습니다.',
+      lead: '2026년 6월부터 대구 본사 공장의 자주검사와 순회검사를 QAC FLOW로 하고 있습니다.',
+      since: { figure: '2026.06', label: '자사 공장 운영 시작', body: '대구 본사 공장 · 초·중·종품 자주검사와 순회검사' },
+      certsLabel: '디비전 인증',
+      certs: [
+        { name: 'IATF 16949', body: '자동차 품질경영시스템' },
+        { name: 'ISO 14001', body: '환경경영시스템' },
+        { name: 'ISO 45001', body: '안전보건경영시스템' }
+      ]
+    },
+    /** getting started (request doc p.14): the kit, the four-week trial, six questions */
+    adopt: {
+      kicker: '10 / Getting started',
+      q: '도입하려면 무엇이 필요한가요?',
+      title: '스마트폰, 서버 PC 1대, 모니터면 시작할 수 있습니다.',
+      kit: [
+        { title: '스마트폰', body: '측정기 촬영과 값 입력' },
+        { title: '서버 PC 1대', body: '검사 기록과 원본 사진 보관' },
+        { title: '모니터', body: '현장 현황판' }
+      ],
+      kitNote: '전용 측정 장비나 센서 공사는 필요 없습니다.',
+      trial: { label: '4주 시험 적용', title: '우리 현장에서 4주 동안 먼저 써 보세요.', body: '실제 검사에 4주 동안 시험 적용해 보고 도입을 결정할 수 있습니다. 대상 품목과 진행 방법은 상담에서 함께 정합니다.', cta: '시험 적용 문의' },
+      faqTitle: '자주 묻는 질문',
+      faq: [
+        { q: '어떤 측정기를 쓸 수 있나요?', a: '측정값이 화면에 숫자로 표시되는 디지털 측정기(디지털 캘리퍼스 등)를 촬영해 OCR로 읽습니다. 현장에서 쓰는 측정기가 맞는지는 상담에서 확인해 드립니다.' },
+        { q: 'OCR 인식률은 어느 정도인가요?', a: '인식률 수치는 시험 조건과 표본을 확정한 뒤 공개할 예정입니다. 인식된 값은 저장하기 전에 작업자가 확인하고, 필요하면 직접 고칠 수 있습니다.' },
+        { q: '불합격이 나오면 어떻게 처리하나요?', a: '반려할 때는 사유를 반드시 입력하고, 보고서는 발행되지 않습니다. 재검사를 거쳐 승인되면 그때 보고서가 발행됩니다.' },
+        { q: '다른 SPC 도구와 무엇이 다른가요?', a: '측정하는 순간 값과 사진이 함께 기록되어, 데이터를 따로 옮겨 입력하지 않아도 그 기록으로 관리도와 공정능력을 봅니다. 값마다 촬영 원본이 남아 있어 근거를 바로 확인할 수 있습니다.' },
+        { q: 'ERP·MES와 연동되나요?', a: '연동 범위와 방식은 현장에서 쓰는 시스템에 따라 달라, 도입 상담에서 함께 검토합니다.' },
+        { q: '도입 방식과 가격은 어떻게 되나요?', a: '현장 규모와 적용 범위에 따라 달라집니다. 데모 신청이나 문의를 남겨 주시면 맞춰 안내해 드립니다.' }
       ]
     }
   },

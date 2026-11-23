@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { House } from 'lucide-react';
 import { LANGS, pathOf, type Page } from '../../lib/paths';
-import { SITES, duringCes } from '../../lib/site';
+import { CES_MENU_END, SITES, duringCes } from '../../lib/site';
 import { useLang, useT } from '../../i18n';
 import { noteLangPosition } from '../../lib/scroll';
 import { setTheme, useTheme } from '../../lib/theme';
@@ -17,7 +17,17 @@ import { afterDialogEntry, useBackToClose } from '../../lib/history';
 import { openInquiry } from '../../lib/inquiry';
 import { Img } from '../Img';
 
-const LINKS = ['/qac-flow', '/data'] as const satisfies readonly Page[];
+/** The menu (request doc p.10): the product page, two of its sections, the data page, and CES until the
+ * end of January. A section on the page being read is a plain #link (smoothAnchors glides there); from
+ * another page it opens QAC FLOW at that section. */
+type Item = { key: 'product' | 'how' | 'proof' | 'roadmap' | 'ces'; page: Page; hash?: string; until?: number };
+const MENU: Item[] = [
+  { key: 'product', page: '/qac-flow' },
+  { key: 'how', page: '/qac-flow', hash: '#qf-how' },
+  { key: 'proof', page: '/qac-flow', hash: '#qf-proof' },
+  { key: 'roadmap', page: '/data' },
+  { key: 'ces', page: '/qac-flow', hash: '#contact', until: CES_MENU_END }
+];
 
 const ROUND_BTN = 'relative grid size-9 flex-none cursor-pointer place-items-center rounded-full border border-line text-fg-2 transition-colors duration-300 hover:border-line-2 hover:text-fg max-sm:size-8';
 
@@ -32,6 +42,14 @@ export function Nav({ page }: { page: Page }) {
     return () => lg.removeEventListener('change', close);
   }, []);
   const closeSheet = () => sheet.current?.close();
+  // the English menu and site names are longer: in the bar from 1600px, in the sheet below that
+  const wide = lang === 'en';
+  const items = MENU.filter(x => !x.until || Date.now() < x.until).map(x => ({
+    ...x, label: m.items[x.key],
+    href: x.hash && page === x.page ? x.hash : pathOf(x.page, lang) + (x.hash ?? ''),
+    full: pathOf(x.page, lang) + (x.hash ?? ''),
+    active: !x.hash && page === x.page
+  }));
   useBackToClose(sheetOpen, closeSheet);
   // a page link in the sheet: the sheet closes (taking its history entry back off), then the page opens
   // the header's demo button: down to the form at the end of the page, or, on a page without one (the
@@ -73,22 +91,22 @@ export function Nav({ page }: { page: Page }) {
           <Img className="absolute inset-0 size-full object-contain opacity-0 transition-opacity duration-500 light:opacity-100" src="assets/img/logo.png" sizes="136px" priority={theme === 'light'} alt="" />
         </Link>
         {/* below 1200px the menu is in the sheet (the button at the end of the bar) */}
-        <nav aria-label={m.menu} className="max-lg:hidden">
+        <nav aria-label={m.menu} className={wide ? 'max-[1599px]:hidden' : 'max-lg:hidden'}>
           <ul className="mono m-0 flex list-none gap-nav-gap p-0 max-xl:gap-nav-gap-tight">
-            {LINKS.map(to => (
-              <li key={to}>
-                <Link href={pathOf(to, lang)} aria-current={page === to ? 'page' : undefined} data-active={page === to || undefined} className={cn(
-                  'relative py-1.5 text-fg-2 transition-colors duration-300 hover:text-fg data-active:text-fg',
+            {items.map(x => (
+              <li key={x.key}>
+                <Link href={x.href} aria-current={x.active ? 'page' : undefined} data-active={x.active || undefined} className={cn(
+                  'relative py-1.5 whitespace-nowrap text-fg-2 transition-colors duration-300 hover:text-fg data-active:text-fg',
                   "after:absolute after:inset-x-0 after:bottom-0 after:h-px after:origin-right after:scale-x-0 after:bg-fg after:transition-transform after:duration-500 after:ease-out",
                   'hover:after:origin-left hover:after:scale-x-100 data-active:after:origin-left data-active:after:scale-x-100'
-                )}>{m.links[to]}</Link>
+                )}>{x.label}</Link>
               </li>
             ))}
           </ul>
         </nav>
         <div className="flex items-center gap-3.5 max-sm:gap-2">
           {/* DVISION's other sites: the start page (dvi-ind.com), and manufacturing | solutions, this one lit; in the sheet below 1200px */}
-          <nav aria-label={m.sites.label} className="mono flex items-center gap-2.5 border-r border-line pr-3.5 text-mute max-lg:hidden">
+          <nav aria-label={m.sites.label} className={cn('mono flex items-center gap-2.5 border-r border-line pr-3.5 whitespace-nowrap text-mute', wide ? 'max-[1599px]:hidden' : 'max-lg:hidden')}>
             <a href={SITES.gateway(lang)} aria-label={m.sites.gateway} title={m.sites.gateway} className="-m-1 p-1 transition-colors duration-300 hover:text-fg"><House className="size-4" strokeWidth={1.6} aria-hidden="true" /></a>
             <a href={SITES.manufacturing(lang)} className="transition-colors duration-300 hover:text-fg">{m.sites.manufacturing}</a>
             <i aria-hidden="true" className="not-italic opacity-50">|</i>
@@ -99,7 +117,7 @@ export function Nav({ page }: { page: Page }) {
           <a href="#contact" onClick={demo}
             className="inline-flex min-h-9 flex-none items-center rounded-full border border-qf bg-qf px-4.5 text-body-sm font-semibold whitespace-nowrap text-on-acc transition-[filter] duration-300 hover:brightness-110 max-sm:min-h-8 max-sm:px-3 max-sm:text-caption">{duringCes() ? t.qf.cta.cesDemo : t.qf.cta.demo}</a>
           <span className="contents max-sm:hidden">{themeButton}</span>
-          <button type="button" onClick={() => { sheet.current?.showModal(); setSheetOpen(true); }} aria-label={m.open} aria-haspopup="dialog" className={cn(ROUND_BTN, 'lg:hidden')}>
+          <button type="button" onClick={() => { sheet.current?.showModal(); setSheetOpen(true); }} aria-label={m.open} aria-haspopup="dialog" className={cn(ROUND_BTN, wide ? 'min-[1600px]:hidden' : 'lg:hidden')}>
             <MenuIcon />
           </button>
         </div>
@@ -115,11 +133,11 @@ export function Nav({ page }: { page: Page }) {
         </div>
         <nav aria-label={m.menu} className="mt-6 spanned:max-w-[calc(50%-var(--spacing-hinge-gap)/2)]">
           <ul className="m-0 grid list-none border-t border-line p-0">
-            {LINKS.map((to, i) => (
-              <li key={to}>
-                <a href={pathOf(to, lang)} onClick={openFromSheet} aria-current={page === to ? 'page' : undefined} data-active={page === to || undefined}
+            {items.map((x, i) => (
+              <li key={x.key}>
+                <a href={x.full} onClick={openFromSheet} aria-current={x.active ? 'page' : undefined} data-active={x.active || undefined}
                   className="group/link flex items-baseline gap-4 border-b border-line py-4 text-menu leading-tight font-semibold tracking-heading text-fg-2 transition-colors duration-300 hover:text-fg data-active:text-fg max-sm:py-3.5">
-                  <span className="mono w-8 flex-none text-mute group-data-active/link:text-acc-ink">{pad2(i + 1)}</span>{m.links[to]}
+                  <span className="mono w-8 flex-none text-mute group-data-active/link:text-acc-ink">{pad2(i + 1)}</span>{x.label}
                 </a>
               </li>
             ))}

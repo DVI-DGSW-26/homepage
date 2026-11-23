@@ -27,6 +27,8 @@ export const en: Messages = {
     home: 'QAC FLOW home',
     menu: 'Main menu',
     links: { '/qac-flow': 'QAC FLOW', '/data': 'Data Industry' },
+    /** the header menu (request doc p.10): sections of QAC FLOW, the data page, and CES until the end of January */
+    items: { product: 'Product', how: 'How it works', proof: 'Proof', roadmap: 'Roadmap', ces: 'CES 2027' },
     sites: { label: 'DVISION sites', gateway: 'DVISION start page', manufacturing: 'Manufacturing', solution: 'Solutions' },
     langs: { ko: 'KOR', en: 'ENG' },
     theme: { toLight: 'Switch to light mode', toDark: 'Switch to dark mode' },
@@ -83,6 +85,15 @@ export const en: Messages = {
       q: 'Why does the shop floor need QAC FLOW?',
       title: 'The time spent writing on paper, taking photos and re-typing into Excel drops by 60%.',
       lead: 'One photo of the gauge records the value, shares the photo and files it on the server at once, and the report is issued the moment it is approved.',
+      audience: 'Built for manufacturers that still run self and patrol inspections on paper check sheets and spreadsheets.',
+      pains: [
+        { title: 'Recorded on paper', body: 'Values are written on check sheets by hand, and photos are taken and shared separately over messaging apps.' },
+        { title: 'Retyped into spreadsheets', body: 'Back in the office, the paper records are typed into Excel all over again.' },
+        {
+          title: 'Records pile up, analysis is separate',
+          body: 'Seeing past inspections as control charts or capability figures means collecting and reorganizing the data yet again.'
+        }
+      ],
       before: 'Before',
       after: 'With QAC FLOW',
       cut: 'less inspection time',
@@ -117,7 +128,22 @@ export const en: Messages = {
         { title: 'Patrol inspection', body: 'The patrol inspector re-measures the same items and compares the photos.' },
         { title: 'Approval', body: 'The quality manager reviews both results side by side and approves.' },
         { title: 'Report', body: 'The inspection report is issued automatically, ready as a PDF.' }
-      ]
+      ],
+      rules: {
+        title: 'First-off interlock and approval rules',
+        rounds: [
+          { title: 'First-off', body: 'Inspect → complete' },
+          { title: 'In-process', body: 'Inspect → complete' },
+          { title: 'Last-off', body: 'Inspect → request approval' },
+          { title: 'Approval', body: 'Quality manager signs off · once, after last-off' },
+          { title: 'One report', body: 'One report per approval' }
+        ],
+        lock: 'Locked until first-off is complete',
+        reject: {
+          title: 'Fail or rejection',
+          body: 'A reason must be entered and no report is issued; the report follows once the part is re-inspected and approved. Skipped items stay incomplete, and an inspection can be closed early if there is a die or mold problem.'
+        }
+      }
     },
     live: {
       kicker: '04 / Live monitoring',
@@ -149,15 +175,30 @@ export const en: Messages = {
         { title: 'Approve once, report ready', body: 'Approval issues the audit-ready report at the same moment.' }
       ]
     },
+    /** SPC (request doc p.11): the place and the copy; the screens follow once they pass review */
+    spc: {
+      kicker: '06 / SPC analysis',
+      q: 'What can you see in the records that pile up?',
+      title: 'Each inspection becomes a report; the history becomes SPC.',
+      lead: 'Approved inspection records become SPC data as they are.\nPick a product, characteristic, machine and period to view control charts and process capability.',
+      features: [
+        { title: 'Xbar-R control chart', body: 'Follow subgroup means and ranges against their control limits.' },
+        { title: 'Process capability', body: 'See how stably the process runs within tolerance with Cp, Cpk, Pp and Ppk.' },
+        { title: 'Filters', body: 'Narrow the view by product, characteristic, machine and period.' },
+        { title: 'Equipment issues and actions', body: 'Open the equipment issues and corrective actions recorded where the values shifted.' }
+      ],
+      metricsLabel: 'Key indicators',
+      metrics: ['Cpk', 'Ppk', 'Mean', 'Std. dev.', 'Sample count', 'Out of control']
+    },
     /** the inspection report: the three pages one approval issues, and what its QR code and ESG line are for */
     report: {
-      kicker: '06 / Inspection report',
+      kicker: '07 / Inspection report',
       q: 'What does each inspection leave behind?',
       title: 'One approval issues a three-page report, each page written for its reader.',
       lead: 'Management and buyers read the results on page 1, quality engineers the evidence on page 2, and auditors and maintenance teams the action history on page 3.',
       pageLabel: (n: number) => `Page ${n}`,
       pages: [
-        { title: 'Daily Quality Summary', reader: 'Management · Buyers', body: 'Pass rate, headline Cpk, inspection count and issues at a glance, with an X̄-R control chart and the prepared, reviewed and approved sign-offs.' },
+        { title: 'Daily Quality Summary', reader: 'Management · Buyers', body: 'Pass rate, headline Cpk, inspection count and issues at a glance, with an Xbar-R control chart and the prepared, reviewed and approved sign-offs.' },
         { title: 'Detailed Inspection & SPC Analysis', reader: 'Quality engineers', body: 'Cp, Cpk and control status for each dimension, the OCR photos of self and patrol inspections compared round by round, and the measurements behind them.' },
         { title: 'Equipment Action & Traceability Log', reader: 'Auditors · Maintenance', body: 'A timeline of each equipment issue from detection through corrective action to re-inspection approval, with the action history, response times and open items.' }
       ],
@@ -166,13 +207,69 @@ export const en: Messages = {
       note: 'The actual report as issued. Click a page to see it full size. Sample data.'
     },
     data: {
-      kicker: '07 / From report to data',
+      kicker: '08 / From report to data',
       q: 'What happens to all that inspection data?',
       title: 'Every approved report becomes data the factory can learn from.',
       steps: [
         { title: 'One report per inspection', body: 'Values, tolerances, photos and approval in one record.' },
         { title: 'Reports pile up as data', body: 'By part, machine and inspection slot, day after day.' },
         { title: 'A learning asset', body: 'The groundwork for defect prediction and process optimization.', plan: true }
+      ]
+    },
+    /** field proof (request doc p.14): what can be said now; photos and figures follow from planning */
+    proof: {
+      kicker: '09 / Field proof',
+      q: 'Is it in use on a real shop floor?',
+      title: 'It runs in our own factory first.',
+      lead: 'Since June 2026, self and patrol inspections at DVISION\'s Daegu headquarters plant have run on QAC FLOW.',
+      since: { figure: '2026.06', label: 'In use in our own plant', body: 'Daegu headquarters plant · first-off, in-process and last-off self and patrol inspections' },
+      certsLabel: 'DVISION certifications',
+      certs: [
+        { name: 'IATF 16949', body: 'Automotive quality management' },
+        { name: 'ISO 14001', body: 'Environmental management' },
+        { name: 'ISO 45001', body: 'Occupational health and safety' }
+      ]
+    },
+    /** getting started (request doc p.14): the kit, the four-week trial, six questions */
+    adopt: {
+      kicker: '10 / Getting started',
+      q: 'What do you need to get started?',
+      title: 'A smartphone, one server PC and a monitor.',
+      kit: [
+        { title: 'Smartphone', body: 'Photograph the gauge and enter values' },
+        { title: 'One server PC', body: 'Stores records and original photos' },
+        { title: 'Monitor', body: 'Shop-floor status board' }
+      ],
+      kitNote: 'No dedicated measuring equipment or sensor installation required.',
+      trial: {
+        label: '4-week trial',
+        title: 'Try it on your own floor for four weeks.',
+        body: 'Run QAC FLOW on real inspections for four weeks before you decide. We agree on the parts and the plan together.',
+        cta: 'Ask about a trial'
+      },
+      faqTitle: 'Frequently asked questions',
+      faq: [
+        {
+          q: 'Which gauges does it work with?',
+          a: 'It reads digital gauges that show the value as numbers on a display, such as digital calipers, by photographing them with OCR. We will check whether the gauges you use are supported.'
+        },
+        {
+          q: 'How accurate is the OCR?',
+          a: 'We will publish a recognition rate once the test conditions and sample are finalized. Operators review every recognized value before saving and can correct it if needed.'
+        },
+        {
+          q: 'What happens when a part fails?',
+          a: 'A reason must be entered when an inspection is rejected, and no report is issued. The report is issued once the part is re-inspected and approved.'
+        },
+        {
+          q: 'How is it different from other SPC tools?',
+          a: 'Values and photos are recorded the moment they are measured, so control charts and capability come from those records with no re-entry. Every value keeps its original photo, so the evidence is always at hand.'
+        },
+        { q: 'Does it integrate with ERP or MES?', a: 'The scope and method depend on the systems you run, so we review them with you when planning the rollout.' },
+        {
+          q: 'How is it deployed and priced?',
+          a: 'It depends on the size of your operation and the scope. Request a demo or get in touch, and we will put together an option that fits.'
+        }
       ]
     }
   },

@@ -1,3 +1,5 @@
+import { Fragment } from 'react';
+import { ChevronRight, Lock, TriangleAlert } from 'lucide-react';
 import { useT } from '../../../i18n';
 import { ICON } from '../../../components/icons';
 import { Band, LineIcon } from '../../../components/ui';
@@ -7,7 +9,8 @@ import { Head, StepText } from '../parts';
 /** order, self-inspection, patrol, approval, report */
 const ICONS = [ICON.order, ICON.phone, ICON.patrol, ICON.approve, ICON.report];
 
-/** one inspection's five steps: a column joined by a line, a row of five from 1200px */
+/** one inspection's five steps: a column joined by a line, a row of five from 1200px; then the rounds
+ * underneath them, first-off locking the rest until it is done, and what a fail or rejection does */
 export function Workflow() {
   const w = useT().qf.workflow;
   return (
@@ -29,6 +32,29 @@ export function Workflow() {
           </li>
         ))}
       </ol>
+
+      <div className="rv mt-stack-sm grid gap-4 rounded-card border border-line bg-card/60 p-panel-pad">
+        <h4 className="m-0 text-title-xs font-semibold">{w.rules.title}</h4>
+        {/* the rounds in order; between first-off and in-process, the interlock */}
+        <ol className="m-0 flex list-none flex-wrap items-stretch gap-2 p-0 max-md:flex-col">
+          {w.rules.rounds.map((r, i) => (
+            <Fragment key={r.title}>
+              {i > 0 && (i === 1
+                ? <li aria-label={w.rules.lock} className="flex flex-none items-center justify-center gap-1.5 px-1 text-caption font-semibold text-err max-md:py-1"><Lock aria-hidden="true" className="size-4" />{w.rules.lock}</li>
+                : <li aria-hidden="true" className="grid flex-none place-items-center text-mute max-md:rotate-90"><ChevronRight className="size-4" /></li>)}
+              <li className={cn('grid min-w-0 flex-1 content-center gap-0.5 rounded-[10px] border px-4 py-3 text-center',
+                i === w.rules.rounds.length - 1 ? 'border-qf bg-qf text-on-acc' : i === 3 ? 'border-fg bg-fg text-bg' : 'border-line bg-bg')}>
+                <b className="text-body font-semibold">{r.title}</b>
+                <span className="text-caption opacity-80">{r.body}</span>
+              </li>
+            </Fragment>
+          ))}
+        </ol>
+        <p className="m-0 flex items-start gap-2.5 rounded-[10px] bg-err/10 px-4 py-3 text-body-sm leading-copy">
+          <TriangleAlert aria-hidden="true" className="mt-0.5 size-4 flex-none text-err" />
+          <span><b className="font-semibold">{w.rules.reject.title}</b> · {w.rules.reject.body}</span>
+        </p>
+      </div>
     </Band>
   );
 }

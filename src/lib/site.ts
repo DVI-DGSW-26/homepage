@@ -16,6 +16,8 @@ export const BOOTH = '62401';
 export const CES_END = Date.parse('2027-01-10T00:00:00-08:00');
 /** until the show closes the demo buttons say "CES 데모 신청" (read when a page renders) */
 export const duringCes = () => Date.now() < CES_END;
+/** the header keeps its CES 2027 item until the end of January (request doc p.10) */
+export const CES_MENU_END = Date.parse('2027-02-01T00:00:00+09:00');
 
 /** DVISION's other sites, in the language being read: the gateway (dvi-ind.com, "제조 / 솔루션") and the
  * manufacturing site, both of which keep the language in the path (/en, /en/home) */
