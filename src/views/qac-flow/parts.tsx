@@ -10,7 +10,7 @@ import { cn } from '../../lib/cn';
 
 const IMG = 'assets/img/qacflow/';
 /** the screens captured again in English, under en/ as WebP; any other shows its Korean capture in English too */
-const EN = new Set(['capture', 'ocr-input', 'crop', 'mobile-compare', 'web-approval', 'report-1', 'report-2', 'report-3', 'spc-charts', 'spc-capability', 'spc-trend', 'monitor-board', 'monitor-detail', 'monitor-defects']);
+const EN = new Set(['capture', 'ocr-input', 'crop', 'mobile-photo-compare', 'web-approval', 'report-1', 'report-2', 'report-3', 'spc-charts', 'spc-capability', 'spc-trend', 'monitor-board', 'monitor-detail', 'monitor-defects']);
 
 /** A screen's path in the language being read. Customer and personal names are masked in the image
  * files themselves, and the phone captures have their status and navigation bars cropped off so they

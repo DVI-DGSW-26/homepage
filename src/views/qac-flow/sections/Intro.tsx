@@ -68,8 +68,8 @@ export function Intro() {
             <Caption strong icon={<Camera className="size-4" />}>{m.how.steps.map(x => x.title).join(' → ')}</Caption>
           </li>
           <li className="grid w-[25%] justify-items-center gap-3.5 pt-[30%]">
-            <Phone src={capture('mobile-compare.webp')} alt={m.alt.compare} sizes={SIDE_SIZES} className="w-full" />
-            <Caption icon={<FileCheck2 className="size-4" />} className="max-sm:hidden">{m.problem.afterSteps[3]}</Caption>
+            <Phone src={capture('mobile-photo-compare.webp')} alt={m.alt.compare} sizes={SIDE_SIZES} className="w-full" />
+            <Caption icon={<FileCheck2 className="size-4" />} className="max-sm:hidden">{m.trace.points[0].title}</Caption>
           </li>
         </ul>
 

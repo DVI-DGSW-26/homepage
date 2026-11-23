@@ -72,7 +72,7 @@ export const en: Messages = {
       capture: 'Smartphone camera framing the display of a digital caliper reading 24.38 mm',
       ocr: 'App screen: the caliper reading is filled in by OCR and judged as a pass against the tolerance',
       crop: 'App screen: dragging the corner handles of a box to crop the photo down to the caliper reading',
-      compare: 'Mobile patrol inspection approval: self and patrol inspection values side by side per dimension, with Reject and Approve (issue report) buttons',
+      compare: 'Mobile patrol inspection approval: over the self and patrol values per dimension, the self-inspection and patrol inspection photos of DIM 1 open side by side',
       approval: 'PC web patrol inspection approval screen: self and patrol inspection values compared per dimension, with Reject and Approve (issue report) buttons',
       reports: [
         'Inspection report page 1, Daily Quality Summary: prepared, reviewed and approved sign-off stamps, a QR code for verification, pass rate, headline Cpk, inspection count and issues, an X̄-R control chart and ESG carbon savings',
