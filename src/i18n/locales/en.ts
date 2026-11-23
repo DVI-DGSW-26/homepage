@@ -59,6 +59,13 @@ export const en: Messages = {
     stats: ['No dedicated gauges or sensor installation', 'Started running in our own plant'],
     statsNote: 'In-house validation at our Daegu HQ plant · IATF 16949',
     cta: { demo: 'Request a demo', apply: 'Ask about your floor' },
+    ces: {
+      label: 'CES 2027',
+      when: 'Jan 6–9, 2027 · Las Vegas',
+      where: (booth: string) => `Venetian Expo Hall G · Eureka Park · Booth ${booth}`,
+      try: 'Measure and shoot it yourself at the booth',
+      after: 'Missed us at CES 2027? Get the booth demo online'
+    },
     alt: {
       capture: 'Smartphone camera framing the display of a digital caliper reading 30.00 mm',
       ocr: 'App screen: the caliper reading is filled in by OCR and judged as a pass against the tolerance',
@@ -229,7 +236,7 @@ export const en: Messages = {
 
   footer: {
     company: 'DVISION Co., Ltd.',
-    address: '237, Gukgasandan-daero 33-gil, Gugi-myeon, Dalseong-gun, Daegu, Republic of Korea',
+    address: '237, Gukgasandan-daero 33-gil, Guji-myeon, Dalseong-gun, Daegu, Republic of Korea',
     email: 'Contact',
     sites: 'DVISION sites',
     links: { gateway: 'DVISION start page', manufacturing: 'Manufacturing', solution: 'QAC FLOW solutions' },

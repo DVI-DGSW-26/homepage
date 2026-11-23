@@ -71,6 +71,14 @@ export const ko = {
     statsNote: '대구 본사 공장 사내 검증 · IATF 16949',
     /** the buttons that lead to the demo request form (#contact) */
     cta: { demo: '데모 신청', apply: '우리 현장에 적용 문의' },
+    /** the banner above the name: the booth until the show closes (CES_END in src/lib/site.ts), then the online demo */
+    ces: {
+      label: 'CES 2027',
+      when: '2027. 1. 6.~9. · 라스베이거스',
+      where: (booth: string) => `Venetian Expo Hall G · Eureka Park · Booth ${booth}`,
+      try: '부스에서 직접 측정·촬영 체험',
+      after: 'CES 2027 부스 시연을 온라인 데모로 안내해 드립니다'
+    },
     alt: {
       capture: '스마트폰 카메라로 디지털 캘리퍼스 화면을 촬영하는 장면',
       ocr: '측정값이 OCR로 자동 입력되고 합격으로 판정된 화면',

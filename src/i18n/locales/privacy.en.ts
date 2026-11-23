@@ -92,7 +92,7 @@ export const privacyEn: Policy = {
         ['Team', 'DVISION Sales'],
         ['Email', 'sales@dvi-ind.com'],
         ['Phone', '+82-53-710-1022'],
-        ['Address', '237, Gukgasandan-daero 33-gil, Gugi-myeon, Dalseong-gun, Daegu, Republic of Korea']
+        ['Address', '237, Gukgasandan-daero 33-gil, Guji-myeon, Dalseong-gun, Daegu, Republic of Korea']
       ]
     },
     {

@@ -35,7 +35,7 @@ export function Head({ kicker, q, title, lead }: { kicker: string; q: string; ti
   );
 }
 
-export type Capture = { src: string; alt: string; dark?: boolean; loop?: Loop };
+export type Capture = { src: string; alt: string; dark?: boolean; loop?: Loop; marker?: ReactNode };
 /** a phone in a pair is drawn at 3/4 of the pair, at most 460px wide */
 const PAIR_SIZES = '(max-width: 599px) 70vw, 350px';
 
