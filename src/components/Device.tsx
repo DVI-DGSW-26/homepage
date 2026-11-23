@@ -10,8 +10,8 @@
 //   <Tablet>   an iPad Pro 11" on its side: aluminum edge, an even black bezel, the camera on the long edge
 //   <Monitor>  a Studio Display: black glass bezel with the camera, aluminum edge, stand and foot
 //
-// The tablet and the monitor, and the phone given children, show the floor app in React
-// (src/features/qac-monitor), themed with the page, so not dimmed as the captures are.
+// The monitor shows the floor app's screens, captured (the live-monitoring block); the tablet and the
+// phone given children can hold an HTML screen of their own.
 // All are container-query sized (@container, cqw units), so they keep their proportions however wide
 // they are drawn.
 import { useState, type CSSProperties, type ReactNode } from 'react';

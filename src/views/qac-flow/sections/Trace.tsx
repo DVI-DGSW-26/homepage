@@ -1,15 +1,17 @@
 import { useT } from '../../../i18n';
 import { Band } from '../../../components/ui';
-import { Browser, Head, PhonePair } from '../parts';
+import { Phone } from '../../../components/Device';
+import { Browser, Head, useCapture } from '../parts';
 
 /** traceability: the photo behind every value, the two inspections compared, the approval */
 export function Trace() {
-  const m = useT().qf, t = m.trace;
+  const m = useT().qf, t = m.trace, capture = useCapture();
   return (
     <Band id="qf-trace" alt mark="05">
       <Head kicker={t.kicker} q={t.q} title={t.title} lead={t.lead} />
       <div className="grid items-center gap-stack-sm md:grid-cols-[minmax(0,.8fr)_minmax(0,1.2fr)]">
-        <PhonePair className="rv max-w-105" back={{ src: 'mobile-compare.webp', alt: m.alt.compare }} front={{ src: 'mobile-photo-compare.webp', alt: m.alt.photos }} />
+        {/* the patrol inspection approval on a phone: self and patrol values side by side, per dimension */}
+        <Phone src={capture('mobile-compare.webp')} alt={m.alt.compare} sizes="(max-width: 599px) 80vw, 360px" view="right" className="rv mx-auto w-full max-w-90" />
         <div className="grid gap-block-gap">
           <ul data-batch className="m-0 grid list-none gap-4.5 p-0">
             {t.points.map(x => (

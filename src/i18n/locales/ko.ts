@@ -6,8 +6,6 @@
 // Copy that varies with a number is a function.
 import { privacyKo } from './privacy.ko';
 
-/** a span of minutes as hours and minutes: 186 → "3시간 6분" */
-const dur = (m: number) => `${m >= 60 ? `${Math.floor(m / 60)}시간 ` : ''}${m % 60}분`;
 
 export const ko = {
   /** the wordmark's alt text */
@@ -76,17 +74,17 @@ export const ko = {
     /** the banner above the name: the booth until the show closes (CES_END in src/lib/site.ts), then the online demo */
     ces: {
       label: 'CES 2027',
-      when: '2027. 1. 6.~9. · 라스베이거스',
-      where: (booth: string) => `Venetian Expo Hall G · Eureka Park · Booth ${booth}`,
-      try: '부스에서 직접 측정·촬영 체험',
+      when: '1. 6.~9. 라스베이거스',
+      where: (booth: string) => `Eureka Park 부스 ${booth}`,
+      hall: 'Venetian Expo Hall G',
+      try: '부스에서 직접 측정·촬영해 보세요',
       after: 'CES 2027 부스 시연을 온라인 데모로 안내해 드립니다'
     },
     alt: {
       capture: '스마트폰 카메라로 디지털 캘리퍼스 화면을 촬영하는 장면',
       ocr: '측정값이 OCR로 자동 입력되고 합격으로 판정된 화면',
       crop: '촬영한 사진에서 모서리 핸들을 끌어 측정값 부위만 잘라내는 화면',
-      compare: '모바일 순회검사 결재 화면: 치수별 자주검사와 순회검사 측정값 비교, 불일치 항목은 불합격 표시',
-      photos: '자주검사와 순회검사의 측정 사진을 나란히 대조하는 화면',
+      compare: '모바일 순회검사 결재 화면: 치수별 자주검사와 순회검사 측정값을 나란히 비교, 반려와 승인(보고서 발행) 버튼',
       approval: 'PC 웹 순회검사 결재 화면: 치수별 자주검사와 순회검사 측정값 비교, 반려와 승인(보고서 발행) 버튼',
       report: '일일 품질 요약 보고서: 합격률·대표 Cpk·검사 건수·이상 발생 지표, X̄-R 관리도, 작성·검토·승인 결재와 진위 확인 QR'
     },
@@ -130,8 +128,13 @@ export const ko = {
       title: '불량은 생기는 순간 보입니다.',
       lead: '측정값은 측정하는 그 순간 현장 모니터에 올라옵니다.\n설비별 진행 현황, 공차 대비 측정값, 불량과 조치, 검사 지연 알림까지.',
       tabsAria: '모니터 화면',
-      tabs: ['측정 상세', '현황판', '불량, 조치'],
-      note: '운영 화면을 그대로 옮긴 데모입니다. 화면 속 탭, 호기, 불량 유형을 눌러 보세요. 데이터는 예시입니다.'
+      tabs: ['현황판', '검사 상세', '품질·불량'],
+      alts: [
+        '현장 모니터 현황판: 완료·진행중·지연 지표와 설비별 초·중·종 시점의 자주검사와 순회검사 진행 상황',
+        '현장 모니터 검사 상세: 진행 중인 검사의 측정 항목별 기준·공차, 측정값, 허용 범위 막대와 OK 판정',
+        '현장 모니터 품질·불량: 오늘 검사·불량 검사 건수, 치수 이탈 불량 항목, 불량 유형 비율과 순회 반려 조치 현황'
+      ],
+      note: '현장 모니터의 실제 화면입니다. 화면을 누르면 크게 볼 수 있습니다. 데이터는 예시입니다.'
     },
     trace: {
       kicker: '05 / Traceability',
@@ -264,26 +267,7 @@ export const ko = {
     copyright: '© 2026 DVISION Co., Ltd. All rights reserved.'
   },
 
-  privacy: privacyKo,
-
-  /** the floor monitor rebuilt in React (src/features/qac-monitor); its sample data carries its own ko/en names */
-  monitor: {
-    app: '검사 진행 현황', titles: { board: '현황판', detail: '검사 상세', defects: '품질·불량' }, date: '10월 2일 (금)',
-    fixed: '고정', cycling: '순환', otherLang: 'EN', live: '실시간', updated: '마지막 변경', prev: '이전', next: '다음',
-    self: '자주', patrol: '순회', line: (n: number) => `${n}호기`,
-    kpi: ['완료', '진행중', '건너뜀', '남은 시점', '지연'], over: ['칸', '시각 경과'],
-    queue: '순회 대기', queueSub: ['작성중', '승인대기', '반려'],
-    progress: '시점별 진행도', boardCols: ['라인', '상태', '진행'], legendSelf: ['완료', '진행중', '건너뜀', '미완료', '미완료 승인', '미시작', '지연'], legendPatrol: ['완료', '작성중', '대기', '반려'],
-    due: (t: string, m: number) => `${t}까지 ${dur(m)}`, late: (m: number) => `지연 ${dur(m)}`,
-    dueToday: '오늘 마감 1줄', dueName: '배준호', dueLine: '10호기',
-    inProgress: '진행중 검사', stages: ['초물', '중물', '종물'], ago: (m: number) => m >= 60 ? `${Math.floor(m / 60)}시간 전` : `${m}분 전`,
-    running: '진행중', refreshed: (m: number) => `${m}분 전 갱신`, visual: '외관', defectItems: '불량 항목', measured: '측정 진행',
-    items: '측정 항목', cols: ['No', '항목', '기준 · 공차', '측정값', '허용 범위', '판정'], judgeSpec: 'OK/NG 판정 항목', judgeHint: '작업자가 OK/NG를 고르는 항목', pending: '대기', auto: '자동',
-    today: '오늘 검사', done: '검사 완료', cases: '불량 검사', stopped: '조기종료', unit: '건', risk: (r: string) => `불량률 ${r}% · 위험`, stopSub: '품질 문제로 중단',
-    defectList: '불량 항목', includes: '결재 전 진행중 검사도 포함', kinds: { spec: '치수 이탈', visual: '외관 NG', judge: 'OK/NG' },
-    valueLabel: '측정', specLabel: '허용', visualNg: '외관 판정에서 NG', judgeNg: 'OK/NG 항목에서 NG',
-    types: '불량 유형', actions: '조치 현황', actionKinds: { stop: '조기종료', open: '미완료' }, states: { report: '보고서 발행 · 재검사 시작', wait: '결재 대기', ok: '승인 완료' }, hoursAgo: (h: number) => `${h}시간 전`
-  }
+  privacy: privacyKo
 };
 
 export type Messages = typeof ko;

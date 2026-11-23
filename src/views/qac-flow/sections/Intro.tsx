@@ -1,4 +1,4 @@
-import { CircleCheck, ShieldCheck } from 'lucide-react';
+import { ArrowRight, CalendarDays, CircleCheck, MapPin, ShieldCheck } from 'lucide-react';
 import { lines, useT } from '../../../i18n';
 import { Band, Eyebrow, H2, Lead, Pill } from '../../../components/ui';
 import { openInquiry } from '../../../lib/inquiry';
@@ -60,14 +60,28 @@ export function Intro() {
  * Read when the page renders, so a page left open across the close changes on its next visit. */
 function CesBanner() {
   const c = useT().qf.ces;
-  const box = 'rv mb-6 inline-flex max-w-full flex-wrap items-center gap-x-3 gap-y-1 rounded-card border border-qf-line bg-qf-soft px-4 py-2.5 text-body-sm text-fg-2';
-  const tag = <b className="mono inline-flex items-center gap-2 text-qf-ink"><i aria-hidden="true" className="size-2 rounded-full bg-qf motion-safe:animate-pulse" />{c.label}</b>;
+  // an event notice: a solid CES 2027 tag at the start of a soft green pill, then when, where and the invitation
+  const pill = 'rv mb-7 flex w-fit max-w-full items-center gap-3 rounded-full border border-qf-line bg-qf-soft py-1.5 pr-5 pl-1.5 text-body-sm text-fg max-sm:items-start max-sm:rounded-3xl max-sm:pr-4';
+  const tag = (
+    <span className="inline-flex flex-none items-center gap-1.5 rounded-full bg-qf px-3 py-1 text-caption font-bold tracking-wide text-on-acc">
+      <i aria-hidden="true" className="size-1.5 rounded-full bg-current motion-safe:animate-pulse" />{c.label}
+    </span>
+  );
   if (Date.now() >= CES_END) {
-    return <a href="#contact" aria-haspopup="dialog" onClick={openInquiry('hero')} className={`${box} transition-colors duration-300 hover:border-qf hover:text-fg`}>{tag}<span>{c.after} →</span></a>;
+    return (
+      <a href="#contact" aria-haspopup="dialog" onClick={openInquiry('hero')} className={`${pill} transition-colors duration-300 hover:border-qf`}>
+        {tag}<span className="self-center font-medium">{c.after}</span><ArrowRight aria-hidden="true" className="size-4 flex-none self-center text-qf-ink" />
+      </a>
+    );
   }
   return (
-    <p className={`${box} m-0`}>
-      {tag}<span>{c.when}</span><span>{c.where(BOOTH)}</span><span className="font-semibold text-fg">{c.try}</span>
+    <p className={`${pill} m-0`}>
+      {tag}
+      <span className="flex flex-wrap items-center gap-x-3 gap-y-1 self-center">
+        <span className="inline-flex items-center gap-1.5 font-semibold"><CalendarDays aria-hidden="true" className="size-4 text-qf-ink" />{c.when}</span>
+        <span className="inline-flex items-center gap-1.5 font-semibold" title={c.hall}><MapPin aria-hidden="true" className="size-4 text-qf-ink" />{c.where(BOOTH)}</span>
+        <span className="basis-full text-fg-2">{c.try}</span>
+      </span>
     </p>
   );
 }

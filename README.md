@@ -70,18 +70,13 @@ src/
     tokens.css                 모든 디자인 값 (아래 "디자인 토큰")
     animation.css              CSS 로 움직이는 것 전부와 각각의 reduced-motion 처리
     fonts.css                  Plex Sans KR 전체 선언 (src/lib/fonts.ts 가 입력칸 포커스 때 불러옴)
-  features/
-    qac-monitor/               실시간 모니터링의 현장 앱을 React 로 다시 만든 것 (현황판·검사 상세·품질 불량). 데스크톱은 모니터,
-                               태블릿은 가로 iPad(같은 레이아웃을 4:3 으로), 폰은 아이폰에 폰 전용 레이아웃(QacPhone, phone/).
-                               화면은 모두 parts.tsx 의 Card·Stats·Badge·Pager 로 짓고, 글자는 text-m-caption … text-m-figure
-                               여섯 크기, 아이콘은 lucide-react
   components/
     layout/Nav.tsx             헤더: 떠 있는 알약, 페이지 메뉴, 첫 화면 · 제조 | 솔루션 전환, KOR / ENG 링크, 테마 버튼. 1200px 미만은 <dialog> 시트로
     layout/Contact.tsx         두 제품 페이지 끝의 데모 신청 폼 (#contact) — 페이지의 "데모 신청" 버튼이 모두 여기로
     layout/Footer.tsx          모든 페이지 끝: 회사, 문의 메일, DVISION 사이트 세 곳, 개인정보처리방침
     ui.tsx                     공용 조각: Band, Eyebrow, Kicker, H2, Lead, Pill, PlanTag, LineIcon (리빌 마커 설명도 여기)
     icons.ts                   LineIcon 이 그리는 SVG 경로 사전
-    Device.tsx                 화면을 담는 CSS 목업: 아이폰 16 Pro Max(정면 / 3D 회전, 캡처 또는 HTML 화면), iPad Pro 13", Studio Display
+    Device.tsx                 화면을 담는 CSS 목업 (실시간 모니터링은 Studio Display 에 현장 모니터 캡처 3장을 탭으로): 아이폰 16 Pro Max(정면 / 3D 회전, 캡처 또는 HTML 화면), iPad Pro 13", Studio Display
     Img.tsx                    모든 사진·로고를 그리는 <Img> (AVIF/WebP srcset, 크기, 플레이스홀더, priority)
     Zoom.tsx, Modal.tsx        앱 캡처를 눌러 크게 보는 대화상자와, 그것과 데모 영상 대화상자가 함께 쓰는 <dialog>
     layout/VideoDialog.tsx     데모 영상(YouTube) 대화상자 — 열 때만 플레이어를 불러옴

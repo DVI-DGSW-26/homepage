@@ -2,8 +2,6 @@
 import type { Messages } from './ko';
 import { privacyEn } from './privacy.en';
 
-/** a span of minutes as hours and minutes: 186 → "3h 6m" */
-const dur = (m: number) => `${m >= 60 ? `${Math.floor(m / 60)}h ` : ''}${m % 60}m`;
 
 export const en: Messages = {
   /** the wordmark's alt text */
@@ -62,17 +60,17 @@ export const en: Messages = {
     cta: { demo: 'Request a demo', apply: 'Ask about your floor' },
     ces: {
       label: 'CES 2027',
-      when: 'Jan 6–9, 2027 · Las Vegas',
-      where: (booth: string) => `Venetian Expo Hall G · Eureka Park · Booth ${booth}`,
-      try: 'Measure and shoot it yourself at the booth',
+      when: 'Jan 6–9, Las Vegas',
+      where: (booth: string) => `Eureka Park Booth ${booth}`,
+      hall: 'Venetian Expo Hall G',
+      try: 'Measure and shoot it yourself at our booth',
       after: 'Missed us at CES 2027? Get the booth demo online'
     },
     alt: {
       capture: 'Smartphone camera framing the display of a digital caliper reading 24.38 mm',
       ocr: 'App screen: the caliper reading is filled in by OCR and judged as a pass against the tolerance',
       crop: 'App screen: dragging the corner handles of a box to crop the photo down to the caliper reading',
-      compare: 'Mobile patrol inspection screen comparing self-inspection and patrol inspection values per dimension, with a mismatch marked as fail',
-      photos: 'Side-by-side photos of the same caliper reading taken at self-inspection and at patrol inspection',
+      compare: 'Mobile patrol inspection approval: self and patrol inspection values side by side per dimension, with Reject and Approve (issue report) buttons',
       approval: 'PC web patrol inspection approval screen: self and patrol inspection values compared per dimension, with Reject and Approve (issue report) buttons',
       report: 'Daily quality summary report: pass rate, key Cpk, inspection count and issues, an X̄-R control chart, the prepared, reviewed and approved sign-offs and an authenticity QR code'
     },
@@ -116,8 +114,13 @@ export const en: Messages = {
       title: 'Detect defects the moment they happen.',
       lead: 'Every measurement lands on the shop-floor monitor as it is taken:\nprogress by machine, each value against its tolerance,\ndefects and actions, and alerts for late inspections.',
       tabsAria: 'Monitor screens',
-      tabs: ['Measurement detail', 'Status board', 'Defects & actions'],
-      note: 'A working copy of the floor screens: click the tabs, a line or a defect type. Sample data.'
+      tabs: ['Status board', 'Inspection detail', 'Quality & defects'],
+      alts: [
+        'Floor monitor status board: completed, in-progress and delayed counts, and self and patrol inspection progress per machine across the initial, mid and final rounds',
+        'Floor monitor inspection detail: each measurement item of a running inspection with its spec and tolerance, measured value, tolerance bar and OK result',
+        'Floor monitor quality and defects: inspections and defect cases today, out-of-tolerance items, defect types and a rejected patrol inspection being re-measured'
+      ],
+      note: 'The actual floor monitor screens. Click a screen to see it full size. Sample data.'
     },
     trace: {
       kicker: '05 / Traceability',
@@ -245,23 +248,5 @@ export const en: Messages = {
     copyright: '© 2026 DVISION Co., Ltd. All rights reserved.'
   },
 
-  privacy: privacyEn,
-
-  monitor: {
-    app: 'Inspection Status', titles: { board: 'Dashboard', detail: 'Inspection Details', defects: 'Quality · Defects' }, date: 'Oct 2 (Fri)',
-    fixed: 'Fixed', cycling: 'Cycling', otherLang: 'KO', live: 'Real-time', updated: 'Last updated', prev: 'Previous', next: 'Next',
-    self: 'Self', patrol: 'Patrol', line: (n: number) => `Line ${n}`,
-    kpi: ['Completed', 'In Progress', 'Skipped', 'Remaining Slots', 'Delayed'], over: ['slots', 'over time'],
-    queue: 'Patrol Queue', queueSub: ['Drafting', 'Awaiting', 'Rejected'],
-    progress: 'Progress by Time Slot', boardCols: ['Line', 'Status', 'Progress'], legendSelf: ['Completed', 'In Progress', 'Skipped', 'Incomplete', 'Incomplete Approved', 'Not Started', 'Late'], legendPatrol: ['Completed', 'Drafting', 'Queue', 'Rejected'],
-    due: (t: string, m: number) => `${t} deadline ${dur(m)}`, late: (m: number) => `Delayed ${dur(m)}`,
-    dueToday: '1 line due today', dueName: 'Bae Jun-ho', dueLine: 'Line 10',
-    inProgress: 'In-Progress Inspections', stages: ['Initial', 'Mid', 'Final'], ago: (m: number) => m >= 60 ? `${Math.floor(m / 60)} hour${m >= 120 ? 's' : ''} ago` : `${m} min ago`,
-    running: 'In Progress', refreshed: (m: number) => `Updated ${m} min ago`, visual: 'Visual', defectItems: 'Defect Items', measured: 'Measurement Progress',
-    items: 'Measurement Items', cols: ['No', 'Item', 'Spec / Tolerance', 'Measured Value', 'Tolerance Range', 'Result'], judgeSpec: 'OK/NG judgement item', judgeHint: 'Operator selects OK/NG', pending: 'Pending', auto: 'Auto',
-    today: "Today's Inspections", done: 'Completed', cases: 'Defect Cases', stopped: 'Early Stop', unit: 'cases', risk: (r: string) => `Defect Rate ${r}% · At Risk`, stopSub: 'Stopped for quality issues',
-    defectList: 'Defect Items', includes: 'Includes in-progress inspections before approval', kinds: { spec: 'Out of Spec', visual: 'Visual NG', judge: 'OK/NG' },
-    valueLabel: 'Measured', specLabel: 'Spec', visualNg: 'NG in visual inspection', judgeNg: 'NG in OK/NG item',
-    types: 'Defect Types', actions: 'Action Status', actionKinds: { stop: 'Early Stop', open: 'Incomplete' }, states: { report: 'Report issued · Reinspection started', wait: 'Awaiting approval', ok: 'Approved' }, hoursAgo: (h: number) => `${h} hour${h > 1 ? 's' : ''} ago`
-  }
+  privacy: privacyEn
 };
