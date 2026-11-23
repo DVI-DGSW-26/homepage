@@ -113,17 +113,17 @@ function Caption({ icon, strong, className, children }: { icon: ReactNode; stron
  * Read when the page renders, so a page left open across the close changes on its next visit. */
 function CesBanner() {
   const c = useT().qf.ces;
-  // an event notice: a solid CES 2027 tag at the start of a soft green pill, then when, where and the invitation
-  const pill = 'rv mb-7 flex w-fit max-w-full items-center gap-3 rounded-full border border-qf-line bg-qf-soft py-1.5 pr-5 pl-1.5 text-left text-body-sm text-fg max-sm:items-start max-sm:rounded-3xl max-sm:pr-4';
+  // an event notice: a solid mint pill, a dark CES 2027 tag at its start, then when, where and the invitation
+  const pill = 'rv mb-7 flex w-fit max-w-full items-center gap-3 rounded-full border border-qf bg-qf py-1.5 pr-5 pl-1.5 text-left text-body-sm text-on-acc max-sm:items-start max-sm:rounded-3xl max-sm:pr-4';
   const tag = (
-    <span className="inline-flex flex-none items-center gap-1.5 rounded-full bg-qf px-3 py-1 text-caption font-bold tracking-wide text-on-acc">
+    <span className="inline-flex flex-none items-center gap-1.5 rounded-full bg-on-acc px-3 py-1 text-caption font-bold tracking-wide text-qf">
       <i aria-hidden="true" className="size-1.5 rounded-full bg-current motion-safe:animate-pulse" />{c.label}
     </span>
   );
   if (Date.now() >= CES_END) {
     return (
-      <a href="#contact" aria-haspopup="dialog" onClick={openInquiry('hero')} className={`${pill} transition-colors duration-300 hover:border-qf`}>
-        {tag}<span className="self-center font-medium">{c.after}</span><ArrowRight aria-hidden="true" className="size-4 flex-none self-center text-qf-ink" />
+      <a href="#contact" aria-haspopup="dialog" onClick={openInquiry('hero')} className={`${pill} transition-[filter] duration-300 hover:brightness-110`}>
+        {tag}<span className="self-center font-medium">{c.after}</span><ArrowRight aria-hidden="true" className="size-4 flex-none self-center" />
       </a>
     );
   }
@@ -131,10 +131,10 @@ function CesBanner() {
     <p className={`${pill} m-0`}>
       {tag}
       <span className="flex flex-wrap items-center gap-x-3 gap-y-1 self-center">
-        <span className="inline-flex items-center gap-1.5 font-semibold"><CalendarDays aria-hidden="true" className="size-4 text-qf-ink" />{c.when}</span>
-        <span className="inline-flex items-center gap-1.5 font-semibold" title={c.hall}><MapPin aria-hidden="true" className="size-4 text-qf-ink" />{c.where(BOOTH)}</span>
+        <span className="inline-flex items-center gap-1.5 font-semibold"><CalendarDays aria-hidden="true" className="size-4" />{c.when}</span>
+        <span className="inline-flex items-center gap-1.5 font-semibold" title={c.hall}><MapPin aria-hidden="true" className="size-4" />{c.where(BOOTH)}</span>
         {/* under them, on a line of its own */}
-        <span className="basis-full text-fg-2">{c.try}</span>
+        <span className="basis-full font-medium opacity-85">{c.try}</span>
       </span>
     </p>
   );
