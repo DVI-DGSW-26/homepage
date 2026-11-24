@@ -20,7 +20,8 @@ export const DEMO_VIDEO: { youtube: string; seconds: number } | null = null;
 export const DOWNLOADS: { href: string; kind: 'catalog' | 'leaflet'; lang?: Lang; mb: number }[] = [];
 
 /** the capture shown full size (Zoom.tsx); null while none is */
-export type Zoomed = { src: string; alt: string };
+/** the capture open full size; set: the captures it belongs with (a [data-gallery] around them), to step through */
+export type Zoomed = { src: string; alt: string; set?: { src: string; alt: string }[] };
 const zoomed = createStore<Zoomed | null>(null);
 export const useZoomed = () => useStore(zoomed);
 export const zoom = (z: Zoomed | null) => zoomed.set(z);

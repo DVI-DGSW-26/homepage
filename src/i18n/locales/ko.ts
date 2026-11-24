@@ -50,6 +50,8 @@ export const ko = {
   /** the zoomed capture, the demo video and the downloads (src/lib/media.ts) */
   media: {
     zoom: '크게 보기',
+    prev: '이전 화면',
+    next: '다음 화면',
     zoomIn: '확대',
     zoomOut: '축소',
     fit: '화면에 맞춤',

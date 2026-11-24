@@ -40,6 +40,8 @@ export const en: Messages = {
 
   media: {
     zoom: 'View full size',
+    prev: 'Previous screen',
+    next: 'Next screen',
     zoomIn: 'Zoom in',
     zoomOut: 'Zoom out',
     fit: 'Fit to screen',

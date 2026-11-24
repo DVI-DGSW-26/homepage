@@ -187,7 +187,7 @@ function FeaturePanel({ at, onClose, screens }: { at: number | null; onClose: ()
               <span className="text-caption font-semibold text-mute">{f.beforeHead}</span>
               <p className="m-0 text-body leading-relaxed text-fg-2">{x.before}</p>
             </div>
-            {i === at && <div className="mt-10 overflow-hidden rounded-[20px] bg-bg-2 p-6 max-sm:p-4">{screens[i]}</div>}
+            {i === at && <div data-gallery className="mt-10 overflow-hidden rounded-[20px] bg-bg-2 p-6 max-sm:p-4">{screens[i]}</div>}
             <table className="mt-12 w-full border-collapse text-left">
               <thead className="sr-only"><tr><th scope="col">{f.rowsHead[0]}</th><th scope="col">{f.rowsHead[1]}</th></tr></thead>
               <tbody>

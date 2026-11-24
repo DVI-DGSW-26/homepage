@@ -4,9 +4,11 @@
 // It zooms up to MAX times the fitted size: the wheel and a two-finger pinch zoom about the pointer, a
 // double click toggles, the controls (and +, −, 0 on the keyboard) step; zoomed in, a drag pans, never
 // past the picture's edge, and the picture stays inside its row. Esc, the back button, the close button
-// or a tap on the empty space around the picture closes it.
+// or a tap on the empty space around the picture closes it. A capture inside a [data-gallery] (a feature panel's
+// screens) opens with the others there: arrows on either side, ← → on the keyboard and a sideways swipe at
+// the fitted size step through them.
 import { useEffect, useRef, useState, type PointerEvent, type ReactNode, type WheelEvent } from 'react';
-import { Maximize2, Scan, ZoomIn, ZoomOut } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Maximize2, Scan, ZoomIn, ZoomOut } from 'lucide-react';
 import { useT } from '../i18n';
 import { useZoomed, zoom, type Zoomed } from '../lib/media';
 import { cn } from '../lib/cn';
@@ -18,7 +20,13 @@ import { Modal } from './Modal';
 export function Zoomable({ src, alt, className, children }: { src: string; alt: string; className?: string; children: ReactNode }) {
   const label = useT().media.zoom;
   return (
-    <button type="button" aria-haspopup="dialog" onClick={() => zoom({ src, alt })}
+    <button type="button" aria-haspopup="dialog" data-zoom-src={src} data-zoom-alt={alt}
+      onClick={e => {
+        // the captures of the same gallery, in page order, once each
+        const g = e.currentTarget.closest('[data-gallery]');
+        const set = g ? [...new Map([...g.querySelectorAll<HTMLElement>('[data-zoom-src]')].map(b => [b.dataset.zoomSrc!, { src: b.dataset.zoomSrc!, alt: b.dataset.zoomAlt ?? '' }])).values()] : [];
+        zoom({ src, alt, set: set.length > 1 ? set : undefined });
+      }}
       className={cn('group relative block w-full cursor-zoom-in p-0 text-left', className)}>
       {children}
       <span className="sr-only">{label}</span>
@@ -33,7 +41,11 @@ export function ZoomDialog() {
   const z = useZoomed(), m = useT().media;
   return (
     <Modal open={z != null} onClose={() => zoom(null)} closeLabel={m.close} aria-label={z?.alt} className="fixed inset-0 m-0 h-dvh w-full backdrop:bg-ink">
-      {z && <Viewer key={z.src} z={z} />}
+      {z && <Viewer key={z.src} z={z} go={d => {
+        const set = z.set; if (!set) return;
+        const k = set.findIndex(x => x.src === z.src);
+        zoom({ ...set[(k + d + set.length) % set.length], set });
+      }} />}
     </Modal>
   );
 }
@@ -47,7 +59,10 @@ type View = { s: number; x: number; y: number };
 const FIT: View = { s: 1, x: 0, y: 0 };
 type Pt = { x: number; y: number };
 
-function Viewer({ z }: { z: Zoomed }) {
+/** a sideways swipe this long, at the fitted size, steps to the next or previous capture */
+const SWIPE = 60;
+
+function Viewer({ z, go }: { z: Zoomed; go: (d: 1 | -1) => void }) {
   const m = useT().media;
   const [view, setView] = useState(FIT);
   /** eased for the buttons, keys and the double click; a wheel, a pinch and a drag follow the hand */
@@ -58,6 +73,10 @@ function Viewer({ z }: { z: Zoomed }) {
   const pinch = useRef<{ d: number; s: number } | null>(null);
   /** how far the current press has travelled, to tell a tap from a drag */
   const travel = useRef(0);
+  /** where the current press started, to tell a sideways swipe */
+  const start = useRef<Pt | null>(null);
+  const many = (z.set?.length ?? 0) > 1;
+  const at = many ? z.set!.findIndex(x => x.src === z.src) : -1;
 
   // zoomed past its row the picture pans until its edge meets the row's; until then it stays centred
   const clamp = (s: number, x: number, y: number): View => {
@@ -83,6 +102,8 @@ function Viewer({ z }: { z: Zoomed }) {
       if (e.key === '+' || e.key === '=') step(STEP);
       else if (e.key === '-') step(1 / STEP);
       else if (e.key === '0') fit();
+      else if (many && e.key === 'ArrowRight') go(1);
+      else if (many && e.key === 'ArrowLeft') go(-1);
     };
     addEventListener('keydown', onKey);
     return () => removeEventListener('keydown', onKey);
@@ -93,7 +114,7 @@ function Viewer({ z }: { z: Zoomed }) {
   const onPointerDown = (e: PointerEvent) => {
     e.currentTarget.setPointerCapture(e.pointerId);
     pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
-    if (pointers.current.size === 1) travel.current = 0;
+    if (pointers.current.size === 1) { travel.current = 0; start.current = { x: e.clientX, y: e.clientY }; }
     const [a, b] = [...pointers.current.values()];
     if (b) pinch.current = { d: dist(a, b), s: view.s };
   };
@@ -107,6 +128,11 @@ function Viewer({ z }: { z: Zoomed }) {
     if (view.s > 1) { setEased(false); setView(v => clamp(v.s, v.x + now.x - last.x, v.y + now.y - last.y)); }
   };
   const onPointerUp = (e: PointerEvent) => {
+    const s0 = start.current, dx = s0 ? e.clientX - s0.x : 0, dy = s0 ? e.clientY - s0.y : 0;
+    if (many && view.s === 1 && pointers.current.size === 1 && Math.abs(dx) > SWIPE && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      travel.current = TAP; // not a tap: the swipe must not also close it
+      go(dx < 0 ? 1 : -1);
+    }
     pointers.current.delete(e.pointerId);
     if (pointers.current.size < 2) pinch.current = null;
   };
@@ -116,10 +142,11 @@ function Viewer({ z }: { z: Zoomed }) {
   const onDoubleClick = (e: { clientX: number; clientY: number }) =>
     view.s > 1 ? fit() : zoomTo(() => DOUBLE, { x: e.clientX, y: e.clientY }, true);
 
+  const side = 'absolute top-1/2 z-1 grid size-12 -translate-y-1/2 cursor-pointer place-items-center rounded-full border border-ink-line-2 bg-ink/80 text-ink-fg transition-colors duration-300 hover:text-on-photo max-sm:size-10';
   const button = 'grid size-11 cursor-pointer place-items-center rounded-full text-ink-fg transition-colors duration-300 hover:text-on-photo disabled:cursor-default disabled:opacity-40';
   return (
     // the top band is left to the close button (Modal)
-    <figure className="m-0 grid h-full grid-rows-[minmax(0,1fr)_auto_auto] justify-items-center gap-3 px-4 pt-16 pb-4">
+    <figure className="relative m-0 grid h-full grid-rows-[minmax(0,1fr)_auto_auto] justify-items-center gap-3 px-4 pt-16 pb-4">
       <div ref={stage} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerCancel={onPointerUp}
         onClick={onClick} onWheel={onWheel} onDoubleClick={onDoubleClick}
         className={cn('relative size-full touch-none overflow-hidden select-none', view.s > 1 && 'cursor-grab active:cursor-grabbing')}>
@@ -128,7 +155,13 @@ function Viewer({ z }: { z: Zoomed }) {
           className={cn('app-screen absolute inset-0 m-auto h-auto max-h-full w-auto max-w-full origin-center rounded-card bg-plate', view.s === 1 && 'cursor-zoom-in', eased && 'transition-transform duration-300 ease-out')}
           style={{ transform: `translate(${view.x}px, ${view.y}px) scale(${view.s})` }} />
       </div>
-      <figcaption className="max-w-3xl text-center text-body-sm text-ink-fg-2 max-sm:line-clamp-2">{z.alt}</figcaption>
+      {many && <>
+        <button type="button" onClick={() => go(-1)} aria-label={m.prev} className={cn(side, 'left-4 max-sm:left-2')}><ChevronLeft className="size-6" strokeWidth={1.8} aria-hidden="true" /></button>
+        <button type="button" onClick={() => go(1)} aria-label={m.next} className={cn(side, 'right-4 max-sm:right-2')}><ChevronRight className="size-6" strokeWidth={1.8} aria-hidden="true" /></button>
+      </>}
+      <figcaption className="max-w-3xl text-center text-body-sm text-ink-fg-2 max-sm:line-clamp-2">
+        {many && <span className="num mr-2 font-semibold text-ink-fg">{at + 1} / {z.set!.length}</span>}{z.alt}
+      </figcaption>
       <div className="flex items-center gap-1 rounded-full border border-ink-line-2 bg-ink/80 p-1">
         <button type="button" onClick={() => step(1 / STEP)} disabled={view.s <= 1} aria-label={m.zoomOut} className={button}><ZoomOut className="size-5" strokeWidth={1.6} aria-hidden="true" /></button>
         <output aria-live="polite" className="num min-w-14 text-center text-body-sm text-ink-fg">{Math.round(view.s * 100)}%</output>
