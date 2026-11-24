@@ -140,17 +140,19 @@ export const ko = {
       ]
     },
     /** 서비스 미리보기: the main screens in one frame (Preview.tsx) */
+    /** 서비스 미리보기: one inspection followed from the floor to its report and analysis, step by step (Preview.tsx) */
     preview: {
       title: '서비스 미리보기',
-      lead: '현장에서는 스마트폰으로, 사무실에서는 PC와 모니터로 씁니다.',
-      tabs: ['OCR 측정', '현장 모니터', 'SPC 분석', '검사보고서'],
-      /** the line over each tab's screen */
-      views: [
-        { title: '현장에서 찍고, 바로 입력', body: '측정기 화면을 촬영하면 OCR이 측정값을 읽어 검사표에 입력하고 합격·불합격을 판정합니다.' },
-        { title: '검사 현황을 실시간으로', body: '작업자가 입력한 결과가 저장과 동시에 현장 모니터에 반영되어, 설비별 진행과 불량을 실시간으로 확인합니다.' },
-        { title: '쌓인 기록으로 공정 분석', body: '관리도와 공정능력으로 공정의 흐름을 보고, 관리 한계에 가까워지면 바로 알 수 있습니다.' },
-        { title: '결재와 동시에 보고서 발행', body: '결재가 끝나면 3쪽 보고서가 자동으로 발행되고, QR로 원본을 확인할 수 있습니다.' }
+      lead: '검사 한 건이 현장에서 보고서와 분석까지 이어지는 과정을 따라가 봅니다.',
+      steps: [
+        { who: '작업자', title: '폰으로 찍어 측정', body: '측정기 화면을 찍으면 OCR이 값을 읽어 입력하고, 합격·불합격을 판정합니다.' },
+        { who: '현장 모니터', title: '현황판에 바로 반영', body: '저장하는 순간 현장 모니터의 설비별 진행 현황이 바뀝니다.' },
+        { who: '결재자', title: '사진으로 대조하고 결재', body: '자주검사와 순회검사 값을 측정 사진과 나란히 확인하고, 폰에서 바로 승인합니다.' },
+        { who: '자동', title: '검사보고서 발행', body: '승인과 동시에 보고서가 발행되고, QR로 원본을 확인할 수 있습니다.' },
+        { who: '품질관리자', title: 'SPC 분석', body: '쌓인 측정값이 관리도와 공정능력 분석으로 이어집니다.' }
       ],
+      /** which step of how many, over its title */
+      step: (i: number, n: number) => `${i} / ${n}단계`,
       note: 'QAC FLOW의 실제 화면입니다. 데이터는 예시입니다.'
     },
     /** the banner above the name: the booth until the show closes (CES_END in src/lib/site.ts), then the online demo */
@@ -450,6 +452,9 @@ export const ko = {
     },
     optional: '선택',
     choose: '선택해 주세요',
+    /** the last option of each choice, which opens a field to type the answer in */
+    custom: '직접 입력',
+    customPlaceholder: '직접 입력해 주세요',
     notice: '도입 문의 응대와 후속 상담을 위해 회사명·담당자 이름·회사 이메일·연락처와 선택 항목을 받아 상담 종료 후 1년간 보관한 뒤 파기합니다. 접수·발송 과정에서 미국의 Vercel·Resend를 거쳐 회사 메일(Google Workspace)로 전달됩니다.',
     policy: '개인정보처리방침',
     submit: '도입 문의 보내기',

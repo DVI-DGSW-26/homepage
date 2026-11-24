@@ -127,15 +127,15 @@ export const en: Messages = {
     /** 서비스 미리보기: the main screens in one frame (Preview.tsx) */
     preview: {
       title: 'Preview',
-      lead: 'A smartphone on the floor, a PC and a monitor in the office.',
-      tabs: ['OCR measurement', 'Floor monitor', 'SPC analysis', 'Inspection report'],
-      /** the line over each tab's screen */
-      views: [
-        { title: 'Photograph it, and it is entered', body: 'Photograph the gauge display and OCR reads the value into the check sheet and judges it pass or fail.' },
-        { title: 'Inspection status, live', body: 'Results appear on the floor monitor the moment they are saved, so progress and defects by machine are visible in real time.' },
-        { title: 'Analysis from the records', body: 'Follow the process with control charts and capability, and see at once when it nears a control limit.' },
-        { title: 'A report on approval', body: 'Once approval is complete, the three-page report is issued automatically and can be verified by QR code.' }
+      lead: 'Follow one inspection from the floor to its report and analysis.',
+      steps: [
+        { who: 'Operator', title: 'Photograph to measure', body: 'Photograph the gauge display; OCR reads the value, enters it and judges pass or fail.' },
+        { who: 'Floor monitor', title: 'On the board at once', body: 'The moment it is saved, the floor monitor shows the progress by machine.' },
+        { who: 'Approver', title: 'Check the photos, approve', body: 'Self and patrol readings side by side with their photos, approved right from the phone.' },
+        { who: 'Automatic', title: 'Report issued', body: 'Approval issues the inspection report, verifiable against the original by QR code.' },
+        { who: 'Quality manager', title: 'SPC analysis', body: 'The readings build up into control charts and capability analysis.' }
       ],
+      step: (i: number, n: number) => `Step ${i} of ${n}`,
       note: 'Actual QAC FLOW screens. Sample data.'
     },
     ces: {
@@ -471,6 +471,8 @@ export const en: Messages = {
     },
     optional: 'optional',
     choose: 'Choose one',
+    custom: 'Other (type it in)',
+    customPlaceholder: 'Type your answer',
     notice: 'We use your company, name, work email, phone and the optional details to answer your inquiry and follow up, and delete them one year after it is closed. On the way, they pass through Vercel and Resend in the United States to our company mail (Google Workspace).',
     policy: 'Privacy Policy',
     submit: 'Send inquiry',

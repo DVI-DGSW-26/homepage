@@ -23,7 +23,8 @@ const REQUIRED = [
   { id: 'email', type: 'email', autoComplete: 'email', max: 200 },
   { id: 'phone', type: 'tel', autoComplete: 'tel', max: 40 }
 ] as const;
-/** the optional choices: each sends the index of the chosen option ('' for none) */
+/** the optional choices: each sends the index of the chosen option ('' for none), or the words typed in its
+ * field when its last option, 직접 입력, is chosen (the select is named `${id}-pick`, its field `${id}-text`) */
 const CHOICES = ['type', 'scale', 'timing'] as const;
 type Field = (typeof REQUIRED)[number]['id'];
 type Status = 'idle' | 'sending' | 'sent' | 'failed';
@@ -43,6 +44,8 @@ export function InquiryForm({ source, className, onDone }: { source: InquirySour
   const c = useT().contact, lang = useLang(), page = usePage();
   const [status, setStatus] = useState<Status>('idle');
   const [error, setError] = useState<Field | null>(null);
+  /** the choices set to 직접 입력, whose field shows */
+  const [custom, setCustom] = useState<Record<string, boolean>>({});
   const errorId = useId();
   const outcome = useRef<HTMLButtonElement>(null);
   const done = status === 'sent' || status === 'failed';
@@ -55,6 +58,7 @@ export function InquiryForm({ source, className, onDone }: { source: InquirySour
     if (status === 'sending') return;
     const form = e.currentTarget, data = new FormData(form);
     const value = (id: string) => (id === 'email' ? normalizeEmail : (s: string) => s.trim())(String(data.get(id) ?? ''));
+    const choice = (id: string) => (value(`${id}-pick`) === 'custom' ? value(`${id}-text`) : value(`${id}-pick`));
     const missing = REQUIRED.find(f => (f.id === 'email' ? !EMAIL.test(value(f.id)) : !value(f.id)))?.id ?? null;
     setError(missing);
     if (missing) { form.querySelector<HTMLElement>(`[name="${missing}"]`)?.focus(); return; }
@@ -62,10 +66,10 @@ export function InquiryForm({ source, className, onDone }: { source: InquirySour
     const ok = await sendInquiry({
       lang, page, source,
       name: value('name'), email: value('email'), company: value('company'), phone: value('phone'),
-      type: value('type'), scale: value('scale'), timing: value('timing'), message: value('message'), hp: value('hp')
+      type: choice('type'), scale: choice('scale'), timing: choice('timing'), message: value('message'), hp: value('hp')
     });
     setStatus(ok ? 'sent' : 'failed');
-    if (ok) form.reset();
+    if (ok) { form.reset(); setCustom({}); }
   };
 
   // the error goes as soon as the field it names is touched again
@@ -87,10 +91,12 @@ export function InquiryForm({ source, className, onDone }: { source: InquirySour
           {CHOICES.map(id => (
             <label key={id} className={cn(LABEL, id === 'timing' && 'sm:col-span-2')}>
               <span className={LABEL_TEXT}>{c.fields[id]} <span className="font-normal text-mute">({c.optional})</span></span>
-              <select name={id} defaultValue="" className={cn(INPUT, 'cursor-pointer appearance-none bg-[url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2716%27 height=%2716%27 fill=%27none%27 stroke=%27%23888%27 stroke-width=%272%27%3E%3Cpath d=%27M4 6l4 4 4-4%27/%3E%3C/svg%3E")] bg-[position:right_1rem_center] bg-no-repeat pr-11')}>
+              <select name={`${id}-pick`} defaultValue="" onChange={e => setCustom(x => ({ ...x, [id]: e.target.value === 'custom' }))} className={cn(INPUT, 'cursor-pointer appearance-none bg-[url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2716%27 height=%2716%27 fill=%27none%27 stroke=%27%23888%27 stroke-width=%272%27%3E%3Cpath d=%27M4 6l4 4 4-4%27/%3E%3C/svg%3E")] bg-[position:right_1rem_center] bg-no-repeat pr-11')}>
                 <option value="">{c.choose}</option>
                 {c.options[id].map((o, i) => <option key={o} value={i}>{o}</option>)}
+                <option value="custom">{c.custom}</option>
               </select>
+              {custom[id] && <input name={`${id}-text`} type="text" maxLength={100} autoFocus placeholder={c.customPlaceholder} aria-label={`${c.fields[id]}: ${c.custom}`} className={INPUT} />}
             </label>
           ))}
           <label className={cn(LABEL, 'sm:col-span-2')}>

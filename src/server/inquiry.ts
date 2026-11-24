@@ -29,6 +29,8 @@ const choices = {
   scale: ['1~5대', '6~20대', '21~50대', '50대 이상'],
   timing: ['3개월 이내', '6개월 이내', '1년 이내', '미정']
 } as const;
+/** the longest answer typed in place of a choice */
+const CUSTOM_MAX = 100;
 type Field = keyof typeof limits | keyof typeof choices;
 type Lang = 'ko' | 'en';
 
@@ -149,11 +151,12 @@ export async function POST(request: Request): Promise<Response> {
   const typed = Object.fromEntries(
     (Object.keys(limits) as (keyof typeof limits)[]).map(id => [id, id === 'email' ? normalizeEmail(str(id)) : str(id)])
   ) as Record<keyof typeof limits, string>;
-  // a choice arrives as the index of its option (one digit); anything else counts as not chosen
+  // a choice arrives as the index of its option (one digit), or as the visitor's own words when they chose to
+  // type it (up to CUSTOM_MAX characters, marked as typed in the mail)
   const chosen = Object.fromEntries(
     (Object.keys(choices) as (keyof typeof choices)[]).map(id => {
-      const options: readonly string[] = choices[id];
-      return [id, /^\d$/.test(str(id)) ? options[Number(str(id))] ?? '' : ''];
+      const options: readonly string[] = choices[id], v = str(id);
+      return [id, /^\d$/.test(v) ? options[Number(v)] ?? '' : v ? `${v.slice(0, CUSTOM_MAX)} (직접 입력)` : ''];
     })
   ) as Record<keyof typeof choices, string>;
   const fields = { ...typed, ...chosen } as Record<Field, string>;
