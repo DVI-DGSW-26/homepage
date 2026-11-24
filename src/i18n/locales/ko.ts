@@ -78,15 +78,22 @@ export const ko = {
     /** the buttons that lead to the demo request form (#contact) */
     /** demo: the demo buttons, cesDemo in its place until CES 2027 closes (duringCes, src/lib/site.ts) */
     cta: { demo: '도입 문의', apply: '도입 문의', how: '작동 방식 보기', features: '기능 살펴보기' },
-    /** 서비스 소개: why it was made, what it covers, who uses it (About.tsx) */
+    /** 서비스 소개: the paper check sheet, the photo and the spreadsheet a record used to be split into,
+     * gathering into one QAC FLOW screen (About.tsx) */
     about: {
       title: '서비스 소개',
       lead: '종이와 엑셀로 나뉘어 있던 품질 검사 기록을 하나로 모읍니다.',
-      items: [
-        { label: '만든 목적', body: '검사표를 손으로 적고, 사진을 따로 찍고, 엑셀로 다시 옮기던 일을 없애려고 디비전 공장에서 직접 만들었습니다.' },
-        { label: '지원하는 업무', body: '자주검사와 순회검사, 결재, 검사보고서 발행, 공정 분석(SPC)까지 품질 검사 업무 전체를 지원합니다.' },
-        { label: '사용하는 곳', body: '치수 검사를 하는 제조 현장에서 작업자, 순회검사자, 품질관리자가 함께 씁니다.' }
-      ]
+      before: '지금까지',
+      after: 'QAC FLOW',
+      /** the tags on the three scattered pieces */
+      pieces: { sheet: '손으로 쓴 검사표', photo: '따로 찍은 사진', excel: '다시 옮긴 엑셀' },
+      sheet: { title: '검사 기록표', part: '품명', dim: '측정값', sign: '확인' },
+      file: '검사기록_11월.xlsx',
+      photo: 'IMG_2041.jpg',
+      /** under the QAC FLOW screen */
+      caption: '측정값과 합격 판정, 결재가 한 화면에',
+      alt: 'QAC FLOW 순회검사 결재 화면: 자주검사와 순회검사 측정값, 합격 판정, 승인 버튼이 한 화면에 있음',
+      note: '디비전 공장에서 직접 만들어 쓰는 품질 검사 웹앱입니다. 자주검사와 순회검사, 결재, 보고서, SPC 분석까지 이어집니다.'
     },
     /** 주요 기능: five cards, each with a real screen (Features.tsx) */
     features: {
