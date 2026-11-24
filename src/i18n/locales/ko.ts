@@ -16,7 +16,7 @@ export const ko = {
   meta: {
     '/qac-flow': {
       title: 'QAC FLOW – 종이 검사표 없는 품질검사, 검사보고서와 SPC까지 | DVISION',
-      description: '스마트폰으로 측정기를 찍으면 OCR이 값을 읽어 공차 판정과 검사보고서 발행까지 이어집니다.'
+      description: '스마트폰으로 측정기를 찍으면 OCR이 값을 입력하고 합격·불합격을 판정합니다. 사진 대조 결재, 검사보고서 자동 발행, 현장 모니터와 SPC 분석까지 이어지는 품질검사 웹앱입니다.'
     },
     '/data': {
       title: 'QAC FLOW 데이터 산업 – 검사 한 건이 데이터 자산으로 | DVISION',

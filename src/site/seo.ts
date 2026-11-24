@@ -13,6 +13,12 @@ const LOCALE = { ko: 'ko_KR', en: 'en_US' } as const;
 /** the link preview image, 1200×630, one per language (public/og/; the QAC FLOW hero at 1200 px, dark, the header hidden, captured from the built site) */
 const OG = { ko: '/og/qac-flow-ko.png', en: '/og/qac-flow-en.png' } as const;
 const LOGO = '/assets/img/logo.png';
+/** the name search results and link previews should show for this site (WebSite.name, og:site_name) */
+const SITE_NAME = 'QAC FLOW';
+/** the screens named in the product's structured data, one per feature */
+const SCREENS = ['ocr-input', 'mobile-photo-compare', 'report-1', 'monitor-board', 'spc-charts'];
+/** a screen's address in the language (all five were captured in English as well) */
+const shotOf = (name: string, lang: Lang) => `assets/img/qacflow/${lang === 'en' ? 'en/' : ''}${name}.webp`;
 
 /** a page's full address */
 export const urlOf = (page: Page, lang: Lang) => ORIGIN + (pathOf(page, lang) === '/' ? '' : pathOf(page, lang));
@@ -33,7 +39,8 @@ export function pageMetadata(page: Page, lang: Lang): Metadata {
     },
     openGraph: {
       type: 'website',
-      siteName: 'DVISION',
+      // the same name as the WebSite block's, so search results settle on one site name
+      siteName: SITE_NAME,
       title: short,
       description,
       url: pathOf(page, lang),
@@ -79,7 +86,8 @@ function website(lang: Lang): Json {
     '@type': 'WebSite',
     '@id': `${ORIGIN}/#website`,
     url: ORIGIN,
-    name: 'QAC FLOW · DVISION',
+    name: SITE_NAME,
+    alternateName: ['콱플로우', 'QAC FLOW by DVISION', 'QAC FLOW · DVISION'],
     inLanguage: lang,
     publisher: { '@id': `${ORIGIN}/#organization` }
   };
@@ -101,7 +109,10 @@ function product(lang: Lang): Json {
     url: urlOf('/qac-flow', lang),
     image: ORIGIN + OG[lang],
     inLanguage: lang,
-    featureList: [...d.qf.problem.afterSteps, ...d.qf.trace.points.map(p => p.title)],
+    // the five features as the page names them, each with what it changes
+    featureList: d.qf.features.items.map(x => `${x.name}: ${x.gain}`),
+    // the app's real screens, in this language where they were captured in it
+    screenshot: SCREENS.map(s => ORIGIN + '/' + shotOf(s, lang)),
     publisher: { '@id': `${ORIGIN}/#organization` }
   };
 }

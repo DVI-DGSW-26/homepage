@@ -3,7 +3,7 @@ import type { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'QAC FLOW · DVISION',
+    name: 'QAC FLOW',
     short_name: 'QAC FLOW',
     description: '종이 검사표 없는 품질검사 — Paperless quality inspection from a phone',
     start_url: '/',

@@ -35,18 +35,17 @@ export function Preview() {
   const screens: ReactNode[] = [
     phone('capture.webp', m.alt.capture, true),
     <Monitor key="m" className="w-full max-w-160">
-      <Img src={capture('monitor-board.webp')} alt={m.live.alts[0]} sizes="(max-width: 1023px) 90vw, 640px" loading="eager" className="app-screen block h-auto w-full" />
+      <Img src={capture('monitor-board.webp')} alt={m.live.alts[0]} sizes="(max-width: 1023px) 90vw, 640px" className="app-screen block h-auto w-full" />
     </Monitor>,
     phone('mobile-photo-compare.webp', m.alt.compare),
     <div key="r" className="aspect-[2000/2829] h-full max-h-full overflow-hidden rounded-[4px] bg-white shadow-device">
-      <Img src={capture('report-1.webp')} alt={m.alt.reports[0]} sizes="(max-width: 640px) 60vw, 360px" loading="eager" className="app-screen block h-auto w-full" />
+      <Img src={capture('report-1.webp')} alt={m.alt.reports[0]} sizes="(max-width: 640px) 60vw, 360px" className="app-screen block h-auto w-full" />
     </div>,
     <div key="s" className="w-full max-w-160 overflow-hidden rounded-window border border-line-2 bg-card shadow-device">
       <div aria-hidden="true" className="flex gap-1.5 border-b border-line px-3 py-2.5">{[0, 1, 2].map(i => <i key={i} className="size-2 rounded-full bg-line-2" />)}</div>
-      <Img src={capture('spc-charts.webp')} alt={m.spc.alts[0]} sizes="(max-width: 1023px) 90vw, 640px" loading="eager" className="app-screen block h-auto w-full bg-white" />
+      <Img src={capture('spc-charts.webp')} alt={m.spc.alts[0]} sizes="(max-width: 1023px) 90vw, 640px" className="app-screen block h-auto w-full bg-white" />
     </div>
   ];
-  const s = p.steps[at];
 
   return (
     <Band id="qf-preview">
@@ -73,14 +72,18 @@ export function Preview() {
         </ol>
 
         <div className="mt-10 grid items-center gap-x-12 gap-y-8 max-sm:mt-7 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.7fr)]">
-          {/* the current step in words */}
-          <div key={at} aria-live="polite" className="showcase-in grid content-start gap-3 max-lg:min-h-36 max-sm:min-h-40">
-            <span className="flex items-center gap-2.5 text-caption font-semibold">
-              <span className="text-qf-ink">{p.step(at + 1, n)}</span>
-              <span className="rounded-full border border-line-2 bg-bg px-2.5 py-0.5 text-fg-2">{s.who}</span>
-            </span>
-            <h3 className="m-0 text-[clamp(1.6rem,2.6vw,2.25rem)] leading-tight font-bold tracking-tight">{s.title}</h3>
-            <p className="m-0 text-body-lg leading-relaxed text-fg-2 text-pretty max-sm:text-body">{s.body}</p>
+          {/* the steps in words: all in the page (so search engines read every one), the current one shown */}
+          <div aria-live="polite" className="max-lg:min-h-36 max-sm:min-h-40">
+            {p.steps.map((x, k) => (
+              <div key={k === at ? `on-${k}` : k} hidden={k !== at} className="showcase-in grid content-start gap-3">
+                <span className="flex items-center gap-2.5 text-caption font-semibold">
+                  <span className="text-qf-ink">{p.step(k + 1, n)}</span>
+                  <span className="rounded-full border border-line-2 bg-bg px-2.5 py-0.5 text-fg-2">{x.who}</span>
+                </span>
+                <h3 className="m-0 text-[clamp(1.6rem,2.6vw,2.25rem)] leading-tight font-bold tracking-tight">{x.title}</h3>
+                <p className="m-0 text-body-lg leading-relaxed text-fg-2 text-pretty max-sm:text-body">{x.body}</p>
+              </div>
+            ))}
           </div>
           {/* its screen: all five stacked in one place, the current one shown */}
           <div className="relative h-128 max-lg:h-112 max-sm:h-92">

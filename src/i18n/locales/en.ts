@@ -10,7 +10,7 @@ export const en: Messages = {
   meta: {
     '/qac-flow': {
       title: 'QAC FLOW – Paperless quality inspection, through to reports and SPC',
-      description: 'Photograph the gauge with a smartphone: OCR reads the value, judges it against the tolerance and carries it through to the inspection report.'
+      description: 'Photograph a gauge with your phone and OCR enters the value and judges pass or fail, through photo-checked approval, automatic reports, a live floor monitor and SPC.'
     },
     '/data': {
       title: 'QAC FLOW Data Industry – Every inspection becomes a data asset | DVISION',

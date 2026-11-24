@@ -89,7 +89,7 @@ export function Features() {
           </li>
         ))}
       </ul>
-      <FeaturePanel at={open} onClose={() => setOpen(null)} screens={open == null ? null : cards[open].panel} />
+      <FeaturePanel at={open} onClose={() => setOpen(null)} screens={cards.map(c => c.panel)} />
     </Band>
   );
 }
@@ -150,12 +150,14 @@ function Focus({ src, alt, box, label, inside }: { src: string; alt: string; box
 }
 
 /** The side panel: a modal <dialog> sliding in from the right (focus stays inside, Esc, the back button
- * and a click on the backdrop close it). The feature's name large, its intro, its screens on a soft plate,
- * then what it does as rows of label | description. */
-function FeaturePanel({ at, onClose, screens }: { at: number | null; onClose: () => void; screens: ReactNode }) {
+ * and a click on the backdrop close it). The feature's name, what it changes large, its intro and the problem
+ * it ends, its screens on a soft plate, then what it does as rows of label | description. Every feature's
+ * words are in the page from the start, each hidden until its card is opened, so search engines and AI
+ * search read them; the screens are put in only for the open one. */
+function FeaturePanel({ at, onClose, screens }: { at: number | null; onClose: () => void; screens: ReactNode[] }) {
   const f = useT().qf.features;
   const ref = useRef<HTMLDialogElement>(null);
-  const titleId = useId();
+  const baseId = useId();
   const open = at != null;
   useEffect(() => {
     const d = ref.current; if (!d) return;
@@ -163,13 +165,11 @@ function FeaturePanel({ at, onClose, screens }: { at: number | null; onClose: ()
     if (!open && d.open) d.close();
   }, [open]);
   useBackToClose(open, onClose);
-  const x = at == null ? null : f.items[at];
   return (
-    <dialog ref={ref} aria-labelledby={titleId} onClose={onClose}
+    <dialog ref={ref} aria-labelledby={at == null ? undefined : `${baseId}-${at}`} onClose={onClose}
       onClick={e => { if (e.target === e.currentTarget) onClose(); }}
       className="feature-panel fixed inset-y-0 right-0 left-auto m-0 h-dvh max-h-none w-[min(44rem,100%)] max-w-none overflow-y-auto overscroll-contain border-0 border-l border-line bg-bg p-0 text-fg shadow-2xl backdrop:bg-ink/45">
-      {x && (
-        <div className="grid">
+      <div className="grid">
           <div className="sticky top-0 z-1 flex items-center justify-between border-b border-line bg-bg/90 px-8 py-4 backdrop-blur-md max-sm:px-5">
             <span className="text-caption font-semibold text-fg-2">{f.title}</span>
             <button type="button" onClick={onClose} aria-label={f.close}
@@ -177,8 +177,9 @@ function FeaturePanel({ at, onClose, screens }: { at: number | null; onClose: ()
               <X className="size-4" strokeWidth={1.8} aria-hidden="true" />
             </button>
           </div>
-          <div className="px-8 pt-10 pb-14 max-sm:px-5 max-sm:pt-8">
-            <h2 id={titleId} className="m-0 text-body font-semibold text-qf-ink">{x.name}</h2>
+          {f.items.map((x, i) => (
+          <div key={x.name} hidden={i !== at} className="px-8 pt-10 pb-14 max-sm:px-5 max-sm:pt-8">
+            <h2 id={`${baseId}-${i}`} className="m-0 text-body font-semibold text-qf-ink">{x.name}</h2>
             <p className="m-0 mt-3 text-[clamp(1.75rem,3.6vw,2.5rem)] leading-tight font-bold tracking-tight text-balance">{x.gain}</p>
             <p className="m-0 mt-5 text-body-lg leading-relaxed text-fg-2">{x.intro}</p>
             {/* the problem it ends */}
@@ -186,7 +187,7 @@ function FeaturePanel({ at, onClose, screens }: { at: number | null; onClose: ()
               <span className="text-caption font-semibold text-mute">{f.beforeHead}</span>
               <p className="m-0 text-body leading-relaxed text-fg-2">{x.before}</p>
             </div>
-            <div className="mt-10 overflow-hidden rounded-[20px] bg-bg-2 p-6 max-sm:p-4">{screens}</div>
+            {i === at && <div className="mt-10 overflow-hidden rounded-[20px] bg-bg-2 p-6 max-sm:p-4">{screens[i]}</div>}
             <table className="mt-12 w-full border-collapse text-left">
               <thead className="sr-only"><tr><th scope="col">{f.rowsHead[0]}</th><th scope="col">{f.rowsHead[1]}</th></tr></thead>
               <tbody>
@@ -199,8 +200,8 @@ function FeaturePanel({ at, onClose, screens }: { at: number | null; onClose: ()
               </tbody>
             </table>
           </div>
-        </div>
-      )}
+          ))}
+      </div>
     </dialog>
   );
 }
