@@ -84,47 +84,65 @@ export const en: Messages = {
       more: 'Learn more',
       close: 'Close',
       rowsHead: ['Item', 'Details'],
+      beforeHead: 'Before',
       focus: ['Filled in by OCR', 'Self vs patrol photos'],
       items: [
-        { name: 'OCR input', body: 'Photograph the gauge display and the value is entered and judged pass or fail.',
-          intro: 'Photograph the gauge display, select the reading, and OCR enters the number into the check sheet. Nothing is copied by hand.',
+        { name: 'OCR input', gain: 'A record without writing anything down',
+          body: 'Photograph a gauge display with your phone: the value is entered and judged pass or fail on the spot.',
+          before: 'Values were read by eye, written on paper and typed into a PC again, and mistakes and gaps crept in along the way.',
+          intro: 'Photograph the display of a digital (LCD) gauge and select the reading; the number goes straight into the check sheet. The photo stays with the value, through approval and into the report.',
           rows: [
-            { label: 'Capture', body: 'Fit the gauge display into the guide box in the app.' },
-            { label: 'Crop', body: 'Pick out just the reading from the photo.' },
-            { label: 'Input and judgment', body: 'The value is entered and judged pass or fail against the tolerance. It can be checked and corrected before saving.' }
+            { label: 'Shoot, select, filled in', body: 'Three steps: fit the display into the guide box, select the reading, and the value is in.' },
+            { label: 'Judged at once', body: 'The value is checked against its tolerance and marked pass or fail right there.' },
+            { label: 'Photo evidence', body: 'The photo is saved with the value, compared at approval and included in the report as evidence.' },
+            { label: 'Fix it on the spot', body: 'If a value is misread, correct it before saving.' },
+            { label: 'Supported gauges', body: 'Gauges with a digital (LCD) display.' }
           ] },
-        { name: 'Photo-checked approval', body: 'Every value keeps its photo, so self and patrol results are approved side by side.',
-          intro: 'See self and patrol inspection results side by side with their photos, and approve on mobile or PC.',
+        { name: 'Photo-checked approval', gain: 'Not just numbers: proof they were measured',
+          body: 'The operator\'s self inspection and the quality inspector\'s patrol inspection, compared side by side with their photos, then approved.',
+          before: 'There was no way to tell whether a recorded number had really been measured.',
+          intro: 'For each item, the self and patrol values and both photos sit on one screen. If a photo and its value disagree, it is caught at approval.',
           rows: [
-            { label: 'Photo evidence', body: 'Every value is saved with a photo of the gauge.' },
-            { label: 'Side by side', body: 'Compare the self and patrol values and photos for the same dimension on one screen.' },
-            { label: 'Reject or approve', body: 'A rejection keeps its reason; an approval issues the report right away.' }
+            { label: 'Self and patrol inspection', body: 'Self inspection is done by the operator; patrol inspection is the quality inspector\'s check.' },
+            { label: 'One screen', body: 'Both values and both photos for the same dimension, side by side.' },
+            { label: 'Approve', body: 'Approval issues the inspection report right away.' },
+            { label: 'Reject', body: 'A rejection goes back to the operator with its reason, to be measured again.' }
           ] },
-        { name: 'Inspection reports', body: 'Approval issues the report automatically, verifiable against the original by QR code.',
-          intro: 'Once approval is complete, a three-page report written for each reader is issued automatically.',
+        { name: 'Inspection reports', gain: 'Certificates sent without stamps or scans',
+          body: 'Once approved, the inspection report PDF is created automatically.',
+          before: 'Certificates were written by hand, stamped, scanned and then sent.',
+          intro: 'A three-page report carrying its e-approval stamps is issued without paper. Whoever receives it can scan the QR code to confirm it is the original.',
           rows: [
-            { label: 'Page 1 Daily Quality Summary', body: 'Pass rate, headline Cpk, control charts and sign-offs, for management and buyers' },
-            { label: 'Page 2 Detailed capability', body: 'Capability per dimension and the self and patrol photos compared, for quality engineers' },
-            { label: 'Page 3 Equipment action log', body: 'Each equipment issue from detection through action to re-inspection approval, for auditors and maintenance' },
-            { label: 'QR verification', body: 'Scan the QR code to check the report against the original and view its photos and approval history.' }
+            { label: 'E-approval stamps', body: 'Prepared, reviewed and approved stamps are printed on it, so nothing needs stamping by hand.' },
+            { label: 'QR verification', body: 'A customer or overseas buyer scans the QR code to check it against the original.' },
+            { label: 'Page 1 Daily quality summary', body: 'Pass rate, headline Cpk (process capability index), control charts and sign-offs' },
+            { label: 'Page 2 Detailed capability', body: 'Capability per dimension, with the OCR evidence photos' },
+            { label: 'Page 3 Equipment action log', body: 'Each equipment issue traced from detection through action to re-inspection approval' }
           ] },
-        { name: 'Shop-floor monitor', body: 'Inspection progress by machine, values, defects and actions on the floor monitor.',
-          intro: 'When an operator enters a result on their phone, it appears on the shop-floor monitor the moment it is saved.',
+        { name: 'Shop-floor monitor', gain: 'See the floor without walking it',
+          body: 'Inspection status, live on the TV on the factory wall.',
+          before: 'Knowing what was happening on the floor meant walking around or asking.',
+          intro: 'A value measured on a phone shows on the monitor at once. Four screens take turns, or stay on the one you pin.',
           rows: [
-            { label: 'Inspection status', body: 'First-off, in-process and last-off self and patrol inspections by machine, including overdue and skipped ones.' },
-            { label: 'Measurement detail', body: 'Each value against its nominal and tolerance, with an OK/NG result per item.' },
-            { label: 'Quality and defects', body: 'Defects by item and type, with the owner and status of each action.' }
+            { label: 'Status board', body: 'First-off, in-process and last-off inspections (the first, middle and last parts of a run) by machine' },
+            { label: 'Measurement detail', body: 'Values against their tolerance range, pass or fail per item' },
+            { label: 'Quality and defects', body: 'Defective items and the actions taken' },
+            { label: 'SPC', body: 'Control charts and capability at a glance' },
+            { label: 'Rotate or pin', body: 'The screens take turns, or stay on the one you need.' }
           ] },
-        { name: 'SPC analysis', body: 'Control charts and capability from inspection records, with equipment issues and actions alongside.',
-          intro: 'View control charts and process capability from approved inspection records, and manage equipment issues and actions alongside them.',
+        { name: 'SPC analysis', gain: 'Warned before a defect, not after',
+          body: 'See whether the process is stable from the values already collected, with a warning before defects appear.',
+          before: 'Data had to be gathered into Excel and analysed separately, so problems came to light late.',
+          intro: 'Control charts and capability are calculated as values come in. By extending each machine\'s trend, it warns before a control limit is reached.',
           rows: [
-            { label: 'Indicators and control charts', body: 'Six key indicators including Cpk and Ppk, and the Xbar-R charts. Anything near a control limit is flagged right away.' },
-            { label: 'Process capability', body: 'The distribution laid over the spec limits, with Cp, Cpk, Pp and Ppk.' },
-            { label: 'Equipment issues and actions', body: 'Each issue is kept from report through action to close, with its downtime and cost.' }
+            { label: 'Calculated automatically', body: 'X-bar control charts and capability (Cpk, Ppk), the moment a value is measured.' },
+            { label: 'Near-limit warning', body: 'Flagged before a control limit is crossed.' },
+            { label: 'Defect forecast by machine', body: 'Extending the measured trend, each machine shows a line like "CNC-02: control limit in about 2 days".' },
+            { label: 'Equipment issues and actions', body: 'When something goes wrong, follow it through the issue report and its action history.' },
+            { label: 'Ask AI', body: 'Ask questions about the analysis data. Needs an internet connection.' }
           ] }
       ]
     },
-    /** 서비스 미리보기: the main screens in one frame (Preview.tsx) */
     preview: {
       title: 'Preview',
       lead: 'Follow one inspection from the floor to its report and analysis.',

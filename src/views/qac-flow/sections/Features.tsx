@@ -153,8 +153,14 @@ function FeaturePanel({ at, onClose, screens }: { at: number | null; onClose: ()
             </button>
           </div>
           <div className="px-8 pt-10 pb-14 max-sm:px-5 max-sm:pt-8">
-            <h2 id={titleId} className="m-0 text-[clamp(2rem,4vw,2.75rem)] leading-tight font-bold tracking-tight">{x.name}</h2>
+            <h2 id={titleId} className="m-0 text-body font-semibold text-qf-ink">{x.name}</h2>
+            <p className="m-0 mt-3 text-[clamp(1.75rem,3.6vw,2.5rem)] leading-tight font-bold tracking-tight text-balance">{x.gain}</p>
             <p className="m-0 mt-5 text-body-lg leading-relaxed text-fg-2">{x.intro}</p>
+            {/* the problem it ends */}
+            <div className="mt-6 grid gap-1.5 border-l-2 border-line-2 py-1 pl-4">
+              <span className="text-caption font-semibold text-mute">{f.beforeHead}</span>
+              <p className="m-0 text-body leading-relaxed text-fg-2">{x.before}</p>
+            </div>
             <div className="mt-10 overflow-hidden rounded-[20px] bg-bg-2 p-6 max-sm:p-4">{screens}</div>
             <table className="mt-12 w-full border-collapse text-left">
               <thead className="sr-only"><tr><th scope="col">{f.rowsHead[0]}</th><th scope="col">{f.rowsHead[1]}</th></tr></thead>
