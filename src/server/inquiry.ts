@@ -1,10 +1,10 @@
 /**
- * POST /api/inquiry — the demo request form mailer, served by the route handler src/app/api/inquiry/route.ts
+ * POST /api/inquiry — the adoption inquiry (도입 문의) form mailer, served by the route handler src/app/api/inquiry/route.ts
  * (a Vercel Function in production, and in `next dev` locally). Adapted from the company site's mailer (homepage_new,
  * api/inquiry.ts); both send through the same Resend account and verified domain (dvi-ind.com).
  *
  * Sends the request with Resend (https://resend.com):
- *   From:     "QAC FLOW 데모 신청" <INQUIRY_MAIL_FROM>  — an address on the domain verified in Resend. A fixed name:
+ *   From:     "QAC FLOW 도입 문의" <INQUIRY_MAIL_FROM>  — an address on the domain verified in Resend. A fixed name:
  *             a visitor's name on a company address with a free-mail Reply-To (gmail…) reads as impersonation to
  *             Gmail's filters, and such requests went to spam; the visitor's name is in the subject instead
  *   Reply-To: the visitor's email, so "reply" in the mail app answers the visitor
@@ -20,13 +20,24 @@
 
 const DEFAULT_TO = 'sales@dvi-ind.com';
 
-/** max length per field (characters) */
-const limits = { name: 100, email: 200, company: 100 } as const;
-type Field = keyof typeof limits;
+/** max length per field (characters): the four required ones, then the free message */
+const limits = { company: 100, name: 100, email: 200, phone: 40, message: 2000 } as const;
+const REQUIRED = ['company', 'name', 'email', 'phone'] as const;
+/** the optional choices: the form sends the index of the option, the mail shows the option (in Korean, for sales) */
+const choices = {
+  type: ['도입 상담', '데모 시연', '견적 문의', '시험 적용'],
+  scale: ['1~5대', '6~20대', '21~50대', '50대 이상'],
+  timing: ['3개월 이내', '6개월 이내', '1년 이내', '미정']
+} as const;
+type Field = keyof typeof limits | keyof typeof choices;
 type Lang = 'ko' | 'en';
 
-const labels: Record<Field, string> = { name: '이름', email: '회사 이메일', company: '회사명' };
-const subjects: Record<Lang, string> = { ko: '[QAC FLOW 데모 신청]', en: '[QAC FLOW 데모 신청 · 영문]' };
+/** the mail's rows, in this order */
+const labels: Record<Field, string> = {
+  company: '회사명', name: '담당자 이름', email: '회사 이메일', phone: '연락처',
+  type: '문의 유형', scale: '검사 대상 설비 수', timing: '도입 희망 시기', message: '문의 내용'
+};
+const subjects: Record<Lang, string> = { ko: '[QAC FLOW 도입 문의]', en: '[QAC FLOW 도입 문의 · 영문]' };
 /** which button brought the visitor to the form, and from which page (Resend tags only) */
 const sources = ['header', 'hero', 'live', 'partner', 'page'];
 const pages = ['/qac-flow', '/data'];
@@ -57,7 +68,9 @@ export function renderMail({ fields, lang, at }: MailInput) {
 
   const rows = (Object.keys(labels) as Field[])
     .map(id => {
-      const value = id === 'email' ? `<a href="mailto:${e(fields.email)}" style="color:${C.greenInk};text-decoration:none">${e(fields.email)}</a>` : e(fields[id]);
+      const value = id === 'email' ? `<a href="mailto:${e(fields.email)}" style="color:${C.greenInk};text-decoration:none">${e(fields.email)}</a>`
+        : id === 'phone' ? `<a href="tel:${e(fields.phone.replace(/[^\d+]/g, ''))}" style="color:${C.greenInk};text-decoration:none">${e(fields.phone)}</a>`
+        : fields[id] ? e(fields[id]).replace(/\n/g, '<br>') : `<span style="color:${C.mute};font-weight:400">-</span>`;
       return `<tr>
         <td style="padding:13px 0;border-bottom:1px solid ${C.line};width:104px;color:${C.mute};font-size:13px;line-height:22px;vertical-align:top">${labels[id]}</td>
         <td style="padding:13px 0;border-bottom:1px solid ${C.line};color:${C.text};font-size:15px;line-height:22px;font-weight:600">${value}</td>
@@ -68,18 +81,18 @@ export function renderMail({ fields, lang, at }: MailInput) {
   const html = `<!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${e(subject)}</title></head>
 <body style="margin:0;padding:0;background:${C.bg}">
-<span style="display:none;max-height:0;overflow:hidden;opacity:0">${e(fields.company)} ${e(fields.name)}님의 데모 신청</span>
+<span style="display:none;max-height:0;overflow:hidden;opacity:0">${e(fields.company)} ${e(fields.name)}님의 도입 문의</span>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${C.bg};font-family:${FONT}">
 <tr><td align="center" style="padding:32px 12px">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border:1px solid ${C.line};border-radius:12px;overflow:hidden">
     <tr><td style="background:${C.ink};padding:18px 28px;border-top:4px solid ${C.green}">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
         <td style="color:#ffffff;font-size:17px;font-weight:800;letter-spacing:1px">QAC <span style="color:${C.green}">FLOW</span></td>
-        <td align="right"><span style="display:inline-block;padding:5px 12px;border-radius:999px;background:${C.green};color:#0E3B2C;font-size:12px;font-weight:700">데모 신청</span></td>
+        <td align="right"><span style="display:inline-block;padding:5px 12px;border-radius:999px;background:${C.green};color:#0E3B2C;font-size:12px;font-weight:700">도입 문의</span></td>
       </tr></table>
     </td></tr>
     <tr><td style="padding:28px 28px 8px">
-      <p style="margin:0;color:${C.sub};font-size:13px">새 데모 신청이 접수되었습니다</p>
+      <p style="margin:0;color:${C.sub};font-size:13px">새 도입 문의가 접수되었습니다</p>
       <h1 style="margin:6px 0 4px;color:${C.text};font-size:24px;line-height:32px;font-weight:700">${e(fields.company)}</h1>
       <p style="margin:0 0 14px;color:${C.sub};font-size:14px">${e(fields.name)}님 · ${e(fields.email)}</p>
     </td></tr>
@@ -93,7 +106,7 @@ export function renderMail({ fields, lang, at }: MailInput) {
       <p style="margin:12px 0 0;color:${C.mute};font-size:12px;line-height:18px">이 메일에 바로 답장해도 신청자에게 전달됩니다.</p>
     </td></tr>
     <tr><td style="padding:16px 28px;background:#F7F8FA;border-top:1px solid ${C.line};color:${C.mute};font-size:12px;line-height:19px">
-      접수 ${e(when)} (KST) · solution.dvi-ind.com 데모 신청 폼<br>
+      접수 ${e(when)} (KST) · solution.dvi-ind.com 도입 문의 폼<br>
       개인정보처리방침에 따라 상담 종료 후 1년이 지나면 이 메일을 삭제해 주세요.
     </td></tr>
   </table>
@@ -102,9 +115,9 @@ export function renderMail({ fields, lang, at }: MailInput) {
 </body></html>`;
 
   const text = [
-    '새 데모 신청이 접수되었습니다',
+    '새 도입 문의가 접수되었습니다',
     '',
-    ...(Object.keys(labels) as Field[]).map(id => `${labels[id]}: ${fields[id]}`),
+    ...(Object.keys(labels) as Field[]).map(id => `${labels[id]}: ${fields[id] || '-'}`),
     '',
     `접수: ${when} (KST)`,
     '',
@@ -133,13 +146,21 @@ export async function POST(request: Request): Promise<Response> {
   const str = (id: string) => (typeof input[id] === 'string' ? (input[id] as string) : '').trim();
   // full-width ＠ ． and letters (a Korean IME) become ASCII, zero-width characters go; as src/lib/inquiry.ts does
   const normalizeEmail = (s: string) => s.normalize('NFKC').replace(/[​-‍﻿]/g, '').trim();
-  const fields = Object.fromEntries(
-    (Object.keys(limits) as Field[]).map(id => [id, id === 'email' ? normalizeEmail(str(id)) : str(id)])
-  ) as Record<Field, string>;
+  const typed = Object.fromEntries(
+    (Object.keys(limits) as (keyof typeof limits)[]).map(id => [id, id === 'email' ? normalizeEmail(str(id)) : str(id)])
+  ) as Record<keyof typeof limits, string>;
+  // a choice arrives as the index of its option (one digit); anything else counts as not chosen
+  const chosen = Object.fromEntries(
+    (Object.keys(choices) as (keyof typeof choices)[]).map(id => {
+      const options: readonly string[] = choices[id];
+      return [id, /^\d$/.test(str(id)) ? options[Number(str(id))] ?? '' : ''];
+    })
+  ) as Record<keyof typeof choices, string>;
+  const fields = { ...typed, ...chosen } as Record<Field, string>;
   const lang: Lang = input.lang === 'en' ? 'en' : 'ko';
 
-  if (!fields.name || !fields.company || !emailPattern.test(fields.email)) return json(400, { error: 'invalid' });
-  if ((Object.keys(limits) as Field[]).some(id => fields[id].length > limits[id])) return json(400, { error: 'invalid' });
+  if (REQUIRED.some(id => !fields[id]) || !emailPattern.test(fields.email)) return json(400, { error: 'invalid' });
+  if ((Object.keys(limits) as (keyof typeof limits)[]).some(id => fields[id].length > limits[id])) return json(400, { error: 'invalid' });
 
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.INQUIRY_MAIL_FROM?.trim();
@@ -159,14 +180,14 @@ export async function POST(request: Request): Promise<Response> {
     method: 'POST',
     headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      from: `"QAC FLOW 데모 신청" <${from}>`,
+      from: `"QAC FLOW 도입 문의" <${from}>`,
       to: [to],
       reply_to: fields.email,
       subject,
       text,
       html,
       tags: [
-        { name: 'form', value: 'qac-flow-demo' },
+        { name: 'form', value: 'qac-flow-inquiry' },
         { name: 'source', value: tag(source) },
         { name: 'page', value: tag(page.replace(/^\//, '')) },
         { name: 'lang', value: lang }

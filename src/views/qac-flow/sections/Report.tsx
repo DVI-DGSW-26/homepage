@@ -26,7 +26,7 @@ export function Report() {
               </Zoomable>
             </figure>
             <div className="grid gap-1.5">
-              <span className="mono text-micro text-qf-ink">{r.pageLabel(i + 1)} · {p.reader}</span>
+              <span className="text-caption font-semibold text-qf-ink">{r.pageLabel(i + 1)} · {p.reader}</span>
               <h4 className="m-0 text-title-xs font-semibold">{p.title}</h4>
               <p className="m-0 text-body-sm leading-copy text-fg-2">{p.body}</p>
             </div>
@@ -42,7 +42,7 @@ export function Report() {
           </li>
         ))}
       </ul>
-      <p className="mono m-0 mt-6 text-micro text-mute">{r.note}</p>
+      <p className="m-0 mt-6 text-caption text-mute">{r.note}</p>
     </Band>
   );
 }

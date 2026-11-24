@@ -1,20 +1,19 @@
 import { Fragment } from 'react';
 import { ChevronDown, Monitor, Plus, Server, Smartphone } from 'lucide-react';
 import { useT } from '../../../i18n';
-import { Band, Pill } from '../../../components/ui';
-import { openInquiry } from '../../../lib/inquiry';
+import { Band } from '../../../components/ui';
 import { Head } from '../parts';
 
 const KIT = [Smartphone, Server, Monitor];
 
-/** getting started (request doc p.14): the whole kit, the four-week trial, and the six questions asked
+/** getting started: the whole kit, and the six questions asked
  * most (gauges, recognition, failures, other SPC tools, ERP/MES, deployment and price) */
 export function Adopt() {
   const a = useT().qf.adopt;
   return (
     <Band id="qf-adopt">
       <Head kicker={a.kicker} q={a.q} title={a.title} />
-      <div data-batch className="grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,.8fr)]">
+      <div data-batch className="grid gap-4">
         {/* the kit: three things joined by plus signs */}
         <article className="rv grid content-center gap-5 rounded-card border border-line bg-card/60 p-panel-pad">
           <ul className="m-0 flex list-none items-start justify-center gap-3 p-0 max-sm:flex-col max-sm:items-center">
@@ -33,13 +32,6 @@ export function Adopt() {
             })}
           </ul>
           <p className="m-0 border-t border-line pt-4 text-center text-body-sm text-fg-2">{a.kitNote}</p>
-        </article>
-        {/* the trial, and the way to ask for one (down to the form at the end of the page) */}
-        <article className="rv grid content-start gap-3 rounded-card border border-qf-line bg-linear-160 from-qf-soft to-transparent to-70% p-panel-pad">
-          <span className="mono text-micro text-qf-ink">{a.trial.label}</span>
-          <b className="text-title leading-snug font-bold">{a.trial.title}</b>
-          <p className="m-0 text-body-sm leading-copy text-fg-2">{a.trial.body}</p>
-          <Pill href="#contact" className="mt-2 justify-self-start" onClick={e => { if (!document.getElementById('contact')) openInquiry('header')(e); }}>{a.trial.cta}</Pill>
         </article>
       </div>
       <h4 className="rv m-0 mt-12 mb-4 text-title-xs font-semibold">{a.faqTitle}</h4>

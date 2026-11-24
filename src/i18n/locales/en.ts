@@ -28,7 +28,7 @@ export const en: Messages = {
     menu: 'Main menu',
     links: { '/qac-flow': 'QAC FLOW', '/data': 'Data Industry' },
     /** the header menu (request doc p.10): sections of QAC FLOW, the data page, and CES until the end of January */
-    items: { product: 'Product', how: 'How it works', proof: 'Proof', roadmap: 'Roadmap', ces: 'CES 2027' },
+    items: { product: 'Product', features: 'Features', adopt: 'Getting started' },
     sites: { label: 'DVISION sites', gateway: 'DVISION start page', manufacturing: 'Manufacturing', solution: 'Solutions' },
     langs: { ko: 'KOR', en: 'ENG' },
     theme: { toLight: 'Switch to light mode', toDark: 'Switch to dark mode' },
@@ -61,7 +61,7 @@ export const en: Messages = {
     stats: ['No dedicated gauges or sensor installation', 'Started running in our own plant'],
     kit: 'A smartphone, one server PC and a monitor',
     statsNote: 'In-house validation at our Daegu HQ plant · IATF 16949',
-    cta: { demo: 'Request a demo', cesDemo: 'Request a CES demo', apply: 'Ask about your floor', how: 'See how it works', features: 'Explore features' },
+    cta: { demo: 'Contact sales', apply: 'Contact sales', how: 'See how it works', features: 'Explore features' },
     /** the overview of the features under the first screen (Features.tsx), each item leading to its section */
     features: {
       title: 'Features',
@@ -82,7 +82,9 @@ export const en: Messages = {
       where: (booth: string) => `Eureka Park Booth ${booth}`,
       hall: 'Venetian Expo Hall G',
       try: 'Measure and shoot it yourself at our booth',
-      after: 'Missed us at CES 2027? Get the booth demo online'
+      after: 'Missed us at CES 2027? Get the booth demo online',
+      /** the bar's link to the CES landing page (CES_LANDING_URL), where booth inquiries go */
+      more: 'CES details'
     },
     alt: {
       capture: 'Smartphone camera framing the display of a digital caliper reading 24.38 mm',
@@ -372,29 +374,48 @@ export const en: Messages = {
   },
 
   contact: {
-    kicker: 'Demo / Contact',
-    title: 'Request a demo',
-    lead: 'We will show you how it fits your floor.',
+    title: 'Contact sales',
+    lead: 'Tell us what you inspect and how you inspect it today, and we will suggest how QAC FLOW could fit your floor.',
     close: 'Close',
-    booth: (n: string) => `CES 2027 ·\nEureka Park ·\nBooth ${n}`,
-    show: 'Jan 6–9, 2027 ·\nLas Vegas, Venetian Expo Hall G',
-    fields: { name: 'Name', email: 'Work email', company: 'Company' },
-    placeholders: { name: 'Jane Doe', email: 'name@company.com', company: 'Company Inc.' },
-    notice: 'We use your name, work email and company to answer your request and follow up, and delete them one year after your inquiry is closed. On the way to our mailbox (Google Workspace) they pass through Vercel and Resend in the U.S.',
+    fields: {
+      company: 'Company',
+      name: 'Your name',
+      email: 'Work email',
+      phone: 'Phone',
+      type: 'Inquiry type',
+      scale: 'Machines to inspect',
+      timing: 'Planned timing',
+      message: 'Message'
+    },
+    placeholders: {
+      company: 'Company Inc.',
+      name: 'Jane Doe',
+      email: 'name@company.com',
+      phone: '+1 000 000 0000',
+      message: 'The parts you inspect, the gauges you use, anything you would like to know.'
+    },
+    options: {
+      type: ['Adoption', 'Demo', 'Quote', 'Trial'],
+      scale: ['1–5', '6–20', '21–50', 'More than 50'],
+      timing: ['Within 3 months', 'Within 6 months', 'Within a year', 'Not decided']
+    },
+    optional: 'optional',
+    choose: 'Choose one',
+    notice: 'We use your company, name, work email, phone and the optional details to answer your inquiry and follow up, and delete them one year after it is closed. On the way, they pass through Vercel and Resend in the United States to our company mail (Google Workspace).',
     policy: 'Privacy Policy',
-    submit: 'Request a demo',
-    submitCes: 'Request a CES demo',
+    submit: 'Send inquiry',
     sending: 'Sending…',
-    again: 'New request',
+    again: 'New inquiry',
     retry: 'Try again',
-    sent: 'Thank you. We will get back to you at your work email.',
-    failed: 'Your request could not be sent. Please try again in a moment, or email us at the address below.',
+    sent: 'Thank you. We will get back to you by email or phone.',
+    failed: 'Your inquiry could not be sent. Please try again in a moment, or email us at the address below.',
     invalid: {
+      company: 'Please enter your company name.',
       name: 'Please enter your name.',
       email: 'Please check your work email address.',
-      company: 'Please enter your company name.'
+      phone: 'Please enter a phone number.'
     },
-    mailSubject: 'QAC FLOW demo request'
+    mailSubject: 'QAC FLOW inquiry'
   },
 
   footer: {

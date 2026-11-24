@@ -21,7 +21,7 @@ export function How() {
       <ol data-batch className="m-0 mx-auto mt-10 grid max-w-300 list-none gap-5.5 p-0 sm:grid-cols-3 sm:gap-col-gap">
         {h.steps.map((s, i) => (
           <li key={s.title} className="rv grid grid-cols-[auto_1fr] gap-x-4 border-t border-line pt-4.5">
-            <b className="row-span-2 pt-0.75 font-mono text-mono-sm text-qf-ink">{pad2(i + 1)}</b>
+            <b className="row-span-2 pt-0.75 text-caption font-semibold text-qf-ink">{pad2(i + 1)}</b>
             <StepText title={s.title} body={s.body} />
           </li>
         ))}

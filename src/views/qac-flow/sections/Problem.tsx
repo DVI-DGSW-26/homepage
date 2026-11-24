@@ -22,7 +22,7 @@ function Round({ label, parts, seconds, total, after }: { label: string; parts: 
   return (
     <div className="grid gap-3">
       <div className="flex items-baseline justify-between gap-4">
-        <span className={cn('mono text-micro', after ? 'text-qf-ink' : 'text-fg-2')}>{label}</span>
+        <span className={cn('text-caption font-semibold', after ? 'text-qf-ink' : 'text-fg-2')}>{label}</span>
         <b className={cn('num font-display text-title-lg leading-none font-extrabold', after ? 'text-qf-ink' : 'text-fg')}>{total}</b>
       </div>
       <div aria-hidden="true" className="flex gap-0.5" style={{ width: `${(sum(seconds) / BEFORE_TOTAL) * 100}%` }}>
@@ -51,17 +51,6 @@ export function Problem() {
   return (
     <Band id="qf-problem">
       <Head kicker={p.kicker} q={p.q} title={p.title} lead={p.lead} />
-      {/* who it is for, and what the paper way costs them: the third is what the time chart below can't show */}
-      <p className="rv m-0 mb-5 inline-flex rounded-full border border-qf-line bg-qf-soft/50 px-4 py-2 text-body-sm font-semibold text-qf-ink">{p.audience}</p>
-      <ol data-batch className="m-0 mb-10 grid list-none gap-x-6 gap-y-5 p-0 md:grid-cols-3">
-        {p.pains.map((x, i) => (
-          <li key={x.title} className="rv grid content-start gap-1.5 border-t border-line pt-4">
-            <span className="mono text-micro text-mute">{String(i + 1).padStart(2, '0')}</span>
-            <b className="text-title-xs font-semibold">{x.title}</b>
-            <span className="text-body-sm leading-copy text-fg-2">{x.body}</span>
-          </li>
-        ))}
-      </ol>
       <div data-batch className="grid gap-4 lg:grid-cols-[minmax(0,.8fr)_minmax(0,1.2fr)] lg:gap-6">
         {/* the headline figure, and what it comes to per part */}
         <article className="rv grid content-start gap-6 rounded-card border border-qf-line bg-linear-160 from-qf-soft to-transparent to-70% p-panel-pad">
@@ -70,7 +59,7 @@ export function Problem() {
             <span className="mt-2 block text-title leading-snug font-bold text-fg">{p.cut}</span>
           </div>
           <div className="grid gap-3 border-t border-qf-line pt-5">
-            <span className="mono text-micro text-fg-2">{p.totalsLabel}</span>
+            <span className="text-caption font-semibold text-fg-2">{p.totalsLabel}</span>
             <dl className="m-0 grid gap-3">
               {p.totals.map(x => (
                 <div key={x.item} className="grid gap-1">
@@ -91,7 +80,7 @@ export function Problem() {
           <h4 className="m-0 text-title-xs font-semibold">{p.chart}</h4>
           <Round label={p.before} parts={p.beforeParts} seconds={BEFORE} total={p.time(BEFORE_TOTAL)} />
           <Round label={p.after} parts={p.afterParts} seconds={AFTER} total={p.time(AFTER_TOTAL)} after />
-          <p className="mono m-0 border-t border-line pt-4 text-micro text-mute">{p.note}</p>
+          <p className="m-0 border-t border-line pt-4 text-caption text-mute">{p.note}</p>
         </article>
       </div>
     </Band>

@@ -14,10 +14,9 @@ export const TEL_HREF = 'tel:+82537101022';
 export const BOOTH = '62817-059';
 /** the show closes on Jan 9 in Las Vegas (PST): from then on the hero's CES banner offers the online demo instead */
 export const CES_END = Date.parse('2027-01-10T00:00:00-08:00');
-/** until the show closes the demo buttons say "CES 데모 신청" (read when a page renders) */
-export const duringCes = () => Date.now() < CES_END;
-/** the header keeps its CES 2027 item until the end of January (request doc p.10) */
-export const CES_MENU_END = Date.parse('2027-02-01T00:00:00+09:00');
+/** the CES 2027 landing page, where on-site (booth) inquiries go: the bar above the header links to it once
+ * it is set. This page takes adoption inquiries only. */
+export const CES_LANDING_URL: string | null = null;
 
 /** DVISION's other sites, in the language being read: the gateway (dvi-ind.com, "제조 / 솔루션") and the
  * manufacturing site, both of which keep the language in the path (/en, /en/home) */

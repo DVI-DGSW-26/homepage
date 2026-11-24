@@ -35,7 +35,7 @@ export const ko = {
     menu: '주요 메뉴',
     links: { '/qac-flow': 'QAC FLOW', '/data': 'Data Industry' },
     /** the header menu (request doc p.10): sections of QAC FLOW, the data page, and CES until the end of January */
-    items: { product: '제품', how: '작동 방식', proof: '현장 검증', roadmap: '로드맵·파트너십', ces: 'CES 2027' },
+    items: { product: '제품', features: '주요 기능', adopt: '도입 안내' },
     /** DVISION's sites: the gateway (dvi-ind.com), manufacturing, and this one */
     sites: { label: 'DVISION 사이트', gateway: 'DVISION 첫 화면', manufacturing: '제조', solution: '솔루션' },
     langs: { ko: 'KOR', en: 'ENG' },
@@ -75,7 +75,7 @@ export const ko = {
     statsNote: '대구 본사 공장 사내 검증 · IATF 16949',
     /** the buttons that lead to the demo request form (#contact) */
     /** demo: the demo buttons, cesDemo in its place until CES 2027 closes (duringCes, src/lib/site.ts) */
-    cta: { demo: '데모 신청', cesDemo: 'CES 데모 신청', apply: '우리 현장에 적용 문의', how: '작동 방식 보기', features: '기능 살펴보기' },
+    cta: { demo: '도입 문의', apply: '도입 문의', how: '작동 방식 보기', features: '기능 살펴보기' },
     /** the overview of the features under the first screen (Features.tsx), each item leading to its section */
     features: {
       title: '주요 기능',
@@ -97,7 +97,9 @@ export const ko = {
       where: (booth: string) => `Eureka Park 부스 ${booth}`,
       hall: 'Venetian Expo Hall G',
       try: '부스에서 직접 측정·촬영해 보세요',
-      after: 'CES 2027 부스 시연을 온라인 데모로 안내해 드립니다'
+      after: 'CES 2027 부스 시연을 온라인 데모로 안내해 드립니다',
+      /** the bar's link to the CES landing page (CES_LANDING_URL), where booth inquiries go */
+      more: 'CES 안내 보기'
     },
     alt: {
       capture: '스마트폰 카메라로 디지털 캘리퍼스 화면을 촬영하는 장면',
@@ -365,32 +367,28 @@ export const ko = {
 
   /** the demo request form at the end of every page (#contact); api/inquiry.ts mails it to sales */
   contact: {
-    kicker: 'Demo / Contact',
-    title: '데모 신청·문의',
-    lead: '현장에 맞는 적용 방법을 안내해 드립니다.',
+    title: '도입 문의',
+    lead: '검사하는 품목과 지금의 검사 방식을 알려 주시면, 현장에 맞는 도입 방법을 안내해 드립니다.',
     close: '닫기',
-    booth: (n: string) => `CES 2027 ·\nEureka Park ·\nBooth ${n}`,
-    show: '2027. 1. 6.~9. ·\n라스베이거스 Venetian Expo Hall G',
-    fields: { name: '이름', email: '회사 이메일', company: '회사명' },
-    placeholders: { name: '홍길동', email: 'name@company.com', company: '(주)회사명' },
-    /** how the form's data is handled, above the button: no consent is asked (see privacy.ko.ts) */
-    notice: '데모 신청 응대와 후속 상담을 위해 이름·회사 이메일·회사명을 받아 상담 종료 후 1년간 보관한 뒤 파기합니다. 접수·발송 과정에서 미국의 Vercel·Resend를 거쳐 회사 메일(Google Workspace)로 전달됩니다.',
+    fields: { company: '회사명', name: '담당자 이름', email: '회사 이메일', phone: '연락처', type: '문의 유형', scale: '검사 대상 설비 수', timing: '도입 희망 시기', message: '문의 내용' },
+    placeholders: { company: '(주)회사명', name: '홍길동', email: 'name@company.com', phone: '010-0000-0000', message: '검사하는 품목, 사용 중인 측정기, 궁금한 점을 자유롭게 적어 주세요.' },
+    options: {
+      type: ['도입 상담', '데모 시연', '견적 문의', '시험 적용'],
+      scale: ['1~5대', '6~20대', '21~50대', '50대 이상'],
+      timing: ['3개월 이내', '6개월 이내', '1년 이내', '미정']
+    },
+    optional: '선택',
+    choose: '선택해 주세요',
+    notice: '도입 문의 응대와 후속 상담을 위해 회사명·담당자 이름·회사 이메일·연락처와 선택 항목을 받아 상담 종료 후 1년간 보관한 뒤 파기합니다. 접수·발송 과정에서 미국의 Vercel·Resend를 거쳐 회사 메일(Google Workspace)로 전달됩니다.',
     policy: '개인정보처리방침',
-    submit: '데모 신청',
-    submitCes: 'CES 데모 신청',
+    submit: '도입 문의 보내기',
     sending: '보내는 중…',
-    /** after sending: the page-end form starts a new one, a failed one goes back to the filled form */
     again: '새로 작성',
     retry: '다시 시도',
-    sent: '접수되었습니다. 담당자가 회사 이메일로 연락드리겠습니다.',
+    sent: '접수되었습니다. 담당자가 회사 이메일이나 연락처로 연락드리겠습니다.',
     failed: '보내지 못했습니다. 잠시 후 다시 시도하시거나 아래 주소로 메일을 보내 주세요.',
-    invalid: {
-      name: '이름을 입력해 주세요.',
-      email: '회사 이메일 주소를 확인해 주세요.',
-      company: '회사명을 입력해 주세요.'
-    },
-    /** the subject of the mail a visitor writes when the form fails */
-    mailSubject: 'QAC FLOW 데모 신청'
+    invalid: { company: '회사명을 입력해 주세요.', name: '담당자 이름을 입력해 주세요.', email: '회사 이메일 주소를 확인해 주세요.', phone: '연락처를 입력해 주세요.' },
+    mailSubject: 'QAC FLOW 도입 문의'
   },
 
   footer: {

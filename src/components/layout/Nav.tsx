@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { House } from 'lucide-react';
 import { LANGS, pathOf, type Page } from '../../lib/paths';
-import { CES_MENU_END, SITES, duringCes } from '../../lib/site';
+import { SITES } from '../../lib/site';
 import { useLang, useT } from '../../i18n';
 import { noteLangPosition } from '../../lib/scroll';
 import { setTheme, useTheme } from '../../lib/theme';
@@ -18,16 +18,14 @@ import { openInquiry } from '../../lib/inquiry';
 import { Img } from '../Img';
 import { CesBar } from './CesBar';
 
-/** The menu (request doc p.10): the product page, two of its sections, the data page, and CES until the
- * end of January. A section on the page being read is a plain #link (smoothAnchors glides there); from
- * another page it opens QAC FLOW at that section. */
-type Item = { key: 'product' | 'how' | 'proof' | 'roadmap' | 'ces'; page: Page; hash?: string; until?: number };
+/** The menu: the product's home, its features, and how to start (the adoption inquiry is the button beside
+ * it). A section on the page being read is a plain #link (smoothAnchors glides there); from another page it
+ * opens QAC FLOW at that section. */
+type Item = { key: 'product' | 'features' | 'adopt'; page: Page; hash?: string; until?: number };
 const MENU: Item[] = [
   { key: 'product', page: '/qac-flow' },
-  { key: 'how', page: '/qac-flow', hash: '#qf-how' },
-  { key: 'proof', page: '/qac-flow', hash: '#qf-proof' },
-  { key: 'roadmap', page: '/data' },
-  { key: 'ces', page: '/qac-flow', hash: '#contact', until: CES_MENU_END }
+  { key: 'features', page: '/qac-flow', hash: '#qf-features' },
+  { key: 'adopt', page: '/qac-flow', hash: '#qf-adopt' }
 ];
 
 const ROUND_BTN = 'relative grid size-9 flex-none cursor-pointer place-items-center rounded-full border border-line text-fg-2 transition-colors duration-300 hover:border-line-2 hover:text-fg max-sm:size-8';
@@ -43,8 +41,6 @@ export function Nav({ page }: { page: Page }) {
     return () => lg.removeEventListener('change', close);
   }, []);
   const closeSheet = () => sheet.current?.close();
-  // the English menu and site names are longer: in the bar from 1600px, in the sheet below that
-  const wide = lang === 'en';
   const items = MENU.filter(x => !x.until || Date.now() < x.until).map(x => ({
     ...x, label: m.items[x.key],
     href: x.hash && page === x.page ? x.hash : pathOf(x.page, lang) + (x.hash ?? ''),
@@ -93,7 +89,7 @@ export function Nav({ page }: { page: Page }) {
           <Img className="absolute inset-0 size-full object-contain opacity-0 transition-opacity duration-500 light:opacity-100" src="assets/img/logo.png" sizes="136px" priority={theme === 'light'} alt="" />
         </Link>
         {/* below 1200px the menu is in the sheet (the button at the end of the bar) */}
-        <nav aria-label={m.menu} className={wide ? 'max-[1599px]:hidden' : 'max-lg:hidden'}>
+        <nav aria-label={m.menu} className={'max-lg:hidden'}>
           <ul className="m-0 flex list-none gap-nav-gap p-0 text-body-sm font-medium max-xl:gap-nav-gap-tight">
             {items.map(x => (
               <li key={x.key}>
@@ -108,7 +104,7 @@ export function Nav({ page }: { page: Page }) {
         </nav>
         <div className="flex items-center gap-3.5 max-sm:gap-2">
           {/* DVISION's other sites: the start page (dvi-ind.com), and manufacturing | solutions, this one lit; in the sheet below 1200px */}
-          <nav aria-label={m.sites.label} className={cn('mono flex items-center gap-2.5 border-r border-line pr-3.5 whitespace-nowrap text-mute', wide ? 'max-[1599px]:hidden' : 'max-lg:hidden')}>
+          <nav aria-label={m.sites.label} className='mono flex items-center gap-2.5 border-r border-line pr-3.5 whitespace-nowrap text-mute max-lg:hidden'>
             <a href={SITES.gateway(lang)} aria-label={m.sites.gateway} title={m.sites.gateway} className="-m-1 p-1 transition-colors duration-300 hover:text-fg"><House className="size-4" strokeWidth={1.6} aria-hidden="true" /></a>
             <a href={SITES.manufacturing(lang)} className="transition-colors duration-300 hover:text-fg">{m.sites.manufacturing}</a>
             <i aria-hidden="true" className="not-italic opacity-50">|</i>
@@ -117,9 +113,9 @@ export function Nav({ page }: { page: Page }) {
           {/* on a phone the bar keeps the logo, the demo button and the menu; the language and the mode are in the sheet */}
           <span className="max-sm:hidden">{langs}</span>
           <a href="#contact" onClick={demo}
-            className="inline-flex min-h-9 flex-none items-center rounded-full border border-qf bg-qf px-4.5 text-body-sm font-semibold whitespace-nowrap text-on-acc transition-[filter] duration-300 hover:brightness-110 max-sm:min-h-8 max-sm:px-3 max-sm:text-caption">{duringCes() ? t.qf.cta.cesDemo : t.qf.cta.demo}</a>
+            className="inline-flex min-h-9 flex-none items-center rounded-full border border-qf bg-qf px-4.5 text-body-sm font-semibold whitespace-nowrap text-on-acc transition-[filter] duration-300 hover:brightness-110 max-sm:min-h-8 max-sm:px-3 max-sm:text-caption">{t.qf.cta.demo}</a>
           <span className="contents max-sm:hidden">{themeButton}</span>
-          <button type="button" onClick={() => { sheet.current?.showModal(); setSheetOpen(true); }} aria-label={m.open} aria-haspopup="dialog" className={cn(ROUND_BTN, wide ? 'min-[1600px]:hidden' : 'lg:hidden')}>
+          <button type="button" onClick={() => { sheet.current?.showModal(); setSheetOpen(true); }} aria-label={m.open} aria-haspopup="dialog" className={cn(ROUND_BTN, 'lg:hidden')}>
             <MenuIcon />
           </button>
         </div>

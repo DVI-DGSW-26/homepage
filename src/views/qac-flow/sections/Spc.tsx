@@ -27,7 +27,7 @@ function Step({ n, title, body, children }: { n: number; title: string; body: st
   return (
     <li className="grid gap-5 lg:grid-cols-[minmax(0,.3fr)_minmax(0,1fr)] lg:gap-8">
       <div className="rv grid content-start gap-2 lg:sticky lg:top-28 lg:self-start">
-        <span className="mono text-micro text-qf-ink">{String(n).padStart(2, '0')}</span>
+        <span className="text-caption font-semibold text-qf-ink">{String(n).padStart(2, '0')}</span>
         <h4 className="m-0 text-title leading-snug font-bold">{title}</h4>
         <p className="m-0 text-body-sm leading-copy text-fg-2">{body}</p>
       </div>
@@ -61,7 +61,7 @@ export function Spc() {
           </div>
         </Step>
       </ol>
-      <p className="mono m-0 mt-10 text-micro text-mute">{s.note}</p>
+      <p className="m-0 mt-10 text-caption text-mute">{s.note}</p>
     </Band>
   );
 }

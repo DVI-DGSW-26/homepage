@@ -1,11 +1,10 @@
-// Pieces the QAC FLOW sections share: the question-and-answer head of each block, and the device
+// Pieces the QAC FLOW sections share: the head of each section (its name and one sentence), and the device
 // frames the in-house app's screens sit in.
 import type { ReactNode } from 'react';
-import { lines, useLang } from '../../i18n';
+import { useLang } from '../../i18n';
 import { Img } from '../../components/Img';
 import { Phone, type Loop } from '../../components/Device';
 import { Zoomable } from '../../components/Zoom';
-import { Lead } from '../../components/ui';
 import { cn } from '../../lib/cn';
 
 const IMG = 'assets/img/qacflow/';
@@ -25,12 +24,11 @@ export function useCapture() {
 
 /** each block opens like a product page's section: the feature's name, then what it does in a sentence
  * or two (the copy's kicker is the name; its q, the question this block once opened on, is not shown) */
-export function Head({ kicker, title, lead }: { kicker: string; q?: string; title: string; lead?: string }) {
+export function Head({ kicker, title }: { kicker: string; q?: string; title: string; lead?: string }) {
   return (
     <div className="mb-10 max-w-180 max-sm:mb-8">
-      <h2 className="rv m-0 text-[clamp(1.75rem,2.6vw,2.4rem)] leading-tight font-bold tracking-tight text-balance">{kicker}</h2>
+      <h2 className="rv m-0 text-[clamp(1.9rem,3vw,2.6rem)] leading-tight font-bold tracking-tight text-balance">{kicker}</h2>
       <p className="rv m-0 mt-4 text-title leading-snug text-fg-2 text-pretty">{title}</p>
-      {lead && <Lead className="rv mt-3 max-w-160">{lines(lead)}</Lead>}
     </div>
   );
 }

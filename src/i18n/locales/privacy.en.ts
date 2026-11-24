@@ -16,7 +16,8 @@ export const privacyEn: Policy = {
     {
       title: '2. What we collect and how',
       rows: [
-        ['Demo request form (required)', 'Name, work email, company name'],
+        ['Inquiry form (required)', 'Company, name, work email, phone'],
+        ['Inquiry form (optional)', 'Inquiry type, machines to inspect, planned timing, message'],
         ['Collected automatically', 'When you visit, our hosting provider’s server logs may record your IP address, browser information and the time of your visit.']
       ],
       body: ['There are no accounts on the Site, and we collect nothing beyond the following. We collect no sensitive personal information.']
@@ -53,9 +54,9 @@ export const privacyEn: Policy = {
         'For each recipient: country and contact / information / purpose / retention.'
       ],
       rows: [
-        ['Plus Five Five, Inc. (Resend)', 'United States, privacy@resend.com / name, work email, company name / emailing your inquiry / 30 days after sending'],
-        ['Vercel Inc.', 'United States, privacy@vercel.com / name, work email, company name, IP address, browser information / hosting the Site and receiving the form / the form is passed on, not stored; logs 1 hour to 3 days'],
-        ['Google LLC (Google Workspace)', 'United States and other countries with Google data centers, support.google.com/a/contact/googlecloud_dpr / name, work email, company name / receiving and keeping inquiry emails / one year after your inquiry is closed (section 3)'],
+        ['Plus Five Five, Inc. (Resend)', 'United States, privacy@resend.com / the details entered in the form / emailing your inquiry / 30 days after sending'],
+        ['Vercel Inc.', 'United States, privacy@vercel.com / the details entered in the form, IP address, browser information / hosting the Site and receiving the form / the form is passed on, not stored; logs 1 hour to 3 days'],
+        ['Google LLC (Google Workspace)', 'United States and other countries with Google data centers, support.google.com/a/contact/googlecloud_dpr / the details entered in the form / receiving and keeping inquiry emails / one year after your inquiry is closed (section 3)'],
         ['When and how', 'On submission, over an encrypted connection (HTTPS)'],
         ['If you do not want it', 'Call us at +82-53-710-1022 instead of using the form. The form cannot be sent without the transfer.']
       ]

@@ -55,15 +55,15 @@
   --text-label: .875rem;       /* mono labels and values */
   --text-mono-sm: .875rem;     /* step numbers */
   --text-mono: .875rem;        /* the mono utility */
-  --text-caption: .875rem;
-  --text-small: .9rem;
-  --text-body-sm: .95rem;
-  --text-body: 1rem;
-  --text-body-lg: 1.05rem;
+  --text-caption: .9375rem;   /* notes, small labels: 15px */
+  --text-small: .95rem;
+  --text-body-sm: 1rem;        /* body in cards and lists: 16px */
+  --text-body: 1.0625rem;      /* body: 17px */
+  --text-body-lg: 1.125rem;
   --text-page: 1.0625rem;      /* the body copy */
-  --text-title-xs: 1.15rem;
-  --text-title: 1.25rem;
-  --text-title-lg: 1.35rem;
+  --text-title-xs: 1.25rem;    /* an item's title: 20px */
+  --text-title: 1.375rem;      /* a section's sentence: 22px */
+  --text-title-lg: 1.5rem;
   /* units and signs set beside a figure, sized against it */
   --text-unit: .5em;
   --text-unit-lg: .7em;        /* a date among the figures */

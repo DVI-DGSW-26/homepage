@@ -14,6 +14,12 @@ export type Inquiry = {
   name: string;
   email: string;
   company: string;
+  phone: string;
+  /** the optional choices, each the index of the option chosen ('' for none), and the message */
+  type: string;
+  scale: string;
+  timing: string;
+  message: string;
   /** the page the form was sent from ("/qac-flow", "/data") */
   page: string;
   source: InquirySource;

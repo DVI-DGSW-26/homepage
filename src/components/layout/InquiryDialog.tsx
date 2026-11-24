@@ -6,11 +6,9 @@
 // one height whatever it shows (InquiryForm), so the dialog never jumps.
 import { useEffect, useId, useRef, type MouseEvent } from 'react';
 import { X } from 'lucide-react';
-import { lines, useT } from '../../i18n';
+import { useT } from '../../i18n';
 import { useBackToClose } from '../../lib/history';
 import { closeInquiry, useInquiryDialog } from '../../lib/inquiry';
-import { BOOTH } from '../../lib/site';
-import { Kicker } from '../ui';
 import { InquiryForm } from './InquiryForm';
 
 export function InquiryDialog() {
@@ -36,16 +34,14 @@ export function InquiryDialog() {
       className="inquiry-dialog m-auto max-h-[calc(100dvh-2rem)] w-[min(42rem,calc(100%-2rem))] max-w-none overflow-y-auto overscroll-contain rounded-card border border-line-2 bg-bg-2 p-0 text-fg shadow-2xl backdrop:bg-ink/75">
       {source && (
         <div className="p-8 max-sm:p-5">
-          <div className="flex items-center justify-between gap-4">
-            <Kicker>{c.kicker}</Kicker>
+          <div className="flex items-start justify-between gap-4">
+            <h2 id={titleId} className="m-0 text-[clamp(1.6rem,2.4vw,2rem)] leading-tight font-bold tracking-tight">{c.title}</h2>
             <button type="button" onClick={closeInquiry} aria-label={c.close}
               className="-my-1 grid size-9 flex-none cursor-pointer place-items-center rounded-full border border-line text-fg-2 transition-colors duration-300 hover:border-line-2 hover:text-fg">
               <X className="size-4" strokeWidth={1.6} aria-hidden="true" />
             </button>
           </div>
-          <h2 id={titleId} className="m-0 mt-4 text-h2 leading-h2 font-semibold tracking-tight">{c.title}</h2>
-          <p className="m-0 mt-2 text-body text-fg-2">{c.lead}</p>
-          <p className="mono m-0 mt-4 text-qf-ink">{lines(c.booth(BOOTH))}</p>
+          <p className="m-0 mt-3 text-body text-fg-2">{c.lead}</p>
           <InquiryForm source={source} onDone={closeInquiry} className="mt-7 border-t border-line bg-bg-2 pt-7" />
         </div>
       )}
