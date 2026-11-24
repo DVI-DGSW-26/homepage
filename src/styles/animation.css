@@ -100,3 +100,6 @@
 /* the segment under a preview's current screen fills up as the screen plays (src/views/qac-flow/sections/Preview.tsx) */
 @keyframes cycle-fill { from { width: 0 } }
 .cycle-fill { animation-name: cycle-fill; animation-timing-function: linear; animation-fill-mode: both }
+
+/* the first screen's monitor: a ring round the cell the phone's result lands in (LiveMonitor.tsx) */
+@keyframes live-ring { from { opacity: 1; scale: .96 } to { opacity: 0; scale: 1.04 } }

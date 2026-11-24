@@ -66,6 +66,8 @@ export const ko = {
     expand: 'Quality · Analysis · Control',
     title: '종이 검사표 없는 품질검사',
     lead: '스마트폰으로 측정기를 찍으면 검사 기록부터 결재, 보고서, 공정 분석까지 이어지는 품질 검사 웹앱입니다.',
+    /** the first screen's monitor coming alive as the phone finishes (LiveMonitor): the cell that turns done, the toast */
+    heroMonitor: { just: '방금 입력됨', item: 'CNC-02 · Drive Shaft · 자주검사 중품', value: 'DIM 1 · 24.38', pass: '합격', cell: '✓ 중', live: '실시간 반영 예시' },
     /** the two facts under the first screen's buttons: what it takes, and where it runs */
     facts: ['스마트폰, 서버 PC 1대, 모니터로 시작합니다. 전용 측정 장비나 센서 공사는 필요 없습니다.', '2026년 6월부터 디비전 대구 본사 공장에서 사용하고 있습니다.'],
     /** the figures up front: what it doesn't need, and since when it runs in our own plant */
