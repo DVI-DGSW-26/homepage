@@ -12,11 +12,17 @@ export const scroll = {
   }
 };
 
-/** In-page #anchor links glide to their section. Returns the teardown. */
+/** the address without its #section, keeping the router's history state */
+const dropHash = () => { if (location.hash) history.replaceState(history.state, '', location.pathname + location.search); };
+
+/** In-page #anchor links glide to their section, and leave the address as it was: a #section in it would
+ * make a reload jump there instead of staying where the reader is. Returns the teardown. */
 export function smoothAnchors() {
   const onClick = (e: MouseEvent) => {
-    if (e.defaultPrevented) return; // handled already (a demo button opens the dialog instead)
     const a = (e.target as Element).closest('a[href^="#"]'); if (!a) return;
+    // a menu link (next/link) puts the #section in the address itself: take it back out once it has
+    setTimeout(dropHash, 400);
+    if (e.defaultPrevented) return; // handled already (a demo button opens the dialog instead)
     const id = a.getAttribute('href')!; if (id.length > 1 && document.querySelector(id)) { e.preventDefault(); scroll.scrollTo(id); }
   };
   document.addEventListener('click', onClick);
@@ -28,6 +34,9 @@ export function smoothAnchors() {
  * again after load in case late fonts moved things. */
 export function landOnHash() {
   if (location.hash.length < 2) return;
+  // a reload stays where the reader was (the browser restores it); the #section only takes a fresh visit there
+  const nav = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
+  if (nav?.type === 'reload') { dropHash(); return; }
   const el = document.getElementById(decodeURIComponent(location.hash.slice(1))); if (!el) return;
   const land = () => scroll.scrollTo(el, { immediate: true });
   land();
