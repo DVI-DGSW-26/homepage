@@ -64,19 +64,17 @@ export const en: Messages = {
     kit: 'A smartphone, one server PC and a monitor',
     statsNote: 'In-house validation at our Daegu HQ plant · IATF 16949',
     cta: { demo: 'Contact sales', apply: 'Contact sales', how: 'See how it works', features: 'Explore features' },
-    /** 서비스 소개: the paper check sheet, the photo and the spreadsheet a record used to be split into,
-     * gathering into one QAC FLOW screen (About.tsx) */
+    /** 서비스 소개: the old way and QAC FLOW side by side, one row per part of an inspection record (About.tsx) */
     about: {
       title: 'About',
       lead: 'One place for inspection records once split between paper and spreadsheets.',
       before: 'Until now',
       after: 'QAC FLOW',
-      pieces: { sheet: 'Handwritten check sheet', photo: 'Photo taken separately', excel: 'Retyped into Excel' },
-      sheet: { title: 'Inspection record', part: 'Part', dim: 'Reading', sign: 'Checked' },
-      file: 'inspections_nov.xlsx',
-      photo: 'IMG_2041.jpg',
-      caption: 'Readings, pass/fail and approval on one screen',
-      alt: 'QAC FLOW patrol inspection approval screen: self and patrol readings, pass/fail and the approve button on one screen',
+      rows: [
+        { label: 'Readings', before: 'Written by hand on a paper sheet', after: 'Photograph the gauge and the value is entered' },
+        { label: 'Photos', before: 'Taken separately, kept in a folder', after: 'Saved beside the reading' },
+        { label: 'Reports', before: 'Retyped into Excel', after: 'Issued the moment it is approved' }
+      ],
       note: 'A quality inspection web app we built and use in our own factory, running from self and patrol inspections to approval, reports and SPC analysis.'
     },
     /** 주요 기능: five cards, each with a real screen (Features.tsx) */
