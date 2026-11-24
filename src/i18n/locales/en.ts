@@ -142,7 +142,7 @@ export const en: Messages = {
       try: 'Measure and shoot it yourself at our booth',
       after: 'Missed us at CES 2027? Get the booth demo online',
       /** the bar's link to the CES landing page (CES_LANDING_URL), where booth inquiries go */
-      more: 'CES details',
+      more: 'Booth info & inquiries on our CES page',
       /** the × that closes the bar */
       close: 'Close notice'
     },

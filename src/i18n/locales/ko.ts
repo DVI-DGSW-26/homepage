@@ -157,7 +157,7 @@ export const ko = {
       try: '부스에서 직접 측정·촬영해 보세요',
       after: 'CES 2027 부스 시연을 온라인 데모로 안내해 드립니다',
       /** the bar's link to the CES landing page (CES_LANDING_URL), where booth inquiries go */
-      more: 'CES 안내 보기',
+      more: '부스 안내·현장 문의는 CES 페이지에서 확인하세요',
       /** the × that closes the bar */
       close: '안내 닫기'
     },

@@ -16,7 +16,7 @@ export const BOOTH = '62817-059';
 export const CES_END = Date.parse('2027-01-10T00:00:00-08:00');
 /** the CES 2027 landing page, where on-site (booth) inquiries go: the bar above the header links to it once
  * it is set. This page takes adoption inquiries only. */
-export const CES_LANDING_URL: string | null = null;
+export const CES_LANDING_URL: string | null = 'https://qac-flow-ces.vercel.app/';
 
 /** DVISION's other sites, in the language being read: the gateway (dvi-ind.com, "제조 / 솔루션") and the
  * manufacturing site, both of which keep the language in the path (/en, /en/home) */

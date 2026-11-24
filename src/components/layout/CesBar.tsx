@@ -2,7 +2,8 @@
 // The thin notice above the header, on every page: CES 2027's dates and booth while the show is on. This
 // site takes adoption inquiries only; on-site (booth) inquiries belong to the CES landing page, which the
 // notice links to once CES_LANDING_URL is set. After the show closes (CES_END) the notice is gone.
-// The × closes it for good on this browser: localStorage remembers, and the script in RootLayout hides it
+// The × closes it for good on this browser: localStorage remembers ('dv-ces-bar-2': a new key whenever the
+// bar says something new, so it shows again to those who closed the old one), and the script in RootLayout hides it
 // before the first paint on the next page (html[data-ces-bar="closed"], index.css), so it never flashes.
 
 import { X } from 'lucide-react';
@@ -11,7 +12,7 @@ import { BOOTH, CES_END, CES_LANDING_URL } from '../../lib/site';
 
 /** remember the bar as closed, and hide it now */
 function close() {
-  try { localStorage.setItem('dv-ces-bar', 'closed'); } catch { /* private mode: closed for this page only */ }
+  try { localStorage.setItem('dv-ces-bar-2', 'closed'); } catch { /* private mode: closed for this page only */ }
   document.documentElement.dataset.cesBar = 'closed';
 }
 

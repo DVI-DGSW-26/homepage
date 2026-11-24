@@ -18,7 +18,7 @@ import type { Lang } from '../lib/paths';
 import { ORIGIN } from '../lib/site';
 
 /** before the first paint: the saved dark mode (light, white, is the default), and the CES notice bar if it was closed (CesBar) */
-const THEME = `try{var r=document.documentElement;if(localStorage.getItem('dv-theme')==='dark'){r.dataset.mode=r.dataset.bg='dark'}if(localStorage.getItem('dv-ces-bar')==='closed'){r.dataset.cesBar='closed'}}catch(e){}`;
+const THEME = `try{var r=document.documentElement;if(localStorage.getItem('dv-theme')==='dark'){r.dataset.mode=r.dataset.bg='dark'}if(localStorage.getItem('dv-ces-bar-2')==='closed'){r.dataset.cesBar='closed'}}catch(e){}`;
 
 /** what every page shares in its <head>; each page adds its own title, description and addresses (src/site/seo.ts) */
 export const siteMetadata: Metadata = {
