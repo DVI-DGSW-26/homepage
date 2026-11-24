@@ -99,6 +99,8 @@ export const ko = {
       lead: '현장의 측정부터 결재, 보고서, 분석까지 QAC FLOW 하나로 처리합니다.',
       more: '자세히 보기',
       close: '닫기',
+      prev: '이전 화면',
+      next: '다음 화면',
       rowsHead: ['항목', '설명'],
       /** the panel's line over the problem a feature ends */
       beforeHead: '이전에는',

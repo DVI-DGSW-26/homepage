@@ -83,6 +83,8 @@ export const en: Messages = {
       lead: 'From measuring on the floor to approval, reports and analysis, QAC FLOW handles it all.',
       more: 'Learn more',
       close: 'Close',
+      prev: 'Previous screen',
+      next: 'Next screen',
       rowsHead: ['Item', 'Details'],
       beforeHead: 'Before',
       focus: ['Filled in by OCR', 'Self vs patrol photos'],

@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
-import { Plus, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plus, X } from 'lucide-react';
 import { useT } from '../../../i18n';
 import { Phone } from '../../../components/Device';
 import { Img } from '../../../components/Img';
@@ -56,28 +56,12 @@ export function Features() {
     {
       span: 'lg:col-span-3',
       view: <div className={wide}>{shot('monitor-board.webp', m.live.alts[0], '(max-width: 1023px) 92vw, 620px')}</div>,
-      panel: (
-        <div className="grid gap-3">
-          <Browser src="monitor-board.webp" alt={m.live.alts[0]} sizes="(max-width: 640px) 92vw, 580px" />
-          <div className="grid grid-cols-2 gap-3">
-            <Browser src="monitor-detail.webp" alt={m.live.alts[1]} sizes="(max-width: 640px) 46vw, 290px" />
-            <Browser src="monitor-defects.webp" alt={m.live.alts[2]} sizes="(max-width: 640px) 46vw, 290px" />
-          </div>
-        </div>
-      )
+      panel: <Slides items={['monitor-board', 'monitor-detail', 'monitor-defects'].map((src, k) => ({ src: capture(`${src}.webp`), alt: m.live.alts[k], label: m.live.tabs[k] }))} ratio="aspect-[16/9.4]" />
     },
     {
       span: 'lg:col-span-3',
       view: <div className={wide}>{shot('spc-charts.webp', m.spc.alts[0], '(max-width: 1023px) 92vw, 620px')}</div>,
-      panel: (
-        <div className="grid gap-3">
-          <Browser src="spc-charts.webp" alt={m.spc.alts[0]} sizes="(max-width: 640px) 92vw, 580px" />
-          <div className="grid grid-cols-2 items-start gap-3">
-            <Browser src="spc-capability.webp" alt={m.spc.alts[1]} sizes="(max-width: 640px) 46vw, 290px" />
-            <Browser src="equip-issues.webp" alt={m.spc.alts[2]} sizes="(max-width: 640px) 46vw, 290px" />
-          </div>
-        </div>
-      )
+      panel: <Slides items={['spc-charts', 'spc-capability', 'equip-issues', 'equip-issue-detail'].map((src, k) => ({ src: capture(`${src}.webp`), alt: m.spc.alts[k], label: m.spc.views[k].title }))} />
     }
   ];
 
@@ -107,6 +91,47 @@ export function Features() {
       </ul>
       <FeaturePanel at={open} onClose={() => setOpen(null)} screens={open == null ? null : cards[open].panel} />
     </Band>
+  );
+}
+
+/** Screens shown one at a time, large: a window that swipes (scroll snap) or steps with the arrows, every
+ * screen fitted into the same box so the panel does not jump, and under it the screen's name, which of how
+ * many, and a dot per screen. Each screen still opens full size on a click. */
+function Slides({ items, ratio = "aspect-16/11" }: { items: { src: string; alt: string; label: string }[]; ratio?: string }) {
+  const f = useT().qf.features;
+  const ref = useRef<HTMLDivElement>(null);
+  const [at, setAt] = useState(0);
+  const n = items.length;
+  const go = (k: number) => { const el = ref.current; if (el) el.scrollTo({ left: Math.max(0, Math.min(n - 1, k)) * el.clientWidth, behavior: 'smooth' }); };
+  const arrow = 'grid size-10 flex-none cursor-pointer place-items-center rounded-full border border-line-2 bg-bg text-fg transition-colors duration-300 hover:border-qf hover:text-qf-ink disabled:cursor-default disabled:opacity-35 disabled:hover:border-line-2 disabled:hover:text-fg';
+  return (
+    <div className="grid gap-4">
+      <div ref={ref} onScroll={e => setAt(Math.round(e.currentTarget.scrollLeft / e.currentTarget.clientWidth))}
+        className="flex snap-x snap-mandatory overflow-x-auto overscroll-x-contain rounded-window border border-line-2 bg-white [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {items.map((x, k) => (
+          <div key={x.src} aria-hidden={k !== at || undefined} className="w-full flex-none snap-center">
+            <Zoomable src={x.src} alt={x.alt}>
+              <div className={cn("relative flex items-center justify-center p-3 max-sm:p-2", ratio)}>
+                <Img src={x.src} alt={x.alt} sizes="(max-width: 640px) 92vw, 640px" className="app-screen absolute block h-auto max-h-[calc(100%-1.5rem)] w-auto max-w-[calc(100%-1.5rem)] max-sm:max-h-[calc(100%-1rem)] max-sm:max-w-[calc(100%-1rem)]" />
+              </div>
+            </Zoomable>
+          </div>
+        ))}
+      </div>
+      <div className="flex items-center gap-3">
+        <button type="button" onClick={() => go(at - 1)} disabled={at === 0} aria-label={f.prev} className={arrow}><ChevronLeft className="size-4.5" strokeWidth={2} aria-hidden="true" /></button>
+        <div className="grid min-w-0 flex-1 justify-items-center gap-2 text-center">
+          <span aria-live="polite" className="truncate text-body-sm font-semibold"><span className="num mr-2 font-normal text-mute">{at + 1} / {n}</span>{items[at].label}</span>
+          <span className="flex gap-1.5">
+            {items.map((x, k) => (
+              <button key={x.src} type="button" onClick={() => go(k)} aria-label={x.label} aria-current={k === at || undefined}
+                className={cn('h-1.5 cursor-pointer rounded-full transition-[width,background-color] duration-300', k === at ? 'w-5 bg-qf' : 'w-1.5 bg-line-2 hover:bg-mute')} />
+            ))}
+          </span>
+        </div>
+        <button type="button" onClick={() => go(at + 1)} disabled={at === n - 1} aria-label={f.next} className={arrow}><ChevronRight className="size-4.5" strokeWidth={2} aria-hidden="true" /></button>
+      </div>
+    </div>
   );
 }
 
