@@ -122,7 +122,14 @@ export const en: Messages = {
     preview: {
       title: 'Preview',
       lead: 'A smartphone on the floor, a PC and a monitor in the office.',
-      tabs: ['Mobile app', 'Floor monitor', 'PC analysis', 'Inspection report'],
+      tabs: ['OCR measurement', 'Floor monitor', 'SPC analysis', 'Inspection report'],
+      /** the line over each tab's screen */
+      views: [
+        { title: 'Photograph it, and it is entered', body: 'Photograph the gauge display and OCR reads the value into the check sheet and judges it pass or fail.' },
+        { title: 'Inspection status, live', body: 'Results appear on the floor monitor the moment they are saved, so progress and defects by machine are visible in real time.' },
+        { title: 'Analysis from the records', body: 'Follow the process with control charts and capability, and see at once when it nears a control limit.' },
+        { title: 'A report on approval', body: 'Once approval is complete, the three-page report is issued automatically and can be verified by QR code.' }
+      ],
       note: 'Actual QAC FLOW screens. Click a screen to see it full size. Sample data.'
     },
     ces: {

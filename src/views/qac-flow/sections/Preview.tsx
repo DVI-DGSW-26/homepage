@@ -9,7 +9,8 @@ import { cn } from '../../../lib/cn';
 import { Browser, Head, useCapture } from '../parts';
 import { HeroSequence } from './HeroSequence';
 
-/** 서비스 미리보기: the app's main screens in one large frame, a segmented control above it choosing which:
+/** 서비스 미리보기: the app's main screens in one large frame, a segmented control above it choosing which, and
+ * a line over each screen saying what it is for:
  * the mobile app (the camera playing photo → crop → OCR, beside the crop and the result), the floor
  * monitor, the PC analysis, and the report's three pages. */
 export function Preview() {
@@ -61,7 +62,14 @@ export function Preview() {
         <div role="tabpanel" id="pv-panel" aria-labelledby={`pv-tab-${at}`}
           className="relative mt-8 grid min-h-[min(46rem,70vw)] place-items-center overflow-hidden rounded-[28px] bg-bg-2 px-4 py-10 sm:px-8 sm:py-14 max-sm:min-h-0">
           <div aria-hidden="true" className="absolute inset-x-[15%] -top-24 h-64 rounded-full bg-radial/srgb from-acc-glow to-transparent to-70% opacity-70 blur-3xl" />
-          <div key={at} className="showcase-in relative flex w-full justify-center">{views[at]}</div>
+          <div key={at} className="showcase-in relative grid w-full justify-items-center gap-10 max-sm:gap-7">
+            {/* what this screen is for: a line over it */}
+            <div className="grid max-w-150 gap-2.5 text-center">
+              <h3 className="m-0 text-title leading-snug font-bold">{p.views[at].title}</h3>
+              <p className="m-0 text-body leading-relaxed text-fg-2 text-pretty">{p.views[at].body}</p>
+            </div>
+            <div className="flex w-full justify-center">{views[at]}</div>
+          </div>
         </div>
         <p className="m-0 mt-6 text-center text-caption text-mute">{p.note}</p>
       </div>

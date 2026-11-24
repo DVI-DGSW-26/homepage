@@ -136,7 +136,14 @@ export const ko = {
     preview: {
       title: '서비스 미리보기',
       lead: '현장에서는 스마트폰으로, 사무실에서는 PC와 모니터로 씁니다.',
-      tabs: ['모바일 앱', '현장 모니터', 'PC 분석', '검사보고서'],
+      tabs: ['OCR 측정', '현장 모니터', 'SPC 분석', '검사보고서'],
+      /** the line over each tab's screen */
+      views: [
+        { title: '현장에서 찍고, 바로 입력', body: '측정기 화면을 촬영하면 OCR이 측정값을 읽어 검사표에 입력하고 합격·불합격을 판정합니다.' },
+        { title: '검사 현황을 실시간으로', body: '작업자가 입력한 결과가 저장과 동시에 현장 모니터에 반영되어, 설비별 진행과 불량을 실시간으로 확인합니다.' },
+        { title: '쌓인 기록으로 공정 분석', body: '관리도와 공정능력으로 공정의 흐름을 보고, 관리 한계에 가까워지면 바로 알 수 있습니다.' },
+        { title: '결재와 동시에 보고서 발행', body: '결재가 끝나면 3쪽 보고서가 자동으로 발행되고, QR로 원본을 확인할 수 있습니다.' }
+      ],
       note: 'QAC FLOW의 실제 화면입니다. 화면을 누르면 크게 볼 수 있습니다. 데이터는 예시입니다.'
     },
     /** the banner above the name: the booth until the show closes (CES_END in src/lib/site.ts), then the online demo */
