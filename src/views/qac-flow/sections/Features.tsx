@@ -29,7 +29,7 @@ export function Features() {
   const cards: { span: string; view: ReactNode; panel: ReactNode }[] = [
     {
       span: 'lg:col-span-2',
-      view: <Phone src={capture('ocr-input.webp')} alt={m.alt.ocr} sizes="(max-width: 1023px) 60vw, 260px" className="mx-auto w-[62%] max-w-65" />,
+      view: <Focus src={capture('ocr-focus.webp')} alt={m.alt.ocr} box={[8.4, 74.6, 83.2, 14.8]} label={f.focus[0]} inside />,
       panel: (
         <ul className="m-0 flex list-none items-start justify-center gap-[5%] p-0">
           {(['capture', 'crop', 'ocr-input'] as const).map(s => (
@@ -40,7 +40,7 @@ export function Features() {
     },
     {
       span: 'lg:col-span-2',
-      view: <Phone src={capture('mobile-photo-compare.webp')} alt={m.alt.compare} sizes="(max-width: 1023px) 60vw, 260px" className="mx-auto w-[62%] max-w-65" />,
+      view: <Focus src={capture('compare-focus.webp')} alt={m.alt.compare} box={[4.6, 28.8, 90.8, 64]} label={f.focus[1]} />,
       panel: (
         <div className="grid items-center gap-5 sm:grid-cols-[minmax(0,.42fr)_minmax(0,1fr)]">
           <Phone src={capture('mobile-photo-compare.webp')} alt={m.alt.compare} sizes="(max-width: 640px) 60vw, 220px" className="mx-auto w-full max-w-55" />
@@ -99,14 +99,28 @@ export function Features() {
               </div>
               <p className="m-0 max-w-120 text-body-sm leading-copy text-fg-2">{x.body}</p>
             </div>
-            <div inert aria-hidden="true" className={cn('relative h-80 overflow-hidden lg:h-96', i < 3 ? 'max-sm:h-64' : 'max-sm:h-44')}>
-              <div className="absolute inset-x-0 top-0 transition-transform duration-500 ease-out group-hover:-translate-y-2">{cards[i].view}</div>
+            <div inert aria-hidden="true" className={cn('relative h-80 overflow-hidden lg:h-96', i < 2 ? 'max-sm:h-auto max-sm:pb-6' : i < 3 ? 'max-sm:h-64' : 'max-sm:h-44')}>
+              <div className={cn('absolute inset-x-0 top-0 transition-transform duration-500 ease-out group-hover:-translate-y-2', i < 2 && 'max-sm:static')}>{cards[i].view}</div>
             </div>
           </li>
         ))}
       </ul>
       <FeaturePanel at={open} onClose={() => setOpen(null)} screens={open == null ? null : cards[open].panel} />
     </Band>
+  );
+}
+
+/** A close-up of the part of a phone screen a card is about, large enough to read (the whole screen is in
+ * the panel), with a mint box round the spot and its name on the box's bottom edge; box in % of the image */
+function Focus({ src, alt, box, label, inside }: { src: string; alt: string; box: [x: number, y: number, w: number, h: number]; label: string; inside?: boolean }) {
+  return (
+    <div className="relative mx-auto w-[86%] overflow-hidden rounded-[20px] bg-white shadow-device ring-1 ring-black/5 max-sm:w-[92%]">
+      <Img src={src} alt={alt} sizes="(max-width: 1023px) 86vw, 360px" className="app-screen block h-auto w-full" />
+      <span aria-hidden="true" style={{ left: `${box[0]}%`, top: `${box[1]}%`, width: `${box[2]}%`, height: `${box[3]}%` }}
+        className="absolute rounded-[10px] border-2 border-qf">
+        <b className={cn('absolute right-3 -translate-y-1/2 rounded-full bg-qf px-2.5 py-1 text-caption leading-none font-bold whitespace-nowrap text-on-acc ring-2 ring-white', inside ? 'top-1/2 max-sm:right-2' : 'top-full')}>{label}</b>
+      </span>
+    </div>
   );
 }
 

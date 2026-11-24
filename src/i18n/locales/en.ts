@@ -84,6 +84,7 @@ export const en: Messages = {
       more: 'Learn more',
       close: 'Close',
       rowsHead: ['Item', 'Details'],
+      focus: ['Filled in by OCR', 'Self vs patrol photos'],
       items: [
         { name: 'OCR input', body: 'Photograph the gauge display and the value is entered and judged pass or fail.',
           intro: 'Photograph the gauge display, select the reading, and OCR enters the number into the check sheet. Nothing is copied by hand.',

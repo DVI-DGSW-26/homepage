@@ -98,6 +98,8 @@ export const ko = {
       more: '자세히 보기',
       close: '닫기',
       rowsHead: ['항목', '설명'],
+      /** the labels on the close-ups in the first two cards: the value OCR filled in, the two photos side by side */
+      focus: ['OCR 자동 입력', '자주검사·순회검사 사진 대조'],
       items: [
         { name: 'OCR 자동 입력', body: '측정기 화면을 찍으면 측정값이 입력되고 합격·불합격이 판정됩니다.',
           intro: '측정기 화면을 촬영하고 측정값 부분을 고르면, OCR이 숫자를 읽어 검사표에 입력합니다. 손으로 옮겨 적는 단계가 없습니다.',
