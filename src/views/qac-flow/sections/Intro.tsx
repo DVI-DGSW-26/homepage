@@ -28,8 +28,8 @@ export function Intro() {
             <Img className="absolute inset-0 size-full opacity-0 transition-opacity duration-500 light:opacity-100" src="assets/img/qacflow-logo.png" sizes="184px" priority alt="" />
           </p>
           <h1 className="rv m-0 mt-6 text-[clamp(2.4rem,5vw,4.2rem)] leading-[1.12] font-bold tracking-tight text-balance">{m.title}</h1>
-          <p className="rv m-0 mt-5 max-w-160 text-title leading-relaxed text-fg-2 text-pretty">{m.lead}</p>
-          <div className="rv mt-8 flex flex-wrap justify-center gap-3">
+          <p className="rv m-0 mt-5 max-w-160 text-title leading-relaxed text-fg-2 text-pretty max-sm:text-body-lg">{m.lead}</p>
+          <div className="rv mt-8 flex flex-wrap justify-center gap-3 max-sm:grid max-sm:w-full max-sm:max-w-80 max-sm:[&>*]:w-full max-sm:[&>*]:justify-center">
             <Pill href="#contact" aria-haspopup="dialog" onClick={openInquiry('hero')}>{m.cta.demo}</Pill>
             <Pill quiet href="#qf-features">{m.cta.features}</Pill>
             {DEMO_VIDEO && <Pill quiet href="#qf-preview" aria-haspopup="dialog" onClick={e => { e.preventDefault(); openVideo(true); }}>{t.media.watch(DEMO_VIDEO.seconds)}</Pill>}
@@ -38,10 +38,10 @@ export function Intro() {
 
         {/* the web app as it is used, large under the words: the floor monitor taking results live
             (LiveMonitor), and in front of it, lower left, the phone that sends them, playing photo → crop → OCR */}
-        <div className="rv relative mx-auto mt-16 max-w-280 pb-[5%] pl-[15%] max-sm:mt-12 max-sm:pl-[20%]">
+        <div className="rv relative mx-auto mt-16 max-w-280 pb-[5%] pl-[15%] max-sm:-mx-3 max-sm:mt-10 max-sm:pb-[8%] max-sm:pl-[17%]">
           <div aria-hidden="true" className="absolute inset-x-[10%] top-[8%] -z-1 h-3/4 rounded-full bg-radial/srgb from-acc-glow to-transparent to-70% opacity-60 blur-3xl" />
           <Monitor><LiveMonitor alt={m.live.alts[0]} /></Monitor>
-          <div className="absolute bottom-0 left-0 z-10 w-[25%] drop-shadow-[0_24px_40px_rgb(0_0_0/.28)] max-sm:w-[30%]">
+          <div className="absolute bottom-0 left-0 z-10 w-[25%] drop-shadow-[0_24px_40px_rgb(0_0_0/.28)] max-sm:w-[27%]">
             <Phone src={capture('capture.webp')} alt={m.alt.capture} sizes="(max-width: 1023px) 30vw, 280px" priority dark loop={HERO_LOOP ?? undefined}
               overlay={HERO_LOOP ? undefined : <HeroSequence />} className="w-full" />
           </div>

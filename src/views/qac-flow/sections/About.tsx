@@ -9,9 +9,9 @@ export function About() {
   return (
     <Band id="qf-about">
       <Head kicker={a.title} title={a.lead} />
-      <dl data-batch className="m-0 grid gap-x-12 gap-y-10 md:grid-cols-3">
+      <dl data-batch className="m-0 grid gap-x-12 gap-y-10 max-sm:gap-y-7 md:grid-cols-3">
         {a.items.map(x => (
-          <div key={x.label} className="rv grid content-start gap-3 border-t-2 border-qf pt-6">
+          <div key={x.label} className="rv grid content-start gap-3 border-t-2 border-qf pt-6 max-sm:gap-2 max-sm:pt-5">
             <dt className="text-title-xs font-semibold">{x.label}</dt>
             <dd className="m-0 text-body leading-relaxed text-fg-2">{x.body}</dd>
           </div>

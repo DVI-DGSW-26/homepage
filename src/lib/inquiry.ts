@@ -7,7 +7,7 @@ import type { Lang } from '../i18n';
 import { createStore, useStore } from './store';
 
 /** where the visitor asked from: a button (the header, the hero, the partnership tags) or the form at the page's end */
-export type InquirySource = 'header' | 'hero' | 'live' | 'partner' | 'page';
+export type InquirySource = 'header' | 'hero' | 'live' | 'partner' | 'cta' | 'page';
 
 export type Inquiry = {
   lang: Lang;

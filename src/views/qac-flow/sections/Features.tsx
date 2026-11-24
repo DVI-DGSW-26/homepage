@@ -23,7 +23,7 @@ export function Features() {
     </Zoomable>
   );
   const page = (i: number, sizes: string) => <div className="overflow-hidden rounded-[4px] bg-white shadow-device">{shot(`report-${i + 1}.webp`, m.alt.reports[i], sizes)}</div>;
-  const wide = 'ml-[8%] overflow-hidden rounded-tl-[10px] border-t border-l border-line-2 bg-white shadow-device';
+  const wide = 'ml-[8%] max-sm:ml-[6%] overflow-hidden rounded-tl-[10px] border-t border-l border-line-2 bg-white shadow-device';
 
   /** each card's span in the grid, the screen at its foot, and the larger screens in its panel */
   const cards: { span: string; view: ReactNode; panel: ReactNode }[] = [
@@ -87,7 +87,7 @@ export function Features() {
       <ul data-batch className="m-0 grid list-none gap-5 p-0 lg:grid-cols-6">
         {f.items.map((x, i) => (
           <li key={x.name} className={cn('rv group relative grid grid-rows-[auto_1fr] overflow-hidden rounded-[24px] bg-bg-2 transition-[background-color,box-shadow] duration-300 hover:bg-card hover:shadow-[0_0_0_1px_var(--color-line-2)] has-focus-visible:outline-2 has-focus-visible:outline-offset-4 has-focus-visible:outline-qf', cards[i].span)}>
-            <div className="grid gap-2 p-7 pb-6 sm:p-8 sm:pb-6">
+            <div className="grid gap-2 p-6 pb-5 sm:p-8 sm:pb-6">
               <div className="flex items-start justify-between gap-4">
                 <h3 className="m-0 text-title-xs font-semibold">
                   {/* the whole card is this button's target (it covers the card); the screen below is a picture here */}
@@ -99,7 +99,7 @@ export function Features() {
               </div>
               <p className="m-0 max-w-120 text-body-sm leading-copy text-fg-2">{x.body}</p>
             </div>
-            <div inert aria-hidden="true" className="relative h-80 overflow-hidden max-sm:h-72 lg:h-96">
+            <div inert aria-hidden="true" className={cn('relative h-80 overflow-hidden lg:h-96', i < 3 ? 'max-sm:h-64' : 'max-sm:h-44')}>
               <div className="absolute inset-x-0 top-0 transition-transform duration-500 ease-out group-hover:-translate-y-2">{cards[i].view}</div>
             </div>
           </li>

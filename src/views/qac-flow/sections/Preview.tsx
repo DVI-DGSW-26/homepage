@@ -67,22 +67,22 @@ export function Preview() {
     <Band id="qf-preview">
       <Head kicker={p.title} title={p.lead} />
       <div className="rv">
-        <div role="tablist" aria-label={p.title} className="mx-auto flex w-fit max-w-full gap-1 overflow-x-auto rounded-full bg-bg-2 p-1 [scrollbar-width:none]">
+        <div role="tablist" aria-label={p.title} className="mx-auto flex w-fit max-w-full gap-1 rounded-full bg-bg-2 p-1 max-sm:grid max-sm:w-full max-sm:grid-cols-2 max-sm:rounded-[20px]">
           {p.tabs.map((label, i) => (
             <button key={label} id={`pv-tab-${i}`} type="button" role="tab" aria-selected={i === at} aria-controls="pv-panel" tabIndex={i === at ? 0 : -1}
               onClick={() => setAt(i)} onKeyDown={onKey}
-              className={cn('flex-none cursor-pointer rounded-full px-5 py-2.5 text-body-sm font-semibold whitespace-nowrap transition-[background-color,color,box-shadow] duration-300 max-sm:px-3 max-sm:text-caption',
+              className={cn('flex-none cursor-pointer rounded-full px-5 py-2.5 text-body-sm font-semibold whitespace-nowrap transition-[background-color,color,box-shadow] duration-300 max-sm:rounded-[16px] max-sm:px-2 max-sm:text-body-sm',
                 i === at ? 'bg-bg text-fg shadow-[0_1px_3px_rgb(0_0_0/.12)]' : 'text-fg-2 hover:text-fg')}>{label}</button>
           ))}
         </div>
         <div role="tabpanel" id="pv-panel" aria-labelledby={`pv-tab-${at}`}
-          className="relative mt-8 overflow-hidden rounded-[28px] bg-bg-2 px-4 py-12 sm:px-8 sm:py-14">
+          className="relative mt-8 overflow-hidden rounded-[28px] bg-bg-2 px-4 py-12 max-sm:-mx-1 max-sm:mt-5 max-sm:rounded-[22px] max-sm:py-9 sm:px-8 sm:py-14">
           <div aria-hidden="true" className="absolute inset-x-[15%] -top-24 h-64 rounded-full bg-radial/srgb from-acc-glow to-transparent to-70% opacity-70 blur-3xl" />
           <div key={at} className="showcase-in relative grid justify-items-center gap-10 max-sm:gap-7">
             {/* what this use is for: a line over it */}
             <div className="grid max-w-170 gap-3.5 text-center">
-              <h3 className="m-0 text-[clamp(1.6rem,2.6vw,2.25rem)] leading-tight font-bold tracking-tight">{p.views[at].title}</h3>
-              <p className="m-0 text-title leading-relaxed text-fg-2 text-pretty">{p.views[at].body}</p>
+              <h3 className="m-0 text-[clamp(1.45rem,2.6vw,2.25rem)] leading-tight font-bold tracking-tight">{p.views[at].title}</h3>
+              <p className="m-0 text-title leading-relaxed text-fg-2 text-pretty max-sm:text-body">{p.views[at].body}</p>
             </div>
             <Cycle frame={tab.frame} screens={tab.screens} />
           </div>

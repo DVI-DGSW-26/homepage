@@ -430,8 +430,11 @@ export const ko = {
 
   /** the demo request form at the end of every page (#contact); api/inquiry.ts mails it to sales */
   contact: {
+    /** the inquiry form's own title and line (the dialog) */
     title: '도입 문의',
     lead: '검사하는 품목과 지금의 검사 방식을 알려 주시면, 현장에 맞는 도입 방법을 안내해 드립니다.',
+    /** the closing block at the end of the page: a last line, and the button that opens the form */
+    closing: { title: '종이 검사표 없는 품질검사,\n우리 현장에서 시작해 보세요.', cta: '도입 문의하기' },
     close: '닫기',
     fields: { company: '회사명', name: '담당자 이름', email: '회사 이메일', phone: '연락처', type: '문의 유형', scale: '검사 대상 설비 수', timing: '도입 희망 시기', message: '문의 내용' },
     placeholders: { company: '(주)회사명', name: '홍길동', email: 'name@company.com', phone: '010-0000-0000', message: '검사하는 품목, 사용 중인 측정기, 궁금한 점을 자유롭게 적어 주세요.' },

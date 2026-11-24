@@ -48,9 +48,8 @@ export function Nav({ page }: { page: Page }) {
   }));
   useBackToClose(sheetOpen, closeSheet);
   // a page link in the sheet: the sheet closes (taking its history entry back off), then the page opens
-  // the header's demo button: down to the form at the end of the page, or, on a page without one (the
-  // privacy policy), the same form in its dialog
-  const demo = (e: MouseEvent<HTMLAnchorElement>) => { if (!document.getElementById('contact')) openInquiry('header')(e); };
+  // the header's inquiry button: the form in its dialog, on any page
+  const demo = openInquiry('header');
   const openFromSheet = (e: MouseEvent<HTMLAnchorElement>) => {
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     e.preventDefault();

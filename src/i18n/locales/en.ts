@@ -437,8 +437,11 @@ export const en: Messages = {
   },
 
   contact: {
+    /** the inquiry form's own title and line (the dialog) */
     title: 'Contact sales',
     lead: 'Tell us what you inspect and how you inspect it today, and we will suggest how QAC FLOW could fit your floor.',
+    /** the closing block at the end of the page: a last line, and the button that opens the form */
+    closing: { title: 'Quality inspection without paper,\nstarting on your floor.', cta: 'Contact sales' },
     close: 'Close',
     fields: {
       company: 'Company',

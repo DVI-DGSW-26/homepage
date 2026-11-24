@@ -39,7 +39,7 @@ const labels: Record<Field, string> = {
 };
 const subjects: Record<Lang, string> = { ko: '[QAC FLOW 도입 문의]', en: '[QAC FLOW 도입 문의 · 영문]' };
 /** which button brought the visitor to the form, and from which page (Resend tags only) */
-const sources = ['header', 'hero', 'live', 'partner', 'page'];
+const sources = ['header', 'hero', 'live', 'partner', 'cta', 'page'];
 const pages = ['/qac-flow', '/data'];
 
 const emailPattern = /^[^\s@<>"(),;:]+@[^\s@<>"(),;:]+\.[^\s@<>"(),;:]+$/;

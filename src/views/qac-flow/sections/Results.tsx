@@ -35,7 +35,7 @@ function Round({ label, parts, seconds, total, after }: { label: string; parts: 
         {parts.map((p, i) => (
           <li key={p} className="inline-flex items-baseline gap-1.5">
             <span className={cn('num grid size-4.5 flex-none place-items-center self-center rounded-full text-[.7rem] font-bold', after ? 'bg-qf text-on-acc' : 'bg-line-2 text-fg')}>{i + 1}</span>
-            {p} <span className="num text-mute">{t.time(seconds[i])}</span>
+            {p} <span className="num whitespace-nowrap text-mute">{t.time(seconds[i])}</span>
           </li>
         ))}
       </ol>
@@ -51,7 +51,7 @@ export function Results() {
     <Band id="qf-results">
       <Head kicker={p.kicker} title={p.title} />
       <div data-batch className="grid gap-5 lg:grid-cols-[minmax(0,.7fr)_minmax(0,1.3fr)]">
-        <div className="rv grid content-center gap-3 rounded-[24px] bg-bg-2 p-8 max-lg:content-start">
+        <div className="rv grid content-center gap-3 rounded-[24px] bg-bg-2 p-8 max-lg:content-start max-sm:p-6">
           <b className="num font-display text-[clamp(4.5rem,9vw,7.5rem)] leading-[.9] font-extrabold tracking-tight text-qf-ink">{SAVED}%</b>
           <span className="text-title font-bold">{p.cut}</span>
         </div>
