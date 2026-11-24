@@ -3,8 +3,8 @@
 // capture's own layout, the same in Korean and English) a few things are drawn in place, in % of the screen:
 //   - the clock in the top right ticks every second, and the "live" dot pulses;
 //   - every LOOP, as the phone in front passes its value (HeroSequence's pass mark, 78% into its 10 s),
-//     CNC-02 Drive Shaft's in-process bar (the phone's own part and operator) turns at once to 미완료 승인,
-//     "진행중" goes 2 → 1 and "마지막 변경" takes the time. It all goes back as the loop starts again.
+//     CNC-02 Drive Shaft's in-process and CNC-01 Bracket Housing's last-off turn at once to 미완료 승인,
+//     "진행중" 2 → 1, "남은 시점" 6 → 5 and "마지막 변경" takes the time. It all goes back as the loop starts again.
 // The loop is timed from when this mounts, as the phone's CSS animation is, so the two keep in step. With
 // reduced motion the board stays as captured (the phone's sequence is hidden too).
 import { useEffect, useState } from 'react';
@@ -21,6 +21,8 @@ const START = { ko: { clock: [10, 38, 26], last: '10:38:21' }, en: { clock: [10,
 
 /** a box over the capture, in px of its 1376 × 753 */
 const at = (x: number, y: number, w: number, h: number) => ({ left: `${(x / 1376) * 100}%`, top: `${(y / 753) * 100}%`, width: `${(w / 1376) * 100}%`, height: `${(h / 753) * 100}%` });
+/** the two cells that turn, in px of the capture: CNC-02 Drive Shaft in-process, CNC-01 Bracket Housing last-off */
+const CELLS: { box: [number, number, number, number] }[] = [{ box: [494, 491, 422, 31] }, { box: [918, 264, 422, 31] }];
 const hms = (s: number) => [Math.floor(s / 3600) % 24, Math.floor(s / 60) % 60, s % 60].map(n => String(n).padStart(2, '0')).join(':');
 
 export function LiveMonitor({ alt }: { alt: string }) {
@@ -57,13 +59,17 @@ export function LiveMonitor({ alt }: { alt: string }) {
         <span className="absolute rounded-full bg-[#11803f] motion-safe:animate-ping" style={at(1074, 23, 8, 8)} />
         {/* the last change, in the header's grey */}
         <span className={cn(cover, 'justify-end text-[.85cqw] font-medium text-[#6b7280]')} style={at(1192, 18, 50, 18)}>{last}</span>
-        {/* in progress, one fewer */}
+        {/* in progress and slots left, one fewer each */}
         <span className={cn(cover, 'text-[2.05cqw]')} style={at(256, 97, 40, 30)}>{done ? 1 : 2}</span>
-        {/* CNC-02 Drive Shaft's in-process bar, the phone's own: as the phone passes the value it turns, at once,
-            from running (dark, the capture) to 미완료 승인 (the legend's pale green with a green edge), and back as
-            the loop starts again */}
-        <span className={cn('absolute grid place-items-center rounded-[.3cqw] border-[.12cqw] border-[#b9ecd0] bg-[#effdf4] text-[1.05cqw] font-bold text-[#097a2d]',
-          done ? 'visible' : 'invisible')} style={at(494, 491, 422, 31)}>{c.cell}</span>
+        <span className={cn(cover, 'text-[2.05cqw]')} style={at(706, 97, 40, 30)}>{done ? 5 : 6}</span>
+        {/* as the phone passes its value two cells turn, at once, to 미완료 승인 (the legend's pale green with a green
+            edge): CNC-02 Drive Shaft's in-process (running, dark in the capture: the phone's own part and operator)
+            and CNC-01 Bracket Housing's last-off (not started); back as the loop starts again. No transition: the
+            board switches, it doesn't fade */}
+        {CELLS.map((x, k) => (
+          <span key={k} className={cn('absolute grid place-items-center rounded-[.3cqw] border-[.12cqw] border-[#b9ecd0] bg-[#effdf4] text-[1.05cqw] font-bold text-[#097a2d] transition-none',
+            done ? 'visible' : 'invisible')} style={at(...x.box)}>✓ {c.cells[k]}</span>
+        ))}
       </div>
     </div>
   );

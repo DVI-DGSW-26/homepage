@@ -57,7 +57,7 @@ export const en: Messages = {
     title: 'Quality inspection without paper check sheets.',
     lead: 'A quality inspection web app: photograph a gauge with a smartphone, and the record carries through to approval, reports and process analysis.',
     /** the first screen's monitor coming alive as the phone finishes (LiveMonitor): the cell that turns done, the toast */
-    heroMonitor: { cell: 'In-process' },
+    heroMonitor: { cells: ['In-process', 'Last-off'] },
     /** the two facts under the first screen's buttons: what it takes, and where it runs */
     facts: ['Start with a smartphone, one server PC and a monitor. No dedicated measuring equipment or sensor installation.', 'In use at DVISION\'s Daegu headquarters plant since June 2026.'],
     stats: ['No dedicated gauges or sensor installation', 'Started running in our own plant'],
