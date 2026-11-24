@@ -130,7 +130,7 @@ export const en: Messages = {
         { title: 'Analysis from the records', body: 'Follow the process with control charts and capability, and see at once when it nears a control limit.' },
         { title: 'A report on approval', body: 'Once approval is complete, the three-page report is issued automatically and can be verified by QR code.' }
       ],
-      note: 'Actual QAC FLOW screens. Click a screen to see it full size. Sample data.'
+      note: 'Actual QAC FLOW screens. Sample data.'
     },
     ces: {
       label: 'CES 2027',

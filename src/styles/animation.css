@@ -96,3 +96,7 @@
 .feature-panel[open] { animation: panel-in .42s cubic-bezier(.2, .8, .2, 1) }
 .feature-panel[open]::backdrop { animation: fade-in var(--duration-fade) ease-out }
 @media (prefers-reduced-motion: reduce) { .feature-panel[open], .feature-panel[open]::backdrop { animation: none } }
+
+/* the segment under a preview's current screen fills up as the screen plays (src/views/qac-flow/sections/Preview.tsx) */
+@keyframes cycle-fill { from { width: 0 } }
+.cycle-fill { animation-name: cycle-fill; animation-timing-function: linear; animation-fill-mode: both }

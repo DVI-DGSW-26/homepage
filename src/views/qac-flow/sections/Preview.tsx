@@ -1,18 +1,22 @@
 'use client';
-import { useState, type KeyboardEvent } from 'react';
+import { useEffect, useState, type KeyboardEvent, type ReactNode } from 'react';
 import { useT } from '../../../i18n';
 import { Monitor, Phone } from '../../../components/Device';
 import { Img } from '../../../components/Img';
-import { Zoomable } from '../../../components/Zoom';
 import { Band } from '../../../components/ui';
+import { REDUCED } from '../../../lib/env';
 import { cn } from '../../../lib/cn';
-import { Browser, Head, useCapture } from '../parts';
-import { HeroSequence } from './HeroSequence';
+import { Head, useCapture } from '../parts';
 
-/** 서비스 미리보기: the app's main screens in one large frame, a segmented control above it choosing which, and
- * a line over each screen saying what it is for:
- * the mobile app (the camera playing photo → crop → OCR, beside the crop and the result), the floor
- * monitor, the PC analysis, and the report's three pages. */
+/** how long each screen of a tab stays before the next, in ms */
+const STEP = 3800;
+
+/**
+ * 서비스 미리보기: the app in motion. A segmented control picks one of four uses; its frame plays that use's
+ * screens one after another (Cycle): the phone through photo → crop → OCR input, the floor monitor through
+ * its three screens, the SPC screens, the report's three pages. A bar of labelled segments under the frame
+ * shows where it is and jumps on a click. Until there is a real film (DEMO_VIDEO), this is the moving view.
+ */
 export function Preview() {
   const m = useT().qf, p = m.preview, capture = useCapture();
   const [at, setAt] = useState(0);
@@ -23,29 +27,42 @@ export function Preview() {
     e.preventDefault(); setAt(next);
     document.getElementById(`pv-tab-${next}`)?.focus();
   };
-  const page = (i: number) => (
-    <figure className="m-0 w-full overflow-hidden rounded-[4px] bg-white shadow-device">
-      <Zoomable src={capture(`report-${i + 1}.webp`)} alt={m.alt.reports[i]}>
-        <Img src={capture(`report-${i + 1}.webp`)} alt={m.alt.reports[i]} sizes="(max-width: 767px) 30vw, 300px" className="app-screen block h-auto w-full" />
-      </Zoomable>
-    </figure>
-  );
-  const views = [
-    <ul key="mobile" className="m-0 flex w-full list-none items-start justify-center gap-[5%] p-0">
-      <li className="w-[27%] pt-[10%]"><Phone src={capture('crop.webp')} alt={m.alt.crop} sizes="(max-width: 767px) 26vw, 220px" /></li>
-      <li className="w-[33%]"><Phone src={capture('capture.webp')} alt={m.alt.capture} sizes="(max-width: 767px) 32vw, 270px" dark overlay={<HeroSequence />} /></li>
-      <li className="w-[27%] pt-[10%]"><Phone src={capture('ocr-input.webp')} alt={m.alt.ocr} sizes="(max-width: 767px) 26vw, 220px" /></li>
-    </ul>,
-    <Monitor key="monitor" className="w-[92%]">
-      <Zoomable src={capture('monitor-board.webp')} alt={m.live.alts[0]} className="h-full">
-        <Img src={capture('monitor-board.webp')} alt={m.live.alts[0]} sizes="(max-width: 1440px) 92vw, 1100px" className="app-screen block size-full object-cover object-top" />
-      </Zoomable>
-    </Monitor>,
-    <Browser key="pc" src="spc-charts.webp" alt={m.spc.alts[0]} sizes="(max-width: 1440px) 92vw, 1000px" className="w-[86%]" />,
-    <ul key="report" className="m-0 grid w-[92%] list-none grid-cols-3 gap-[3%] p-0">
-      {[0, 1, 2].map(i => <li key={i}>{page(i)}</li>)}
-    </ul>
+  const img = (src: string, alt: string, sizes: string, fit = 'size-full object-cover object-top') =>
+    <Img src={capture(src)} alt={alt} sizes={sizes} loading="eager" className={cn('app-screen block', fit)} />;
+  /** each tab's frame, and its screens in the order they play, each with its label in the bar */
+  const tabs: { frame: (screen: ReactNode) => ReactNode; screens: { label: string; node: ReactNode }[] }[] = [
+    {
+      frame: s => <div className="w-[min(34%,17rem)] max-sm:w-[56%]">{s}</div>,
+      screens: (['capture', 'crop', 'ocr-input'] as const).map((src, i) => ({
+        label: m.how.steps[i].title,
+        node: <Phone src={capture(`${src}.webp`)} alt={m.alt[src === 'ocr-input' ? 'ocr' : src]} sizes="(max-width: 640px) 56vw, 272px" dark={src === 'capture'} />
+      }))
+    },
+    {
+      frame: s => <Monitor className="w-[92%]">{s}</Monitor>,
+      screens: ['monitor-board', 'monitor-detail', 'monitor-defects'].map((src, i) => ({
+        label: m.live.tabs[i], node: img(`${src}.webp`, m.live.alts[i], '(max-width: 1440px) 92vw, 1100px')
+      }))
+    },
+    {
+      frame: s => (
+        <div className="w-[88%] overflow-hidden rounded-window border border-line-2 bg-card shadow-device">
+          <div aria-hidden="true" className="flex gap-1.5 border-b border-line px-3 py-2.5">{[0, 1, 2].map(i => <i key={i} className="size-2 rounded-full bg-line-2" />)}</div>
+          <div className="aspect-16/10 bg-white">{s}</div>
+        </div>
+      ),
+      screens: ['spc-charts', 'spc-capability', 'equip-issues', 'equip-issue-detail'].map((src, i) => ({
+        label: m.spc.views[i].title, node: img(`${src}.webp`, m.spc.alts[i], '(max-width: 1440px) 88vw, 1000px', 'size-full object-contain object-top')
+      }))
+    },
+    {
+      frame: s => <div className="w-[min(46%,26rem)] overflow-hidden rounded-[4px] bg-white shadow-device max-sm:w-[78%]">{s}</div>,
+      screens: [0, 1, 2].map(i => ({
+        label: m.report.pages[i].title, node: img(`report-${i + 1}.webp`, m.alt.reports[i], '(max-width: 640px) 78vw, 416px', 'h-auto w-full')
+      }))
+    }
   ];
+  const tab = tabs[at];
   return (
     <Band id="qf-preview">
       <Head kicker={p.title} title={p.lead} />
@@ -58,21 +75,63 @@ export function Preview() {
                 i === at ? 'bg-bg text-fg shadow-[0_1px_3px_rgb(0_0_0/.12)]' : 'text-fg-2 hover:text-fg')}>{label}</button>
           ))}
         </div>
-        {/* the frame: a soft mint light at its top, the chosen screen inside */}
         <div role="tabpanel" id="pv-panel" aria-labelledby={`pv-tab-${at}`}
-          className="relative mt-8 grid min-h-[min(46rem,70vw)] place-items-center overflow-hidden rounded-[28px] bg-bg-2 px-4 py-10 sm:px-8 sm:py-14 max-sm:min-h-0">
+          className="relative mt-8 overflow-hidden rounded-[28px] bg-bg-2 px-4 py-12 sm:px-8 sm:py-14">
           <div aria-hidden="true" className="absolute inset-x-[15%] -top-24 h-64 rounded-full bg-radial/srgb from-acc-glow to-transparent to-70% opacity-70 blur-3xl" />
-          <div key={at} className="showcase-in relative grid w-full justify-items-center gap-10 max-sm:gap-7">
-            {/* what this screen is for: a line over it */}
+          <div key={at} className="showcase-in relative grid justify-items-center gap-10 max-sm:gap-7">
+            {/* what this use is for: a line over it */}
             <div className="grid max-w-170 gap-3.5 text-center">
               <h3 className="m-0 text-[clamp(1.6rem,2.6vw,2.25rem)] leading-tight font-bold tracking-tight">{p.views[at].title}</h3>
               <p className="m-0 text-title leading-relaxed text-fg-2 text-pretty">{p.views[at].body}</p>
             </div>
-            <div className="flex w-full justify-center">{views[at]}</div>
+            <Cycle frame={tab.frame} screens={tab.screens} />
           </div>
         </div>
         <p className="m-0 mt-6 text-center text-caption text-mute">{p.note}</p>
       </div>
     </Band>
+  );
+}
+
+/** One use's screens playing in turn inside its frame: all stacked in one cell, the current one shown, the
+ * next fading in after STEP. Under the frame, a segment per screen with its label, the current one filling
+ * up as it plays; a click on a segment shows that screen. With reduced motion (read after hydration, so the
+ * server's markup and the first client render agree) nothing plays by itself; the segments are the way through. */
+function Cycle({ frame, screens }: { frame: (screen: ReactNode) => ReactNode; screens: { label: string; node: ReactNode }[] }) {
+  const [i, setI] = useState(0);
+  const [still, setStill] = useState(false);
+  const n = screens.length;
+  useEffect(() => { setStill(REDUCED); }, []);
+  useEffect(() => {
+    if (still) return;
+    const t = window.setTimeout(() => setI(x => (x + 1) % n), STEP);
+    return () => window.clearTimeout(t);
+  }, [i, n, still]);
+  return (
+    <div className="grid w-full justify-items-center gap-8">
+      <div className="flex w-full justify-center">
+        {frame(
+          <div className="grid size-full [&>*]:col-start-1 [&>*]:row-start-1">
+            {screens.map((s, k) => (
+              <div key={s.label} aria-hidden={k !== i} className={cn('size-full transition-opacity duration-700 ease-out', k === i ? 'opacity-100' : 'opacity-0')}>{s.node}</div>
+            ))}
+          </div>
+        )}
+      </div>
+      <ol className="m-0 grid w-full max-w-170 list-none gap-3 p-0" style={{ gridTemplateColumns: `repeat(${n}, minmax(0, 1fr))` }}>
+        {screens.map((s, k) => (
+          <li key={s.label}>
+            <button type="button" onClick={() => setI(k)} aria-current={k === i || undefined}
+              className="group grid w-full cursor-pointer gap-2.5 text-left">
+              <span className="relative block h-1 overflow-hidden rounded-full bg-line">
+                <span key={k === i ? `on-${i}` : 'off'} style={k === i && !still ? { animationDuration: `${STEP}ms` } : undefined}
+                  className={cn('absolute inset-y-0 left-0 w-full rounded-full bg-qf', k < i || (k === i && still) ? '' : k === i ? 'cycle-fill' : 'w-0')} />
+              </span>
+              <span className={cn('text-body-sm font-semibold transition-colors duration-300 max-sm:text-caption', k === i ? 'text-fg' : 'text-mute group-hover:text-fg-2')}>{s.label}</span>
+            </button>
+          </li>
+        ))}
+      </ol>
+    </div>
   );
 }

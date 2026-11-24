@@ -144,7 +144,7 @@ export const ko = {
         { title: '쌓인 기록으로 공정 분석', body: '관리도와 공정능력으로 공정의 흐름을 보고, 관리 한계에 가까워지면 바로 알 수 있습니다.' },
         { title: '결재와 동시에 보고서 발행', body: '결재가 끝나면 3쪽 보고서가 자동으로 발행되고, QR로 원본을 확인할 수 있습니다.' }
       ],
-      note: 'QAC FLOW의 실제 화면입니다. 화면을 누르면 크게 볼 수 있습니다. 데이터는 예시입니다.'
+      note: 'QAC FLOW의 실제 화면입니다. 데이터는 예시입니다.'
     },
     /** the banner above the name: the booth until the show closes (CES_END in src/lib/site.ts), then the online demo */
     ces: {

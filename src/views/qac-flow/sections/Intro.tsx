@@ -1,24 +1,17 @@
-import type { ReactNode } from 'react';
-import { Camera, FileCheck2, ScanText } from 'lucide-react';
 import { useT } from '../../../i18n';
-import { Phone } from '../../../components/Device';
+import { Monitor, Phone } from '../../../components/Device';
 import { Img } from '../../../components/Img';
 import { Pill } from '../../../components/ui';
-import { cn } from '../../../lib/cn';
 import { openInquiry } from '../../../lib/inquiry';
 import { DEMO_VIDEO, HERO_LOOP, openVideo } from '../../../lib/media';
 import { useCapture } from '../parts';
 import { HeroSequence } from './HeroSequence';
 
-/** each phone drawn at most this wide: the middle one, the two beside it */
-const FRONT_SIZES = '(max-width: 1199px) 38vw, 300px';
-const SIDE_SIZES = '(max-width: 1199px) 23vw, 180px';
-
 /**
  * The first screen, as a product's home page opens: on the left the product's mark, what it is in one
- * sentence, the way to an inquiry and to the features; on the right the app itself in three phones — the camera in the middle playing
- * the hero loop (or until there is one the captures in turn, HeroSequence), the OCR result and the patrol
- * approval beside it. The CES notice is the bar above the header (CesBar), not part of this screen.
+ * sentence, the way to an inquiry and to the features; on the right the web app as it is used: the floor
+ * monitor and, in front of it, the phone that feeds it, playing photo → crop → OCR (HeroSequence, or the
+ * hero loop once there is one). The CES notice is the bar above the header (CesBar), not part of this screen.
  */
 export function Intro() {
   const t = useT(), m = t.qf, capture = useCapture();
@@ -40,35 +33,19 @@ export function Intro() {
           </div>
         </div>
 
-        {/* the app in three phones, face on: the camera in the middle, the largest; the OCR result and the
-            patrol approval smaller and lower on either side, each with its name under it */}
-        <ul className="rv m-0 flex w-full list-none items-start justify-center gap-[4%] p-0">
-          <li className="grid w-[25%] justify-items-center gap-3.5 pt-[16%]">
-            <Phone src={capture('ocr-input.webp')} alt={m.alt.ocr} sizes={SIDE_SIZES} className="w-full" />
-            <Caption icon={<ScanText className="size-4" />} className="max-sm:hidden">{m.problem.afterSteps[1]}</Caption>
-          </li>
-          <li className="grid w-[42%] justify-items-center gap-4">
-            <Phone src={capture('capture.webp')} alt={m.alt.capture} sizes={FRONT_SIZES} priority dark loop={HERO_LOOP ?? undefined}
+        {/* the web app as it is used: the floor monitor's status board, and in front of it, lower left, the phone
+            that feeds it, playing photo → crop → OCR (the hero loop once there is one) */}
+        <div className="rv relative pb-[6%] pl-[14%] max-lg:mx-auto max-lg:w-full max-lg:max-w-170 max-sm:pl-[18%]">
+          <Monitor>
+            <Img src={capture('monitor-board.webp')} alt={m.live.alts[0]} sizes="(max-width: 1023px) 86vw, 640px" priority className="app-screen block size-full object-cover object-top" />
+          </Monitor>
+          <div className="absolute bottom-0 left-0 z-10 w-[29%] drop-shadow-[0_24px_40px_rgb(0_0_0/.28)] max-sm:w-[32%]">
+            <Phone src={capture('capture.webp')} alt={m.alt.capture} sizes="(max-width: 1023px) 30vw, 190px" priority dark loop={HERO_LOOP ?? undefined}
               overlay={HERO_LOOP ? undefined : <HeroSequence />} className="w-full" />
-            <Caption strong icon={<Camera className="size-4" />}>{m.how.steps.map(x => x.title).join(' → ')}</Caption>
-          </li>
-          <li className="grid w-[25%] justify-items-center gap-3.5 pt-[30%]">
-            <Phone src={capture('mobile-photo-compare.webp')} alt={m.alt.compare} sizes={SIDE_SIZES} className="w-full" />
-            <Caption icon={<FileCheck2 className="size-4" />} className="max-sm:hidden">{m.trace.points[0].title}</Caption>
-          </li>
-        </ul>
+          </div>
+        </div>
       </div>
     </section>
   );
 }
 
-/** the name under a phone: what it shows; `strong` for the middle one */
-function Caption({ icon, strong, className, children }: { icon: ReactNode; strong?: boolean; className?: string; children: ReactNode }) {
-  return (
-    <span className={cn('inline-flex max-w-full items-center gap-2 rounded-full border py-1.5 pr-4 pl-1.5 text-caption font-medium',
-      strong ? 'border-qf-line bg-qf-soft text-fg' : 'border-line bg-card/70 text-fg-2', className)}>
-      <span aria-hidden="true" className={cn('grid size-7 flex-none place-items-center rounded-full', strong ? 'bg-qf text-on-acc' : 'bg-line text-fg-2')}>{icon}</span>
-      <span className="text-balance">{children}</span>
-    </span>
-  );
-}
