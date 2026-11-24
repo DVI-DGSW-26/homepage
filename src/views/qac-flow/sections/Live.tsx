@@ -25,7 +25,7 @@ export function Live() {
   };
   const src = capture(SCREENS[tab]), alt = l.alts[tab];
   return (
-    <Band id="qf-live" mark="04">
+    <Band id="qf-live">
       <Head kicker={l.kicker} q={l.q} title={l.title} lead={l.lead} />
       <div role="tablist" aria-label={l.tabsAria} className="mono mb-4.5 flex gap-1.5 overflow-x-auto [scrollbar-width:none] max-sm:flex-wrap">
         {l.tabs.map((label, i) => (

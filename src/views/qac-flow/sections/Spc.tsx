@@ -45,7 +45,7 @@ function Step({ n, title, body, children }: { n: number; title: string; body: st
 export function Spc() {
   const m = useT().qf, s = m.spc;
   return (
-    <Band id="qf-spc" mark="06">
+    <Band id="qf-spc">
       <Head kicker={s.kicker} q={s.q} title={s.title} lead={s.lead} />
       <ol className="m-0 grid list-none gap-16 p-0 max-lg:gap-12">
         <Step n={1} {...s.steps[0]}>

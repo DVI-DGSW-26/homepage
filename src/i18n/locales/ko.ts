@@ -65,7 +65,9 @@ export const ko = {
     label: 'QAC FLOW 품질검사 솔루션',
     expand: 'Quality · Analysis · Control',
     title: '종이 검사표 없는 품질검사',
-    lead: '스마트폰 하나로 측정, 판정, 보고서 발행까지.\n디비전 공장에서 직접 만들고 검증했습니다.',
+    lead: '측정기를 스마트폰으로 촬영하면 측정값이 입력되고, 자주검사·순회검사부터 결재, 보고서 발행, SPC 분석까지 한 곳에서 이어집니다.',
+    /** the two facts under the first screen's buttons: what it takes, and where it runs */
+    facts: ['스마트폰, 서버 PC 1대, 모니터로 시작합니다. 전용 측정 장비나 센서 공사는 필요 없습니다.', '2026년 6월부터 디비전 대구 본사 공장에서 사용하고 있습니다.'],
     /** the figures up front: what it doesn't need, and since when it runs in our own plant */
     stats: ['전용 측정 장비·센서 공사 불필요', '자사 공장 운영 시작'],
     /** the first claim's headline: what it takes (stats[0], what it doesn't, is the line under it) */
@@ -73,7 +75,21 @@ export const ko = {
     statsNote: '대구 본사 공장 사내 검증 · IATF 16949',
     /** the buttons that lead to the demo request form (#contact) */
     /** demo: the demo buttons, cesDemo in its place until CES 2027 closes (duringCes, src/lib/site.ts) */
-    cta: { demo: '데모 신청', cesDemo: 'CES 데모 신청', apply: '우리 현장에 적용 문의', how: '작동 방식 보기' },
+    cta: { demo: '데모 신청', cesDemo: 'CES 데모 신청', apply: '우리 현장에 적용 문의', how: '작동 방식 보기', features: '기능 살펴보기' },
+    /** the overview of the features under the first screen (Features.tsx), each item leading to its section */
+    features: {
+      title: '주요 기능',
+      lead: '검사 현장의 측정부터 결재, 보고서, 분석까지 QAC FLOW 하나로 처리합니다.',
+      more: '자세히 보기',
+      items: [
+        { name: '스마트폰 OCR 측정', body: '측정기 화면을 찍으면 측정값이 자동으로 입력되고 합격·불합격이 판정됩니다.' },
+        { name: '자주·순회검사와 결재', body: '초·중·종품 자주검사와 순회검사를 거쳐 품질관리자가 모바일이나 PC에서 결재합니다.' },
+        { name: '현장 모니터', body: '설비별 검사 진행, 측정값과 공차, 불량과 조치를 현장 모니터에 보여 줍니다.' },
+        { name: '사진 증빙', body: '모든 측정값에 측정기 사진이 남고, 자주검사와 순회검사 결과를 나란히 대조합니다.' },
+        { name: 'SPC 분석', body: '쌓인 검사 기록으로 관리도와 공정능력을 보고, 설비 이상과 조치 이력을 관리합니다.' },
+        { name: '검사보고서', body: '결재와 동시에 3쪽 보고서가 발행되고, QR로 원본과 대조할 수 있습니다.' }
+      ]
+    },
     /** the banner above the name: the booth until the show closes (CES_END in src/lib/site.ts), then the online demo */
     ces: {
       label: 'CES 2027',
@@ -98,7 +114,7 @@ export const ko = {
     /** the time an inspection takes before and after QAC FLOW, measured in our plant (the seconds are in
      * src/views/qac-flow/sections/Problem.tsx) */
     problem: {
-      kicker: '01 / Problem',
+      kicker: '도입 효과',
       q: '왜 QAC FLOW가 필요한가요?',
       title: '종이에 적고, 사진 찍고, 엑셀로 옮기던 시간이 60% 줄어듭니다.',
       lead: '측정기를 한 번 촬영하면 치수 기록, 사진 공유, 서버 정리가 동시에 끝나고\n결재와 동시에 보고서가 발행됩니다.',
@@ -121,9 +137,9 @@ export const ko = {
       afterSteps: ['측정기 화면 촬영', 'OCR 자동 인식', '공차 기준 즉시 합격, 불합격 판정', '승인과 동시에 보고서 발행']
     },
     how: {
-      kicker: '02 / How it works',
+      kicker: '스마트폰 OCR 측정',
       q: '측정은 어떻게 하나요?',
-      title: '찍고, 자르고, 끝. 측정기에서 데이터까지 세 단계.',
+      title: '측정기 화면을 촬영하고 측정값 부분을 고르면, OCR이 숫자를 읽어 검사표에 입력합니다.',
       lead: '장비 교체는 필요 없습니다.\n지금 쓰는 캘리퍼스와 측정기, 그리고 스마트폰 카메라면 됩니다.\n모바일과 PC 웹을 지원합니다.',
       steps: [
         { title: '촬영', body: '측정기 화면에 카메라를 맞추고 촬영합니다.' },
@@ -132,9 +148,9 @@ export const ko = {
       ]
     },
     workflow: {
-      kicker: '03 / Workflow',
+      kicker: '검사 흐름',
       q: '검사는 어떤 순서로 진행되나요?',
-      title: '하나의 검사, 다섯 단계, 하나의 기록.',
+      title: '검사지시부터 자주검사, 순회검사, 결재, 보고서 발행까지 하나의 기록으로 이어집니다.',
       step: (n: number) => `Step ${n}`,
       steps: [
         { title: '검사지시 등록', body: '생산관리자가 품목, 설비, 검사 시점을 등록합니다.' },
@@ -157,7 +173,7 @@ export const ko = {
       }
     },
     live: {
-      kicker: '04 / Live monitoring',
+      kicker: '현장 모니터',
       q: '공장 전체의 검사를 어떻게 한눈에 보나요?',
       title: '공장 전체 검사 현황을 모니터 한 대로, 실시간으로.',
       lead: '작업자가 휴대폰으로 결과를 입력하면 저장과 동시에 현장 모니터에 반영됩니다.\n진행 현황, 측정값, 불량까지 현장 모두가 실시간으로 확인합니다.',
@@ -176,7 +192,7 @@ export const ko = {
       note: '현장 모니터의 실제 화면입니다. 화면을 누르면 크게 볼 수 있습니다. 데이터는 예시입니다.'
     },
     trace: {
-      kicker: '05 / Traceability',
+      kicker: '사진 증빙과 추적성',
       q: '측정값은 어떻게 믿을 수 있나요?',
       title: '모든 측정값에는 사진이 붙어 있습니다.',
       lead: '자주검사와 순회검사 결과가 나란히 놓여,\n불일치는 결재 전에 드러나고\n모든 기록은 고객사 감사와 IATF 심사에서 추적할 수 있습니다.',
@@ -188,9 +204,9 @@ export const ko = {
     },
     /** SPC (request doc p.11): the place and the copy; the screens follow once they pass review */
     spc: {
-      kicker: '06 / SPC analysis',
+      kicker: 'SPC 분석',
       q: '쌓인 검사 기록으로 무엇을 볼 수 있나요?',
-      title: '한 건은 보고서로, 누적 기록은 SPC로.',
+      title: '결재된 검사 기록으로 관리도와 공정능력을 조회하고, 설비 이상과 조치 이력을 함께 관리합니다.',
       lead: '결재된 검사 기록이 그대로 SPC 데이터가 됩니다.\n제품·측정 항목·설비·기간을 골라 관리도와 공정능력을 조회합니다.',
       /** three steps, each told beside its own screen(s) (Spc.tsx) */
       steps: [
@@ -217,7 +233,7 @@ export const ko = {
     },
     /** the inspection report: the three pages one approval issues, and what its QR code and ESG line are for */
     report: {
-      kicker: '07 / Inspection report',
+      kicker: '검사보고서',
       q: '검사가 끝나면 무엇이 남나요?',
       title: '결재 한 번으로, 읽는 사람에 맞춘 3쪽 보고서가 발행됩니다.',
       lead: '경영진과 바이어는 1쪽에서 결과를, 품질 엔지니어는 2쪽에서 근거를,\n감사와 설비관리자는 3쪽에서 조치 이력을 확인합니다.',
@@ -232,9 +248,9 @@ export const ko = {
       note: '실제 발행되는 보고서 화면입니다. 쪽을 누르면 크게 볼 수 있습니다. 데이터는 예시입니다.'
     },
     data: {
-      kicker: '08 / From report to data',
+      kicker: '데이터 활용',
       q: '쌓인 검사 데이터는 어디에 쓰이나요?',
-      title: '결재된 보고서가 쌓이면, 공장이 배우는 데이터가 됩니다.',
+      title: '결재된 보고서는 품목·설비·검사 시점별 데이터로 쌓입니다.',
       steps: [
         { title: '검사마다 한 부의 보고서', body: '측정값, 공차, 사진, 결재가 한 기록에 담깁니다.' },
         { title: '보고서가 쌓여 데이터로', body: '품목, 설비, 검사 시점별로 매일 쌓입니다.' },
@@ -243,9 +259,9 @@ export const ko = {
     },
     /** field proof (request doc p.14): what can be said now; photos and figures follow from planning */
     proof: {
-      kicker: '09 / Field proof',
+      kicker: '운영 사례',
       q: '실제 현장에서 쓰고 있나요?',
-      title: '디비전 공장에서 먼저 쓰고 있습니다.',
+      title: '2026년 6월부터 디비전 대구 본사 공장에서 사용하고 있습니다.',
       lead: '2026년 6월부터 대구 본사 공장의 자주검사와 순회검사를 QAC FLOW로 하고 있습니다.',
       since: { figure: '2026.06', label: '자사 공장 운영 시작', body: '대구 본사 공장 · 초·중·종품 자주검사와 순회검사' },
       certsLabel: '디비전 인증',
@@ -257,7 +273,7 @@ export const ko = {
     },
     /** getting started (request doc p.14): the kit, the four-week trial, six questions */
     adopt: {
-      kicker: '10 / Getting started',
+      kicker: '도입 안내',
       q: '도입하려면 무엇이 필요한가요?',
       title: '스마트폰, 서버 PC 1대, 모니터면 시작할 수 있습니다.',
       kit: [

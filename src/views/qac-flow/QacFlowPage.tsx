@@ -1,10 +1,12 @@
 'use client';
-// QAC FLOW, the smartphone quality inspection system built on DVISION's own line. The figures up
-// front, then the problem, how it works, the workflow, the live monitor, traceability, SPC, the inspection report, reports →
-// data (whose last step links on to the data-industry page, src/views/data), field proof and getting started. Each block is a band of
-// its own, the surfaces alternating, and opens on the visitor's question (Head, ./parts).
+// QAC FLOW, the smartphone quality inspection system built on DVISION's own line, laid out as a product's
+// home page: the first screen (what it is and does), the features at a glance, then each feature in turn
+// (measuring, the inspection flow, the floor monitor, photo evidence, SPC, the report), the results, the
+// data, where it runs and how to start, and the form. Each section opens on the feature's name and a plain
+// sentence (Head, ./parts).
 import { useT } from '../../i18n';
 import { Intro } from './sections/Intro';
+import { Features } from './sections/Features';
 import { Problem } from './sections/Problem';
 import { How } from './sections/How';
 import { Workflow } from './sections/Workflow';
@@ -21,13 +23,14 @@ export function QacFlowPage() {
   return (
     <div id="qac-flow" role="region" aria-label={m.label}>
       <Intro />
-      <Problem />
+      <Features />
       <How />
       <Workflow />
       <Live />
       <Trace />
       <Spc />
       <Report />
+      <Problem />
       <Data />
       <Proof />
       <Adopt />

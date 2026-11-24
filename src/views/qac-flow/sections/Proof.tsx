@@ -9,7 +9,7 @@ import { Head, Pending } from '../parts';
 export function Proof() {
   const p = useT().qf.proof;
   return (
-    <Band id="qf-proof" alt mark="09">
+    <Band id="qf-proof">
       <Head kicker={p.kicker} q={p.q} title={p.title} lead={p.lead} />
       <div data-batch className="grid gap-4 lg:grid-cols-[minmax(0,.9fr)_minmax(0,1.1fr)]">
         <article className="rv grid content-start gap-3 rounded-card border border-qf-line bg-linear-160 from-qf-soft to-transparent to-70% p-panel-pad">

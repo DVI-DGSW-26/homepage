@@ -14,7 +14,7 @@ const ICONS = [ICON.order, ICON.phone, ICON.patrol, ICON.approve, ICON.report];
 export function Workflow() {
   const w = useT().qf.workflow;
   return (
-    <Band id="qf-workflow" alt mark="03">
+    <Band id="qf-workflow">
       <Head kicker={w.kicker} q={w.q} title={w.title} />
       <ol data-batch className="m-0 grid list-none p-0 lg:grid-cols-5 lg:gap-step-gap">
         {w.steps.map((s, i) => (

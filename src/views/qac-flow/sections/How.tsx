@@ -11,7 +11,7 @@ export function How() {
   const capture = useCapture();
   const screens = [{ src: 'capture.webp', alt: m.alt.capture, dark: true }, { src: 'crop.webp', alt: m.alt.crop }, { src: 'ocr-input.webp', alt: m.alt.ocr }];
   return (
-    <Band id="qf-how" mark="02">
+    <Band id="qf-how">
       <Head kicker={h.kicker} q={h.q} title={h.title} lead={h.lead} />
       <div data-batch className="mx-auto grid max-w-300 grid-cols-3 gap-phone-gap">
         {screens.map(s => (

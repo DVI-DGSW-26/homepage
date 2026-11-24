@@ -49,7 +49,7 @@ function Round({ label, parts, seconds, total, after }: { label: string; parts: 
 export function Problem() {
   const p = useT().qf.problem;
   return (
-    <Band id="qf-problem" alt mark="01">
+    <Band id="qf-problem">
       <Head kicker={p.kicker} q={p.q} title={p.title} lead={p.lead} />
       {/* who it is for, and what the paper way costs them: the third is what the time chart below can't show */}
       <p className="rv m-0 mb-5 inline-flex rounded-full border border-qf-line bg-qf-soft/50 px-4 py-2 text-body-sm font-semibold text-qf-ink">{p.audience}</p>

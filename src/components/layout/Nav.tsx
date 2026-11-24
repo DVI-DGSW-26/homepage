@@ -16,6 +16,7 @@ import { cn } from '../../lib/cn';
 import { afterDialogEntry, useBackToClose } from '../../lib/history';
 import { openInquiry } from '../../lib/inquiry';
 import { Img } from '../Img';
+import { CesBar } from './CesBar';
 
 /** The menu (request doc p.10): the product page, two of its sections, the data page, and CES until the
  * end of January. A section on the page being read is a plain #link (smoothAnchors glides there); from
@@ -85,6 +86,7 @@ export function Nav({ page }: { page: Page }) {
   return (
     <>
     <header id="nav" className="fixed inset-x-0 top-0 z-100 booting:opacity-0">
+      <CesBar />
       <div className="relative mx-auto mt-4 flex w-wrap items-center justify-between gap-6 rounded-full border border-line bg-nav py-2.5 pr-3 pl-5 max-sm:gap-3 max-sm:pr-2 max-sm:pl-3.5">
         <Link className="relative block aspect-800/216 w-logo flex-none max-sm:w-24 max-2xs:w-22" href={pathOf('/qac-flow', lang)} aria-label={m.home}>
           <Img className="absolute inset-0 size-full object-contain transition-opacity duration-500 light:opacity-0" src="assets/img/logo-white.png" sizes="136px" priority={theme === 'dark'} alt={t.brand} />
@@ -92,7 +94,7 @@ export function Nav({ page }: { page: Page }) {
         </Link>
         {/* below 1200px the menu is in the sheet (the button at the end of the bar) */}
         <nav aria-label={m.menu} className={wide ? 'max-[1599px]:hidden' : 'max-lg:hidden'}>
-          <ul className="mono m-0 flex list-none gap-nav-gap p-0 max-xl:gap-nav-gap-tight">
+          <ul className="m-0 flex list-none gap-nav-gap p-0 text-body-sm font-medium max-xl:gap-nav-gap-tight">
             {items.map(x => (
               <li key={x.key}>
                 <Link href={x.href} aria-current={x.active ? 'page' : undefined} data-active={x.active || undefined} className={cn(

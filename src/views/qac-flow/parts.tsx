@@ -5,7 +5,7 @@ import { lines, useLang } from '../../i18n';
 import { Img } from '../../components/Img';
 import { Phone, type Loop } from '../../components/Device';
 import { Zoomable } from '../../components/Zoom';
-import { Kicker, Lead } from '../../components/ui';
+import { Lead } from '../../components/ui';
 import { cn } from '../../lib/cn';
 
 const IMG = 'assets/img/qacflow/';
@@ -23,14 +23,14 @@ export function useCapture() {
   };
 }
 
-/** each block opens with the visitor's question, then answers it: a one-line answer, then the detail */
-export function Head({ kicker, q, title, lead }: { kicker: string; q: string; title: string; lead?: string }) {
+/** each block opens like a product page's section: the feature's name, then what it does in a sentence
+ * or two (the copy's kicker is the name; its q, the question this block once opened on, is not shown) */
+export function Head({ kicker, title, lead }: { kicker: string; q?: string; title: string; lead?: string }) {
   return (
-    <div className="mb-stack-sm max-w-208">
-      <Kicker>{kicker}</Kicker>
-      <h3 className="rv m-0 mt-3.5 text-h2 leading-h2 font-semibold tracking-tight text-balance">{q}</h3>
-      <p className="rv m-0 mt-5 border-l-2 border-qf pl-4 text-title-lg leading-title font-semibold text-balance">{title}</p>
-      {lead && <Lead className="rv mt-3.5 max-w-160 pl-4.5">{lines(lead)}</Lead>}
+    <div className="mb-10 max-w-180 max-sm:mb-8">
+      <h2 className="rv m-0 text-[clamp(1.75rem,2.6vw,2.4rem)] leading-tight font-bold tracking-tight text-balance">{kicker}</h2>
+      <p className="rv m-0 mt-4 text-title leading-snug text-fg-2 text-pretty">{title}</p>
+      {lead && <Lead className="rv mt-3 max-w-160">{lines(lead)}</Lead>}
     </div>
   );
 }

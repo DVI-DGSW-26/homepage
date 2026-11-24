@@ -55,11 +55,27 @@ export const en: Messages = {
     label: 'QAC FLOW quality inspection solution',
     expand: 'Quality · Analysis · Control',
     title: 'Quality inspection without paper check sheets.',
-    lead: 'Measure, judge and issue the report, all from one smartphone.\nBuilt and proven in DVISION\'s own factory.',
+    lead: 'Photograph a gauge with a smartphone and the value is entered; self and patrol inspections, approval, the report and SPC analysis all follow in one place.',
+    /** the two facts under the first screen's buttons: what it takes, and where it runs */
+    facts: ['Start with a smartphone, one server PC and a monitor. No dedicated measuring equipment or sensor installation.', 'In use at DVISION\'s Daegu headquarters plant since June 2026.'],
     stats: ['No dedicated gauges or sensor installation', 'Started running in our own plant'],
     kit: 'A smartphone, one server PC and a monitor',
     statsNote: 'In-house validation at our Daegu HQ plant · IATF 16949',
-    cta: { demo: 'Request a demo', cesDemo: 'Request a CES demo', apply: 'Ask about your floor', how: 'See how it works' },
+    cta: { demo: 'Request a demo', cesDemo: 'Request a CES demo', apply: 'Ask about your floor', how: 'See how it works', features: 'Explore features' },
+    /** the overview of the features under the first screen (Features.tsx), each item leading to its section */
+    features: {
+      title: 'Features',
+      lead: 'From measuring on the floor to approval, reports and analysis, QAC FLOW handles it all.',
+      more: 'Learn more',
+      items: [
+        { name: 'Smartphone OCR measurement', body: 'Photograph the gauge display and the value is entered and judged pass or fail automatically.' },
+        { name: 'Self and patrol inspections, approval', body: 'First-off, in-process and last-off self-inspections and patrol inspections, approved by the quality manager on mobile or PC.' },
+        { name: 'Shop-floor monitor', body: 'Inspection progress by machine, values against tolerance, and defects and actions on the floor monitor.' },
+        { name: 'Photo evidence', body: 'Every value keeps a photo of the gauge, and self and patrol results are compared side by side.' },
+        { name: 'SPC analysis', body: 'Control charts and process capability from inspection records, with equipment issues and actions managed alongside.' },
+        { name: 'Inspection report', body: 'A three-page report is issued on approval, verifiable against the original with a QR code.' }
+      ]
+    },
     ces: {
       label: 'CES 2027',
       when: 'Jan 6–9, Las Vegas',
@@ -81,7 +97,7 @@ export const en: Messages = {
       ]
     },
     problem: {
-      kicker: '01 / Problem',
+      kicker: 'Results',
       q: 'Why does the shop floor need QAC FLOW?',
       title: 'The time spent writing on paper, taking photos and re-typing into Excel drops by 60%.',
       lead: 'One photo of the gauge records the value, shares the photo and files it on the server at once, and the report is issued the moment it is approved.',
@@ -107,9 +123,9 @@ export const en: Messages = {
       afterSteps: ['Photograph the gauge', 'OCR reads the value', 'Pass / fail against tolerance, instantly', 'Report issued on approval']
     },
     how: {
-      kicker: '02 / How it works',
+      kicker: 'Smartphone OCR measurement',
       q: 'How do you take a measurement?',
-      title: 'Snap, crop, done. Three taps from gauge to data.',
+      title: 'Photograph the gauge display, select the reading, and OCR enters the number into the check sheet.',
       lead: 'No new equipment.\nYour existing calipers and gauges plus a smartphone camera.\nWorks on mobile and PC web.',
       steps: [
         { title: 'Snap', body: 'Point the phone at the gauge display and take the shot.' },
@@ -118,9 +134,9 @@ export const en: Messages = {
       ]
     },
     workflow: {
-      kicker: '03 / Workflow',
+      kicker: 'Inspection flow',
       q: 'How does an inspection flow?',
-      title: 'One inspection, five steps, one record.',
+      title: 'From the inspection order through self and patrol inspections, approval and the report, everything stays in one record.',
       step: (n: number) => `Step ${n}`,
       steps: [
         { title: 'Inspection order', body: 'The production manager registers what to inspect, where and when.' },
@@ -146,7 +162,7 @@ export const en: Messages = {
       }
     },
     live: {
-      kicker: '04 / Live monitoring',
+      kicker: 'Shop-floor monitor',
       q: 'How do you see every inspection at once?',
       title: 'Your entire floor\'s inspections, live on one monitor.',
       lead: 'When an operator enters a result on their phone, it appears on the shop-floor monitor the moment it is saved.\nProgress, measurements and defects are visible to the whole floor in real time.',
@@ -165,7 +181,7 @@ export const en: Messages = {
       note: 'The actual floor monitor screens. Click a screen to see it full size. Sample data.'
     },
     trace: {
-      kicker: '05 / Traceability',
+      kicker: 'Photo evidence and traceability',
       q: 'How can you trust every value?',
       title: 'Every value comes with its photo.',
       lead: 'Self-inspection and patrol inspection sit side by side,\nso a mismatch is caught before approval\nand every record can be traced in a customer audit or IATF review.',
@@ -177,9 +193,9 @@ export const en: Messages = {
     },
     /** SPC (request doc p.11): the place and the copy; the screens follow once they pass review */
     spc: {
-      kicker: '06 / SPC analysis',
+      kicker: 'SPC analysis',
       q: 'What can you see in the records that pile up?',
-      title: 'Each inspection becomes a report; the history becomes SPC.',
+      title: 'View control charts and process capability from approved inspection records, and manage equipment issues and actions alongside them.',
       lead: 'Approved inspection records become SPC data as they are.\nPick a product, characteristic, machine and period to view control charts and process capability.',
       /** three steps, each told beside its own screen(s) (Spc.tsx) */
       steps: [
@@ -206,7 +222,7 @@ export const en: Messages = {
     },
     /** the inspection report: the three pages one approval issues, and what its QR code and ESG line are for */
     report: {
-      kicker: '07 / Inspection report',
+      kicker: 'Inspection report',
       q: 'What does each inspection leave behind?',
       title: 'One approval issues a three-page report, each page written for its reader.',
       lead: 'Management and buyers read the results on page 1, quality engineers the evidence on page 2, and auditors and maintenance teams the action history on page 3.',
@@ -221,9 +237,9 @@ export const en: Messages = {
       note: 'The actual report as issued. Click a page to see it full size. Sample data.'
     },
     data: {
-      kicker: '08 / From report to data',
+      kicker: 'Using the data',
       q: 'What happens to all that inspection data?',
-      title: 'Every approved report becomes data the factory can learn from.',
+      title: 'Approved reports build up as data by part, machine and inspection round.',
       steps: [
         { title: 'One report per inspection', body: 'Values, tolerances, photos and approval in one record.' },
         { title: 'Reports pile up as data', body: 'By part, machine and inspection slot, day after day.' },
@@ -232,9 +248,9 @@ export const en: Messages = {
     },
     /** field proof (request doc p.14): what can be said now; photos and figures follow from planning */
     proof: {
-      kicker: '09 / Field proof',
+      kicker: 'In operation',
       q: 'Is it in use on a real shop floor?',
-      title: 'It runs in our own factory first.',
+      title: 'In use at DVISION\'s Daegu headquarters plant since June 2026.',
       lead: 'Since June 2026, self and patrol inspections at DVISION\'s Daegu headquarters plant have run on QAC FLOW.',
       since: { figure: '2026.06', label: 'In use in our own plant', body: 'Daegu headquarters plant · first-off, in-process and last-off self and patrol inspections' },
       certsLabel: 'DVISION certifications',
@@ -246,7 +262,7 @@ export const en: Messages = {
     },
     /** getting started (request doc p.14): the kit, the four-week trial, six questions */
     adopt: {
-      kicker: '10 / Getting started',
+      kicker: 'Getting started',
       q: 'What do you need to get started?',
       title: 'A smartphone, one server PC and a monitor.',
       kit: [

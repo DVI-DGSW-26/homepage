@@ -12,7 +12,7 @@ const KIT = [Smartphone, Server, Monitor];
 export function Adopt() {
   const a = useT().qf.adopt;
   return (
-    <Band id="qf-adopt" mark="10">
+    <Band id="qf-adopt">
       <Head kicker={a.kicker} q={a.q} title={a.title} />
       <div data-batch className="grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,.8fr)]">
         {/* the kit: three things joined by plus signs */}
