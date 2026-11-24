@@ -18,14 +18,13 @@ import { openInquiry } from '../../lib/inquiry';
 import { Img } from '../Img';
 import { CesBar } from './CesBar';
 
-/** The menu: the product's home, its features, and how to start (the adoption inquiry is the button beside
- * it). A section on the page being read is a plain #link (smoothAnchors glides there); from another page it
- * opens QAC FLOW at that section. */
-type Item = { key: 'product' | 'features' | 'adopt'; page: Page; hash?: string; until?: number };
+/** The menu: the homepage's sections (the adoption inquiry is the button beside it). On the QAC FLOW page
+ * an item is a plain #link (smoothAnchors glides there); from another page it opens QAC FLOW at that section. */
+type Item = { key: 'about' | 'features' | 'preview'; page: Page; hash?: string; until?: number };
 const MENU: Item[] = [
-  { key: 'product', page: '/qac-flow' },
+  { key: 'about', page: '/qac-flow', hash: '#qf-about' },
   { key: 'features', page: '/qac-flow', hash: '#qf-features' },
-  { key: 'adopt', page: '/qac-flow', hash: '#qf-adopt' }
+  { key: 'preview', page: '/qac-flow', hash: '#qf-preview' }
 ];
 
 const ROUND_BTN = 'relative grid size-9 flex-none cursor-pointer place-items-center rounded-full border border-line text-fg-2 transition-colors duration-300 hover:border-line-2 hover:text-fg max-sm:size-8';

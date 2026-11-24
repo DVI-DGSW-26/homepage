@@ -17,8 +17,8 @@ import '../styles/index.css';
 import type { Lang } from '../lib/paths';
 import { ORIGIN } from '../lib/site';
 
-/** before the first paint: the saved light mode, and the CES notice bar if it was closed (CesBar) */
-const THEME = `try{var r=document.documentElement;if(localStorage.getItem('dv-theme')==='light'){r.dataset.mode=r.dataset.bg='light'}if(localStorage.getItem('dv-ces-bar')==='closed'){r.dataset.cesBar='closed'}}catch(e){}`;
+/** before the first paint: the saved dark mode (light, white, is the default), and the CES notice bar if it was closed (CesBar) */
+const THEME = `try{var r=document.documentElement;if(localStorage.getItem('dv-theme')==='dark'){r.dataset.mode=r.dataset.bg='dark'}if(localStorage.getItem('dv-ces-bar')==='closed'){r.dataset.cesBar='closed'}}catch(e){}`;
 
 /** what every page shares in its <head>; each page adds its own title, description and addresses (src/site/seo.ts) */
 export const siteMetadata: Metadata = {
@@ -50,7 +50,7 @@ export const siteViewport: Viewport = {
   initialScale: 1,
   // the browser's bar in the page's own graphite (dark) or aluminum (light)
   themeColor: [
-    { media: '(prefers-color-scheme: dark)', color: '#2A2D33' },
+    { media: '(prefers-color-scheme: dark)', color: '#FFFFFF' },
     { media: '(prefers-color-scheme: light)', color: '#FFFFFF' }
   ]
 };
@@ -58,7 +58,7 @@ export const siteViewport: Viewport = {
 export function RootLayout({ lang, children }: { lang: Lang; children: ReactNode }) {
   return (
     // the theme script may change data-mode / data-bg before React hydrates
-    <html lang={lang} data-mode="dark" data-bg="dark" suppressHydrationWarning>
+    <html lang={lang} data-mode="light" data-bg="light" suppressHydrationWarning>
       <head>
         <script id="dv-theme" dangerouslySetInnerHTML={{ __html: THEME }} />
       </head>

@@ -35,7 +35,7 @@ export const ko = {
     menu: '주요 메뉴',
     links: { '/qac-flow': 'QAC FLOW', '/data': 'Data Industry' },
     /** the header menu (request doc p.10): sections of QAC FLOW, the data page, and CES until the end of January */
-    items: { product: '제품', features: '주요 기능', adopt: '도입 안내' },
+    items: { about: '서비스 소개', features: '주요 기능', preview: '미리보기' },
     /** DVISION's sites: the gateway (dvi-ind.com), manufacturing, and this one */
     sites: { label: 'DVISION 사이트', gateway: 'DVISION 첫 화면', manufacturing: '제조', solution: '솔루션' },
     langs: { ko: 'KOR', en: 'ENG' },
@@ -65,7 +65,7 @@ export const ko = {
     label: 'QAC FLOW 품질검사 솔루션',
     expand: 'Quality · Analysis · Control',
     title: '종이 검사표 없는 품질검사',
-    lead: '측정기를 스마트폰으로 촬영하면 측정값이 입력되고, 자주검사·순회검사부터 결재, 보고서 발행, SPC 분석까지 한 곳에서 이어집니다.',
+    lead: '스마트폰으로 측정기를 찍으면 검사 기록부터 결재, 보고서, 공정 분석까지 이어지는 품질 검사 웹앱입니다.',
     /** the two facts under the first screen's buttons: what it takes, and where it runs */
     facts: ['스마트폰, 서버 PC 1대, 모니터로 시작합니다. 전용 측정 장비나 센서 공사는 필요 없습니다.', '2026년 6월부터 디비전 대구 본사 공장에서 사용하고 있습니다.'],
     /** the figures up front: what it doesn't need, and since when it runs in our own plant */
@@ -76,19 +76,34 @@ export const ko = {
     /** the buttons that lead to the demo request form (#contact) */
     /** demo: the demo buttons, cesDemo in its place until CES 2027 closes (duringCes, src/lib/site.ts) */
     cta: { demo: '도입 문의', apply: '도입 문의', how: '작동 방식 보기', features: '기능 살펴보기' },
-    /** the overview of the features under the first screen (Features.tsx), each item leading to its section */
+    /** 서비스 소개: why it was made, what it covers, who uses it (About.tsx) */
+    about: {
+      title: '서비스 소개',
+      lead: '종이와 엑셀로 나뉘어 있던 품질 검사 기록을 하나로 모읍니다.',
+      items: [
+        { label: '만든 목적', body: '검사표를 손으로 적고, 사진을 따로 찍고, 엑셀로 다시 옮기던 일을 없애려고 디비전 공장에서 직접 만들었습니다.' },
+        { label: '지원하는 업무', body: '자주검사와 순회검사, 결재, 검사보고서 발행, 공정 분석(SPC)까지 품질 검사 업무 전체를 지원합니다.' },
+        { label: '사용하는 곳', body: '치수 검사를 하는 제조 현장에서 작업자, 순회검사자, 품질관리자가 함께 씁니다.' }
+      ]
+    },
+    /** 주요 기능: five cards, each with a real screen (Features.tsx) */
     features: {
       title: '주요 기능',
-      lead: '검사 현장의 측정부터 결재, 보고서, 분석까지 QAC FLOW 하나로 처리합니다.',
-      more: '자세히 보기',
+      lead: '현장의 측정부터 결재, 보고서, 분석까지 QAC FLOW 하나로 처리합니다.',
       items: [
-        { name: '스마트폰 OCR 측정', body: '측정기 화면을 찍으면 측정값이 자동으로 입력되고 합격·불합격이 판정됩니다.' },
-        { name: '자주·순회검사와 결재', body: '초·중·종품 자주검사와 순회검사를 거쳐 품질관리자가 모바일이나 PC에서 결재합니다.' },
-        { name: '현장 모니터', body: '설비별 검사 진행, 측정값과 공차, 불량과 조치를 현장 모니터에 보여 줍니다.' },
-        { name: '사진 증빙', body: '모든 측정값에 측정기 사진이 남고, 자주검사와 순회검사 결과를 나란히 대조합니다.' },
-        { name: 'SPC 분석', body: '쌓인 검사 기록으로 관리도와 공정능력을 보고, 설비 이상과 조치 이력을 관리합니다.' },
-        { name: '검사보고서', body: '결재와 동시에 3쪽 보고서가 발행되고, QR로 원본과 대조할 수 있습니다.' }
+        { name: 'OCR 자동 입력', body: '측정기 화면을 찍으면 측정값이 입력되고 합격·불합격이 판정됩니다.' },
+        { name: '사진 대조 결재', body: '모든 측정값에 사진이 남아, 자주검사와 순회검사 결과를 나란히 보고 결재합니다.' },
+        { name: '검사보고서 발행', body: '결재가 끝나면 보고서가 자동으로 발행되고, QR로 원본을 확인할 수 있습니다.' },
+        { name: '현장 모니터', body: '설비별 검사 진행과 측정값, 불량과 조치를 현장 모니터에 보여 줍니다.' },
+        { name: 'SPC 분석', body: '쌓인 검사 기록으로 관리도와 공정능력을 보고, 설비 이상과 조치 이력을 관리합니다.' }
       ]
+    },
+    /** 서비스 미리보기: the main screens in one frame (Preview.tsx) */
+    preview: {
+      title: '서비스 미리보기',
+      lead: '현장에서는 스마트폰으로, 사무실에서는 PC와 모니터로 씁니다.',
+      tabs: ['모바일 앱', '현장 모니터', 'PC 분석', '검사보고서'],
+      note: 'QAC FLOW의 실제 화면입니다. 화면을 누르면 크게 볼 수 있습니다. 데이터는 예시입니다.'
     },
     /** the banner above the name: the booth until the show closes (CES_END in src/lib/site.ts), then the online demo */
     ces: {

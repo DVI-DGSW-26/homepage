@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Camera, Check, FileCheck2, ScanText } from 'lucide-react';
+import { Camera, FileCheck2, ScanText } from 'lucide-react';
 import { useT } from '../../../i18n';
 import { Phone } from '../../../components/Device';
 import { Img } from '../../../components/Img';
@@ -16,8 +16,7 @@ const SIDE_SIZES = '(max-width: 1199px) 23vw, 180px';
 
 /**
  * The first screen, as a product's home page opens: on the left the product's mark, what it is in one
- * line and what it does in one more, the way to a demo and to the features, and two plain facts (what it
- * takes, where it runs); on the right the app itself in three phones — the camera in the middle playing
+ * sentence, the way to an inquiry and to the features; on the right the app itself in three phones — the camera in the middle playing
  * the hero loop (or until there is one the captures in turn, HeroSequence), the OCR result and the patrol
  * approval beside it. The CES notice is the bar above the header (CesBar), not part of this screen.
  */
@@ -37,14 +36,8 @@ export function Intro() {
           <div className="rv mt-8 flex flex-wrap gap-3 max-lg:justify-center">
             <Pill href="#contact" aria-haspopup="dialog" onClick={openInquiry('hero')}>{m.cta.demo}</Pill>
             <Pill quiet href="#qf-features">{m.cta.features}</Pill>
-            {DEMO_VIDEO && <Pill quiet href="#qf-how" aria-haspopup="dialog" onClick={e => { e.preventDefault(); openVideo(true); }}>{t.media.watch(DEMO_VIDEO.seconds)}</Pill>}
+            {DEMO_VIDEO && <Pill quiet href="#qf-preview" aria-haspopup="dialog" onClick={e => { e.preventDefault(); openVideo(true); }}>{t.media.watch(DEMO_VIDEO.seconds)}</Pill>}
           </div>
-          {/* what it takes, and where it runs: plain lines under a rule */}
-          <ul className="rv m-0 mt-10 grid w-full max-w-136 list-none gap-2.5 border-t border-line p-0 pt-6 text-left text-body-sm leading-snug text-fg-2">
-            {m.facts.map(f => (
-              <li key={f} className="flex items-start gap-2.5"><Check aria-hidden="true" className="mt-0.5 size-4 flex-none text-qf-ink" strokeWidth={2.4} />{f}</li>
-            ))}
-          </ul>
         </div>
 
         {/* the app in three phones, face on: the camera in the middle, the largest; the OCR result and the

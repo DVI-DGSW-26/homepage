@@ -28,7 +28,7 @@ export const en: Messages = {
     menu: 'Main menu',
     links: { '/qac-flow': 'QAC FLOW', '/data': 'Data Industry' },
     /** the header menu (request doc p.10): sections of QAC FLOW, the data page, and CES until the end of January */
-    items: { product: 'Product', features: 'Features', adopt: 'Getting started' },
+    items: { about: 'About', features: 'Features', preview: 'Preview' },
     sites: { label: 'DVISION sites', gateway: 'DVISION start page', manufacturing: 'Manufacturing', solution: 'Solutions' },
     langs: { ko: 'KOR', en: 'ENG' },
     theme: { toLight: 'Switch to light mode', toDark: 'Switch to dark mode' },
@@ -55,26 +55,41 @@ export const en: Messages = {
     label: 'QAC FLOW quality inspection solution',
     expand: 'Quality · Analysis · Control',
     title: 'Quality inspection without paper check sheets.',
-    lead: 'Photograph a gauge with a smartphone and the value is entered; self and patrol inspections, approval, the report and SPC analysis all follow in one place.',
+    lead: 'A quality inspection web app: photograph a gauge with a smartphone, and the record carries through to approval, reports and process analysis.',
     /** the two facts under the first screen's buttons: what it takes, and where it runs */
     facts: ['Start with a smartphone, one server PC and a monitor. No dedicated measuring equipment or sensor installation.', 'In use at DVISION\'s Daegu headquarters plant since June 2026.'],
     stats: ['No dedicated gauges or sensor installation', 'Started running in our own plant'],
     kit: 'A smartphone, one server PC and a monitor',
     statsNote: 'In-house validation at our Daegu HQ plant · IATF 16949',
     cta: { demo: 'Contact sales', apply: 'Contact sales', how: 'See how it works', features: 'Explore features' },
-    /** the overview of the features under the first screen (Features.tsx), each item leading to its section */
+    /** 서비스 소개: why it was made, what it covers, who uses it (About.tsx) */
+    about: {
+      title: 'About',
+      lead: 'One place for inspection records once split between paper and spreadsheets.',
+      items: [
+        { label: 'Why we built it', body: 'We built it in our own factory to end writing check sheets by hand, taking photos separately and retyping it all into Excel.' },
+        { label: 'What it covers', body: 'Self and patrol inspections, approval, inspection reports and process analysis (SPC): the whole of quality inspection.' },
+        { label: 'Who uses it', body: 'Operators, patrol inspectors and quality managers on manufacturing floors that inspect dimensions.' }
+      ]
+    },
+    /** 주요 기능: five cards, each with a real screen (Features.tsx) */
     features: {
       title: 'Features',
       lead: 'From measuring on the floor to approval, reports and analysis, QAC FLOW handles it all.',
-      more: 'Learn more',
       items: [
-        { name: 'Smartphone OCR measurement', body: 'Photograph the gauge display and the value is entered and judged pass or fail automatically.' },
-        { name: 'Self and patrol inspections, approval', body: 'First-off, in-process and last-off self-inspections and patrol inspections, approved by the quality manager on mobile or PC.' },
-        { name: 'Shop-floor monitor', body: 'Inspection progress by machine, values against tolerance, and defects and actions on the floor monitor.' },
-        { name: 'Photo evidence', body: 'Every value keeps a photo of the gauge, and self and patrol results are compared side by side.' },
-        { name: 'SPC analysis', body: 'Control charts and process capability from inspection records, with equipment issues and actions managed alongside.' },
-        { name: 'Inspection report', body: 'A three-page report is issued on approval, verifiable against the original with a QR code.' }
+        { name: 'OCR input', body: 'Photograph the gauge display and the value is entered and judged pass or fail.' },
+        { name: 'Photo-checked approval', body: 'Every value keeps its photo, so self and patrol results are approved side by side.' },
+        { name: 'Inspection reports', body: 'Approval issues the report automatically, verifiable against the original by QR code.' },
+        { name: 'Shop-floor monitor', body: 'Inspection progress by machine, values, defects and actions on the floor monitor.' },
+        { name: 'SPC analysis', body: 'Control charts and capability from inspection records, with equipment issues and actions alongside.' }
       ]
+    },
+    /** 서비스 미리보기: the main screens in one frame (Preview.tsx) */
+    preview: {
+      title: 'Preview',
+      lead: 'A smartphone on the floor, a PC and a monitor in the office.',
+      tabs: ['Mobile app', 'Floor monitor', 'PC analysis', 'Inspection report'],
+      note: 'Actual QAC FLOW screens. Click a screen to see it full size. Sample data.'
     },
     ces: {
       label: 'CES 2027',
