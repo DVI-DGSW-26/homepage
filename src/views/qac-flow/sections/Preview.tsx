@@ -64,9 +64,9 @@ export function Preview() {
           <div aria-hidden="true" className="absolute inset-x-[15%] -top-24 h-64 rounded-full bg-radial/srgb from-acc-glow to-transparent to-70% opacity-70 blur-3xl" />
           <div key={at} className="showcase-in relative grid w-full justify-items-center gap-10 max-sm:gap-7">
             {/* what this screen is for: a line over it */}
-            <div className="grid max-w-150 gap-2.5 text-center">
-              <h3 className="m-0 text-title leading-snug font-bold">{p.views[at].title}</h3>
-              <p className="m-0 text-body leading-relaxed text-fg-2 text-pretty">{p.views[at].body}</p>
+            <div className="grid max-w-170 gap-3.5 text-center">
+              <h3 className="m-0 text-[clamp(1.6rem,2.6vw,2.25rem)] leading-tight font-bold tracking-tight">{p.views[at].title}</h3>
+              <p className="m-0 text-title leading-relaxed text-fg-2 text-pretty">{p.views[at].body}</p>
             </div>
             <div className="flex w-full justify-center">{views[at]}</div>
           </div>
