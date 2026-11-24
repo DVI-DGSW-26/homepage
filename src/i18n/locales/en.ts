@@ -76,12 +76,46 @@ export const en: Messages = {
     features: {
       title: 'Features',
       lead: 'From measuring on the floor to approval, reports and analysis, QAC FLOW handles it all.',
+      more: 'Learn more',
+      close: 'Close',
+      rowsHead: ['Item', 'Details'],
       items: [
-        { name: 'OCR input', body: 'Photograph the gauge display and the value is entered and judged pass or fail.' },
-        { name: 'Photo-checked approval', body: 'Every value keeps its photo, so self and patrol results are approved side by side.' },
-        { name: 'Inspection reports', body: 'Approval issues the report automatically, verifiable against the original by QR code.' },
-        { name: 'Shop-floor monitor', body: 'Inspection progress by machine, values, defects and actions on the floor monitor.' },
-        { name: 'SPC analysis', body: 'Control charts and capability from inspection records, with equipment issues and actions alongside.' }
+        { name: 'OCR input', body: 'Photograph the gauge display and the value is entered and judged pass or fail.',
+          intro: 'Photograph the gauge display, select the reading, and OCR enters the number into the check sheet. Nothing is copied by hand.',
+          rows: [
+            { label: 'Capture', body: 'Fit the gauge display into the guide box in the app.' },
+            { label: 'Crop', body: 'Pick out just the reading from the photo.' },
+            { label: 'Input and judgment', body: 'The value is entered and judged pass or fail against the tolerance. It can be checked and corrected before saving.' }
+          ] },
+        { name: 'Photo-checked approval', body: 'Every value keeps its photo, so self and patrol results are approved side by side.',
+          intro: 'See self and patrol inspection results side by side with their photos, and approve on mobile or PC.',
+          rows: [
+            { label: 'Photo evidence', body: 'Every value is saved with a photo of the gauge.' },
+            { label: 'Side by side', body: 'Compare the self and patrol values and photos for the same dimension on one screen.' },
+            { label: 'Reject or approve', body: 'A rejection keeps its reason; an approval issues the report right away.' }
+          ] },
+        { name: 'Inspection reports', body: 'Approval issues the report automatically, verifiable against the original by QR code.',
+          intro: 'Once approval is complete, a three-page report written for each reader is issued automatically.',
+          rows: [
+            { label: 'Page 1 Daily Quality Summary', body: 'Pass rate, headline Cpk, control charts and sign-offs, for management and buyers' },
+            { label: 'Page 2 Detailed capability', body: 'Capability per dimension and the self and patrol photos compared, for quality engineers' },
+            { label: 'Page 3 Equipment action log', body: 'Each equipment issue from detection through action to re-inspection approval, for auditors and maintenance' },
+            { label: 'QR verification', body: 'Scan the QR code to check the report against the original and view its photos and approval history.' }
+          ] },
+        { name: 'Shop-floor monitor', body: 'Inspection progress by machine, values, defects and actions on the floor monitor.',
+          intro: 'When an operator enters a result on their phone, it appears on the shop-floor monitor the moment it is saved.',
+          rows: [
+            { label: 'Inspection status', body: 'First-off, in-process and last-off self and patrol inspections by machine, including overdue and skipped ones.' },
+            { label: 'Measurement detail', body: 'Each value against its nominal and tolerance, with an OK/NG result per item.' },
+            { label: 'Quality and defects', body: 'Defects by item and type, with the owner and status of each action.' }
+          ] },
+        { name: 'SPC analysis', body: 'Control charts and capability from inspection records, with equipment issues and actions alongside.',
+          intro: 'View control charts and process capability from approved inspection records, and manage equipment issues and actions alongside them.',
+          rows: [
+            { label: 'Indicators and control charts', body: 'Six key indicators including Cpk and Ppk, and the Xbar-R charts. Anything near a control limit is flagged right away.' },
+            { label: 'Process capability', body: 'The distribution laid over the spec limits, with Cp, Cpk, Pp and Ppk.' },
+            { label: 'Equipment issues and actions', body: 'Each issue is kept from report through action to close, with its downtime and cost.' }
+          ] }
       ]
     },
     /** 서비스 미리보기: the main screens in one frame (Preview.tsx) */

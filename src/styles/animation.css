@@ -90,3 +90,9 @@
 @keyframes showcase-in { from { opacity: 0; translate: 0 10px } }
 .showcase-in { animation: showcase-in .45s cubic-bezier(.2, .7, .2, 1) both }
 @media (prefers-reduced-motion: reduce) { .showcase-in { animation: none } }
+
+/* a feature's side panel slides in from the right, its backdrop fades (src/views/qac-flow/sections/Features.tsx) */
+@keyframes panel-in { from { translate: 100% 0 } }
+.feature-panel[open] { animation: panel-in .42s cubic-bezier(.2, .8, .2, 1) }
+.feature-panel[open]::backdrop { animation: fade-in var(--duration-fade) ease-out }
+@media (prefers-reduced-motion: reduce) { .feature-panel[open], .feature-panel[open]::backdrop { animation: none } }
