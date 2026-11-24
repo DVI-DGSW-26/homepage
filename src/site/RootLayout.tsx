@@ -17,7 +17,8 @@ import '../styles/index.css';
 import type { Lang } from '../lib/paths';
 import { ORIGIN } from '../lib/site';
 
-const THEME = `try{if(localStorage.getItem('dv-theme')==='light'){var r=document.documentElement;r.dataset.mode=r.dataset.bg='light'}}catch(e){}`;
+/** before the first paint: the saved light mode, and the CES notice bar if it was closed (CesBar) */
+const THEME = `try{var r=document.documentElement;if(localStorage.getItem('dv-theme')==='light'){r.dataset.mode=r.dataset.bg='light'}if(localStorage.getItem('dv-ces-bar')==='closed'){r.dataset.cesBar='closed'}}catch(e){}`;
 
 /** what every page shares in its <head>; each page adds its own title, description and addresses (src/site/seo.ts) */
 export const siteMetadata: Metadata = {

@@ -84,7 +84,9 @@ export const en: Messages = {
       try: 'Measure and shoot it yourself at our booth',
       after: 'Missed us at CES 2027? Get the booth demo online',
       /** the bar's link to the CES landing page (CES_LANDING_URL), where booth inquiries go */
-      more: 'CES details'
+      more: 'CES details',
+      /** the × that closes the bar */
+      close: 'Close notice'
     },
     alt: {
       capture: 'Smartphone camera framing the display of a digital caliper reading 24.38 mm',

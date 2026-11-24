@@ -41,6 +41,8 @@
   /* the page stays put behind an open modal: no scrolling, and the scrollbar's room is kept so nothing
      shifts sideways when it goes */
   html { scrollbar-gutter: stable }
+  /* the CES notice bar, once closed (CesBar, and the script in RootLayout before the first paint) */
+  html[data-ces-bar="closed"] #ces-bar { display: none }
   /* an anchor (a menu or feature link) lands clear of the fixed header and the notice bar above it */
   section[id] { scroll-margin-top: 7.5rem }
   @media (max-width: 47.99rem) { section[id] { scroll-margin-top: 8.5rem } }

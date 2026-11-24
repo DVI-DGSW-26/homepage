@@ -99,7 +99,9 @@ export const ko = {
       try: '부스에서 직접 측정·촬영해 보세요',
       after: 'CES 2027 부스 시연을 온라인 데모로 안내해 드립니다',
       /** the bar's link to the CES landing page (CES_LANDING_URL), where booth inquiries go */
-      more: 'CES 안내 보기'
+      more: 'CES 안내 보기',
+      /** the × that closes the bar */
+      close: '안내 닫기'
     },
     alt: {
       capture: '스마트폰 카메라로 디지털 캘리퍼스 화면을 촬영하는 장면',
