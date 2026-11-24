@@ -199,14 +199,13 @@ export const en: Messages = {
       q: 'What can you see in the records that pile up?',
       title: 'View control charts and process capability from approved inspection records, and manage equipment issues and actions alongside them.',
       lead: 'Approved inspection records become SPC data as they are.\nPick a product, characteristic, machine and period to view control charts and process capability.',
-      /** three steps, each told beside its own screen(s) (Spc.tsx) */
-      steps: [
-        { title: 'Key indicators · control charts', body: 'Pick a product, dimension, machine and period, and six key indicators and the Xbar-R charts appear on one screen. Anything near or beyond a control limit is flagged right away.' },
-        { title: 'Process capability', body: 'Lay the distribution of all measurements over the lower and upper spec limits, and see with Cp, Cpk, Pp and Ppk how comfortably the process fits within them.' },
-        { title: 'Equipment issues and actions', body: 'An equipment issue, once reported, is recorded through action and resolution with its downtime and cost, so a shift in quality can be traced to its cause.' }
+      /** the four views, each with one screen (Spc.tsx) */
+      views: [
+        { title: 'Key indicators · control charts', body: 'Follow the process with six key indicators and the Xbar-R charts. Anything near a control limit is flagged right away.' },
+        { title: 'Process capability', body: 'Lay the distribution over the spec limits and check Cp, Cpk, Pp and Ppk.' },
+        { title: 'Equipment issues', body: 'See issue reports by machine and status, with downtime and cost recorded alongside.' },
+        { title: 'Action history', body: 'Each issue keeps its handling in order, from report through action to close.' }
       ],
-      /** under the two equipment issue screens */
-      captions: ['Issue reports', 'One issue, from report to close'],
       /** the labels set on each screen, in the order of its marks (Spc.tsx) */
       marks: [
         ['Near-limit warning', 'Six key indicators · Cpk · Ppk · mean · std. dev. · samples · out of control', 'Xbar chart (subgroup means)', 'R chart (subgroup ranges)'],
@@ -230,12 +229,16 @@ export const en: Messages = {
       lead: 'Management and buyers read the results on page 1, quality engineers the evidence on page 2, and auditors and maintenance teams the action history on page 3.',
       pageLabel: (n: number) => `Page ${n}`,
       pages: [
-        { title: 'Daily Quality Summary', reader: 'Management · Buyers', body: 'Pass rate, headline Cpk, inspection count and issues at a glance, with an Xbar-R control chart and the prepared, reviewed and approved sign-offs.' },
-        { title: 'Detailed Inspection & SPC Analysis', reader: 'Quality engineers', body: 'Cp, Cpk and control status for each dimension, the OCR photos of self and patrol inspections compared round by round, and the measurements behind them.' },
-        { title: 'Equipment Action & Traceability Log', reader: 'Auditors · Maintenance', body: 'A timeline of each equipment issue from detection through corrective action to re-inspection approval, with the action history, response times and open items.' }
+        { title: 'Daily Quality Summary', reader: 'Management · Buyers', body: 'Pass rate, headline Cpk, inspection count and control charts on one page, with the prepared, reviewed and approved sign-offs.' },
+        { title: 'Detailed Inspection & SPC Analysis', reader: 'Quality engineers', body: 'Capability per dimension, with the self and patrol inspection photos compared for each round.' },
+        { title: 'Equipment Action & Traceability Log', reader: 'Auditors · Maintenance', body: 'Each equipment issue from detection through action to re-inspection approval, and the action history.' }
       ],
       qr: { title: 'Verify with a QR code', body: 'Scan the QR code on the report to check it against the original and view the measurement photos and approval history.' },
       esg: { title: 'ESG carbon savings', body: 'The paper the report replaces is converted into CO₂e and shown on the report.' },
+      /** the spec table under the pages (Report.tsx): these rows, then the QR and ESG ones */
+      specsTitle: 'Report details',
+      specHead: ['Item', 'Details'],
+      specs: [{ label: 'Issued', body: 'Automatically, once approval is complete.' }, { label: 'Format', body: 'Downloadable as a PDF.' }],
       note: 'The actual report as issued. Click a page to see it full size. Sample data.'
     },
     data: {
