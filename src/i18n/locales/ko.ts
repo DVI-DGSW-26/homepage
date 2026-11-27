@@ -91,7 +91,7 @@ export const ko = {
         { label: '사진', before: '따로 찍어 폴더에 보관', after: '측정값 옆에 함께 저장' },
         { label: '보고서', before: '엑셀에 다시 옮겨 작성', after: '결재하면 바로 발행' }
       ],
-      note: '디비전 공장에서 직접 만들어 쓰는 품질 검사 웹앱입니다. 자주검사와 순회검사, 결재, 보고서, SPC 분석까지 이어집니다.'
+      note: '디비전 공장에서 직접 만들어 쓰는 품질 검사 웹앱입니다. 자주검사와 순회검사부터 결재, 보고서, SPC 분석까지 모두 다룹니다.'
     },
     /** 주요 기능: five cards, each with a real screen; a card opens its side panel (Features.tsx). Each feature's
      * gain is what it changes, said first; before, the problem it ends; rows, what it does in detail. Never "모든
@@ -152,8 +152,8 @@ export const ko = {
             { label: 'SPC', body: '관리도와 공정능력 요약' },
             { label: '자동 전환과 고정', body: '화면이 차례로 넘어가고, 필요한 화면에 고정할 수 있습니다.' }
           ] },
-        { name: 'SPC 분석', gain: '불량이 나기 전에 미리 알립니다',
-          body: '쌓인 측정값으로 공정이 안정적인지 보고, 불량이 나기 전에 미리 알려 줍니다.',
+        { name: 'SPC 분석', gain: '불량이 나기 전에 알립니다',
+          body: '쌓인 측정값으로 공정이 안정적인지 보고, 불량이 나기 전에 알려 줍니다.',
           before: '데이터를 엑셀로 따로 모아 분석해야 해서 이상을 늦게 알았습니다.',
           intro: '측정값이 쌓이는 대로 관리도와 공정능력이 자동으로 계산됩니다. 측정 추이를 이어 계산해, 관리한계에 닿기 전에 설비별로 알려 줍니다.',
           rows: [

@@ -1,4 +1,9 @@
 // English copy. Typed as Messages, so a key missing here (or one ko.ts doesn't have) fails the build.
+//
+// House style (natural business English for a corporate site, US spelling):
+// 자주검사 = self-inspection, 순회검사 = patrol inspection, 초·중·종(품) = first-off · in-process · last-off,
+// 측정기 = gauge, 결재 = approval, 검사보고서 = inspection report, 현장 모니터 = shop-floor monitor,
+// 공정능력 = process capability, 도입 문의 = Contact sales.
 import type { Messages } from './ko';
 import { privacyEn } from './privacy.en';
 
@@ -9,18 +14,18 @@ export const en: Messages = {
 
   meta: {
     '/qac-flow': {
-      title: 'QAC FLOW – Paperless quality inspection, through to reports and SPC',
-      description: 'Photograph a gauge with your phone and OCR enters the value and judges pass or fail, through photo-checked approval, automatic reports, a live floor monitor and SPC.'
+      title: 'QAC FLOW – Paperless quality inspection, from reports to SPC | DVISION',
+      description: 'Photograph a gauge with your smartphone: OCR enters the value and makes the pass/fail call. Photo-verified approval, automatic inspection reports, a live shop-floor monitor and SPC analysis in one web app.'
     },
     '/data': {
       title: 'QAC FLOW Data Industry – Every inspection becomes a data asset | DVISION',
-      description: 'The photo-verified inspection data QAC FLOW gathers on the floor, turned into a data business. Our 2026–2029 roadmap and partnerships.'
+      description: 'We are building a data business on the photo-verified inspection data QAC FLOW collects on the shop floor. See our 2026–2029 roadmap and partnership opportunities.'
     },
     '/privacy': {
       title: 'Privacy Policy | DVISION',
       description: 'Privacy policy of the DVISION solutions website (solution.dvi-ind.com).'
     },
-    image: 'QAC FLOW: paperless quality inspection, with the app photographing a caliper on a smartphone'
+    image: 'QAC FLOW home screen: paperless quality inspection, with the app photographing a gauge on a smartphone'
   },
 
   nav: {
@@ -29,7 +34,7 @@ export const en: Messages = {
     links: { '/qac-flow': 'QAC FLOW', '/data': 'Data Industry' },
     /** the header menu (request doc p.10): sections of QAC FLOW, the data page, and CES until the end of January */
     items: { about: 'About', features: 'Features', preview: 'Preview' },
-    sites: { label: 'DVISION sites', gateway: 'DVISION start page', manufacturing: 'Manufacturing', solution: 'Solutions' },
+    sites: { label: 'DVISION sites', gateway: 'DVISION home', manufacturing: 'Manufacturing', solution: 'Solutions' },
     langs: { ko: 'KOR', en: 'ENG' },
     theme: { toLight: 'Switch to light mode', toDark: 'Switch to dark mode' },
     open: 'Open menu',
@@ -56,182 +61,180 @@ export const en: Messages = {
   qf: {
     label: 'QAC FLOW quality inspection solution',
     expand: 'Quality · Analysis · Control',
-    title: 'Quality inspection without paper check sheets.',
-    lead: 'A quality inspection web app: photograph a gauge with a smartphone, and the record carries through to approval, reports and process analysis.',
+    title: 'Quality inspection without paper check sheets',
+    lead: 'Photograph a gauge with your smartphone, and the inspection record flows straight through to approval, reporting and process analysis, all in one web app.',
     /** the first screen's monitor coming alive as the phone finishes (LiveMonitor): the cell that turns done, the toast */
     heroMonitor: { cells: ['In-process', 'Last-off'] },
     /** the two facts under the first screen's buttons: what it takes, and where it runs */
-    facts: ['Start with a smartphone, one server PC and a monitor. No dedicated measuring equipment or sensor installation.', 'In use at DVISION\'s Daegu headquarters plant since June 2026.'],
-    stats: ['No dedicated gauges or sensor installation', 'Started running in our own plant'],
-    kit: 'A smartphone, one server PC and a monitor',
-    statsNote: 'In-house validation at our Daegu HQ plant · IATF 16949',
+    facts: ['All you need is a smartphone, one server PC and a monitor. No dedicated measuring equipment or sensor installation required.', 'In use at DVISION’s Daegu headquarters plant since June 2026.'],
+    stats: ['No dedicated measuring equipment or sensor installation', 'In operation at our own plant'],
+    kit: 'A smartphone, one server PC and a monitor are all you need',
+    statsNote: 'Validated in-house at our Daegu HQ plant · IATF 16949',
     cta: { demo: 'Contact sales', apply: 'Contact sales', how: 'See how it works', features: 'Explore features' },
     /** 서비스 소개: the old way and QAC FLOW side by side, one row per part of an inspection record (About.tsx) */
     about: {
       title: 'About',
-      lead: 'One place for inspection records once split between paper and spreadsheets.',
-      before: 'Until now',
+      lead: 'QAC FLOW brings together quality inspection records that used to be split between paper and Excel.',
+      before: 'Before',
       after: 'QAC FLOW',
       rows: [
-        { label: 'Readings', before: 'Written by hand on a paper sheet', after: 'Photograph the gauge and the value is entered' },
-        { label: 'Photos', before: 'Taken separately, kept in a folder', after: 'Saved beside the reading' },
-        { label: 'Reports', before: 'Retyped into Excel', after: 'Issued the moment it is approved' }
+        { label: 'Readings', before: 'Written by hand on paper check sheets', after: 'Photograph the gauge and the value is entered' },
+        { label: 'Photos', before: 'Taken separately and stored in folders', after: 'Saved alongside each reading' },
+        { label: 'Reports', before: 'Retyped into Excel', after: 'Issued as soon as they are approved' }
       ],
-      note: 'A quality inspection web app we built and use in our own factory, running from self and patrol inspections to approval, reports and SPC analysis.'
+      note: 'A quality inspection web app we built and use in our own plant. It covers self-inspections and patrol inspections through approval, reporting and SPC analysis.'
     },
-    /** 주요 기능: five cards, each with a real screen (Features.tsx) */
+    /** 주요 기능: five cards, each with a real screen (Features.tsx). Never "all gauges" (OCR reads digital LCD
+     * displays), and "AI" only for Ask AI: the defect forecast extends the trend. */
     features: {
       title: 'Features',
-      lead: 'From measuring on the floor to approval, reports and analysis, QAC FLOW handles it all.',
+      lead: 'From shop-floor measurement to approval, reporting and analysis, QAC FLOW handles it all.',
       more: 'Learn more',
       close: 'Close',
       prev: 'Previous screen',
       next: 'Next screen',
       rowsHead: ['Item', 'Details'],
       beforeHead: 'Before',
-      focus: ['Filled in by OCR', 'Self vs patrol photos'],
+      focus: ['Auto-filled by OCR', 'Self vs. patrol inspection photos'],
       items: [
-        { name: 'OCR input', gain: 'A record without writing anything down',
-          body: 'Photograph a gauge display with your phone: the value is entered and judged pass or fail on the spot.',
-          before: 'Values were read by eye, written on paper and typed into a PC again, and mistakes and gaps crept in along the way.',
-          intro: 'Photograph the display of a digital (LCD) gauge and select the reading; the number goes straight into the check sheet. The photo stays with the value, through approval and into the report.',
+        { name: 'OCR auto-entry', gain: 'Nothing to write down, everything on record',
+          body: 'Photograph the gauge display with your phone, and the value is entered automatically with an instant pass/fail result.',
+          before: 'Readings were taken by eye, written on paper and then retyped into a PC, leaving room for errors and omissions.',
+          intro: 'Photograph the display of a digital (LCD) gauge and select the reading, and the number goes straight into the check sheet. The photo stays with the value, all the way through approval and into the report.',
           rows: [
-            { label: 'Shoot, select, filled in', body: 'Three steps: fit the display into the guide box, select the reading, and the value is in.' },
-            { label: 'Judged at once', body: 'The value is checked against its tolerance and marked pass or fail right there.' },
-            { label: 'Photo evidence', body: 'The photo is saved with the value, compared at approval and included in the report as evidence.' },
-            { label: 'Fix it on the spot', body: 'If a value is misread, correct it before saving.' },
-            { label: 'Supported gauges', body: 'Gauges with a digital (LCD) display.' }
+            { label: 'Snap → select → auto-fill', body: 'Three steps: line up the display with the guide box, take the photo, select the reading, and the value is entered.' },
+            { label: 'Instant pass/fail', body: 'The value is checked against its tolerance and marked pass or fail on the spot.' },
+            { label: 'Photo evidence', body: 'The photo is saved with the value, compared during approval and included in the report as evidence.' },
+            { label: 'Correct on the spot', body: 'If a value is misread, you can correct it before saving.' },
+            { label: 'Supported gauges', body: 'Designed for gauges with a digital (LCD) display.' }
           ] },
-        { name: 'Photo-checked approval', gain: 'Not just numbers: proof they were measured',
-          body: 'The operator\'s self inspection and the quality inspector\'s patrol inspection, compared side by side with their photos, then approved.',
-          before: 'There was no way to tell whether a recorded number had really been measured.',
-          intro: 'For each item, the self and patrol values and both photos sit on one screen. If a photo and its value disagree, it is caught at approval.',
+        { name: 'Photo-verified approval', gain: 'Confirm every value was actually measured, not just recorded',
+          body: 'Approve after comparing the operator’s self-inspection with the quality inspector’s patrol inspection side by side, photos included.',
+          before: 'There was no way to confirm that a recorded number had actually been measured.',
+          intro: 'For each item, the self-inspection and patrol inspection values appear on one screen with the photos both people took. If a photo and its value do not match, it is caught at approval.',
           rows: [
-            { label: 'Self and patrol inspection', body: 'Self inspection is done by the operator; patrol inspection is the quality inspector\'s check.' },
-            { label: 'One screen', body: 'Both values and both photos for the same dimension, side by side.' },
-            { label: 'Approve', body: 'Approval issues the inspection report right away.' },
-            { label: 'Reject', body: 'A rejection goes back to the operator with its reason, to be measured again.' }
+            { label: 'Self-inspection and patrol inspection', body: 'A self-inspection is carried out by the operator; a patrol inspection is a follow-up check by the quality inspector.' },
+            { label: 'Side-by-side comparison', body: 'See both values for the same dimension and the photos each person took, side by side.' },
+            { label: 'Approve', body: 'Once a manager approves, the inspection report is issued immediately.' },
+            { label: 'Reject', body: 'A rejected inspection goes back to the operator with the reason, to be measured again.' }
           ] },
-        { name: 'Inspection reports', gain: 'Certificates sent without stamps or scans',
-          body: 'Once approved, the inspection report PDF is created automatically.',
-          before: 'Certificates were written by hand, stamped, scanned and then sent.',
-          intro: 'A three-page report carrying its e-approval stamps is issued without paper. Whoever receives it can scan the QR code to confirm it is the original.',
+        { name: 'Inspection reports', gain: 'Send certificates with no stamping or scanning',
+          body: 'Once approval is complete, the inspection report is generated automatically as a PDF.',
+          before: 'Certificates had to be written by hand, stamped, scanned and then sent.',
+          intro: 'A three-page report bearing e-approval stamps is issued without any paper. Recipients can scan the QR code to confirm it is the original.',
           rows: [
-            { label: 'E-approval stamps', body: 'Prepared, reviewed and approved stamps are printed on it, so nothing needs stamping by hand.' },
-            { label: 'QR verification', body: 'A customer or overseas buyer scans the QR code to check it against the original.' },
-            { label: 'Page 1 Daily quality summary', body: 'Pass rate, headline Cpk (process capability index), control charts and sign-offs' },
-            { label: 'Page 2 Detailed capability', body: 'Capability per dimension, with the OCR evidence photos' },
-            { label: 'Page 3 Equipment action log', body: 'Each equipment issue traced from detection through action to re-inspection approval' }
+            { label: 'E-approval stamps', body: 'The report comes with prepared, reviewed and approved stamps, so there is nothing to stamp by hand.' },
+            { label: 'QR verification', body: 'Customers and overseas buyers can scan the QR code to check the report against the original.' },
+            { label: 'Page 1: Daily quality summary', body: 'Pass rate, headline Cpk (process capability index), control charts and approval history' },
+            { label: 'Page 2: Detailed process capability', body: 'Process capability by dimension, with the OCR evidence photos' },
+            { label: 'Page 3: Equipment action log', body: 'A traceable record of each equipment issue, from detection through corrective action to re-inspection approval' }
           ] },
-        { name: 'Shop-floor monitor', gain: 'See the floor without walking it',
-          body: 'Inspection status, live on the TV on the factory wall.',
-          before: 'Knowing what was happening on the floor meant walking around or asking.',
-          intro: 'A value measured on a phone shows on the monitor at once. Four screens take turns, or stay on the one you pin.',
+        { name: 'Shop-floor monitor', gain: 'See the whole floor without walking it',
+          body: 'Inspection status, shown in real time on a TV on the factory wall.',
+          before: 'Finding out what was happening on the floor meant walking around or asking.',
+          intro: 'Measurements taken on a phone appear on the monitor instantly. Four screens rotate automatically, or you can pin the one you want.',
           rows: [
-            { label: 'Status board', body: 'First-off, in-process and last-off inspections (the first, middle and last parts of a run) by machine' },
-            { label: 'Measurement detail', body: 'Values against their tolerance range, pass or fail per item' },
+            { label: 'Status board', body: 'Progress of first-off, in-process and last-off inspections (the first, middle and last parts of a run) by machine' },
+            { label: 'Measurement detail', body: 'Measured values against their tolerance range, with pass/fail for each item' },
             { label: 'Quality and defects', body: 'Defective items and the actions taken' },
-            { label: 'SPC', body: 'Control charts and capability at a glance' },
-            { label: 'Rotate or pin', body: 'The screens take turns, or stay on the one you need.' }
+            { label: 'SPC', body: 'A summary of control charts and process capability' },
+            { label: 'Auto-rotate and pin', body: 'The screens rotate automatically, or you can pin the one you need.' }
           ] },
-        { name: 'SPC analysis', gain: 'Warned before a defect, not after',
-          body: 'See whether the process is stable from the values already collected, with a warning before defects appear.',
-          before: 'Data had to be gathered into Excel and analysed separately, so problems came to light late.',
-          intro: 'Control charts and capability are calculated as values come in. By extending each machine\'s trend, it warns before a control limit is reached.',
+        { name: 'SPC analysis', gain: 'Get warned before defects occur',
+          body: 'Check process stability from the measurements already collected, and get warned before defects occur.',
+          before: 'Data had to be compiled in Excel and analyzed separately, so problems surfaced late.',
+          intro: 'Control charts and process capability are calculated automatically as measurements come in. By extending the measurement trend, it alerts you machine by machine before a control limit is reached.',
           rows: [
-            { label: 'Calculated automatically', body: 'X-bar control charts and capability (Cpk, Ppk), the moment a value is measured.' },
-            { label: 'Near-limit warning', body: 'Flagged before a control limit is crossed.' },
-            { label: 'Defect forecast by machine', body: 'Extending the measured trend, each machine shows a line like "CNC-02: control limit in about 2 days".' },
-            { label: 'Equipment issues and actions', body: 'When something goes wrong, follow it through the issue report and its action history.' },
-            { label: 'Ask AI', body: 'Ask questions about the analysis data. Needs an internet connection.' }
+            { label: 'Automatic calculation', body: 'X-bar control charts and process capability (Cpk, Ppk) are calculated the moment a value is measured.' },
+            { label: 'Near-limit warning', body: 'Flags a value before it crosses a control limit.' },
+            { label: 'Defect forecast by machine', body: 'Extends the measurement trend to show an alert for each machine, such as “CNC-02: control limit in about 2 days.”' },
+            { label: 'Equipment issue tracking', body: 'When an issue occurs, follow it through the equipment issue report and its action history.' },
+            { label: 'Ask AI', body: 'Ask questions about your analysis data. Requires an internet connection.' }
           ] }
       ]
     },
     preview: {
       title: 'Preview',
-      lead: 'Follow one inspection from the floor to its report and analysis.',
+      lead: 'Follow a single inspection from the shop floor to its report and analysis.',
       steps: [
-        { who: 'Operator', title: 'Photograph to measure', body: 'Photograph the gauge display; OCR reads the value, enters it and judges pass or fail.' },
-        { who: 'Floor monitor', title: 'On the board at once', body: 'The moment it is saved, the floor monitor shows the progress by machine.' },
-        { who: 'Approver', title: 'Check the photos, approve', body: 'Self and patrol readings side by side with their photos, approved right from the phone.' },
-        { who: 'Automatic', title: 'Report issued', body: 'Approval issues the inspection report, verifiable against the original by QR code.' },
-        { who: 'Quality manager', title: 'SPC analysis', body: 'The readings build up into control charts and capability analysis.' }
+        { who: 'Operator', title: 'Snap to measure', body: 'Photograph the gauge display; OCR reads and enters the value, then makes the pass/fail call.' },
+        { who: 'Shop-floor monitor', title: 'Updated on the board instantly', body: 'The moment the value is saved, the progress by machine on the shop-floor monitor updates.' },
+        { who: 'Approver', title: 'Compare photos and approve', body: 'Review the self-inspection and patrol inspection values next to their photos, and approve right from your phone.' },
+        { who: 'Automatic', title: 'Report issued', body: 'The inspection report is issued upon approval and can be verified against the original by QR code.' },
+        { who: 'Quality manager', title: 'SPC analysis', body: 'Accumulated measurements feed directly into control charts and process capability analysis.' }
       ],
       step: (i: number, n: number) => `Step ${i} of ${n}`,
-      note: 'Actual QAC FLOW screens. Sample data.'
+      note: 'Actual QAC FLOW screens. Sample data shown.'
     },
     ces: {
       label: 'CES 2027',
       when: 'Jan 6–9, Las Vegas',
       where: (booth: string) => `Eureka Park Booth ${booth}`,
       hall: 'Venetian Expo Hall G',
-      try: 'Measure and shoot it yourself at our booth',
-      after: 'Missed us at CES 2027? Get the booth demo online',
+      try: 'Measure and snap it yourself at our booth',
+      after: 'See our CES 2027 booth demo online',
       /** the bar's link to the CES landing page (CES_LANDING_URL), where booth inquiries go */
-      more: 'Booth info & inquiries on our CES page',
+      more: 'Booth details and inquiries on our CES page',
       /** the × that closes the bar */
       close: 'Close notice'
     },
     alt: {
-      capture: 'Smartphone camera framing the display of a digital caliper reading 24.38 mm',
-      ocr: 'App screen: the caliper reading is filled in by OCR and judged as a pass against the tolerance',
-      crop: 'App screen: dragging the corner handles of a box to crop the photo down to the caliper reading',
-      compare: 'Mobile patrol inspection approval: over the self and patrol values per dimension, the self-inspection and patrol inspection photos of DIM 1 open side by side',
-      approval: 'PC web patrol inspection approval screen: self and patrol inspection values compared per dimension, with Reject and Approve (issue report) buttons',
+      capture: 'Smartphone camera framing the display of a digital caliper',
+      ocr: 'App screen: the reading is filled in by OCR and judged a pass',
+      crop: 'App screen: dragging the corner handles to crop the photo down to the reading',
+      compare: 'Mobile patrol inspection approval screen: over the self-inspection and patrol inspection values per dimension, the self-inspection and patrol inspection photos of DIM 1 open side by side',
+      approval: 'PC web patrol inspection approval screen: self-inspection and patrol inspection values compared per dimension, with Reject and Approve (issue report) buttons',
       reports: [
-        'Inspection report page 1, Daily Quality Summary: prepared, reviewed and approved sign-off stamps, a QR code for verification, pass rate, headline Cpk, inspection count and issues, an X̄-R control chart and ESG carbon savings',
-        'Inspection report page 2, Detailed Inspection & SPC Analysis: dimension locations on the drawing, Cp, Cpk and control status per dimension, OCR photos of self and patrol inspections compared for the first-off, in-process and last-off rounds, and the measurements of each round',
-        'Inspection report page 3, Equipment Action & Traceability Log: detection, corrective action and re-inspection approval timelines for two equipment issues, the action history table, and action count, average response time and open items'
+        'Inspection report page 1, Daily Quality Summary: prepared, reviewed and approved e-approval stamps, a QR code for verification, pass rate, headline Cpk, total inspections and issues, an X̄-R control chart and ESG carbon savings',
+        'Inspection report page 2, Detailed Inspection & Process Capability Analysis: dimension locations on the drawing, Cp, Cpk and control status per item, OCR photos of first-off, in-process and last-off self-inspections and patrol inspections compared, and the measurement data for each round',
+        'Inspection report page 3, Equipment Action & Quality Traceability Log: detection, corrective action and re-inspection approval timelines for two equipment issues, the equipment action history table, and action count, average response time and open items'
       ]
     },
     problem: {
       kicker: 'Results',
-      q: 'Why does the shop floor need QAC FLOW?',
-      title: 'The time spent writing on paper, taking photos and re-typing into Excel drops by 60%.',
-      lead: 'One photo of the gauge records the value, shares the photo and files it on the server at once, and the report is issued the moment it is approved.',
-      audience: 'Built for manufacturers that still run self and patrol inspections on paper check sheets and spreadsheets.',
+      q: 'Why does your shop floor need QAC FLOW?',
+      title: 'Spend 60% less time writing on paper, taking photos and retyping into Excel.',
+      lead: 'One photo of the gauge records the measurement, shares the photo and saves it to the server, all at once.\nThe report is issued the moment it is approved.',
+      audience: 'Built for manufacturers that still manage self-inspections and patrol inspections with paper check sheets and Excel.',
       pains: [
-        { title: 'Recorded on paper', body: 'Values are written on check sheets by hand, and photos are taken and shared separately over messaging apps.' },
-        { title: 'Retyped into spreadsheets', body: 'Back in the office, the paper records are typed into Excel all over again.' },
-        {
-          title: 'Records pile up, analysis is separate',
-          body: 'Seeing past inspections as control charts or capability figures means collecting and reorganizing the data yet again.'
-        }
+        { title: 'Recorded on paper', body: 'Values are written on check sheets by hand, while photos are taken separately and shared over messaging apps.' },
+        { title: 'Retyped into Excel', body: 'Back in the office, the paper records are typed into Excel all over again.' },
+        { title: 'Records pile up, analysis happens elsewhere', body: 'Viewing past inspections as control charts or process capability means collecting and reorganizing the data all over again.' }
       ],
       before: 'Before',
       after: 'With QAC FLOW',
       cut: 'less inspection time',
-      totalsLabel: 'Initial, mid and final rounds combined',
+      totalsLabel: 'First-off, in-process and last-off rounds combined',
       totals: [{ item: 'Part with 5 measuring points', from: '37 min 30 s', to: '15 min' }, { item: 'Part with 10 measuring points', from: '1 h 13 min 30 s', to: '30 min' }],
-      chart: 'One inspection round · part with 5 measuring points',
-      beforeParts: ['Measure', 'Write on paper', 'Take photos', 'Send photos', 'Tidy up in Excel'],
-      afterParts: ['Measure', 'Photo, record, share and file on the server (at once)'],
+      chart: 'Time per inspection round · part with 5 measuring points',
+      beforeParts: ['Measure', 'Record on paper', 'Take photos', 'Send photos', 'Enter into Excel'],
+      afterParts: ['Measure', 'Photo, record, share and save to server (all at once)'],
       time: (s: number) => s >= 60 ? `${Math.floor(s / 60)} min${s % 60 ? ` ${s % 60} s` : ''}` : `${s} s`,
-      note: 'Measured in-house at our Daegu HQ plant (time spent before and after QAC FLOW)',
-      afterSteps: ['Photograph the gauge', 'OCR reads the value', 'Pass / fail against tolerance, instantly', 'Report issued on approval']
+      note: 'Measured in-house at our Daegu HQ plant (inspection time before and after QAC FLOW)',
+      afterSteps: ['Photograph the gauge display', 'OCR reads the value', 'Instant pass/fail against tolerance', 'Report issued upon approval']
     },
     how: {
       kicker: 'Smartphone OCR measurement',
       q: 'How do you take a measurement?',
-      title: 'Photograph the gauge display, select the reading, and OCR enters the number into the check sheet.',
-      lead: 'No new equipment.\nYour existing calipers and gauges plus a smartphone camera.\nWorks on mobile and PC web.',
+      title: 'Photograph the gauge display and select the reading, and OCR enters the number into the check sheet.',
+      lead: 'No new equipment required.\nJust your existing calipers and gauges, plus a smartphone camera.\nWorks on both mobile and PC web.',
       steps: [
-        { title: 'Snap', body: 'Point the phone at the gauge display and take the shot.' },
-        { title: 'Crop', body: 'Drag the frame around the reading only.' },
-        { title: 'OCR input', body: 'The value fills itself in and is judged against the tolerance on the spot.' }
+        { title: 'Snap', body: 'Point your camera at the gauge display and take the photo.' },
+        { title: 'Crop', body: 'Adjust the frame so only the reading remains.' },
+        { title: 'OCR entry', body: 'The value is entered automatically and judged against the tolerance on the spot.' }
       ]
     },
     workflow: {
       kicker: 'Inspection flow',
-      q: 'How does an inspection flow?',
-      title: 'From the inspection order through self and patrol inspections, approval and the report, everything stays in one record.',
+      q: 'What are the steps of an inspection?',
+      title: 'From the inspection order through self-inspection, patrol inspection, approval and reporting, everything stays in one record.',
       step: (n: number) => `Step ${n}`,
       steps: [
-        { title: 'Inspection order', body: 'The production manager registers what to inspect, where and when.' },
-        { title: 'Self-inspection', body: 'The operator photographs the gauge; OCR enters the value.' },
+        { title: 'Inspection order', body: 'The production manager registers the part, machine and inspection timing.' },
+        { title: 'Self-inspection', body: 'The operator photographs the gauge, and OCR enters the value.' },
         { title: 'Patrol inspection', body: 'The patrol inspector re-measures the same items and compares the photos.' },
         { title: 'Approval', body: 'The quality manager reviews both results side by side and approves.' },
-        { title: 'Report', body: 'The inspection report is issued automatically, ready as a PDF.' }
+        { title: 'Report issued', body: 'The inspection report is issued automatically and can be downloaded as a PDF.' }
       ],
       rules: {
         title: 'First-off interlock and approval rules',
@@ -239,276 +242,238 @@ export const en: Messages = {
           { title: 'First-off', body: 'Inspect → complete' },
           { title: 'In-process', body: 'Inspect → complete' },
           { title: 'Last-off', body: 'Inspect → request approval' },
-          { title: 'Approval', body: 'Quality manager signs off · once, after last-off' },
-          { title: 'One report', body: 'One report per approval' }
+          { title: 'Approval', body: 'Quality manager approves · once, after last-off' },
+          { title: 'One report', body: 'One report issued per approval' }
         ],
         lock: 'Locked until first-off is complete',
-        reject: {
-          title: 'Fail or rejection',
-          body: 'A reason must be entered and no report is issued; the report follows once the part is re-inspected and approved. Skipped items stay incomplete, and an inspection can be closed early if there is a die or mold problem.'
-        }
+        reject: { title: 'Fail or rejection', body: 'A reason is required for every rejection, and no report is issued. The report is issued only once the part is re-inspected and approved. Skipped items remain incomplete, and an inspection can be closed early if a mold problem occurs.' }
       }
     },
     live: {
       kicker: 'Shop-floor monitor',
-      q: 'How do you see every inspection at once?',
-      title: 'Your entire floor\'s inspections, live on one monitor.',
-      lead: 'When an operator enters a result on their phone, it appears on the shop-floor monitor the moment it is saved.\nProgress, measurements and defects are visible to the whole floor in real time.',
+      q: 'How can you see every inspection on the floor at a glance?',
+      title: 'Every inspection on your floor, live on one monitor.',
+      lead: 'When an operator enters a result on their phone, it appears on the shop-floor monitor the moment it is saved.\nProgress, measurements and defects are visible to everyone on the floor in real time.',
       tabsAria: 'Monitor screens',
       tabs: ['Inspection Status', 'Measurement Detail', 'Quality & Defects'],
       bodies: [
-        'Track first-off, in-process and last-off self-inspections, along with patrol inspections, for every machine. See at a glance which checks are complete, which are in progress, and which are overdue or skipped.',
+        'Track the progress of first-off, in-process and last-off self-inspections and patrol inspections for every machine. See at a glance which inspections are complete, in progress, delayed or skipped.',
         'Each measured value is shown against its nominal and tolerance, with an OK/NG result for every item. A tolerance bar marks where each value falls, so readings close to the limit stand out immediately.',
-        'Review today\'s defects by item and type, along with the defect rate. Every follow-up action is logged with its owner, the instruction given and its current status, so each issue can be followed through to resolution.'
+        'Review today’s defects by item and type, along with the defect rate. Every corrective action is logged with its owner, instructions and status, so each issue can be followed through to resolution.'
       ],
       alts: [
         'Inspection status screen: completed, in-progress, skipped and delayed counts, and first-off, in-process and last-off self-inspection and patrol inspection progress for each machine',
         'Measurement detail screen: each item of an inspection in progress with its nominal and tolerance, measured value, tolerance bar and OK result',
-        'Quality and defects screen: today\'s inspections and defect rate, out-of-tolerance items, defect types, and a rejected patrol inspection being re-measured by the operator'
+        'Quality and defects screen: today’s inspection count and defect rate, out-of-tolerance items, defect types, and a rejected patrol inspection being re-measured by the operator'
       ],
-      note: 'The actual floor monitor screens. Click a screen to see it full size. Sample data.'
+      note: 'Actual shop-floor monitor screens. Click a screen to view it full size. Sample data shown.'
     },
     trace: {
       kicker: 'Photo evidence and traceability',
-      q: 'How can you trust every value?',
-      title: 'Every value comes with its photo.',
-      lead: 'Self-inspection and patrol inspection sit side by side,\nso a mismatch is caught before approval\nand every record can be traced in a customer audit or IATF review.',
+      q: 'How can you trust every measurement?',
+      title: 'Every measurement comes with a photo.',
+      lead: 'Self-inspection and patrol inspection results sit side by side,\nso mismatches surface before approval,\nand every record is traceable in customer audits and IATF assessments.',
       points: [
-        { title: 'Photo evidence on every value', body: 'The gauge photo is stored with the number it produced.' },
-        { title: 'Self vs. patrol, side by side', body: 'Two people, two measurements, one screen to compare.' },
-        { title: 'Approve once, report ready', body: 'Approval issues the audit-ready report at the same moment.' }
+        { title: 'Photo evidence for every value', body: 'The gauge photo is stored together with the number it shows.' },
+        { title: 'Self-inspection and patrol inspection, side by side', body: 'Two people, two measurements, compared on one screen.' },
+        { title: 'One approval, one finished report', body: 'Approval issues an audit-ready report at the same time.' }
       ]
     },
     /** SPC (request doc p.11): the place and the copy; the screens follow once they pass review */
     spc: {
       kicker: 'SPC analysis',
-      q: 'What can you see in the records that pile up?',
-      title: 'View control charts and process capability from approved inspection records, and manage equipment issues and actions alongside them.',
-      lead: 'Approved inspection records become SPC data as they are.\nPick a product, characteristic, machine and period to view control charts and process capability.',
+      q: 'What can you learn from accumulated inspection records?',
+      title: 'View control charts and process capability from approved inspection records, and manage equipment issues and actions in the same place.',
+      lead: 'Approved inspection records become SPC data as they are.\nSelect a product, characteristic, machine and period to view control charts and process capability.',
       /** the four views, each with one screen (Spc.tsx) */
       views: [
-        { title: 'Key indicators · control charts', body: 'Follow the process with six key indicators and the Xbar-R charts. Anything near a control limit is flagged right away.' },
-        { title: 'Process capability', body: 'Lay the distribution over the spec limits and check Cp, Cpk, Pp and Ppk.' },
-        { title: 'Equipment issues', body: 'See issue reports by machine and status, with downtime and cost recorded alongside.' },
-        { title: 'Action history', body: 'Each issue keeps its handling in order, from report through action to close.' }
+        { title: 'Key indicators · control charts', body: 'Follow the process with six key indicators and Xbar-R control charts. Values nearing a control limit are flagged right away.' },
+        { title: 'Process capability', body: 'Overlay the measurement distribution on the spec limits and check Cp, Cpk, Pp and Ppk.' },
+        { title: 'Equipment issue reports', body: 'View issue reports by machine and status, with downtime and cost recorded alongside.' },
+        { title: 'Action history', body: 'Every issue is logged in chronological order, from report through action to completion.' }
       ],
       /** the labels set on each screen, in the order of its marks (Spc.tsx) */
       marks: [
-        ['Near-limit warning', 'Six key indicators · Cpk · Ppk · mean · std. dev. · samples · out of control', 'Xbar chart (subgroup means)', 'R chart (subgroup ranges)'],
-        ['Distribution', 'Spec limits', 'Capability indices'],
+        ['Near-limit warning', 'Six key indicators · Cpk · Ppk · mean · std. dev. · sample count · out of control', 'Xbar chart (subgroup means)', 'R chart (subgroup ranges)'],
+        ['Measurement distribution', 'Lower and upper spec limits', 'Capability indices'],
         ['Filter by status', 'Downtime & cost', 'Action status'],
-        ['Report → action → close', 'What was done', 'Total downtime & cost']
+        ['Report → action → completion', 'Action details', 'Total downtime & cost']
       ],
       alts: [
-        'SPC analysis screen: product, dimension, machine and period filters, an approaching-control-limit warning, Cpk, Ppk, mean, sigma, sample count and out-of-control indicators, and the X̄ and R charts',
+        'SPC analysis screen: product, characteristic, machine and period filters, a near-control-limit warning, Cpk, Ppk, mean, sigma, sample count and out-of-control indicators, and the X̄ and R charts',
         'SPC process capability: a histogram of all measurements against the lower and upper spec limits, with Cp, Cpk, Pp and Ppk',
-        'Equipment issue list: issues on CNC-01 and CNC-02 with the time and reporter, downtime and cost, and an in-progress or resolved status',
-        'Equipment issue detail: a CNC-01 report of the overall length drifting toward the upper limit, from report through end mill replacement and offset correction to resolution after re-measurement, with total downtime, action cost and the machine\'s other reports'
+        'Equipment issue list: issues on CNC-01 and CNC-02 with the report time and reporter, downtime and cost, and an in-progress or completed status',
+        'Equipment issue detail: a CNC-01 report of the overall length shifting toward the upper limit, from submission through end mill replacement and offset correction to completion after re-measurement, with total downtime, action cost and the machine’s other reports'
       ],
-      note: 'The actual SPC analysis and equipment issue screens in QAC FLOW. Click a screen to see it full size. Sample data.'
+      note: 'Actual SPC analysis and equipment issue screens in QAC FLOW. Click a screen to view it full size. Sample data shown.'
     },
     /** the inspection report: the three pages one approval issues, and what its QR code and ESG line are for */
     report: {
       kicker: 'Inspection report',
-      q: 'What does each inspection leave behind?',
-      title: 'One approval issues a three-page report, each page written for its reader.',
-      lead: 'Management and buyers read the results on page 1, quality engineers the evidence on page 2, and auditors and maintenance teams the action history on page 3.',
+      q: 'What do you get when an inspection is complete?',
+      title: 'A single approval issues a three-page report, with each page written for its reader.',
+      lead: 'Executives and buyers find the results on page 1, quality engineers the evidence on page 2,\nand auditors and maintenance managers the action history on page 3.',
       pageLabel: (n: number) => `Page ${n}`,
       pages: [
-        { title: 'Daily Quality Summary', reader: 'Management · Buyers', body: 'Pass rate, headline Cpk, inspection count and control charts on one page, with the prepared, reviewed and approved sign-offs.' },
-        { title: 'Detailed Inspection & SPC Analysis', reader: 'Quality engineers', body: 'Capability per dimension, with the self and patrol inspection photos compared for each round.' },
-        { title: 'Equipment Action & Traceability Log', reader: 'Auditors · Maintenance', body: 'Each equipment issue from detection through action to re-inspection approval, and the action history.' }
+        { title: 'Daily Quality Summary', reader: 'Executives · Buyers', body: 'Pass rate, headline Cpk, inspection count and control charts on one page, together with the prepared, reviewed and approved sign-offs.' },
+        { title: 'Detailed Inspection & Process Capability Analysis', reader: 'Quality engineers', body: 'Process capability by dimension, with the first-off, in-process and last-off self-inspection and patrol inspection photos compared.' },
+        { title: 'Equipment Action & Quality Traceability Log', reader: 'Auditors · Maintenance managers', body: 'Each equipment issue from detection through corrective action to re-inspection approval, with the full action history.' }
       ],
-      qr: { title: 'Verify with a QR code', body: 'Scan the QR code on the report to check it against the original and view the measurement photos and approval history.' },
-      esg: { title: 'ESG carbon savings', body: 'The paper the report replaces is converted into CO₂e and shown on the report.' },
+      qr: { title: 'QR verification', body: 'Scan the QR code on the report to check it against the original and view the measurement photos and approval history.' },
+      esg: { title: 'ESG carbon savings', body: 'The paper certificates the report replaces are converted into CO₂e and shown on the report.' },
       /** the spec table under the pages (Report.tsx): these rows, then the QR and ESG ones */
-      specsTitle: 'Report details',
+      specsTitle: 'Report specifications',
       specHead: ['Item', 'Details'],
-      specs: [{ label: 'Issued', body: 'Automatically, once approval is complete.' }, { label: 'Format', body: 'Downloadable as a PDF.' }],
-      note: 'The actual report as issued. Click a page to see it full size. Sample data.'
+      specs: [{ label: 'Issuance', body: 'Issued automatically once approval is complete.' }, { label: 'Format', body: 'Downloadable as a PDF.' }],
+      note: 'The actual report as issued. Click a page to view it full size. Sample data shown.'
     },
     data: {
-      kicker: 'Using the data',
-      q: 'What happens to all that inspection data?',
-      title: 'Approved reports build up as data by part, machine and inspection round.',
+      kicker: 'Putting data to work',
+      q: 'How is the accumulated inspection data used?',
+      title: 'Approved reports accumulate as data by part, machine and inspection timing.',
       steps: [
-        { title: 'One report per inspection', body: 'Values, tolerances, photos and approval in one record.' },
-        { title: 'Reports pile up as data', body: 'By part, machine and inspection slot, day after day.' },
-        { title: 'A learning asset', body: 'The groundwork for defect prediction and process optimization.', plan: true }
+        { title: 'One report per inspection', body: 'Measurements, tolerances, photos and approval in a single record.' },
+        { title: 'Reports become data', body: 'Accumulated daily by part, machine and inspection timing.' },
+        { title: 'A training asset', body: 'The foundation for defect prediction and process optimization.', plan: true }
       ]
     },
     /** field proof (request doc p.14): what can be said now; photos and figures follow from planning */
     proof: {
       kicker: 'In operation',
-      q: 'Is it in use on a real shop floor?',
-      title: 'In use at DVISION\'s Daegu headquarters plant since June 2026.',
-      lead: 'Since June 2026, self and patrol inspections at DVISION\'s Daegu headquarters plant have run on QAC FLOW.',
-      since: { figure: '2026.06', label: 'In use in our own plant', body: 'Daegu headquarters plant · first-off, in-process and last-off self and patrol inspections' },
+      q: 'Is it used on a real shop floor?',
+      title: 'In use at DVISION’s Daegu headquarters plant since June 2026.',
+      lead: 'Since June 2026, self-inspections and patrol inspections at our Daegu headquarters plant have run on QAC FLOW.',
+      since: { figure: '2026.06', label: 'In operation at our own plant', body: 'Daegu headquarters plant · first-off, in-process and last-off self-inspections and patrol inspections' },
       certsLabel: 'DVISION certifications',
       certs: [
-        { name: 'IATF 16949', body: 'Automotive quality management' },
-        { name: 'ISO 14001', body: 'Environmental management' },
-        { name: 'ISO 45001', body: 'Occupational health and safety' }
+        { name: 'IATF 16949', body: 'Automotive quality management system' },
+        { name: 'ISO 14001', body: 'Environmental management system' },
+        { name: 'ISO 45001', body: 'Occupational health and safety management system' }
       ]
     },
     /** getting started (request doc p.14): the kit, the four-week trial, six questions */
     adopt: {
       kicker: 'Getting started',
       q: 'What do you need to get started?',
-      title: 'A smartphone, one server PC and a monitor.',
+      title: 'A smartphone, one server PC and a monitor are all it takes to get started.',
       kit: [
-        { title: 'Smartphone', body: 'Photograph the gauge and enter values' },
-        { title: 'One server PC', body: 'Stores records and original photos' },
-        { title: 'Monitor', body: 'Shop-floor status board' }
+        { title: 'Smartphone', body: 'Photographs gauges and enters values' },
+        { title: 'One server PC', body: 'Stores inspection records and original photos' },
+        { title: 'Monitor', body: 'Displays the shop-floor status board' }
       ],
       kitNote: 'No dedicated measuring equipment or sensor installation required.',
       trial: {
-        label: 'Get in touch',
-        title: 'Wondering whether it fits your floor? We would be glad to hear from you.',
-        body: 'Tell us about the parts you inspect, the gauges you use and how you inspect today, and we will suggest how QAC FLOW could work for you. A four-week trial on real inspections can be part of that conversation.',
-        cta: 'Contact us'
+        label: 'Contact sales',
+        title: 'Wondering whether QAC FLOW fits your shop floor? Feel free to get in touch.',
+        body: 'Tell us about the parts you inspect, the gauges you use and how you inspect today, and we will recommend the best way to apply QAC FLOW on your floor. We can also discuss a four-week trial on your actual inspections.',
+        cta: 'Contact sales'
       },
       faqTitle: 'Frequently asked questions',
       faq: [
-        {
-          q: 'Which gauges does it work with?',
-          a: 'It reads digital gauges that show the value as numbers on a display, such as digital calipers, by photographing them with OCR. We will check whether the gauges you use are supported.'
-        },
-        {
-          q: 'How accurate is the OCR?',
-          a: 'We will publish a recognition rate once the test conditions and sample are finalized. Operators review every recognized value before saving and can correct it if needed.'
-        },
-        {
-          q: 'What happens when a part fails?',
-          a: 'A reason must be entered when an inspection is rejected, and no report is issued. The report is issued once the part is re-inspected and approved.'
-        },
-        {
-          q: 'How is it different from other SPC tools?',
-          a: 'Values and photos are recorded the moment they are measured, so control charts and capability come from those records with no re-entry. Every value keeps its original photo, so the evidence is always at hand.'
-        },
-        { q: 'Does it integrate with ERP or MES?', a: 'The scope and method depend on the systems you run, so we review them with you when planning the rollout.' },
-        {
-          q: 'How is it deployed and priced?',
-          a: 'It depends on the size of your operation and the scope. Request a demo or get in touch, and we will put together an option that fits.'
-        }
+        { q: 'Which gauges are supported?', a: 'QAC FLOW uses OCR to read photos of digital gauges that display values as numbers, such as digital calipers. We will confirm during consultation whether the gauges you use are supported.' },
+        { q: 'How accurate is the OCR?', a: 'We will publish recognition rates once the test conditions and sample are finalized. Operators review every recognized value before saving and can correct it if needed.' },
+        { q: 'What happens when a part fails?', a: 'A reason is required for every rejection, and no report is issued. The report is issued only once the part is re-inspected and approved.' },
+        { q: 'How is it different from other SPC tools?', a: 'Values and photos are recorded together at the moment of measurement, so you can view control charts and process capability without re-entering any data. Every value keeps its original photo, so the evidence is always at hand.' },
+        { q: 'Does it integrate with ERP or MES?', a: 'The scope and method of integration depend on the systems you use, so we review them with you during consultation.' },
+        { q: 'How is it deployed and priced?', a: 'It depends on the size of your operation and the scope of use. Request a demo or send us an inquiry, and we will provide options tailored to you.' }
       ]
     }
   },
 
   future: {
-    label: 'Into the data industry',
-    bridge: 'The inspection data piling up\nis where the data business begins',
+    label: 'Entering the data industry',
+    bridge: 'Accumulated inspection data\nis where our data business begins',
     eyebrow: 'Data Industry',
     title: 'Every inspection\nbecomes a <k>data asset</k>',
-    lead: 'Expanding into the data and AI market. QAC FLOW gathers the data; Data Industry builds a business on it.',
-    storyLabel: 'From where data comes in to where it goes out',
+    lead: 'Expanding into the data and AI market. QAC FLOW collects the data, and Data Industry turns it into a business.',
+    storyLabel: 'From data input to business output',
     story: [
-      { tag: 'Input', title: 'QAC FLOW', body: 'Where data comes in. One photo captures the inspection data' },
-      { tag: 'Asset', title: 'Verified data', body: 'Measurements + photo evidence + verdicts + action history' },
-      { tag: 'Output', title: 'Data Industry', body: 'Where data goes out. SaaS · data business · credits' }
+      { tag: 'Input', title: 'QAC FLOW', body: 'The data input. A single photo captures the inspection data' },
+      { tag: 'Asset', title: 'Verified data', body: 'Measurements + photo evidence + results + action history' },
+      { tag: 'Output', title: 'Data Industry', body: 'The data output. SaaS · data business · credits' }
     ],
     why: {
       kicker: '02 / Why us',
-      title: 'We don’t buy data. We make it.',
-      from: 'The data is gathered by QAC FLOW',
+      title: 'We create our data firsthand',
+      from: 'All data is collected through QAC FLOW',
       items: [
         { title: 'Measurements', sub: 'DIM · nominal · tolerance' },
-        { title: 'Measurement photos', sub: 'Operator and patrol evidence' },
-        { title: 'Context', sub: 'Machine · part · operator · time' },
-        { title: 'Verdicts', sub: 'OK/NG · defect type' },
-        { title: 'Action history', sub: 'Closed early · incomplete · rejected' },
+        { title: 'Measurement photos', sub: 'Dual evidence: self and patrol inspection' },
+        { title: 'Context', sub: 'Machine · part · operator · timing' },
+        { title: 'Results', sub: 'OK/NG · defect type' },
+        { title: 'Action history', sub: 'Early close · incomplete · rejected' },
         { title: 'Approval history', sub: 'Approver · time issued' }
       ],
-      note: 'Data verified by photos = <k>training data you can trust</k>'
+      note: 'Photo-verified data = <k>training data you can trust</k>'
     },
     chain: {
       kicker: '03 / Value Chain',
-      title: 'Five steps from capturing data to a business',
+      title: 'Five steps from data collection to business',
       steps: [
-        { title: 'Data capture', sub: 'Collected live on the floor' },
-        { title: 'Internal PoC', sub: 'Proven in-house' },
-        { title: 'External PoC', sub: 'Proven with customers' },
-        { title: 'SaaS', sub: 'Offered as a service' },
-        { title: 'Data Business', sub: 'A data business' }
+        { title: 'Data collection', sub: 'Real-time capture on the floor' },
+        { title: 'Internal PoC', sub: 'In-house validation' },
+        { title: 'External PoC', sub: 'Customer validation' },
+        { title: 'SaaS', sub: 'Productization' },
+        { title: 'Data Business', sub: 'Data business' }
       ]
     },
     roadmap: {
       kicker: '04 / Roadmap',
-      title: 'Expanding step by step, proven at each stage — now at stage one',
+      title: 'Phased growth, validated at every stage. We are in Phase 1.',
       here: 'Now',
       stages: [
-        { year: '2026', title: 'Internal PoC', items: ['In-house validation', 'Data model tests', 'Operational tuning'] },
-        { year: '2027', title: 'External PoC', items: ['Validate with customers', 'Build the system', 'Field trials'] },
-        { year: '2028', title: 'SaaS product', items: ['Service launch', 'Grow the customer base', 'First revenue'] },
+        { year: '2026', title: 'Internal PoC', items: ['In-house validation', 'Data model testing', 'Operational optimization'] },
+        { year: '2027', title: 'External PoC', items: ['Customer validation', 'System build-out', 'Field testing'] },
+        { year: '2028', title: 'SaaS launch', items: ['Service launch', 'Customer growth', 'Monetization'] },
         { year: '2029', title: 'Data / Credit', items: ['Data business', 'Credit system', 'Global expansion'] }
       ],
-      proof: '<k>QAC FLOW running in our own plant (since 2026.06)</k> — the roadmap is under way, not just a plan'
+      proof: '<k>QAC FLOW in operation at our own plant (since June 2026)</k> — our roadmap is not just a plan; it is already underway'
     },
     asset: {
       kicker: '05 / Data Asset',
-      title: 'What the data, once gathered, is worth',
+      title: 'The value accumulated data creates',
       items: [
-        { title: 'Defect prediction', body: 'Measurements and verdicts over time flag a defect before it happens.', plan: true },
-        { title: 'Process parameter tuning', body: 'Measurements read with their machine and part context point to better process settings.', plan: true },
+        { title: 'Defect prediction models', body: 'Accumulated measurements and results help spot defects before they happen.', plan: true },
+        { title: 'Process parameter optimization', body: 'Measurements analyzed with their machine and part context point to better process conditions.', plan: true },
         { title: 'Data credit system', body: 'Verified quality data becomes an asset that can be traded and put to use.' },
-        { title: 'Closing the quality-data gap', body: 'Floors that struggle to build up data get verified data to work with.' }
+        { title: 'Closing the quality data gap', body: 'Manufacturers that struggle to build up their own data gain access to verified data.' }
       ]
     },
     partner: {
       kicker: '06 / Partnership',
-      title: 'Partners to build the data with us',
-      tags: ['Join the External PoC', 'Partnership'],
-      closing: 'Recorded the moment it’s captured;\nas records build up, <k>they become an industry.</k>'
+      title: 'Partners to build data with us',
+      tags: ['Join our External PoC', 'Partnership'],
+      closing: 'Recorded the moment it is captured.\nAs records build up, <k>they become an industry.</k>'
     }
   },
 
   contact: {
     /** the inquiry form's own title and line (the dialog) */
     title: 'Contact sales',
-    lead: 'Tell us what you inspect and how you inspect it today, and we will suggest how QAC FLOW could fit your floor.',
+    lead: 'Tell us what you inspect and how you inspect it today, and we will recommend the best way to bring QAC FLOW to your shop floor.',
     /** the closing block at the end of the page: a last line, and the button that opens the form */
-    closing: { title: 'Quality inspection without paper,\nstarting on your floor.', cta: 'Contact sales' },
+    closing: { title: 'Bring paperless quality inspection\nto your shop floor.', cta: 'Contact sales' },
     close: 'Close',
-    fields: {
-      company: 'Company',
-      name: 'Your name',
-      email: 'Work email',
-      phone: 'Phone',
-      type: 'Inquiry type',
-      scale: 'Machines to inspect',
-      timing: 'Planned timing',
-      message: 'Message'
-    },
-    placeholders: {
-      company: 'Company Inc.',
-      name: 'Jane Doe',
-      email: 'name@company.com',
-      phone: '+1 000 000 0000',
-      message: 'The parts you inspect, the gauges you use, anything you would like to know.'
-    },
+    fields: { company: 'Company', name: 'Full name', email: 'Work email', phone: 'Phone number', type: 'Inquiry type', scale: 'Machines to be inspected', timing: 'Desired start date', message: 'Message' },
+    placeholders: { company: 'Company name', name: 'Jane Doe', email: 'name@company.com', phone: '+1 000 000 0000', message: 'Tell us about the parts you inspect, the gauges you use and any questions you have.' },
     options: {
-      type: ['Adoption', 'Demo', 'Quote', 'Trial'],
+      type: ['Consultation', 'Product demo', 'Quote request', 'Trial'],
       scale: ['1–5', '6–20', '21–50', 'More than 50'],
-      timing: ['Within 3 months', 'Within 6 months', 'Within a year', 'Not decided']
+      timing: ['Within 3 months', 'Within 6 months', 'Within 1 year', 'Undecided']
     },
     optional: 'optional',
-    choose: 'Choose one',
-    custom: 'Other (type it in)',
-    customPlaceholder: 'Type your answer',
-    notice: 'We use your company, name, work email, phone and the optional details to answer your inquiry and follow up, and delete them one year after it is closed. On the way, they pass through Vercel and Resend in the United States to our company mail (Google Workspace).',
+    choose: 'Please select',
+    custom: 'Other (please specify)',
+    customPlaceholder: 'Please specify',
+    notice: 'We collect your company name, full name, work email, phone number and any optional details to respond to your inquiry and follow up. This information is kept for one year after the consultation ends and then deleted. It is processed via Vercel and Resend in the United States before reaching our company email (Google Workspace).',
     policy: 'Privacy Policy',
     submit: 'Send inquiry',
     sending: 'Sending…',
     again: 'New inquiry',
     retry: 'Try again',
-    sent: 'Thank you. We will get back to you by email or phone.',
+    sent: 'Thank you. Our team will contact you by email or phone shortly.',
     failed: 'Your inquiry could not be sent. Please try again in a moment, or email us at the address below.',
-    invalid: {
-      company: 'Please enter your company name.',
-      name: 'Please enter your name.',
-      email: 'Please check your work email address.',
-      phone: 'Please enter a phone number.'
-    },
+    invalid: { company: 'Please enter your company name.', name: 'Please enter your name.', email: 'Please enter a valid work email address.', phone: 'Please enter your phone number.' },
     mailSubject: 'QAC FLOW inquiry'
   },
 
@@ -517,7 +482,7 @@ export const en: Messages = {
     address: '237, Gukgasandan-daero 33-gil, Guji-myeon, Dalseong-gun, Daegu, Republic of Korea',
     email: 'Contact',
     sites: 'DVISION sites',
-    links: { gateway: 'DVISION start page', manufacturing: 'Manufacturing', solution: 'QAC FLOW solutions' },
+    links: { gateway: 'DVISION home', manufacturing: 'Manufacturing site', solution: 'QAC FLOW solution' },
     privacy: 'Privacy Policy',
     copyright: '© 2026 DVISION Co., Ltd. All rights reserved.'
   },
