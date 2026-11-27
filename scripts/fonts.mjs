@@ -1,13 +1,13 @@
 // The body face cut down to the site's own characters, generated before dev and build.
 //
-// Plex Sans KR in full is 430 KB a weight; the unicode-range slices @fontsource serves came to 35 files and
-// over 500 KB for one page, as much as all its pictures. The site's copy is all in src/ (dictionaries,
-// the monitor's sample data, the privacy policy), so this collects every character there and cuts each
-// weight to just those, from IBM's own files (@ibm/plex-sans-kr). It writes the fonts and their
-// @font-face rules, family "Plex Sans KR Site", to src/generated/fonts/, which src/main.tsx imports.
+// Pretendard in full is 750 KB a weight. The site's copy is all in src/ (dictionaries, the monitor's sample
+// data, the privacy policy), so this collects every character there and cuts each weight to just those,
+// from the package's own files (pretendard). It writes the fonts and their @font-face rules, family
+// "Pretendard Site", to src/generated/fonts/, which src/site/RootLayout.tsx imports. One family sets the
+// whole site: body, headings, display figures and the small uppercase labels.
 //
 // A character outside the cut (a name typed into the demo request form) falls through to the next family
-// in --font-sans, the full @fontsource slices, declared only once a field is focused (src/lib/fonts.ts).
+// in --font-sans, the full Pretendard dynamic-subset slices, declared only once a field is focused (src/lib/fonts.ts).
 // New copy in src/ needs a re-run (`pnpm fonts`, or restart `pnpm dev`) to be in the cut.
 //
 // Cutting is slow, so results are kept in node_modules/.cache/dv-fonts, keyed by the character set.
@@ -18,12 +18,12 @@ import { fileURLToPath } from 'node:url';
 import subsetFont from 'subset-font';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const SRC = path.join(root, 'node_modules/@ibm/plex-sans-kr/fonts/complete/woff2/hinted');
+const SRC = path.join(root, 'node_modules/pretendard/dist/web/static/woff2');
 const OUT = path.join(root, 'src/generated/fonts');
 const CACHE = path.join(root, 'node_modules/.cache/dv-fonts');
-export const FAMILY = 'Plex Sans KR Site';
-/** the weights the type scale uses (a <b> with no weight of its own comes out 700) */
-const WEIGHTS = { 400: 'Regular', 500: 'Medium', 600: 'SemiBold', 700: 'Bold' };
+export const FAMILY = 'Pretendard Site';
+/** the weights the type scale uses (a <b> with no weight of its own comes out 700; the display figures 800) */
+const WEIGHTS = { 400: 'Regular', 500: 'Medium', 600: 'SemiBold', 700: 'Bold', 800: 'ExtraBold' };
 const t0 = Date.now();
 
 const walk = async (dir, acc = []) => {
@@ -59,11 +59,11 @@ await fs.mkdir(CACHE, { recursive: true });
 const rules = [];
 let cut = 0, total = 0;
 for (const [weight, name] of Object.entries(WEIGHTS)) {
-  const file = `plex-sans-kr-${weight}.woff2`;
+  const file = `pretendard-${weight}.woff2`;
   const cached = path.join(CACHE, `${key}-${file}`);
   let buf = await fs.readFile(cached).catch(() => null);
   if (!buf) {
-    buf = await subsetFont(await fs.readFile(path.join(SRC, `IBMPlexSansKR-${name}.woff2`)), text, { targetFormat: 'woff2' });
+    buf = await subsetFont(await fs.readFile(path.join(SRC, `Pretendard-${name}.woff2`)), text, { targetFormat: 'woff2' });
     await fs.writeFile(cached, buf);
     cut++;
   }

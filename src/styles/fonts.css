@@ -1,7 +1,4 @@
-/* Plex Sans KR in full, as @fontsource's unicode-range slices: the fallback for characters outside the
+/* Pretendard in full, as its dynamic-subset unicode-range slices: the fallback for characters outside the
    cut the site ships (scripts/fonts.mjs), declared only once a text field gets focus (src/lib/fonts.ts).
-   94 rules a weight, three quarters of the CSS when it was in the main stylesheet. */
-@import '@fontsource/ibm-plex-sans-kr/400.css';
-@import '@fontsource/ibm-plex-sans-kr/500.css';
-@import '@fontsource/ibm-plex-sans-kr/600.css';
-@import '@fontsource/ibm-plex-sans-kr/700.css';
+   Only the slices a typed character falls in download. */
+@import 'pretendard/dist/web/static/pretendard-dynamic-subset.css';

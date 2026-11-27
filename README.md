@@ -69,7 +69,7 @@ src/
     index.css                  Tailwind 진입점: 변형(light: booting: spanned:), 기본 요소 스타일, 공용 유틸리티
     tokens.css                 모든 디자인 값 (아래 "디자인 토큰")
     animation.css              CSS 로 움직이는 것 전부와 각각의 reduced-motion 처리
-    fonts.css                  Plex Sans KR 전체 선언 (src/lib/fonts.ts 가 입력칸 포커스 때 불러옴)
+    fonts.css                  Pretendard 전체 선언 (src/lib/fonts.ts 가 입력칸 포커스 때 불러옴)
   components/
     layout/Nav.tsx             헤더: 떠 있는 알약, 페이지 메뉴, 첫 화면 · 제조 | 솔루션 전환, KOR / ENG 링크, 테마 버튼. 1200px 미만은 <dialog> 시트로
     layout/Contact.tsx         두 제품 페이지 끝의 데모 신청 폼 (#contact) — 페이지의 "데모 신청" 버튼이 모두 여기로
@@ -117,7 +117,7 @@ public/assets/img/             사진·로고·파비콘. 코드에서는 assets
 - **공용 유틸리티** (`index.css`): `wrap`(본문 열), `pad-wrap`, `mono`, `num`(tabular 숫자), `deco-dots` / `deco-grid`(배경 무늬), `hollow-*`(외곽선 글자, `hollow-deco`).
 - **브레이크포인트**는 기기 구간입니다(데스크톱 우선, `max-*`): `max-2xs` < 361 · `max-sm` < 600 · `md` 860 · `lg` 1200 · `xl` 1280. 구간별 기기는 `tokens.css` 상단 주석에 있고, JS 는 `src/lib/env.ts` 의 `LG` 로 같은 값을 씁니다. 듀얼 스크린을 좌우로 펼친 상태는 `spanned:` 변형(가운데 힌지만큼 `gap-x-hinge`).
 - **변형**: `light:` 는 `html[data-mode="light"]` 일 때, `booting:` 은 웹폰트가 들어오기 전(`html[data-ready]` 전, 최대 1.5초)에만 적용됩니다.
-- 서체: Big Shoulders Display (`font-display`), IBM Plex Sans KR (`font-sans`), IBM Plex Mono (`font-mono`). 한국어는 `:lang(ko)` 에서 `word-break: keep-all`.
+- 서체: 전부 Pretendard (`font-sans`; `font-display`·`font-mono` 도 같은 서체). 한국어는 `:lang(ko)` 에서 `word-break: keep-all`.
 
 ## 전역 상태
 
@@ -150,8 +150,7 @@ public/assets/img/             사진·로고·파비콘. 코드에서는 assets
 
 - 본문 글꼴 Plex Sans KR 은 `scripts/fonts.mjs` 가 `src/` 에 들어 있는 글자(사전, 모니터 예시 데이터, 개인정보처리방침)만 남겨 굵기마다 woff2 하나(약 40KB)로 자릅니다. 원본은 IBM 의 `@ibm/plex-sans-kr`, 결과는 `src/generated/fonts/`(git 제외)이고 글꼴 이름은 `Plex Sans KR Site` 입니다. 자른 결과는 `node_modules/.cache/dv-fonts` 에 글자 묶음별로 남습니다.
 - 문구에 새 글자를 넣으면 `pnpm fonts`(또는 `pnpm dev` 재시작)로 다시 자릅니다. 빠진 글자는 시스템 글꼴로 보입니다.
-- 서브셋에 없는 글자(데모 신청 폼에 입력한 이름 등)는 `--font-sans` 의 다음 글꼴인 전체 Plex Sans KR(@fontsource 의 unicode-range 조각, `src/styles/fonts.css`)로 그려집니다. 이 선언은 입력칸에 처음 포커스가 갈 때만 불러옵니다(`src/lib/fonts.ts`).
-- `@ibm/plex-sans-kr` 의 postinstall 은 IBM 사용 통계 전송뿐이라 `pnpm-workspace.yaml` 에서 막아 둡니다.
+- 서브셋에 없는 글자(데모 신청 폼에 입력한 이름 등)는 `--font-sans` 의 다음 글꼴인 전체 Pretendard(dynamic subset 의 unicode-range 조각, `src/styles/fonts.css`)로 그려집니다. 이 선언은 입력칸에 처음 포커스가 갈 때만 불러옵니다(`src/lib/fonts.ts`).
 
 ## 영상과 자료
 

@@ -1,4 +1,2 @@
 allowBuilds:
   esbuild: true
-  # its postinstall only sends IBM usage telemetry; the fonts are in the package as published
-  '@ibm/plex-sans-kr': false

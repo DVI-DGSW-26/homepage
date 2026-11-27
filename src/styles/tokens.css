@@ -37,13 +37,12 @@
   --breakpoint-lg: 1200px;
   --breakpoint-xl: 1280px;
 
-  --font-display: 'Big Shoulders Display', 'Archivo Narrow', 'Arial Narrow', Impact, sans-serif;
-  /* Plex Sans KR twice: first cut down to the site's own characters (scripts/fonts.mjs), then in full for
-     anything outside the cut, such as a name typed into the demo request form (src/lib/fonts.ts) */
-  --font-sans: 'Plex Sans KR Site', 'IBM Plex Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif;
-  /* Plex Mono has no Hangul: Korean in a mono line takes Plex Sans KR rather than the system's monospace
-     CJK face, whose full-width cells spread the syllables apart */
-  --font-mono: 'IBM Plex Mono', 'Plex Sans KR Site', 'IBM Plex Sans KR', ui-monospace, SFMono-Regular, Consolas, monospace;
+  /* Pretendard sets everything. It comes twice: first cut down to the site's own characters (scripts/fonts.mjs),
+     then in full for anything outside the cut, such as a name typed into the demo request form (src/lib/fonts.ts).
+     display (big figures) and mono (small uppercase labels) are the same face; figures line up with .num. */
+  --font-sans: 'Pretendard Site', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif;
+  --font-display: var(--font-sans);
+  --font-mono: var(--font-sans);
 
   /* ---- type scale ----
      No size carries a paired line-height (--text-*--line-height): text-* sets the size only,
@@ -126,10 +125,8 @@
   /* ---- the floor monitor (src/features/qac-monitor) ----
      Drawn at 1376 × 753 (src/features/qac-monitor/Fit.tsx) and zoomed to fit, so
      its sizes are pixels of that screen, not rem. Set in a Mac app's system type, tracked as macOS
-     does. Zoomed into a laptop's column, its 12–15px land near 10–14px, where the Plex webfont blurs
-     on Windows; there the system UI faces stand in. */
-  --font-mac: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Apple SD Gothic Neo',
-    'Segoe UI Variable Text', 'Segoe UI', 'Malgun Gothic', var(--font-sans);
+     does, in Pretendard like the rest of the site. */
+  --font-mac: var(--font-sans);
   --tracking-mac: -.005em;
   --tracking-caption: .01em;     /* small medium-weight captions */
   /* Six sizes, one per role, and three weights: regular for reading, medium for labels and

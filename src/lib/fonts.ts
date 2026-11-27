@@ -1,4 +1,4 @@
-// Plex Sans KR in full, for characters outside the cut the site ships (scripts/fonts.mjs). Everything the
+// Pretendard in full, for characters outside the cut the site ships (scripts/fonts.mjs). Everything the
 // site prints is in the cut, so only what a visitor types can need it: its declarations (src/styles/
 // fonts.css, unicode-range slices, so just the slices a character falls in download) load the first time
 // a text field gets focus. Returns the teardown.

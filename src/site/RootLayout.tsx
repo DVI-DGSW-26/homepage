@@ -5,13 +5,8 @@
 import type { ReactNode } from 'react';
 import type { Metadata, Viewport } from 'next';
 // the webfonts, served from this site rather than Google Fonts, so no visitor's IP goes to Google (privacy
-// policy). Only the weights the type scale uses. Plex Sans KR is cut down to the site's own characters
+// policy). One face, Pretendard, in the weights the type scale uses, cut down to the site's own characters
 // (scripts/fonts.mjs); the full face is declared only when a form field needs it (src/lib/fonts.ts).
-import '@fontsource/big-shoulders-display/700';
-import '@fontsource/big-shoulders-display/800';
-import '@fontsource/big-shoulders-display/900';
-import '@fontsource/ibm-plex-mono/400';
-import '@fontsource/ibm-plex-mono/500';
 import '../generated/fonts/fonts.css';
 import '../styles/index.css';
 import type { Lang } from '../lib/paths';
